@@ -1,0 +1,14 @@
+Package: funData
+Type: Package
+Title: An S4 class for functional data
+Version: 0.1
+Date: 2015-06-10
+Authors@R: person("Clara", "Happ", email = "clara.happ@stat.uni-muenchen.de",
+                  role = c("aut", "cre"))
+Author: Clara Happ [aut, cre]
+Maintainer: Clara Happ <clara.happ@stat.uni-muenchen.de>
+Description: S4 classes for univariate and multivariate functional data with utility functions.
+License: GPL-2
+Imports: fields, methods
+Suggests: zoo,
+    testthat
