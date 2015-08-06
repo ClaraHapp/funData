@@ -39,33 +39,18 @@ function allows to flip (i.e. multiply by \eqn{-1}{-1}) all observations in
 \code{newObject} that have a different orientation than their counterparts in
 \code{refData}.
 
-Technically, the function looks for the coordinate \eqn{t^\ast}{t*} in the
-domain (\code{xVal}) of \code{refObject}
-\eqn{\phi_\mathrm{ref}(t)}{\phi_{ref}(t)} that has the highest absolute value
-\deqn{t^\ast = \arg \max \limits_{t \in \mathcal{T}} | \phi_\mathrm{ref}(t) |
-}{t* = arg max_{t in \calT} |\phi_{ref}(t)| } and then multiplies the
-observation \eqn{\phi_\mathrm{new}(t)}{\phi_{new}(t)} by \eqn{-1}{-1} if
-\deqn{\mathrm{sign}\left(\phi_\mathrm{ref}(t^\ast) \right) \neq
-\mathrm{sign}\left(\phi_\mathrm{new}(t^\ast) \right).}{sign( \phi_{ref}(t*) )
-!= sign( \phi_{new}(t*) ).}
+Technically, the function compares the distance between \code{newObject} and
+\code{refObject} \deqn{|||f_\text{new} - f_\text{ref}|||}{||| f_{new} -
+f_{ref}|||} and the distance between  \code{newObject} and
+\code{-1*refObject} \deqn{|||f_\text{new} + f_\text{ref}|||.}{||| f_{new} +
+f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is
+flipped, i.e. multiplied by -1.
 
-For \code{multiFunData} objects, this is done element-wise.
-}
-\section{Warning}{
- This function only works if the functions in
-  \code{refObject} and \code{newObject} are similar to each other. In
-  particular, the reference object should not have an abrupt sign change near
-  \eqn{t^\ast}{t*}, the coordinate with the maximum absolute value. As in
-  this case, the new functions could be flipped in the wrong direction, if
-  they are slightly shifted to the left or to the right. For
-  \code{multiFunData} objects, check the results to make sure that the
-  functions are smooth enough such that either all elements are flipped or
-  none.
-
-  The function is currently implemented only for functional data with one-
-  and two-dimensional domains.
+The function is currently implemented only for functional data with one-
+ and two-dimensional domains.
 }
 \examples{
+# Univariate
 xVal <- seq(0,2*pi,0.01)
 refData <- funData(xVal, rbind(sin(xVal))) # one observation as reference
 newData <- funData(xVal, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
@@ -79,6 +64,27 @@ plot(refData, col = "red", lwd = 2, add = TRUE)
 
 plot(flipFuns(refData, newData), col = "grey", main = "Flipped data")
 plot(refData, col = "red", lwd = 2, add = TRUE)
+
+# Multivariate
+refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
+                        funData(xVal, rbind(cos(xVal))))
+sig <- sample(c(-1,1), 11, replace = TRUE)
+newData <- multiFunData(funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), sin(xVal))),
+                        funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), cos(xVal))))
+
+par(mfrow = c(2,2))
+
+plot(newData[[1]], col = topo.colors(11), main = "Original data")
+plot(refData[[1]], col = "red", lwd = 2, add = TRUE)
+
+plot(newData[[2]], col = topo.colors(11), main = "Original data")
+plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
+
+plot(flipFuns(refData, newData)[[1]], col = topo.colors(11), main = "Flipped data")
+plot(refData[[1]], col = "red", lwd = 2, add = TRUE)
+
+plot(flipFuns(refData, newData)[[2]], col = topo.colors(11), main = "Flipped data")
+plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
 
 par(oldpar)
 }

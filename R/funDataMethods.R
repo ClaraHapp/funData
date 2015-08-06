@@ -323,47 +323,49 @@ setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
 
 
 #' Arithmetics of functional data objects
-#'
-#' These functions allow basic arithmetics for functional data and numerics
+#' 
+#' These functions allow basic arithmetics for functional data and numerics 
 #' based on \code{\link[methods]{Arith}}.  The operations are made pointwise for
 #' each observation.
-#'
-#' @section Warning: Note that not all combinations of operations and classes
-#'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class
+#' 
+#' @section Warning: Note that not all combinations of operations and classes 
+#'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class 
 #'   \code{funData} or \code{multiFunData} and \code{e2} is numeric. The reverse
 #'   is not true.
-#'
-#' @param e1,e2 Objects of class \code{funData}, \code{multiFunData} or
-#'   \code{numeric}. If two functional data objects are used, they must be of
-#'   the same class, have the same domain and the same number of observations.
-#'
-#' @return An object of the same functional data class as \code{e1} or
+#'   
+#' @param e1,e2 Objects of class \code{funData}, \code{multiFunData} or 
+#'   \code{numeric}. If two functional data objects are used, they must be of 
+#'   the same class, have the same domain and the same number of observations
+#'   (or one object with only one observation that is added, substracted,.. from
+#'   each of the other observations).
+#'   
+#' @return An object of the same functional data class as \code{e1} or 
 #'   \code{e2}, respectively.
-#'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData},
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}, 
 #'   \link[methods]{Arith}
-#'
+#'   
 #' @name Arith.funData
-#'
+#'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
 #' par(mfrow = c(3,2), mar = rep(2.1,4))
-#'
+#' 
 #' xVal <- seq(0, 2*pi, 0.01)
 #' object1 <- funData(xVal, outer(seq(0.75, 1.25, by = 0.05), sin(xVal)))
 #' object2 <- funData(xVal, outer(seq(0.75, 1.25, by = 0.05), cos(xVal)))
-#'
+#' 
 #' plot(object1, main = "Object1")
 #' plot(object2, main = "Object2")
-#'
+#' 
 #' # Only Functional data objects
 #' plot(object1 + object2, main = "Sum")
 #' plot(object1 - object2, main = "Difference")
-#'
+#' 
 #' # Mixed
 #' plot(4*object1 + 5,  main = "4*Object1 + 5") # Note y-axis!
 #' plot(object1^2 + object2^2, main = "Pythagoras")
-#'
+#' 
 #' par(oldpar)
 NULL
 
@@ -372,6 +374,14 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
             if(!all.equal(e1@xVal, e2@xVal))
               stop("arithmetic operations: functions must be defined on the same domain!")
+            
+            # if one funData object has only a single observation: apply to all of the other object
+            if(nObs(e1) == 1 & nObs(e2) > 1) 
+              e1@X <- t(replicate(nObs(e2),e1@X[1,]))
+            
+            if(nObs(e2) == 1 & nObs(e1) > 1) 
+              e2@X <- t(replicate(nObs(e1),e2@X[1,]))            
+            
             funData(xVal = e1@xVal, X = methods::callGeneric(e1@X, e2@X))
           })
 
@@ -879,81 +889,88 @@ setMethod("setX", signature = "multiFunData",
 
 
 #' Flip functional data objects
-#'
-#' This function flips an object \code{newObject} of class \code{funData} or
-#' \code{multiFunData} with respect to a reference object \code{refObject} of
-#' the same class. This is particularly useful when dealing with functional
-#' principal components, as they are only defined up to a sign change. For
+#' 
+#' This function flips an object \code{newObject} of class \code{funData} or 
+#' \code{multiFunData} with respect to a reference object \code{refObject} of 
+#' the same class. This is particularly useful when dealing with functional 
+#' principal components, as they are only defined up to a sign change. For 
 #' details, see below.
-#'
-#' Functional principal component analysis is an important tool in functional
-#' data analysis. Just as eigenvectors, eigenfunctions (or functional principal
-#' components) are only defined up to a sign change. This may lead to
+#' 
+#' Functional principal component analysis is an important tool in functional 
+#' data analysis. Just as eigenvectors, eigenfunctions (or functional principal 
+#' components) are only defined up to a sign change. This may lead to 
 #' difficulties in simulation studies or when bootstrapping pointwise confidence
-#' bands, as in these cases one wants the estimates to have the same
-#' "orientation" as the true function (in simulation settings) or the
+#' bands, as in these cases one wants the estimates to have the same 
+#' "orientation" as the true function (in simulation settings) or the 
 #' non-bootstrapped estimate (when calculating bootstrap confidence bands). This
-#' function allows to flip (i.e. multiply by \eqn{-1}{-1}) all observations in
+#' function allows to flip (i.e. multiply by \eqn{-1}{-1}) all observations in 
 #' \code{newObject} that have a different orientation than their counterparts in
 #' \code{refData}.
-#'
-#' Technically, the function looks for the coordinate \eqn{t^\ast}{t*} in the
-#' domain (\code{xVal}) of \code{refObject}
-#' \eqn{\phi_\mathrm{ref}(t)}{\phi_{ref}(t)} that has the highest absolute value
-#' \deqn{t^\ast = \arg \max \limits_{t \in \mathcal{T}} | \phi_\mathrm{ref}(t) |
-#' }{t* = arg max_{t in \calT} |\phi_{ref}(t)| } and then multiplies the
-#' observation \eqn{\phi_\mathrm{new}(t)}{\phi_{new}(t)} by \eqn{-1}{-1} if
-#' \deqn{\mathrm{sign}\left(\phi_\mathrm{ref}(t^\ast) \right) \neq
-#' \mathrm{sign}\left(\phi_\mathrm{new}(t^\ast) \right).}{sign( \phi_{ref}(t*) )
-#' != sign( \phi_{new}(t*) ).}
-#'
-#' For \code{multiFunData} objects, this is done element-wise.
-#'
-#'
-#' @section Warning: This function only works if the functions in
-#'   \code{refObject} and \code{newObject} are similar to each other. In
-#'   particular, the reference object should not have an abrupt sign change near
-#'   \eqn{t^\ast}{t*}, the coordinate with the maximum absolute value. As in
-#'   this case, the new functions could be flipped in the wrong direction, if
-#'   they are slightly shifted to the left or to the right. For
-#'   \code{multiFunData} objects, check the results to make sure that the
-#'   functions are smooth enough such that either all elements are flipped or
-#'   none.
-#'
-#'   The function is currently implemented only for functional data with one-
-#'   and two-dimensional domains.
-#'
-#' @param refObject An object of class \code{funData} or \code{multiFunData}
-#'   that serves as reference. It must have the same number of observations as
-#'   \code{newObject} or have only one observation. In this case, all
-#'   observations in \code{newObject} are flipped with respect to this single
+#' 
+#' Technically, the function compares the distance between \code{newObject} and
+#' \code{refObject} \deqn{|||f_\text{new} - f_\text{ref}|||}{||| f_{new} - 
+#' f_{ref}|||} and the distance between  \code{newObject} and
+#' \code{-1*refObject} \deqn{|||f_\text{new} + f_\text{ref}|||.}{||| f_{new} + 
+#' f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is
+#' flipped, i.e. multiplied by -1. 
+#'   
+#' The function is currently implemented only for functional data with one- 
+#'  and two-dimensional domains.
+#'   
+#' @param refObject An object of class \code{funData} or \code{multiFunData} 
+#'   that serves as reference. It must have the same number of observations as 
+#'   \code{newObject} or have only one observation. In this case, all 
+#'   observations in \code{newObject} are flipped with respect to this single 
 #'   observation.
-#' @param newObject An object of class \code{funData} or \code{multiFunData}
+#' @param newObject An object of class \code{funData} or \code{multiFunData} 
 #'   that is to be flipped with respect to \code{refObject}.
-#'
-#' @return An object of the same class as \code{newData} with flipped
+#'   
+#' @return An object of the same class as \code{newData} with flipped 
 #'   observations.
-#'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData},
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}, 
 #'   \link{Arith.funData}
-#'
+#'   
 #' @export flipFuns
-#'
+#'   
 #' @examples
+#' 
+#' # Univariate
 #' xVal <- seq(0,2*pi,0.01)
 #' refData <- funData(xVal, rbind(sin(xVal))) # one observation as reference
 #' newData <- funData(xVal, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
 #'                                sin(xVal)))
-#'
+#' 
 #' oldpar <- par(no.readonly = TRUE)
 #' par(mfrow = c(1,2))
-#'
+#' 
 #' plot(newData, col = "grey", main = "Original data")
 #' plot(refData, col = "red", lwd = 2, add = TRUE)
-#'
+#' 
 #' plot(flipFuns(refData, newData), col = "grey", main = "Flipped data")
 #' plot(refData, col = "red", lwd = 2, add = TRUE)
-#'
+#' 
+#' # Multivariate
+#' refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
+#'                         funData(xVal, rbind(cos(xVal)))) 
+#' sig <- sample(c(-1,1), 11, replace = TRUE) 
+#' newData <- multiFunData(funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), sin(xVal))),
+#'                         funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), cos(xVal))))
+#'                         
+#' par(mfrow = c(2,2))
+#' 
+#' plot(newData[[1]], col = topo.colors(11), main = "Original data")
+#' plot(refData[[1]], col = "red", lwd = 2, add = TRUE)
+#' 
+#' plot(newData[[2]], col = topo.colors(11), main = "Original data")
+#' plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
+#' 
+#' plot(flipFuns(refData, newData)[[1]], col = topo.colors(11), main = "Flipped data")
+#' plot(refData[[1]], col = "red", lwd = 2, add = TRUE)
+#' 
+#' plot(flipFuns(refData, newData)[[2]], col = topo.colors(11), main = "Flipped data")
+#' plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
+#' 
 #' par(oldpar)
 setGeneric("flipFuns", function(refObject, newObject) {standardGeneric("flipFuns")})
 
@@ -977,9 +994,14 @@ setMethod("flipFuns", signature = c("funData", "funData"),
 
             if(!isTRUE(all.equal(refObject@xVal, newObject@xVal)))
               stop("flipFuns: Functions must be defined on the same domain.")
+            
+            # calculate signs: flip if newObject is closer to -refObject than to refObject
+            sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
+            
+            # flip functions
+            newObject@X <- sig*newObject@X
 
-            # create new functional data object of flipped functions
-            return(funData(refObject@xVal, .flipObs(refObject@X, newObject@X)))
+            return(newObject)
           })
 
 
@@ -992,48 +1014,21 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
           function(refObject, newObject){
             if(length(refObject)!=length(newObject))
               stop("flipFuns: multiFunData objects must have the same length")
+            
+            if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
+              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+            
+            if(any(dimSupp(refObject) != dimSupp(newObject)))
+              stop("flipFuns: Functions must have the dimension.")
+            
+            if(!isTRUE(all.equal(getxVal(refObject), getxVal(newObject))))
+              stop("flipFuns: Functions must be defined on the same domain.")
+            
+            # calculate signs: flip if newObject is closer to -refObject than to refObject
+            sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
+            
+            for(j in 1:length(newObject))
+              newObject[[j]]@X <- sig*newObject[[j]]@X
 
-            return(multiFunData(mapply(flipFuns,refObject, newObject)))
+            return(newObject)
           })
-
-
-
-#' Flip observations of univariate functional data
-#'
-#' @seealso \link{flipFuns}
-#'
-#' @keywords internal
-.flipObs <- function(refMatrix, newMatrix)
-{
-  flipped <- array(NA, dim(newMatrix))
-
-  if(dim(refMatrix)[1] == 1)
-  {
-    if(length(dim(refMatrix)) == 2) # one-dimensional function
-      for(i in 1:dim(newMatrix)[1]) flipped[i,] <- .flipSingleObs(refMatrix[1,], newMatrix[i,])
-    else # image
-      for(i in 1:dim(newMatrix)[1]) flipped[i,,] <- .flipSingleObs(refMatrix[1,,], newMatrix[i,,])
-  }
-  else
-  {
-    if(length(dim(refMatrix)) == 2) # one-dimensional function
-      for(i in 1:dim(newMatrix)[1]) flipped[i,] <- .flipSingleObs(refMatrix[i,], newMatrix[i,])
-    else # image
-      for(i in 1:dim(newMatrix)[1]) flipped[i,,] <- .flipSingleObs(refMatrix[i,,], newMatrix[i,,])
-  }
-
-  return(flipped)
-}
-
-
-#' Flip a single observation of univariate functional data
-#'
-#' @seealso \link{flipFuns}
-#'
-#' @keywords internal
-.flipSingleObs <- function(refObs, newObs)
-{
-  xRef <- which.max(abs(refObs))
-
-  return(newObs * sign(refObs[xRef]*newObs[xRef]))
-}
