@@ -667,7 +667,7 @@ setMethod("integrate", signature = "multiFunData",
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 #' norm(multiObject)
-setGeneric("norm", function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal") {
+setGeneric("norm", function(object,...) {
   standardGeneric("norm")})
 
 #' Calculate the norm for univariate functional data
@@ -691,7 +691,7 @@ norm.funData <- function(object, squared, obs, method)
 #'
 #' @keywords internal
 setMethod("norm", signature = "funData",
-          function(object, squared, obs, method){norm.funData(object,squared, obs, method)})
+          function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal"){norm.funData(object,squared, obs, method)})
 
 #' Calculate the norm for multivariate functional data
 #'
@@ -972,7 +972,7 @@ setMethod("setX", signature = "multiFunData",
 #' plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
 #' 
 #' par(oldpar)
-setGeneric("flipFuns", function(refObject, newObject) {standardGeneric("flipFuns")})
+setGeneric("flipFuns", function(refObject, newObject, ...) {standardGeneric("flipFuns")})
 
 
 #' Flip univariate functional data
