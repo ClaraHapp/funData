@@ -699,7 +699,7 @@ setMethod("norm", signature = "funData",
 #'
 #' @keywords internal
 setMethod("norm", signature = "multiFunData",
-          function(object, squared, obs, method)
+          function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal")
           {
             # univariate functions must be squared in any case!
             uniNorms <- sapply(object, norm,  squared = TRUE, obs, method, simplify = "array")
