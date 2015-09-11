@@ -1,5 +1,4 @@
-library(funData)
-
+# library(funData)
 
 #  is defined only on one-dimensional domains yet
 setClass("irregFunData", representation = representation(xVal = "list", X = "list"))
@@ -8,16 +7,22 @@ setClass("irregFunData", representation = representation(xVal = "list", X = "lis
 # Validity checks for irregfunData objects
 setValidity("irregFunData", function(object){
   if(!is(object@xVal, "list"))
-    return("xVal objects must be supplied as lists")
+    return("xVal objects must be supplied as list (of numerics)")
+  
+  if(any(sapply(object@xVal, function(l){!is.numeric(l)})))
+    return("xVal must be supplied as list of numerics")
   
   if(!is(object@X, "list"))
-    return("X elements must be supplied as lists")
+    return("X elements must be supplied as list (of numerics)")
+  
+  if(any(sapply(object@X, function(l){!is.numeric(l)})))
+    return("X must be supplied as list of numerics")
   
   if(length(object@xVal) != length(object@X))
     return("Different number of observations for xVal and X")
   
   if(any(mapply(function(x,y){dim(as.array(x)) != dim(as.array(y))}, object@xVal, object@X)))
-    return("xVal and X have different numbers of observation points")
+    return("Different numbers of observation points in xVal and X")
   
   return(TRUE)
 })
@@ -94,18 +99,29 @@ setMethod("getX", signature = "irregFunData",
 
 setMethod("setxVal", signature = "irregFunData",
           function(object, newxVal){
+            if(length(object@xVal) != length(newxVal))
+              stop("setxVal: newxVal must be a list of the same length as the original xVal.")
+            
             if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newxVal, function(l){length(l)})))
               stop("setxVal: newxVal must have the same structure as the original xVal.")
             
             object@xVal <- newxVal
+            
+            return(object)
           })
 
 setMethod("setX", signature = "irregFunData",
           function(object, newX){
+            if(length(object@X) != length(newX))
+              stop("setX: newX must be a list of the same length as the original X.")
+            
+            
             if(any(sapply(object@X, function(l){length(l)}) != sapply(newX, function(l){length(l)})))
               stop("setX: newX must have the same structure as the original X.")
             
             object@X <- newX  
+            
+            return(object)
           })
 
 setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
@@ -362,14 +378,14 @@ norm.irregFunData <- function(object, squared, obs, method, fullDom)
 setMethod("flipFuns", signature = c("funData", "irregFunData"),
           function(refObject, newObject,...){
             
-            if(any(dimSupp(refObject), dimSupp(newObject)) > 1)
+            if(any(c(dimSupp(refObject), dimSupp(newObject)) > 1))
               stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
               stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
             
-            if(!all(newObject@xVal %in% refObject@xVal))
-              stop("flipFuns: Irregular function must be defined on sub-domain of reference function.")
+            if(!all(unlist(newObject@xVal) %in% unlist(refObject@xVal)))
+              stop("flipFuns: Irregular functions must be defined on a sub-domain of the reference function(s).")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
@@ -391,8 +407,8 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
               stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
             
-            if(!isTRUE(all.equal(refObject@xVal, newObject@xVal)))
-              stop("flipFuns: Functions must be defined on the same domain.")
+            if(!all(unlist(newObject@xVal) %in% unlist(refObject@xVal)))
+              stop("flipFuns: New functions must be defined on a sub-domain of the reference function(s).")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
