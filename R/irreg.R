@@ -205,21 +205,47 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "numeric"),
 # @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "numeric", e2 = "irregFunData"),
           function(e1, e2) {
-            methods::callGeneric(e2,e1)
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
             irregFunData(xVal = e2@xVal, X = lapply(e2@X, function(x){f(e1,x)}))
           })
 
 setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
           function(e1,e2){
-            if(length(e1@xVal) != length(e2@xVal))
-              stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
-            
-            if(!isTRUE(all.equal(e1@xVal, e2@xVal)))
-              stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
-            
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in mapply)
-            irregFunData(xVal = e1@xVal, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
+            
+            if(nObs(e1) != nObs(e2))
+            {
+              if(nObs(e1) == 1)
+              {
+                if(!all(unlist(e2@xVal) %in% unlist(e1@xVal)))
+                  stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
+                
+                res <- irregFunData(xVal = e2@xVal, 
+                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e2@xVal[[i]] %in% e1@xVal[[1]])], e2@X[[i]])}))
+              }
+              else
+              {
+                if(nObs(e2) == 1)
+                {
+                  if(!all(unlist(e1@xVal) %in% unlist(e2@xVal)))
+                    stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
+                  
+                  res <- irregFunData(xVal = e1@xVal,
+                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e1@xVal[[i]] %in% e2@xVal[[1]])])}))
+                }
+                else
+                  stop("Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
+              } 
+            }            
+            else
+            {
+              if(!isTRUE(all.equal(e1@xVal, e2@xVal)))
+                stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
+              
+              res <- irregFunData(xVal = e1@xVal, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
+            }
+            
+            return(res)
           })
 
 
@@ -239,7 +265,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
               if(nObs(e2) == 1 & nObs(e1) > 1) 
                 e2@X <- t(replicate(nObs(e1),e2@X[1,]))            
               else
-                stop("Arithmetic operations: funData and irregFunData objects must have same number of observations (or nObs(funDataObject)=1)")
+                stop("funData object must have either one observation or the same number of observations as the irregFunData object")
             }
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
             irregFunData(xVal = e1@xVal, X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[i,e2@xVal[[1]] %in% e1@xVal[[i]]])}, simplify = FALSE))
@@ -248,7 +274,6 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
 
 setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
           function(e1, e2){
-            methods::callGeneric(e2,e1) 
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
             #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
             
@@ -268,14 +293,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
           })
 
 
-setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
-          function(e1,e2){
-            if(!all.equal(e1@xVal, e2@xVal))
-              stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
-            
-            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in mapply)
-            irregFunData(xVal = e1@xVal, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
-          })
+
 
 
 # for fullDom check function .extrapolate
