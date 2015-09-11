@@ -214,6 +214,20 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "numeric"),
 setMethod("Arith", signature = c(e1 = "numeric", e2 = "irregFunData"),
           function(e1, e2) {
             methods::callGeneric(e2,e1)
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
+            irregFunData(xVal = e2@xVal, X = lapply(e2@X, function(x){f(e1,x)}))
+          })
+
+setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
+          function(e1,e2){
+            if(length(e1@xVal) != length(e2@xVal))
+              stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
+            
+            if(!isTRUE(all.equal(e1@xVal, e2@xVal)))
+              stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
+            
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in mapply)
+            irregFunData(xVal = e1@xVal, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
           })
 
 
@@ -243,6 +257,22 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
 setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
           function(e1, e2){
             methods::callGeneric(e2,e1) 
+            #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
+            #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
+            
+            if(!any(unlist(e2@xVal) %in% e1@xVal[[1]]))
+              stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
+            
+            # if funData object has only a single observation: apply to all of the other object
+            if(nObs(e1) != nObs(e2))
+            {
+              if(nObs(e1) == 1 & nObs(e2) > 1) 
+                e1@X <- t(replicate(nObs(e2),e1@X[1,]))            
+              else
+                stop("funData object must have either one observation or the same number of observations as the irregFunData object")
+            }
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
+            irregFunData(xVal = e2@xVal, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@xVal[[1]] %in% e2@xVal[[i]]])}, simplify = FALSE))
           })
 
 
