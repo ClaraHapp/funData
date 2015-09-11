@@ -5,7 +5,7 @@ library(funData)
 setClass("irregFunData", representation = representation(xVal = "list", X = "list"))
 
 
-# Validity checks for funData objects
+# Validity checks for irregfunData objects
 setValidity("irregFunData", function(object){
   if(!is(object@xVal, "list"))
     return("xVal objects must be supplied as lists")
@@ -52,7 +52,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
               if(is.numeric(xVal))
                 xVal = list(xVal)
               else
-                stop("Supply xVals for exstracted observations either as list or as numeric vector")
+                stop("Supply xVals for extracted observations either as list or as numeric vector")
             }
             
             if(!any(unlist(xVal) %in% unlist(object@xVal[obs])))
@@ -95,7 +95,7 @@ setMethod("getX", signature = "irregFunData",
 setMethod("setxVal", signature = "irregFunData",
           function(object, newxVal){
             if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newxVal, function(l){length(l)})))
-              stop("setxVal: newxVal must have the same sructure as the xVals of the irregFunData object.")
+              stop("setxVal: newxVal must have the same structure as the original xVal.")
             
             object@xVal <- newxVal
           })
@@ -103,7 +103,7 @@ setMethod("setxVal", signature = "irregFunData",
 setMethod("setX", signature = "irregFunData",
           function(object, newX){
             if(any(sapply(object@X, function(l){length(l)}) != sapply(newX, function(l){length(l)})))
-              stop("setxVal: newX must have the same sructure as the observed values of the irregFunData object.")
+              stop("setX: newX must have the same structure as the original X.")
             
             object@X <- newX  
           })
@@ -133,20 +133,11 @@ setAs("irregFunData", "funData",
 
 
 
-# Coerce a funData object to class multiFunData
-# 
-# Coerce a \code{funData} object to class \code{multiFunData}.
-# 
-# @param object The \code{funData} object that is to be converted to a
-#   \code{multiFunData} object of length 1.
-#   
-# @seealso \linkS4class{funData}, \linkS4class{multiFunData}
-#   
-# @export as.multiFunData
+# Coerce an irregFunData object to class funData
 setGeneric("as.funData", function(object){standardGeneric("as.funData")})
 
 
-# @rdname as.multiFunData
+
 setMethod("as.funData", signature = "irregFunData", 
           function(object){as(object, "funData")})
 
@@ -240,7 +231,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
             #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
             
             if(!any(unlist(e1@xVal) %in% e2@xVal[[1]]))
-              stop("arithmetic operations: irregFunData object must be defined on a subdomain of funData object!")
+              stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
             if(nObs(e1) != nObs(e2))
@@ -290,8 +281,8 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
 # for fullDom check function .extrapolate
 setMethod("integrate", signature = c(object = "irregFunData"),
           function(object, method = "trapezoidal", fullDom = FALSE){
-            if(fullDom) # fullDomain: extrapolate each function linearly (or by a constant, if only one vlaue is observed)
-              object <- extrapolateIrref(object)
+            if(fullDom) # fullDomain: extrapolate each function linearly (or by a constant, if only one value is observed)
+              object <- extrapolateIrreg(object)
             
             return(mapply(function(x,y, method){sum(.intWeights(x, method)*y)}, 
                           x = object@xVal, y = object@X, MoreArgs = list(method = method)))
@@ -329,7 +320,7 @@ extrapolateIrreg <- function(object, rangex = range(object@xVal))
 }
 
 
-#' @keywords internal
+# #' @keywords internal
 setMethod("norm", signature = "irregFunData",
           function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal", fullDom = FALSE){norm.irregFunData(object, squared, obs, method, fullDom)})
 
@@ -372,7 +363,7 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
           })
 
 
-# irregFunData object as regerence
+# irregFunData object as reference
 setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
           function(refObject, newObject,...){
             
