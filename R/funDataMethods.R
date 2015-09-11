@@ -592,6 +592,12 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
 #' @keywords internal
 .intWeights <- function(xVal, method = "trapezoidal")
 {
+  if(method == "trapezoidal" & (length(xVal) < 3))
+  {
+    method <- "midpoint"
+    warning("Trapezoidal quadrature is not applicable for functions with < 3 observation points. 'method' changed to 'midpoint'.")
+  } 
+  
   ret <- switch(method,
                 midpoint = c(0,diff(xVal)),
                 trapezoidal = {D <- length(xVal)
