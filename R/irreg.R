@@ -1,6 +1,7 @@
 library(funData)
 
 
+#  is defined only on one-dimensional domains yet
 setClass("irregFunData", representation = representation(xVal = "list", X = "list"))
 
 
@@ -37,8 +38,8 @@ setMethod("nObs", signature = "irregFunData",
 setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
           function(object, obs, xVal){
             
-            if(dimSupp(object) > 1)
-              stop("extracting observations is not implemented yet for functional data of dimension > 1")
+            #  if(dimSupp(object) > 1)
+            #    stop("Extracting observations is not implemented yet for functional data of dimension > 1")
             
             if(!is.numeric(obs))
               stop("Supply observations as numeric vector")
@@ -235,8 +236,8 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
 # @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
           function(e1, e2){
-            if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
-              stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
+            #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
+            #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
             
             if(!any(unlist(e1@xVal) %in% e2@xVal[[1]]))
               stop("arithmetic operations: irregFunData object must be defined on a subdomain of funData object!")
@@ -375,8 +376,8 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
 setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
           function(refObject, newObject,...){
             
-            if(any(dimSupp(refObject), dimSupp(newObject)) > 1)
-              stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
+            #    if(any(dimSupp(refObject), dimSupp(newObject)) > 1)
+            #      stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
               stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
