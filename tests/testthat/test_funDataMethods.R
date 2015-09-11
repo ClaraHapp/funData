@@ -119,6 +119,9 @@ test_that("integrate", {
   f2.1 <- funData(xVal = list(1:5, 1:6), X = array(1:30,c(1,5,6)))
   m1.1 <- multiFunData(list(f1.1,f2.1))
   
+  # method = trapezoidal and not enough observation points
+  expect_warning(integrate(extractObs(f1, xVal = 1:2)),
+                 "Trapezoidal quadrature is not applicable for functions with < 3 observation points. 'method' changed to 'midpoint'.")
   expect_equal(integrate(m1.1), as.numeric(integrate(f1.1) + integrate(f2.1)))
  })
 
