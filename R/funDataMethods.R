@@ -801,51 +801,55 @@ setMethod("norm", signature = "multiFunData",
 
 
 #' Extract and set slots from functional data objects
-#'
-#' These functions can be used to extract and set the slots of \code{funData}
-#' and \code{multiFunData} objects.
-#'
-#' Objects of class \code{funData} have two slots, \code{xVal} (for the
-#' x-values) and \code{X} (for the y-values for each observation). Using the
-#' \code{getxVal} and \code{getX} methods for the class \code{funData} is
-#' equivalent to accessing the slots directly via \code{object@@xVal} and
-#' \code{object@@X}. Analogously, the \code{setxVal} and \code{setX} functions
-#' are equivalent to setting \code{object@@xVal} to \code{newxVal} or
-#' \code{object@@X} to \code{newX}, respectively.  If in \code{setX} the number
-#' of observations is different from the current, the function throws a warning.
-#'
-#'
-#' Objects of class \code{multiFunData} are lists of several \code{funData}
+#' 
+#' These functions can be used to extract and set the slots of \code{funData}, 
+#' \code{irregFunData} and \code{multiFunData} objects.
+#' 
+#' Objects of class \code{funData} or \code{irregFunData} have two slots, 
+#' \code{xVal} (for the x-values) and \code{X} (for the y-values for each 
+#' observation). Using the \code{getxVal} and \code{getX} methods for the 
+#' classes \code{funData} and \code{irregFunData} is equivalent to accessing the
+#' slots directly via \code{object@@xVal} and \code{object@@X}. Analogously, the
+#' \code{setxVal} and \code{setX} functions are equivalent to setting 
+#' \code{object@@xVal} to \code{newxVal} or \code{object@@X} to \code{newX}, 
+#' respectively. The new values must hence have the same structure as the 
+#' original ones. As an exception, for an object of class \code{funData}  the
+#' number of new observations in \code{newX} may differ from the current. In
+#' this case, the function throws a warning. 
+#' 
+#' Objects of class \code{multiFunData} are lists of several \code{funData} 
 #' objects. The functions \code{getxVal} and \code{getX} for \code{multiFunData}
-#' objects therefore return a list of the same length as \code{object}, where
-#' each list element corresponds to the \code{xVal} or \code{X} slot of the
-#' univariate element. The \code{setxVal} and \code{getxVal} functions for
-#' \code{multiFunData} objects must be lists of the same length as
-#' \code{object}, where each list element corresponds to the new \code{xVal} or
+#' objects therefore return a list of the same length as \code{object}, where 
+#' each list element corresponds to the \code{xVal} or \code{X} slot of the 
+#' univariate element. The \code{setxVal} and \code{getxVal} functions for 
+#' \code{multiFunData} objects must be lists of the same length as 
+#' \code{object}, where each list element corresponds to the new \code{xVal} or 
 #' new \code{X} slot for the univariate elements.
-#'
-#' For both classes, the set functions do not change the object, unless their
-#' result is assigned to \code{object} (see Examples).
-#'
-#' @param object An object of class \code{funData} or \code{multiFunData}.
+#' 
+#' For all classes classes, the set functions do not change the object, unless 
+#' their result is assigned to \code{object} (see Examples).
+#' 
+#' @param object An object of class \code{funData}, \code{irregFunData} or 
+#'   \code{multiFunData}.
 #' @param newxVal See Details.
 #' @param newX See Details.
-#'
+#'   
 #' @return See Details.
-#'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
-#'
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, 
+#'   \linkS4class{multiFunData}
+#'   
 #' @export getxVal
-#'
+#'   
 #' @examples
 #' ### Univariate
 #' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
 #' object
-#'
+#' 
 #' # get-methods
 #' getxVal(object)
 #' getX(object)
-#'
+#' 
 #' # set-methods
 #' setxVal(object, 0:4)
 #' object # no change
@@ -855,15 +859,26 @@ setMethod("norm", signature = "multiFunData",
 #' object <- setX(object, rbind(0:4, 5:9))
 #' newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations (was 2 before)
 #' \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
-#'
-#' # Multivariate
+#' 
+#' ### Univariate (irregular)
+#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X=  list(2:6, 3:5))
+#' irregObject
+#' 
+#' # get-methods
+#' getxVal(irregObject)
+#' getX(irregObject)
+#' 
+#' newIrregObject <- setxVal(irregObject, list(0:4, 1:3))
+#' newIrregObject <- setX(irregObject, list(12:16, 13:15))
+#' 
+#' ### Multivariate
 #' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 #' multiObject
-#'
+#' 
 #' # get-methods
 #' getxVal(multiObject)
 #' getX(multiObject)
-#'
+#' 
 #' # set-methods (for special cases see univariate version)
 #' multiObject <- setxVal(multiObject, list(5:1, 3:1))
 #' multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
@@ -884,6 +899,14 @@ setMethod("getxVal", signature = "funData",
 #' @keywords internal
 setMethod("getxVal", signature = "multiFunData",
           function(object){sapply(object, getxVal)})
+
+#' Get xVal slot for irregular functional data objects
+#'
+#' @seealso \link{getxVal}
+#'
+#' @keywords internal
+setMethod("getxVal", signature = "irregFunData",
+          function(object){object@xVal})
 
 
 #'@rdname getxVal
@@ -906,6 +929,15 @@ setMethod("getX", signature = "funData",
 #' @keywords internal
 setMethod("getX", signature = "multiFunData",
           function(object){sapply(object, getX, simplify = FALSE)})
+
+#' Get X slot for irregular functional data objects
+#'
+#' @seealso \link{getX}
+#'
+#' @keywords internal
+setMethod("getX", signature = "irregFunData",
+          function(object){object@X})
+
 
 
 #' @rdname getxVal
@@ -935,6 +967,25 @@ setMethod("setxVal", signature = "multiFunData",
             if(length(object)!=length(newxVal))
               stop("setxVal: multiFunData object and newxVal must have the same length")
             multiFunData(mapply(setxVal, object, newxVal))
+          })
+
+
+#' Set xVal slot for irregular functional objects
+#'
+#' @seealso \link{setxVal}
+#'
+#' @keywords internal
+setMethod("setxVal", signature = "irregFunData",
+          function(object, newxVal){
+            if(length(object@xVal) != length(newxVal))
+              stop("setxVal: newxVal must be a list of the same length as the original xVal.")
+            
+            if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newxVal, function(l){length(l)})))
+              stop("setxVal: newxVal must have the same structure as the original xVal.")
+            
+            object@xVal <- newxVal
+            
+            return(object)
           })
 
 
@@ -971,6 +1022,23 @@ setMethod("setX", signature = "multiFunData",
             multiFunData(mapply(setX, object, newX))
           })
 
+#' Set X slot for irregular functional data objects
+#'
+#' @seealso \link{setX}
+#'
+#' @keywords internal
+setMethod("setX", signature = "irregFunData",
+          function(object, newX){
+            if(length(object@X) != length(newX))
+              stop("setX: newX must be a list of the same length as the original X.")
+            
+            if(any(sapply(object@X, function(l){length(l)}) != sapply(newX, function(l){length(l)})))
+              stop("setX: newX must have the same structure as the original X.")
+            
+            object@X <- newX  
+            
+            return(object)
+          })
 
 #' Flip functional data objects
 #' 

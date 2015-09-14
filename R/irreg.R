@@ -41,39 +41,12 @@ setMethod("nObs", signature = "irregFunData",
 
 
 
-setMethod("getxVal", signature = "irregFunData",
-          function(object){object@xVal})
-
-setMethod("getX", signature = "irregFunData",
-          function(object){object@X})
 
 
-setMethod("setxVal", signature = "irregFunData",
-          function(object, newxVal){
-            if(length(object@xVal) != length(newxVal))
-              stop("setxVal: newxVal must be a list of the same length as the original xVal.")
-            
-            if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newxVal, function(l){length(l)})))
-              stop("setxVal: newxVal must have the same structure as the original xVal.")
-            
-            object@xVal <- newxVal
-            
-            return(object)
-          })
 
-setMethod("setX", signature = "irregFunData",
-          function(object, newX){
-            if(length(object@X) != length(newX))
-              stop("setX: newX must be a list of the same length as the original X.")
-            
-            
-            if(any(sapply(object@X, function(l){length(l)}) != sapply(newX, function(l){length(l)})))
-              stop("setX: newX must have the same structure as the original X.")
-            
-            object@X <- newX  
-            
-            return(object)
-          })
+
+
+
 
 setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 
