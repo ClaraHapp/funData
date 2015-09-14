@@ -10,7 +10,7 @@
 #' @keywords internal
 print.funData <- function(x,...){
   cat("Functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\nxVal:\n")
-
+  
   for(i in 1:dimSupp(x))
   {
     cat("\t")
@@ -20,7 +20,7 @@ print.funData <- function(x,...){
       cat(x@xVal[[i]])
     cat("\t\t(", length(x@xVal[[i]]), " sampling points)\n", sep = "")
   }
-
+  
   cat("X:\n\tarray of size", paste(dim(x@X), collapse = " x "),"\n")
 }
 
@@ -183,40 +183,40 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 {
   if(dimSupp(x) > 2)
     stop("plot is implemented only for functional data with one- or two-dimensional domain")
-
+  
   if(dimSupp(x) == 1)
   {
     # set default color
     if(is.null(col))
       col <-  rainbow(length(obs))
-
+    
     if(plotNA) # interpolate NA values
     {
       # require zoo
       if (requireNamespace("zoo", quietly = TRUE))
       {
         matplot(x = x@xVal[[1]], y = zoo::na.approx(t(x@X[obs,, drop = FALSE])), type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, ...)
-
+        
         add = TRUE # add the standard plot
       }
       else
         warning("Package zoo needed for interpolating missing values in plot for funData. Ignoring plotNA = TRUE.")
     }
-
+    
     matplot(x = x@xVal[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
   }
   if(dimSupp(x) == 2)
   {
     if(length(obs) > 1)
       stop("plot: specify one observation for plotting")
-
+    
     if(add == TRUE)
       stop("plot: add = TRUE not implemented for images")
-
+    
     # set default color
     if(is.null(col))
       col <-  fields::tim.colors(64)
-
+    
     if(legend == TRUE)
     {
       fields::image.plot(x = x@xVal[[1]], y = x@xVal[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
@@ -225,8 +225,8 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
     {
       image(x = x@xVal[[1]], y = x@xVal[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
     }
-
-
+    
+    
   }
 }
 
@@ -286,7 +286,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #'
 #' par(oldpar)
 plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, add = FALSE, main = NULL, ...){
-
+  
   if(add == FALSE)
   {
     # if no par.plot specified: get graphics parameters
@@ -297,21 +297,21 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
     {
       par(par.plot)
     }
-
+    
     # split screen
     par(mfrow = c(1,length(dim)))
-
+    
   }
-
+  
   if(!is.null(main) & (length(main) == 1))
     main <- rep(main, length(dim))
-
-
+  
+  
   # plot the univariate functions
   for(i in dim)
     plot(x[[i]], obs = obs, add = add, main = main[i], ...)
-
-
+  
+  
   # if no par.plot specified: reset graphics parameters
   if(add == FALSE & is.null(par.plot))
     par(oldPar)
@@ -412,7 +412,7 @@ setMethod("Arith", signature = signature(e1 = "multiFunData", e2 = "multiFunData
           function(e1, e2) {
             if(length(e1) != length(e2))
               stop("arithmetic operations:multivariate functional data must have same length!")
-
+            
             m <- vector("list", length(e1))
             for( i in 1:length(e1))
               m[[i]] <- methods::callGeneric(e1[[i]], e2[[i]])
@@ -473,40 +473,52 @@ setMethod("nObs", signature = "multiFunData",
 
 
 #' Extract observations of functional data
-#'
+#' 
 #' This function extracts one or more observations and/or observations on a part
-#' of the domain from a \code{funData} or \code{multiFunData} object.
-#'
-#' The function is currently implemented only for functional data with one- and
-#' two-dimensional domains.
-#'
-#' @param object An object of class \code{funData} or \code{multiFunData}.
-#' @param obs A numeric vector, giving the indices of the observations to
+#' of the domain from a \code{funData}, \code{irregFunData} or
+#' \code{multiFunData} object.
+#' 
+#' In case of an \code{irregFunData} object, some functions may not have
+#' observation points in the given part of the domain. In this case, the
+#' functions are removed from the extracted dataset and a warning is thrown.
+#' 
+#' @section Warning: The function is currently implemented only for functional
+#'   data with one- and two-dimensional domains.
+#'   
+#' @param object An object of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData}.
+#' @param obs A numeric vector, giving the indices of the observations to 
 #'   extract (default: all obervations).
 #' @param xVal The part of the domain to be extracted (default: the whole domain
 #'   object@@xVal). Must be a list or a numeric vector (only for one-dimensional
-#'   domains, see also the definition of \linkS4class{funData},
+#'   domains, see also the definition of \linkS4class{funData}, 
 #'   \linkS4class{multiFunData}).
-#'
-#' @return An object of class \code{funData} or \code{multiFunData} containing
+#'   
+#' @return An object of class \code{funData}, \code{irregFunData} or \code{multiFunData} containing 
 #'   the desired observations.
-#'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
-#'
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+#'   
 #' @export extractObs
-#'
+#'   
 #' @examples
 #' # Univariate - one-dimensional domain
 #' object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
 #' extractObs(object1, obs = 1)
 #' extractObs(object1, xVal = 1:3)
 #' extractObs(object1, xVal = list(1:3)) # the same as the statement before
-#'
+#' 
 #' # Univariate - two-dimensional domains
 #' object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 #' extractObs(object2, obs = 1)
 #' extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVals must be supplied as list
-#'
+#' 
+#' # Univariate - irregular
+#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' extractObs(irregObject, obs = 2)
+#' extractObs(irregObject, xVal = 1:3)
+#' extractObs(irregObject, xVal = c(1,5)) # throws a warning, as second function has no observations
+#' 
 #' # Multivariate
 #' multiObject <- multiFunData(object1, object2)
 #' extractObs(multiObject, obs = 2)
@@ -520,16 +532,16 @@ setGeneric("extractObs", function(object, obs = 1:nObs(object), xVal= getxVal(ob
 #' @keywords internal
 setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
           function(object, obs, xVal){
-
+            
             if(dimSupp(object) > 2)
               stop("extracting observations is not implemented yet for functional data of dimension > 2")
-
+            
             if(!is.numeric(obs))
               stop("Supply observations as numeric vector")
-
+            
             if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
               stop("Trying to extract observations that do not exist!")
-
+            
             if(!is.list(xVal))
             {
               if(dimSupp(object) == 1 & is.numeric(xVal))
@@ -537,13 +549,13 @@ setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
               else
                 stop("Supply xVals for exstracted observations either as list or as numeric vector (only if support is one-dimensional)")
             }
-
+            
             if(!all(unlist(mapply(function(x,y){x%in%y}, xVal,object@xVal))))
               stop("Trying to extract x-values that do not exist!")
-
+            
             if(dimSupp(object) == 1)
               return(funData(xVal, object@X[obs,object@xVal[[1]] %in% xVal[[1]], drop = FALSE]))
-
+            
             if(dimSupp(object) == 2)
               return(funData(xVal, object@X[obs,object@xVal[[1]] %in% xVal[[1]],object@xVal[[2]] %in% xVal[[2]], drop = FALSE]))
           })
@@ -559,6 +571,57 @@ setMethod("extractObs", signature = signature("multiFunData", "ANY", "ANY"), def
   else
     res <-  multiFunData(mapply(extractObs, object = object, xVal = xVal, MoreArgs = list(obs = obs)))
 })
+
+#' extractObs for irregular functional data
+#' 
+#' @keywords internal
+setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
+function(object, obs, xVal){
+  #  if(dimSupp(object) > 1)
+  #    stop("Extracting observations is not implemented yet for functional data of dimension > 1")
+  
+  if(!is.numeric(obs))
+    stop("Supply observations as numeric vector")
+  
+  if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
+    stop("Trying to extract observations that do not exist!")
+  
+  if(!is.list(xVal))
+  {
+    if(is.numeric(xVal))
+      xVal = list(xVal)
+    else
+      stop("Supply xVals for extracted observations either as list or as numeric vector")
+  }
+  
+  if(!any(unlist(xVal) %in% unlist(object@xVal[obs])))
+    stop("Trying to extract x-values that do not exist!")
+  
+  extractxVal <- extractX <- vector("list", length(obs))
+  omit <- NULL
+  
+  for(i in 1:length(obs))
+  {
+    ind <- which(object@xVal[[obs[i]]] %in% unlist(xVal))
+    
+    if(length(ind) == 0)
+    {
+      warning("Some functions were not observed on the given xVal and therefore removed.")
+      
+      omit <- c(omit, i)
+    }
+    
+    extractxVal[[i]] <- object@xVal[[obs[i]]][ind]
+    extractX[[i]] <- object@X[[obs[i]]][ind]
+  }
+  
+  # omit empty observations
+  extractxVal[omit] <- NULL
+  extractX[omit] <- NULL
+  
+  return(irregFunData(extractxVal, extractX))
+})
+
 
 #' Integrate functional data
 #'
@@ -612,7 +675,7 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
                 trapezoidal = {D <- length(xVal)
                                1/2*c(xVal[2] - xVal[1], xVal[3:D] -xVal[1:(D-2)], xVal[D] - xVal[D-1])},
                 stop("function intWeights: choose either midpoint or trapezoidal quadrature rule"))
-
+  
   return(ret)
 }
 
@@ -625,13 +688,13 @@ setMethod("integrate", signature = "funData",
           function(object, method = "trapezoidal"){
             if(dimSupp(object) > 2)
               stop("Integration is not yet defined for functional data objects with dim > 2")
-
+            
             if(dimSupp(object) == 1)
               res <- object@X %*% .intWeights(object@xVal[[1]],method)
-
+            
             if(dimSupp(object) == 2)
               res <- apply( object@X , 1, function(x){t(.intWeights(object@xVal[[1]])) %*% x %*% .intWeights(object@xVal[[2]])})
-
+            
             return(as.numeric(res))
           })
 
@@ -643,12 +706,12 @@ setMethod("integrate", signature = "funData",
 setMethod("integrate", signature = "multiFunData",
           function(object, ...){
             uniIntegrate <- sapply(object, integrate, ...)
-
+            
             if(nObs(object) == 1)
               res <- sum(uniIntegrate)
             else
               res <- rowSums(uniIntegrate)
-
+            
             return(res)
           })
 
@@ -699,10 +762,10 @@ setGeneric("norm", function(object,...) {
 norm.funData <- function(object, squared, obs, method)
 {
   res <- integrate(extractObs(object, obs)^2, method = method)
-
+  
   if(!squared)
     res <- sqrt(res)
-
+  
   return(res)
 }
 
@@ -724,15 +787,15 @@ setMethod("norm", signature = "multiFunData",
           {
             # univariate functions must be squared in any case!
             uniNorms <- sapply(object, norm,  squared = TRUE, obs, method, simplify = "array")
-
+            
             # handle one observation separate, as rowSums does not work in that case...
             if(length(obs) == 1)
               res <- sum(uniNorms)
             else res <- rowSums(uniNorms)
-
+            
             # should the norm be squared or not
             if(!squared) res <- sqrt(res)
-
+            
             return(res)
           })
 
@@ -901,10 +964,10 @@ setMethod("setX", signature = "multiFunData",
           function(object, newX){
             if(length(object)!=length(newX))
               stop("setX: multiFunData object and newX must have the same length")
-
+            
             if(diff(range(sapply(newX, function(x){dim(x)[1]}))) != 0)
               stop("setX: newX object must have the same number of observations in all elements!")
-
+            
             multiFunData(mapply(setX, object, newX))
           })
 
@@ -1004,16 +1067,16 @@ setGeneric("flipFuns", function(refObject, newObject, ...) {standardGeneric("fli
 #' @keywords internal
 setMethod("flipFuns", signature = c("funData", "funData"),
           function(refObject, newObject){
-
+            
             if(dimSupp(newObject) > 2)
               stop("flipFuns: Function is only implemented for data of dimension <= 2")
-
+            
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
               stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
-
+            
             if(dimSupp(refObject) != dimSupp(newObject))
               stop("flipFuns: Functions must have the dimension.")
-
+            
             if(!isTRUE(all.equal(refObject@xVal, newObject@xVal)))
               stop("flipFuns: Functions must be defined on the same domain.")
             
@@ -1022,7 +1085,7 @@ setMethod("flipFuns", signature = c("funData", "funData"),
             
             # flip functions
             newObject@X <- sig*newObject@X
-
+            
             return(newObject)
           })
 
@@ -1051,6 +1114,6 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             
             for(j in 1:length(newObject))
               newObject[[j]]@X <- sig*newObject[[j]]@X
-
+            
             return(newObject)
           })
