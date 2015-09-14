@@ -33,8 +33,7 @@ setMethod("irregFunData", signature = c(xVal = "list", X = "list"),
           function(xVal, X){new("irregFunData", xVal = xVal, X = X)})
 
 
-setMethod("dimSupp", signature = "irregFunData",
-          function(object){length(dim(as.array(object@xVal[[1]])))})
+
 
 setMethod("nObs", signature = "irregFunData",
           function(object){length(object@X)})

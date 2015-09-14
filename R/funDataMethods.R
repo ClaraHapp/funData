@@ -39,16 +39,16 @@ setMethod("show", signature = "funData",
 #' Support dimension of functional data
 #'
 #' This function returns the support dimension of an object of class
-#' \code{funData} or \code{multiFunData}.
+#' \code{funData}, \code{irregFunData} or \code{multiFunData}.
 #'
-#' @param object An object of  class \code{funData} or \code{multiFunData}.
+#' @param object An object of  class \code{funData}, \code{irregFunData} or \code{multiFunData}.
 #'
-#' @return If \code{object} is univariate (i.e. of class \code{funData}), the
+#' @return If \code{object} is univariate (i.e. of class \code{funData} or \code{irregFunData}), the
 #'   function returns the dimension of the support of \code{object}. If
 #'   \code{object} is multivariate (i.e. of class \code{multiFunData}), the
 #'   function returns a vector, giving the support dimension of each element.
 #'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData} \linkS4class{multiFunData}
 #'
 #' @export dimSupp
 #'
@@ -60,6 +60,10 @@ setMethod("show", signature = "funData",
 #' # Univariate (two-dimensional)
 #' object2 <- funData(xVal = list(1:10, 1:5), X = array(rnorm(100), dim = c(2,10,5)))
 #' dimSupp(object2)
+#' 
+#' # Univariate (irregular)
+#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' dimSupp(irregObject)
 #'
 #' # Multivariate
 #' multiObject <- multiFunData(object1, object2)
@@ -80,6 +84,11 @@ setMethod("dimSupp", signature = "funData",
 setMethod("dimSupp", signature = "multiFunData",
           function(object){sapply(object, dimSupp, simplify = TRUE)})
 
+#' dimSupp for irregular functional data objects
+#'
+#' @keywords internal
+setMethod("dimSupp", signature = "irregFunData",
+          function(object){length(dim(as.array(object@xVal[[1]])))})
 
 #' Plotting univariate functional data
 #'
