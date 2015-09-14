@@ -624,25 +624,42 @@ function(object, obs, xVal){
 
 
 #' Integrate functional data
-#'
-#' Integrate all observations of a \code{funData} object or a \code{multiFunData} object over their domain.
-#'
-#' The function is currently implemented only for functional data with one- and two-dimensional domains.
-#'
-#' @param object An object of class \code{funData} or \code{multiFunData}.
-#' @param ... Methods for internal function \code{.intWeights}, defaults to trapezoidal (alternative: midpoint).
-#'
-#' @return A vector of numerics, containing the integral values for each observation.
-#'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
-#'
+#' 
+#' Integrate all observations of a \code{funData}, \code{irregFunData} or 
+#' \code{multiFunData} object over their domain.
+#' 
+#' Further parameters passed to this function may include: \itemize{ \item 
+#' \code{method}: Character string. The integration rule to be used, passed to
+#' the internal function \code{.intWeights}. Defaults to 'trapezoidal'
+#' (alternative: 'midpoint'). \item \code{fullDom}: Logical. If \code{object} is
+#' of class \code{irregFunData}, setting fullDom = TRUE extrapolates all
+#' functions linearly to the full domain before calculating the integrals. Defaults to
+#' \code{FALSE}. For details on the extrapolation, see 
+#' \code{\link{extrapolateIrreg}}.}
+#' 
+#' @section Warning: The function is currently implemented only for functional 
+#'   data with one- and two-dimensional domains.
+#'   
+#' @param object An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.
+#' @param ... Further parameters (see Details).
+#'   
+#' @return A vector of numerics, containing the integral values for each 
+#'   observation.
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+#'   
 #' @export integrate
-#'
+#'   
 #' @examples
 #' # Univariate
 #' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
 #' integrate(object)
-#'
+#' 
+#' # Univariate (irregular)
+#' irregObject <-irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' integrate(irregObject) # fullDom = FALSE
+#' integrate(irregObject, fullDom = TRUE)
+#' 
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 #' integrate(multiObject)
@@ -714,6 +731,58 @@ setMethod("integrate", signature = "multiFunData",
             
             return(res)
           })
+
+
+#' Integrate method for irregular functional data objects
+#'
+#' @seealso \link{integrate} \linkS4class{irregFunData}
+#'
+#' @keywords internal
+setMethod("integrate", signature = c(object = "irregFunData"),
+          function(object, method = "trapezoidal", fullDom = FALSE){
+            if(fullDom) # fullDomain: extrapolate each function linearly (or by a constant, if only one value is observed)
+              object <- extrapolateIrreg(object)
+            
+            return(mapply(function(x,y, method){sum(.intWeights(x, method)*y)}, 
+                          x = object@xVal, y = object@X, MoreArgs = list(method = method)))
+          })
+
+#' Extrapolate irregular functional data to a given domain
+#' 
+#' This function extrapolates an \code{irregFunData} object to a given domain.
+#' If only one point is observed, the function is extrapolated as a constant; in
+#' all other cases it is extrapolated linearly.
+#' 
+#' @keywords internal
+extrapolateIrreg <- function(object, rangex = range(object@xVal))
+{  
+  for(i in 1:nObs(object))
+  {
+    e <- .extrapolate(object@xVal[[i]], object@X[[i]], rangex)
+    object@xVal[[i]] <- e$x
+    object@X[[i]] <- e$y
+  } 
+  
+  return(object)
+}
+
+# extrapolate function linearly (or set constant, if only one value is observed)
+.extrapolate <- function(x,y, xrange)
+{
+  # add minimum and maximum observation point (no matter if already present)
+  n <- length(x)
+  
+  if(n == 1)
+    y <- rep(x,3)
+  else
+    y <- c(y[1] + (y[2] - y[1])/(x[2] - x[1])*(xrange[1] - x[1]),
+           y,
+           y[n-1] + (y[n] - y[n-1])/(x[n] - x[n-1])*(xrange[2] - x[n-1]))
+  
+  x <- c(xrange[1], x, xrange[2])
+  
+  return(list(x=x, y=y))
+}
 
 
 #' Calculate the norm of functional data

@@ -236,47 +236,6 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
 
 
 
-# for fullDom check function .extrapolate
-setMethod("integrate", signature = c(object = "irregFunData"),
-          function(object, method = "trapezoidal", fullDom = FALSE){
-            if(fullDom) # fullDomain: extrapolate each function linearly (or by a constant, if only one value is observed)
-              object <- extrapolateIrreg(object)
-            
-            return(mapply(function(x,y, method){sum(.intWeights(x, method)*y)}, 
-                          x = object@xVal, y = object@X, MoreArgs = list(method = method)))
-          })
-
-
-extrapolateIrreg <- function(object, rangex = range(object@xVal))
-{  
-  for(i in 1:nObs(object))
-  {
-    e <- .extrapolate(object@xVal[[i]], object@X[[i]], rangex)
-    object@xVal[[i]] <- e$x
-    object@X[[i]] <- e$y
-  } 
-  
-  return(object)
-}
-
-# extrapolate function linearly (or set constant, if only one value is observed)
-.extrapolate <- function(x,y, xrange)
-{
-  # add minimum and maximum observation point (no matter if already present)
-  n <- length(x)
-  
-  if(n == 1)
-    y <- rep(x,3)
-  else
-    y <- c(y[1] + (y[2] - y[1])/(x[2] - x[1])*(xrange[1] - x[1]),
-           y,
-           y[n-1] + (y[n] - y[n-1])/(x[n] - x[n-1])*(xrange[2] - x[n-1]))
-  
-  x <- c(xrange[1], x, xrange[2])
-  
-  return(list(x=x, y=y))
-}
-
 
 # #' @keywords internal
 setMethod("norm", signature = "irregFunData",
