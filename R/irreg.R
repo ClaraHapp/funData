@@ -35,8 +35,7 @@ setMethod("irregFunData", signature = c(xVal = "list", X = "list"),
 
 
 
-setMethod("nObs", signature = "irregFunData",
-          function(object){length(object@X)})
+
 
 
 

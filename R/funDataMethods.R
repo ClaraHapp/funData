@@ -439,13 +439,13 @@ setMethod("Arith", signature = signature(e1 = "numeric", e2 = "multiFunData"),
 
 #' Get the number of observations
 #'
-#' This functions returns the number of observations in a \code{funData} or \code{multiFunData} object.
+#' This functions returns the number of observations in a \code{funData}, \code{irregFunData} or \code{multiFunData} object.
 #'
-#' @param object An object of class \code{funData} or \code{multiFunData}.
+#' @param object An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.
 #'
 #' @return The number of observations in \code{object}.
 #'
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
 #'
 #' @export nObs
 #'
@@ -453,6 +453,10 @@ setMethod("Arith", signature = signature(e1 = "numeric", e2 = "multiFunData"),
 #' # Univariate
 #' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
 #' nObs(object)
+#' 
+#' # Univariate (irregular)
+#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' nObs(irregObject)
 #'
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
@@ -470,6 +474,12 @@ setMethod("nObs", signature = "funData",
 #' @keywords internal
 setMethod("nObs", signature = "multiFunData",
           function(object){nObs(object[[1]])})
+
+#' nObs for irregular functional data objects
+#'
+#' @keywords internal
+setMethod("nObs", signature = "irregFunData",
+          function(object){length(object@X)})
 
 
 #' Extract observations of functional data
