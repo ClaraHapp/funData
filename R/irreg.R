@@ -188,7 +188,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                   stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
                 
                 res <- irregFunData(xVal = e2@xVal, 
-                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e2@xVal[[i]] %in% e1@xVal[[1]])], e2@X[[i]])}))
+                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e1@xVal[[1]] %in% e2@xVal[[i]])], e2@X[[i]])}))
               }
               else
               {
@@ -198,7 +198,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                     stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
                   
                   res <- irregFunData(xVal = e1@xVal,
-                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e1@xVal[[i]] %in% e2@xVal[[1]])])}))
+                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e2@xVal[[1]] %in% e1@xVal[[i]])])}))
                 }
                 else
                   stop("Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
