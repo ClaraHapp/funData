@@ -974,11 +974,12 @@ setMethod("setX", signature = "multiFunData",
 
 #' Flip functional data objects
 #' 
-#' This function flips an object \code{newObject} of class \code{funData} or 
-#' \code{multiFunData} with respect to a reference object \code{refObject} of 
-#' the same class. This is particularly useful when dealing with functional 
-#' principal components, as they are only defined up to a sign change. For 
-#' details, see below.
+#' This function flips an object \code{newObject} of class \code{funData}, 
+#' \code{irregFunData} or \code{multiFunData} with respect to a reference object
+#' \code{refObject} of the same class (or of class \code{funData}, if 
+#' \code{newObject} is irregular). This is particularly useful when dealing with
+#' functional principal components, as they are only defined up to a sign 
+#' change. For details, see below.
 #' 
 #' Functional principal component analysis is an important tool in functional 
 #' data analysis. Just as eigenvectors, eigenfunctions (or functional principal 
@@ -991,30 +992,30 @@ setMethod("setX", signature = "multiFunData",
 #' \code{newObject} that have a different orientation than their counterparts in
 #' \code{refData}.
 #' 
-#' Technically, the function compares the distance between \code{newObject} and
+#' Technically, the function compares the distance between \code{newObject} and 
 #' \code{refObject} \deqn{|||f_\text{new} - f_\text{ref}|||}{||| f_{new} - 
-#' f_{ref}|||} and the distance between  \code{newObject} and
+#' f_{ref}|||} and the distance between  \code{newObject} and 
 #' \code{-1*refObject} \deqn{|||f_\text{new} + f_\text{ref}|||.}{||| f_{new} + 
-#' f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is
-#' flipped, i.e. multiplied by -1. 
-#'   
-#' The function is currently implemented only for functional data with one- 
-#'  and two-dimensional domains.
-#'   
-#' @param refObject An object of class \code{funData} or \code{multiFunData} 
-#'   that serves as reference. It must have the same number of observations as 
-#'   \code{newObject} or have only one observation. In this case, all 
-#'   observations in \code{newObject} are flipped with respect to this single 
-#'   observation.
-#' @param newObject An object of class \code{funData} or \code{multiFunData} 
-#'   that is to be flipped with respect to \code{refObject}.
-#'  @param ... Further parameters passed to \code{\link{norm}}.
+#' f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is 
+#' flipped, i.e. multiplied by -1.
+#' 
+#' The function is currently implemented only for functional data with one- and 
+#' two-dimensional domains.
+#' 
+#' @param refObject An object of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData} that serves as reference. It must have the same number
+#'   of observations as \code{newObject} or have only one observation. In this
+#'   case, all observations in \code{newObject} are flipped with respect to this
+#'   single observation.
+#' @param newObject An object of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData} that is to be flipped with respect to \code{refObject}.
+#' @param ... Further parameters passed to \code{\link{norm}}.
 #'   
 #' @return An object of the same class as \code{newData} with flipped 
 #'   observations.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}, 
-#'   \link{Arith.funData}
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData},
+#'   \linkS4class{multiFunData}, \link{Arith.funData}
 #'   
 #' @export flipFuns
 #'   
@@ -1034,6 +1035,27 @@ setMethod("setX", signature = "multiFunData",
 #' 
 #' plot(flipFuns(refData, newData), col = "grey", main = "Flipped data")
 #' plot(refData, col = "red", lwd = 2, add = TRUE)
+#' 
+#' # Univariate (irregular)
+#' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
+#' xValIrreg <- lapply(ind, function(i){xVal[i]})
+#' xValIrregAll <- unique(sort(unlist(xValIrreg)))
+#' refDataFull <- funData(xVal, rbind(sin(xVal))) # one observation as reference (fully observed)
+#' refDataIrreg <- irregFunData(xVal = list(xValIrregAll), X = list(sin(xValIrregAll))) # one observation as reference (irregularly observed)
+#' newData <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
+#'              x = xValIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
+#' 
+#' plot(newData, col = "grey", main = "Original data (regular reference)")
+#' plot(refDataFull, col = "red", lwd = 2, add = TRUE)
+#' 
+#' plot(flipFuns(refDataFull, newData), col = "grey", main = "Flipped data")
+#' plot(refDataFull, col = "red", lwd = 2, add = TRUE)
+#' 
+#' plot(newData, col = "grey", main = "Original data (irregular reference)")
+#' plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
+#' 
+#' plot(flipFuns(refDataIrreg, newData), col = "grey", main = "Flipped data")
+#' plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
 #' 
 #' # Multivariate
 #' refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
@@ -1114,6 +1136,60 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             
             for(j in 1:length(newObject))
               newObject[[j]]@X <- sig*newObject[[j]]@X
+            
+            return(newObject)
+          })
+
+
+#' Flip multivariate functional data - funData as reference
+#'
+#' @seealso \link{flipFuns}
+#'
+#' @keywords internal
+setMethod("flipFuns", signature = c("funData", "irregFunData"),
+          function(refObject, newObject,...){
+            
+            if(any(c(dimSupp(refObject), dimSupp(newObject)) > 1))
+              stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
+            
+            if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
+              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+            
+            if(!all(unlist(newObject@xVal) %in% unlist(refObject@xVal)))
+              stop("flipFuns: Irregular functions must be defined on a sub-domain of the reference function(s).")
+            
+            # calculate signs: flip if newObject is closer to -refObject than to refObject
+            sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
+            
+            # flip functions
+            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X)
+            
+            return(newObject)
+          })
+
+
+#' Flip multivariate functional data - irregFunData as reference
+#'
+#' @seealso \link{flipFuns}
+#'
+#' @keywords internal
+setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
+          function(refObject, newObject,...){
+            
+            #    if(any(dimSupp(refObject), dimSupp(newObject)) > 1)
+            #      stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
+            
+            if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
+              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+            
+            if(!all(unlist(newObject@xVal) %in% unlist(refObject@xVal)))
+              stop("flipFuns: New functions must be defined on a sub-domain of the reference function(s).")
+            
+            # calculate signs: flip if newObject is closer to -refObject than to refObject
+            sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
+            
+            # flip functions
+            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X)
             
             return(newObject)
           })

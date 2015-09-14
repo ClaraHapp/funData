@@ -7,14 +7,14 @@
 flipFuns(refObject, newObject, ...)
 }
 \arguments{
-\item{refObject}{An object of class \code{funData} or \code{multiFunData}
-that serves as reference. It must have the same number of observations as
-\code{newObject} or have only one observation. In this case, all
-observations in \code{newObject} are flipped with respect to this single
-observation.}
+\item{refObject}{An object of class \code{funData}, \code{irregFunData} or
+\code{multiFunData} that serves as reference. It must have the same number
+of observations as \code{newObject} or have only one observation. In this
+case, all observations in \code{newObject} are flipped with respect to this
+single observation.}
 
-\item{newObject}{An object of class \code{funData} or \code{multiFunData}
- that is to be flipped with respect to \code{refObject}.}
+\item{newObject}{An object of class \code{funData}, \code{irregFunData} or
+\code{multiFunData} that is to be flipped with respect to \code{refObject}.}
 
 \item{...}{Further parameters passed to \code{\link{norm}}.}
 }
@@ -23,11 +23,12 @@ An object of the same class as \code{newData} with flipped
   observations.
 }
 \description{
-This function flips an object \code{newObject} of class \code{funData} or
-\code{multiFunData} with respect to a reference object \code{refObject} of
-the same class. This is particularly useful when dealing with functional
-principal components, as they are only defined up to a sign change. For
-details, see below.
+This function flips an object \code{newObject} of class \code{funData},
+\code{irregFunData} or \code{multiFunData} with respect to a reference object
+\code{refObject} of the same class (or of class \code{funData}, if
+\code{newObject} is irregular). This is particularly useful when dealing with
+functional principal components, as they are only defined up to a sign
+change. For details, see below.
 }
 \details{
 Functional principal component analysis is an important tool in functional
@@ -48,8 +49,8 @@ f_{ref}|||} and the distance between  \code{newObject} and
 f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is
 flipped, i.e. multiplied by -1.
 
-The function is currently implemented only for functional data with one-
- and two-dimensional domains.
+The function is currently implemented only for functional data with one- and
+two-dimensional domains.
 }
 \examples{
 # Univariate
@@ -66,6 +67,27 @@ plot(refData, col = "red", lwd = 2, add = TRUE)
 
 plot(flipFuns(refData, newData), col = "grey", main = "Flipped data")
 plot(refData, col = "red", lwd = 2, add = TRUE)
+
+# Univariate (irregular)
+ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
+xValIrreg <- lapply(ind, function(i){xVal[i]})
+xValIrregAll <- unique(sort(unlist(xValIrreg)))
+refDataFull <- funData(xVal, rbind(sin(xVal))) # one observation as reference (fully observed)
+refDataIrreg <- irregFunData(xVal = list(xValIrregAll), X = list(sin(xValIrregAll))) # one observation as reference (irregularly observed)
+newData <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
+             x = xValIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
+
+plot(newData, col = "grey", main = "Original data (regular reference)")
+plot(refDataFull, col = "red", lwd = 2, add = TRUE)
+
+plot(flipFuns(refDataFull, newData), col = "grey", main = "Flipped data")
+plot(refDataFull, col = "red", lwd = 2, add = TRUE)
+
+plot(newData, col = "grey", main = "Original data (irregular reference)")
+plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
+
+plot(flipFuns(refDataIrreg, newData), col = "grey", main = "Flipped data")
+plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
 
 # Multivariate
 refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
@@ -91,7 +113,7 @@ plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
 par(oldpar)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData},
-  \link{Arith.funData}
+\linkS4class{funData}, \linkS4class{irregFunData},
+  \linkS4class{multiFunData}, \link{Arith.funData}
 }
 
