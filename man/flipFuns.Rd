@@ -4,7 +4,7 @@
 \alias{flipFuns}
 \title{Flip functional data objects}
 \usage{
-flipFuns(refObject, newObject)
+flipFuns(refObject, newObject, ...)
 }
 \arguments{
 \item{refObject}{An object of class \code{funData} or \code{multiFunData}
@@ -14,7 +14,9 @@ observations in \code{newObject} are flipped with respect to this single
 observation.}
 
 \item{newObject}{An object of class \code{funData} or \code{multiFunData}
-  that is to be flipped with respect to \code{refObject}.}
+ that is to be flipped with respect to \code{refObject}.}
+
+\item{...}{Further parameters passed to \code{\link{norm}}.}
 }
 \value{
 An object of the same class as \code{newData} with flipped

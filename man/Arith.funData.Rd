@@ -26,7 +26,9 @@
 \arguments{
 \item{e1,e2}{Objects of class \code{funData}, \code{multiFunData} or
   \code{numeric}. If two functional data objects are used, they must be of
-  the same class, have the same domain and the same number of observations.}
+  the same class, have the same domain and the same number of observations
+  (or one object with only one observation that is added, substracted,.. from
+  each of the other observations).}
 }
 \value{
 An object of the same functional data class as \code{e1} or

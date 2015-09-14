@@ -4,18 +4,12 @@
 \alias{norm}
 \title{Calculate the norm of functional data}
 \usage{
-norm(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal")
+norm(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{funData} or \code{multiFunData}.}
 
-\item{squared}{Logical. If \code{TRUE} (default), the function calculates the
-squared norm, otherwise the result is not squared.}
-
-\item{obs}{A numeric vector, giving the indices of the observations, for
-which the norm is to be calculated. Defaults to all observations.}
-
-\item{method}{A character string, giving the integration method to be used. See \link{integrate} for details.}
+\item{...}{Further parameters (see Details).}
 }
 \value{
 A numeric vector representing the norm of each observation.
@@ -25,7 +19,18 @@ This function calculates the norm for each observation of a \code{funData} or
 \code{multiFunData} object.
 }
 \details{
-The function is currently implemented only for functional data with one- and
+Further parameters passed to this function may include:
+\itemize{
+  \item \code{squared}: Logical. If \code{TRUE} (default), the function calculates the
+  squared norm, otherwise the result is not squared.
+  \item \code{obs}: A numeric vector, giving the indices of the observations, for
+  which the norm is to be calculated. Defaults to all observations.
+  \item \code{method}: A character string, giving the integration method to be used. See \link{integrate} for details.
+}
+}
+\section{Warning}{
+
+ The function is currently implemented only for functional data with one- and
 two-dimensional domains.
 }
 \examples{
