@@ -4,40 +4,51 @@
 \alias{norm}
 \title{Calculate the norm of functional data}
 \usage{
-norm(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal")
+norm(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{funData} or \code{multiFunData}.}
+\item{object}{An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.}
 
-\item{squared}{Logical. If \code{TRUE} (default), the function calculates the
-squared norm, otherwise the result is not squared.}
-
-\item{obs}{A numeric vector, giving the indices of the observations, for
-which the norm is to be calculated. Defaults to all observations.}
-
-\item{method}{A character string, giving the integration method to be used. See \link{integrate} for details.}
+\item{...}{Further parameters (see Details).}
 }
 \value{
 A numeric vector representing the norm of each observation.
 }
 \description{
-This function calculates the norm for each observation of a \code{funData} or
-\code{multiFunData} object.
+This function calculates the norm for each observation of a \code{funData},
+\code{irregFunData} or \code{multiFunData} object.
 }
 \details{
-The function is currently implemented only for functional data with one- and
-two-dimensional domains.
+Further parameters passed to this function may include: \itemize{ \item
+\code{squared}: Logical. If \code{TRUE} (default), the function calculates
+the squared norm, otherwise the result is not squared. \item \code{obs}: A
+numeric vector, giving the indices of the observations, for which the norm is
+to be calculated. Defaults to all observations. \item \code{method}: A
+character string, giving the integration method to be used. See
+\link{integrate} for details. \item \code{fullDom}: Logical. If \code{object}
+is of class \linkS4class{irregFunData} and \code{fullDom = TRUE}, all functions are extrapolated
+to the same domain. Defaults to \code{FALSE}. See \link{integrate} for details. }
+}
+\section{Warning}{
+ The function is currently implemented only for functional
+  data with one- and two-dimensional domains.
 }
 \examples{
 # Univariate
 object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
 norm(object)
 
+# Univariate (irregular)
+irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+norm(irregObject) # no extrapolation
+norm(irregObject, fullDom = TRUE) # extrapolation (of second function)
+
 # Multivariate
 multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 norm(multiObject)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData}, \code{\link{integrate}}
+\linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData},
+  \code{\link{integrate}}
 }
 

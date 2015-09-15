@@ -3,7 +3,6 @@
 \docType{methods}
 \name{plot.funData}
 \alias{plot,funData,missing-method}
-\alias{plot,multiFunData,missing-method}
 \alias{plot.funData}
 \title{Plotting univariate functional data}
 \usage{
@@ -12,8 +11,6 @@ plot.funData(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
   add = FALSE, ...)
 
 \S4method{plot}{funData,missing}(x, y, ...)
-
-\S4method{plot}{multiFunData,missing}(x, y, ...)
 }
 \arguments{
 \item{x}{An object of class \code{funData}.}
@@ -67,6 +64,8 @@ functions can be interpolated using the option \code{plotNA = TRUE}. This
 option relies on the \code{\link[zoo]{na.approx}} function in package
 \code{\link[zoo]{zoo}} and is currently implemented for one-dimensional
 functions only.
+}
+\section{Warning}{
 
 The function is currently implemented only for functional data with one- and
 two-dimensional domains.

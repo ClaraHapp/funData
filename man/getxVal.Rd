@@ -16,7 +16,8 @@ setxVal(object, newxVal)
 setX(object, newX)
 }
 \arguments{
-\item{object}{An object of class \code{funData} or \code{multiFunData}.}
+\item{object}{An object of class \code{funData}, \code{irregFunData} or
+\code{multiFunData}.}
 
 \item{newxVal}{See Details.}
 
@@ -26,18 +27,21 @@ setX(object, newX)
 See Details.
 }
 \description{
-These functions can be used to extract and set the slots of \code{funData}
-and \code{multiFunData} objects.
+These functions can be used to extract and set the slots of \code{funData},
+\code{irregFunData} and \code{multiFunData} objects.
 }
 \details{
-Objects of class \code{funData} have two slots, \code{xVal} (for the
-x-values) and \code{X} (for the y-values for each observation). Using the
-\code{getxVal} and \code{getX} methods for the class \code{funData} is
-equivalent to accessing the slots directly via \code{object@xVal} and
-\code{object@X}. Analogously, the \code{setxVal} and \code{setX} functions
-are equivalent to setting \code{object@xVal} to \code{newxVal} or
-\code{object@X} to \code{newX}, respectively.  If in \code{setX} the number
-of observations is different from the current, the function throws a warning.
+Objects of class \code{funData} or \code{irregFunData} have two slots,
+\code{xVal} (for the x-values) and \code{X} (for the y-values for each
+observation). Using the \code{getxVal} and \code{getX} methods for the
+classes \code{funData} and \code{irregFunData} is equivalent to accessing the
+slots directly via \code{object@xVal} and \code{object@X}. Analogously, the
+\code{setxVal} and \code{setX} functions are equivalent to setting
+\code{object@xVal} to \code{newxVal} or \code{object@X} to \code{newX},
+respectively. The new values must hence have the same structure as the
+original ones. As an exception, for an object of class \code{funData}  the
+number of new observations in \code{newX} may differ from the current. In
+this case, the function throws a warning.
 
 Objects of class \code{multiFunData} are lists of several \code{funData}
 objects. The functions \code{getxVal} and \code{getX} for \code{multiFunData}
@@ -48,8 +52,8 @@ univariate element. The \code{setxVal} and \code{getxVal} functions for
 \code{object}, where each list element corresponds to the new \code{xVal} or
 new \code{X} slot for the univariate elements.
 
-For both classes, the set functions do not change the object, unless their
-result is assigned to \code{object} (see Examples).
+For all classes classes, the set functions do not change the object, unless
+their result is assigned to \code{object} (see Examples).
 }
 \examples{
 ### Univariate
@@ -70,7 +74,18 @@ object <- setX(object, rbind(0:4, 5:9))
 newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations (was 2 before)
 \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
 
-# Multivariate
+### Univariate (irregular)
+irregObject <- irregFunData(xVal = list(1:5, 2:4), X=  list(2:6, 3:5))
+irregObject
+
+# get-methods
+getxVal(irregObject)
+getX(irregObject)
+
+newIrregObject <- setxVal(irregObject, list(0:4, 1:3))
+newIrregObject <- setX(irregObject, list(12:16, 13:15))
+
+### Multivariate
 multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 multiObject
 
@@ -83,6 +98,7 @@ multiObject <- setxVal(multiObject, list(5:1, 3:1))
 multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData}
+\linkS4class{funData}, \linkS4class{irregFunData},
+  \linkS4class{multiFunData}
 }
 

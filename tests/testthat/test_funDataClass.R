@@ -1,4 +1,4 @@
-context("Test funData Class")
+context("Testing class definitions")
 
 test_that("funData class constructor", {
   # validity
@@ -20,6 +20,7 @@ test_that("funData class constructor", {
   expect_equal(funData(xVal = 1:5, X = matrix(1:20, nrow = 4)), funData(xVal = list(1:5), X = matrix(1:20, nrow = 4))) 
 })
 
+
 test_that("multiFunData class constructor", {
   f1 <- funData(xVal = 1:5, X = matrix(1:20, nrow = 4))
   
@@ -36,4 +37,23 @@ test_that("multiFunData class constructor", {
   expect_equal(multiFunData(f1,f1), multiFunData(list(f1,f1)))
 })
 
+
+test_that("irregfunData class constructor", {
+  # Validity:
+  # xVal
+  expect_error(irregFunData(xVal = "Test", X = list(5)),
+               "unable to find an inherited method") # xVal is no list
+  expect_error(irregFunData(xVal = list("Test"), X = list(5)),
+               "xVal must be supplied as list of numerics")  # xVal is no list of numerics
+  # X
+  expect_error(irregFunData(xVal = list(5), X = "Test"),
+               "unable to find an inherited method") # X is no list
+  expect_error(irregFunData(xVal = list(5), X = list("Test")),
+               "X must be supplied as list of numerics") # X is no list of numerics
+  # relation between xVal and X
+  expect_error(irregFunData(xVal = list(1:5), X = list(1:5, 2:4)),
+               "Different number of observations for xVal and X")
+  expect_error(irregFunData(xVal = list(1:5, 1:4), X = list(1:5, 2:4)),
+               "Different numbers of observation points in xVal and X")
+})
 

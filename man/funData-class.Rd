@@ -52,7 +52,9 @@ M_1 x \ldots x M_d} for higher-dimensional domains). Here \eqn{N}{N} equals
 the number of observations and \eqn{M_1, \ldots, M_d}{M_1, \ldots, M_d} are
 the number of sampling points in dimension \eqn{1,\ldots, d}{1,\ldots, d}.
 Missing values in the observations are allowed and must be marked by
-\code{NA}.
+\code{NA}. If missing values occur due to irregular observation points, the
+data can be stored alternatively as an object of class
+\linkS4class{irregFunData}.
 
 Generic functions for the \code{funData} class include a print method,
 \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}.
@@ -121,6 +123,6 @@ all.equal(g1,g2)
 g2
 }
 \seealso{
-\linkS4class{multiFunData}
+\linkS4class{irregFunData}, \linkS4class{multiFunData}
 }
 

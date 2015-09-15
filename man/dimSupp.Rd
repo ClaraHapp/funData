@@ -7,17 +7,17 @@
 dimSupp(object)
 }
 \arguments{
-\item{object}{An object of  class \code{funData} or \code{multiFunData}.}
+\item{object}{An object of  class \code{funData}, \code{irregFunData} or \code{multiFunData}.}
 }
 \value{
-If \code{object} is univariate (i.e. of class \code{funData}), the
+If \code{object} is univariate (i.e. of class \code{funData} or \code{irregFunData}), the
   function returns the dimension of the support of \code{object}. If
   \code{object} is multivariate (i.e. of class \code{multiFunData}), the
   function returns a vector, giving the support dimension of each element.
 }
 \description{
 This function returns the support dimension of an object of class
-\code{funData} or \code{multiFunData}.
+\code{funData}, \code{irregFunData} or \code{multiFunData}.
 }
 \examples{
 # Univariate (one-dimensional)
@@ -28,11 +28,15 @@ dimSupp(object1)
 object2 <- funData(xVal = list(1:10, 1:5), X = array(rnorm(100), dim = c(2,10,5)))
 dimSupp(object2)
 
+# Univariate (irregular)
+irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+dimSupp(irregObject)
+
 # Multivariate
 multiObject <- multiFunData(object1, object2)
 dimSupp(multiObject)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData}
+\linkS4class{funData}, \linkS4class{irregFunData} \linkS4class{multiFunData}
 }
 

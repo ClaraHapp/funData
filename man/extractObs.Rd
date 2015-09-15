@@ -7,7 +7,8 @@
 extractObs(object, obs = 1:nObs(object), xVal = getxVal(object))
 }
 \arguments{
-\item{object}{An object of class \code{funData} or \code{multiFunData}.}
+\item{object}{An object of class \code{funData}, \code{irregFunData} or
+\code{multiFunData}.}
 
 \item{obs}{A numeric vector, giving the indices of the observations to
 extract (default: all obervations).}
@@ -18,16 +19,22 @@ extract (default: all obervations).}
   \linkS4class{multiFunData}).}
 }
 \value{
-An object of class \code{funData} or \code{multiFunData} containing
+An object of class \code{funData}, \code{irregFunData} or \code{multiFunData} containing
   the desired observations.
 }
 \description{
 This function extracts one or more observations and/or observations on a part
-of the domain from a \code{funData} or \code{multiFunData} object.
+of the domain from a \code{funData}, \code{irregFunData} or
+\code{multiFunData} object.
 }
 \details{
-The function is currently implemented only for functional data with one- and
-two-dimensional domains.
+In case of an \code{irregFunData} object, some functions may not have
+observation points in the given part of the domain. In this case, the
+functions are removed from the extracted dataset and a warning is thrown.
+}
+\section{Warning}{
+ The function is currently implemented only for functional
+  data with one- and two-dimensional domains.
 }
 \examples{
 # Univariate - one-dimensional domain
@@ -41,12 +48,18 @@ object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 extractObs(object2, obs = 1)
 extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVals must be supplied as list
 
+# Univariate - irregular
+irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+extractObs(irregObject, obs = 2)
+extractObs(irregObject, xVal = 1:3)
+extractObs(irregObject, xVal = c(1,5)) # throws a warning, as second function has no observations
+
 # Multivariate
 multiObject <- multiFunData(object1, object2)
 extractObs(multiObject, obs = 2)
 extractObs(multiObject, xVal = list(1:3, list(1:3, c(2,4,6))))
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData}
+\linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
 }
 
