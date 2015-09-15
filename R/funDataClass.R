@@ -5,8 +5,8 @@
 #' different observations (y-values).
 #' 
 #' Functional data can be seen as realizations of a random process \deqn{X: 
-#' \mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional
-#' domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid
+#' \mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional 
+#' domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid 
 #' \eqn{T \subset \mathcal{T}}{T subset of \calT}, which is represented in the 
 #' \code{xVal} slot of a \code{funData} object. All observations are assumed to 
 #' be sampled over the same grid \eqn{T}{T}, but can contain missing values (see
@@ -23,17 +23,19 @@
 #' the number of observations and \eqn{M_1, \ldots, M_d}{M_1, \ldots, M_d} are 
 #' the number of sampling points in dimension \eqn{1,\ldots, d}{1,\ldots, d}. 
 #' Missing values in the observations are allowed and must be marked by 
-#' \code{NA}.
+#' \code{NA}. If missing values occur due to irregular observation points, the
+#' data can be stored alternatively as an object of class
+#' \linkS4class{irregFunData}.
 #' 
 #' Generic functions for the \code{funData} class include a print method, 
 #' \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}. 
 #' Further methods for \code{funData}: \itemize{ \item \code{\link{dimSupp}}, 
-#' \code{\link{nObs}}: Informations about the support dimensions and the number
+#' \code{\link{nObs}}: Informations about the support dimensions and the number 
 #' of observations, \item \code{\link{getxVal}}, \code{\link{extractObs}}: 
 #' Getting/Setting slot values (instead of accessing them directly via 
-#' \code{funData@@xVal, funData@@X}) and extracting single observations or data
+#' \code{funData@@xVal, funData@@X}) and extracting single observations or data 
 #' on a subset of the domain, \item \code{\link{integrate}}, \code{\link{norm}}:
-#' Integrate all observations over their domain or calculating the
+#' Integrate all observations over their domain or calculating the 
 #' \eqn{L^2}{L^2} norm.}
 #' 
 #' A \code{funData} object can be coerced to a \code{multiFunData} object using 
@@ -41,10 +43,10 @@
 #' 
 #' @slot xVal The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.
 #' @slot X The functional data samples. See Details.
-#' 
-#' @aliases funData 
 #'   
-#' @seealso \linkS4class{multiFunData}
+#' @aliases funData
+#'   
+#' @seealso \linkS4class{irregFunData}, \linkS4class{multiFunData}
 #'   
 #' @examples
 #' ### Creating a one-dimensional funData object with 2 observations
@@ -318,3 +320,157 @@ setGeneric("as.multiFunData", function(object){standardGeneric("as.multiFunData"
 #' @rdname as.multiFunData
 setMethod("as.multiFunData", signature = "funData", 
           function(object){as(object, "multiFunData")})
+
+
+#' A class for irregularly sampled functional data
+#' 
+#' The \code{irregFunData} class represents functional data that is sampled 
+#' irregularly on one-dimensional domains. The two slots represent the 
+#' observation points (x-values) and the observed function values (y-values).
+#' 
+#' Irregular functional data are realizations of a random process \deqn{X: 
+#' \mathcal{T} \to \mathrm{IR},}{X: \calT -> IR,} where each realization 
+#' \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset 
+#' \mathcal{T}}{T_i \subset \calT} of observation points. As for the 
+#' \linkS4class{funData} class, each object of the \code{irregFunData} class has
+#' two slots; the \code{xVal} slot represents the observation points and the
+#' \code{X} slot represents the observed data. In contrast to the regularly
+#' sampled data, both slots are defined as lists of vectors, where each entry 
+#' corresponds to one function: \itemize{\item \code{xVal[[i]]} contains the 
+#' vector of observation points \eqn{T_i} for the i-th function, \item 
+#' \code{X[[i]]} contains the corresponding observed data \eqn{X_i(t_{i,j})}.}
+#' 
+#' Generic functions for the \code{irregFunData} class include a print method, 
+#' \link[=plot.irregFunData]{plotting} and \link[=Arith.irregFunData]{basic 
+#' arithmetics}. Further methods for \code{irregFunData}: \itemize{ \item 
+#' \code{\link{dimSupp}}, \code{\link{nObs}}: Informations about the support 
+#' dimensions and the number of observations, \item \code{\link{getxVal}}, 
+#' \code{\link{extractObs}}: Getting/Setting slot values (instead of accessing 
+#' them directly via \code{irregObject@@xVal, irregObject@@X}) and extracting 
+#' single observations or data on a subset of the domain, \item 
+#' \code{\link{integrate}}, \code{\link{norm}}: Integrate all observations over 
+#' their domain or calculating the \eqn{L^2}{L^2} norm.}
+#' 
+#' An \code{irregFunData} object can be coerced to a \code{funData} object using
+#' \code{as.funData(irregObject)}. The regular functional data object is defined
+#' on the union of all observation grids of the irregular object. The value of
+#' the new object is marked as missing (\code{NA}) for observation points that
+#' are in the union, but not in the original observation grid.
+#' 
+#' @section Warning: Currently, the class is implemented only for functional
+#'   data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{\calT
+#'   \subset IR}.
+#'   
+#' @slot xVal A list of numerics, representing the observation grid \eqn{T_i}
+#'   for each realization \eqn{X_i} of \eqn{X}.
+#' @slot X A list of numerics, representing the values of each observation
+#'   \eqn{X_i} of \eqn{X} on the corresponding observation points \eqn{T_i}.
+#'   
+#' @aliases irregFunData
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
+#' 
+#' @examples
+#' # Construct an irregular functional data object
+#' i1 <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' # Display in the console
+#' i1
+#' 
+#' # A more realistic object
+#' xVal <- seq(0,2*pi, 0.01)
+#' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
+#' xValIrreg <- lapply(ind, function(i){xVal[i]})
+#' i2 <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a){a * sin(x)},
+#'              x = xValIrreg, a = seq(0.75, 1.25, by = 0.05)))
+#' # Display gives basic information
+#' i2
+#' # Use the plot function to get an impression of the data
+#' plot(i2) 
+setClass("irregFunData", representation = representation(xVal = "list", X = "list"))
+
+
+# Validity checks for irregfunData objects
+setValidity("irregFunData", function(object){
+  if(!is(object@xVal, "list"))
+    return("xVal objects must be supplied as list (of numerics)")
+  
+  if(any(sapply(object@xVal, function(l){!is.numeric(l)})))
+    return("xVal must be supplied as list of numerics")
+  
+  if(!is(object@X, "list"))
+    return("X elements must be supplied as list (of numerics)")
+  
+  if(any(sapply(object@X, function(l){!is.numeric(l)})))
+    return("X must be supplied as list of numerics")
+  
+  if(length(object@xVal) != length(object@X))
+    return("Different number of observations for xVal and X")
+  
+  if(any(mapply(function(x,y){dim(as.array(x)) != dim(as.array(y))}, object@xVal, object@X)))
+    return("Different numbers of observation points in xVal and X")
+  
+  return(TRUE)
+})
+
+
+#' Constructor for irregular functional data objects
+#' 
+#' @seealso \linkS4class{irregFunData}
+#' 
+#' @name irregFunData-constructor
+#' 
+#' @docType methods
+#' 
+#' @export irregFunData
+#' 
+#' @keywords internal
+setGeneric("irregFunData", function(xVal, X){standardGeneric("irregFunData")})
+
+
+#' @describeIn irregFunData  Constructor for irregular functional data
+#'   objects.
+#'   
+#' @param xVal A list of numerics, corresponding to the observation points for each realization \eqn{X_i} (see Details).
+#' @param X A list of numerics, corresponding to the observed functions \eqn{X_i} (see Details).
+#'   
+#' @docType methods
+setMethod("irregFunData", signature = c(xVal = "list", X = "list"),
+          function(xVal, X){new("irregFunData", xVal = xVal, X = X)})
+
+
+#' Coerce an irregFunData object to class funData
+#' 
+#' @seealso \linkS4class{funData}, \link{as.funData}
+#' 
+#' @name irregFunData-setAs
+#' 
+#' @keywords internal
+setAs("irregFunData", "funData", 
+      def = function(from){      
+   #     if(dimSupp(from) > 1)
+   #      stop("as.funData is implemented only for irregular functional data on one-dimensional domains.")
+        
+        xVal <- sort(unique(unlist(from@xVal)))
+        
+        X <- array(NA, dim = c(nObs(from), length(xVal)))
+        
+        for(i in 1:nObs(from))
+          X[i, xVal %in% from@xVal[[i]]] <- from@X[[i]]
+        
+        return(funData(xVal = xVal, X = X))})
+
+#' Coerce an irregFunData object to class funData
+#' 
+#' Coerce an \code{irregFunData} object to class \code{funData}.
+#' 
+#' @param object The \code{irregFunData} object that is to be converted to a
+#'   \code{funData} object with missing values.
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}
+#'   
+#' @export as.funData
+setGeneric("as.funData", function(object){standardGeneric("as.funData")})
+
+#' @rdname as.funData
+setMethod("as.funData", signature = "irregFunData", 
+          function(object){as(object, "funData")})

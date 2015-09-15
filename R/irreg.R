@@ -1,36 +1,5 @@
 # library(funData)
 
-#  is defined only on one-dimensional domains yet
-setClass("irregFunData", representation = representation(xVal = "list", X = "list"))
-
-
-# Validity checks for irregfunData objects
-setValidity("irregFunData", function(object){
-  if(!is(object@xVal, "list"))
-    return("xVal objects must be supplied as list (of numerics)")
-  
-  if(any(sapply(object@xVal, function(l){!is.numeric(l)})))
-    return("xVal must be supplied as list of numerics")
-  
-  if(!is(object@X, "list"))
-    return("X elements must be supplied as list (of numerics)")
-  
-  if(any(sapply(object@X, function(l){!is.numeric(l)})))
-    return("X must be supplied as list of numerics")
-  
-  if(length(object@xVal) != length(object@X))
-    return("Different number of observations for xVal and X")
-  
-  if(any(mapply(function(x,y){dim(as.array(x)) != dim(as.array(y))}, object@xVal, object@X)))
-    return("Different numbers of observation points in xVal and X")
-  
-  return(TRUE)
-})
-
-setGeneric("irregFunData", function(xVal, X){standardGeneric("irregFunData")})
-
-setMethod("irregFunData", signature = c(xVal = "list", X = "list"),
-          function(xVal, X){new("irregFunData", xVal = xVal, X = X)})
 
 
 
@@ -55,44 +24,9 @@ setMethod("nObsPoints", signature = "irregFunData",
 
 
 
-setAs("irregFunData", "funData", 
-      def = function(from){ 
-        
-        if(dimSupp(from) > 1)
-          stop("as.funData is implemented only for irregular functional data on one-dimensional domains.")
-        
-        xVal <- sort(unique(unlist(from@xVal)))
-        
-        X <- array(NA, dim = c(nObs(from), length(xVal)))
-        
-        for(i in 1:nObs(from))
-          X[i, xVal %in% from@xVal[[i]]] <- from@X[[i]]
-        
-        return(funData(xVal = xVal, X = X))})
 
 
 
-# Coerce an irregFunData object to class funData
-setGeneric("as.funData", function(object){standardGeneric("as.funData")})
-
-
-
-setMethod("as.funData", signature = "irregFunData", 
-          function(object){as(object, "funData")})
-
-print.irregFunData <- function(x,...){
-  cat("Irregular functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\n")
-  
-  cat("xVal:\n\tValues in ", paste(round(range(x@xVal),3), collapse = " ... "), ".\n", sep = "")
-  
-  cat("X:\n\tValues in ", paste(round(range(x@X),3), collapse = " ... "),".\n", sep = "")
-  
-  cat("Total:\n\t", length(unlist(x@xVal)), " observations on " , length(unique(unlist(x@xVal))), " different x-values (",
-      paste(range(nObsPoints(x)), collapse = " - "), " per observation).\n", sep = "")
-}
-
-setMethod("show", signature = "irregFunData",
-          function(object){print.irregFunData(object)})
 
 
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,

@@ -36,6 +36,38 @@ setMethod("show", signature = "funData",
           function(object){print.funData(object)})
 
 
+#' A print method for irregular functional data
+#'
+#' This function prints basic information about a \code{irregFunData} object. This is
+#' the standard console output for \code{irregFunData} objects.
+#'
+#' @param x An \code{irregFunData} object.
+#'
+#' @keywords internal
+print.irregFunData <- function(x,...){
+  cat("Irregular functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\n")
+  
+  cat("xVal:\n\tValues in ", paste(round(range(x@xVal),3), collapse = " ... "), ".\n", sep = "")
+  
+  cat("X:\n\tValues in ", paste(round(range(x@X),3), collapse = " ... "),".\n", sep = "")
+  
+  cat("Total:\n\t", length(unlist(x@xVal)), " observations on " , length(unique(unlist(x@xVal))), " different x-values (",
+      paste(range(nObsPoints(x)), collapse = " - "), " per observation).\n", sep = "")
+}
+
+
+#' @describeIn funData Print basic information about the \code{irregFunData} object
+#'   in the console. The default console output for \code{irregFunData} objects.
+#'
+#' @param object An \code{irregFunData} object.
+#'
+#' @docType methods
+#'
+#' @exportMethod show
+setMethod("show", signature = "irregFunData",
+          function(object){print.irregFunData(object)})
+
+
 #' Support dimension of functional data
 #'
 #' This function returns the support dimension of an object of class

@@ -7,6 +7,7 @@
 \alias{funData,numeric,array-method}
 \alias{funData-class}
 \alias{show,funData-method}
+\alias{show,irregFunData-method}
 \title{A class for (univariate) functional data}
 \usage{
 \S4method{funData}{list,array}(xVal, X)
@@ -14,6 +15,8 @@
 \S4method{funData}{numeric,array}(xVal, X)
 
 \S4method{show}{funData}(object)
+
+\S4method{show}{irregFunData}(object)
 }
 \arguments{
 \item{xVal}{A list of numeric vectors or a single numeric vector, giving the
@@ -26,6 +29,8 @@ sampling points in the domains. See Details.}
   Details.}
 
 \item{object}{A \code{funData} object.}
+
+\item{object}{An \code{irregFunData} object.}
 }
 \description{
 The \code{funData} class represents functional data on \eqn{d}{d}-dimensional
@@ -52,7 +57,9 @@ M_1 x \ldots x M_d} for higher-dimensional domains). Here \eqn{N}{N} equals
 the number of observations and \eqn{M_1, \ldots, M_d}{M_1, \ldots, M_d} are
 the number of sampling points in dimension \eqn{1,\ldots, d}{1,\ldots, d}.
 Missing values in the observations are allowed and must be marked by
-\code{NA}.
+\code{NA}. If missing values occur due to irregular observation points, the
+data can be stored alternatively as an object of class
+\linkS4class{irregFunData}.
 
 Generic functions for the \code{funData} class include a print method,
 \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}.
@@ -77,6 +84,9 @@ A \code{funData} object can be coerced to a \code{multiFunData} object using
 
 \item \code{show}: Print basic information about the \code{funData} object
   in the console. The default console output for \code{funData} objects.
+
+\item \code{show}: Print basic information about the \code{irregFunData} object
+  in the console. The default console output for \code{irregFunData} objects.
 }}
 \section{Slots}{
 
@@ -121,6 +131,6 @@ all.equal(g1,g2)
 g2
 }
 \seealso{
-\linkS4class{multiFunData}
+\linkS4class{irregFunData}, \linkS4class{multiFunData}
 }
 
