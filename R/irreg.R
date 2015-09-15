@@ -164,29 +164,3 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
             irregFunData(xVal = e2@xVal, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@xVal[[1]] %in% e2@xVal[[i]]])}, simplify = FALSE))
           })
-
-
-
-
-
-
-# #' @keywords internal
-setMethod("norm", signature = "irregFunData",
-          function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal", fullDom = FALSE){norm.irregFunData(object, squared, obs, method, fullDom)})
-
-
-norm.irregFunData <- function(object, squared, obs, method, fullDom)
-{
-  object <- extractObs(object, obs)
-  
-  if(fullDom == TRUE) # extrapolate first
-    object <- extrapolateIrreg(object)
-  
-  res <- integrate(object^2, method = method, fullDom = FALSE)
-  
-  if(!squared)
-    res <- sqrt(res)
-  
-  return(res)
-}
-
