@@ -56,7 +56,7 @@ print.irregFunData <- function(x,...){
 }
 
 
-#' @describeIn funData Print basic information about the \code{irregFunData} object
+#' @describeIn irregFunData Print basic information about the \code{irregFunData} object
 #'   in the console. The default console output for \code{irregFunData} objects.
 #'
 #' @param object An \code{irregFunData} object.
@@ -419,9 +419,9 @@ setMethod("plot", signature = signature(x = "funData", y = "missing"),
 setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
           function(x,y,...){plot.multiFunData(x,y,...)})
 
-# @rdname plot.irregFunData
-# 
-# @exportMethod plot
+#' @rdname plot.irregFunData
+#'
+#' @exportMethod plot
 setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
           function(x,y,...){plot.irregFunData(x,y,...)})
 
@@ -487,10 +487,12 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' 
 #' ### Irregular
 #' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10, 1))))
-#' i1 <- irregFunData(xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@@xVal[[1]]),
-#' X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object1@@X))
-#' i2 <- irregFunData(xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@xVal[[1]]),
-#' X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@@X))
+#' i1 <- irregFunData(
+#'    xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@@xVal[[1]]),
+#'    X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object1@@X))
+#' i2 <- irregFunData(
+#'    xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@xVal[[1]]),
+#'    X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@@X))
 #' 
 #' plot(i1, main = "Object 1 (irregular)")
 #' plot(i2, main = "Object 2 (irregular)")
@@ -1433,9 +1435,9 @@ setMethod("setX", signature = "irregFunData",
 #' \code{refData}.
 #' 
 #' Technically, the function compares the distance between \code{newObject} and 
-#' \code{refObject} \deqn{|||f_\text{new} - f_\text{ref}|||}{||| f_{new} - 
+#' \code{refObject} \deqn{|||f_\mathrm{new} - f_\mathrm{ref}|||}{||| f_{new} - 
 #' f_{ref}|||} and the distance between  \code{newObject} and 
-#' \code{-1*refObject} \deqn{|||f_\text{new} + f_\text{ref}|||.}{||| f_{new} + 
+#' \code{-1*refObject} \deqn{|||f_\mathrm{new} + f_\mathrm{ref}|||.}{||| f_{new} + 
 #' f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is 
 #' flipped, i.e. multiplied by -1.
 #' 
@@ -1461,7 +1463,7 @@ setMethod("setX", signature = "irregFunData",
 #'   
 #' @examples
 #' 
-#' # Univariate
+#' ### Univariate
 #' xVal <- seq(0,2*pi,0.01)
 #' refData <- funData(xVal, rbind(sin(xVal))) # one observation as reference
 #' newData <- funData(xVal, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
@@ -1476,14 +1478,16 @@ setMethod("setX", signature = "irregFunData",
 #' plot(flipFuns(refData, newData), col = "grey", main = "Flipped data")
 #' plot(refData, col = "red", lwd = 2, add = TRUE)
 #' 
-#' # Univariate (irregular)
+#' ### Univariate (irregular)
 #' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
 #' xValIrreg <- lapply(ind, function(i){xVal[i]})
 #' xValIrregAll <- unique(sort(unlist(xValIrreg)))
-#' refDataFull <- funData(xVal, rbind(sin(xVal))) # one observation as reference (fully observed)
-#' refDataIrreg <- irregFunData(xVal = list(xValIrregAll), X = list(sin(xValIrregAll))) # one observation as reference (irregularly observed)
+#'  # one observation as reference (fully observed)
+#' refDataFull <- funData(xVal, rbind(sin(xVal)))
+#'  # one observation as reference (irregularly observed)
+#' refDataIrreg <- irregFunData(xVal = list(xValIrregAll), X = list(sin(xValIrregAll)))
 #' newData <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
-#'              x = xValIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
+#'      x = xValIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
 #' 
 #' plot(newData, col = "grey", main = "Original data (regular reference)")
 #' plot(refDataFull, col = "red", lwd = 2, add = TRUE)
@@ -1497,7 +1501,7 @@ setMethod("setX", signature = "irregFunData",
 #' plot(flipFuns(refDataIrreg, newData), col = "grey", main = "Flipped data")
 #' plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
 #' 
-#' # Multivariate
+#' ### Multivariate
 #' refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
 #'                         funData(xVal, rbind(cos(xVal)))) 
 #' sig <- sample(c(-1,1), 11, replace = TRUE) 

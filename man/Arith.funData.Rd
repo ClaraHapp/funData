@@ -96,10 +96,12 @@ plot(object1^2 + object2^2, main = "Pythagoras")
 
 ### Irregular
 ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10, 1))))
-i1 <- irregFunData(xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@xVal[[1]]),
-X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object1@X))
-i2 <- irregFunData(xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@xVal[[1]]),
-X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@X))
+i1 <- irregFunData(
+   xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@xVal[[1]]),
+   X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object1@X))
+i2 <- irregFunData(
+   xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@xVal[[1]]),
+   X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@X))
 
 plot(i1, main = "Object 1 (irregular)")
 plot(i2, main = "Object 2 (irregular)")

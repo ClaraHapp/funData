@@ -341,7 +341,7 @@ setMethod("as.multiFunData", signature = "funData",
 #' \code{X[[i]]} contains the corresponding observed data \eqn{X_i(t_{i,j})}.}
 #' 
 #' Generic functions for the \code{irregFunData} class include a print method, 
-#' \link[=plot.irregFunData]{plotting} and \link[=Arith.irregFunData]{basic 
+#' \link[=plot.irregFunData]{plotting} and \link[=Arith.funData]{basic 
 #' arithmetics}. Further methods for \code{irregFunData}: \itemize{ \item 
 #' \code{\link{dimSupp}}, \code{\link{nObs}}: Informations about the support 
 #' dimensions and the number of observations, \item \code{\link{getxVal}}, 

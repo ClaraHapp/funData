@@ -7,7 +7,6 @@
 \alias{funData,numeric,array-method}
 \alias{funData-class}
 \alias{show,funData-method}
-\alias{show,irregFunData-method}
 \title{A class for (univariate) functional data}
 \usage{
 \S4method{funData}{list,array}(xVal, X)
@@ -15,8 +14,6 @@
 \S4method{funData}{numeric,array}(xVal, X)
 
 \S4method{show}{funData}(object)
-
-\S4method{show}{irregFunData}(object)
 }
 \arguments{
 \item{xVal}{A list of numeric vectors or a single numeric vector, giving the
@@ -29,8 +26,6 @@ sampling points in the domains. See Details.}
   Details.}
 
 \item{object}{A \code{funData} object.}
-
-\item{object}{An \code{irregFunData} object.}
 }
 \description{
 The \code{funData} class represents functional data on \eqn{d}{d}-dimensional
@@ -84,9 +79,6 @@ A \code{funData} object can be coerced to a \code{multiFunData} object using
 
 \item \code{show}: Print basic information about the \code{funData} object
   in the console. The default console output for \code{funData} objects.
-
-\item \code{show}: Print basic information about the \code{irregFunData} object
-  in the console. The default console output for \code{irregFunData} objects.
 }}
 \section{Slots}{
 
