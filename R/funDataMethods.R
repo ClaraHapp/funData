@@ -707,6 +707,36 @@ setMethod("nObs", signature = "irregFunData",
           function(object){length(object@X)})
 
 
+#' Get the number of observation points for irregular functional data
+#' 
+#' This functions returns the number of observation points in an
+#' \code{irregFunData}  object.
+#' 
+#' @section Warning: Do not confound with \code{\link{nObs}}, which returns the
+#'   number of observations (i.e. the number of observed functions) in an object
+#'   of a functional data class.
+#'   
+#' @param object An object of class \code{irregFunData}.
+#'   
+#' @return The number of observation points in each functions of \code{object}.
+#'   
+#' @seealso \linkS4class{irregFunData}, \code{\link{extractObs}}
+#'   
+#' @export nObsPoints
+#'   
+#' @examples
+#' # Univariate (irregular)
+#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' nObsPoints(irregObject)
+setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
+
+#' nObsPoints for irregular functional data objects
+#'
+#' @keywords internal
+setMethod("nObsPoints", signature = "irregFunData", 
+          function(object){sapply(object@xVal, function(l){length(l)})})
+
+
 #' Extract observations of functional data
 #' 
 #' This function extracts one or more observations and/or observations on a part

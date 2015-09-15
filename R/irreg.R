@@ -16,10 +16,7 @@
 
 
 
-setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 
-setMethod("nObsPoints", signature = "irregFunData", 
-          function(object){sapply(object@xVal, function(l){length(l)})})
 
 
 
