@@ -133,6 +133,7 @@ setMethod("dimSupp", signature = "irregFunData",
 #' \code{\link[zoo]{zoo}} and is currently implemented for one-dimensional
 #' functions only.
 #'
+#' @section Warning:
 #' The function is currently implemented only for functional data with one- and
 #' two-dimensional domains.
 #'
@@ -270,6 +271,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' \code{dim}) via \code{mfrow} (\code{\link[graphics]{par}}) and the univariate
 #' elements are plotted using \code{plot}.
 #'
+#' @section Warning:
 #' The function is currently implemented only for functional data with one- and
 #' two-dimensional domains.
 #'
@@ -349,17 +351,79 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
     par(oldPar)
 }
 
+#' Plotting irregular functional data
+#' 
+#' This function plots observations of irregular functional data on their 
+#' domain.
+#' 
+#' @param x An object of class \code{irregFunData}.
+#' @param y Missing.
+#' @param obs A vector of numerics giving the observations to plot. Defaults to 
+#'   all observations in \code{x}.
+#' @param type The type of plot. Defaults to "b" (line and point plot). See 
+#'   \code{\link[graphics]{plot}} for details.
+#' @param pch The point type. Defaults to 20 (solid small circles). See 
+#'   \code{\link[graphics]{par}} for details.
+#' @param col The color of the functions. Defaults to the 
+#'   \code{\link[grDevices]{rainbow}} palette.
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to "xVal" for the 
+#'   x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for 
+#'   details.
+#' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of
+#'   the data that is to plot. See \code{\link[graphics]{plot}} for details.
+#' @param add Logical. If \code{TRUE}, add to current plot (only for 
+#'   one-dimensional functions). Defaults to \code{FALSE}.
+#' @param ... Additional arguments to \code{\link[graphics]{plot}}.
+#'   
+#' @seealso \code{\link{plot.funData}}, \linkS4class{irregFunData}, \code{\link[graphics]{plot}},    
+#'   
+#' @examples
+#' oldpar <- par(no.readonly = TRUE)
+#' 
+#' # Generate data
+#' xVal <- seq(0,2*pi,0.01)
+#' ind <- replicate(5, sort(sample(1:length(xVal), sample(5:10,1))))
+#' object <- irregFunData(xVal = lapply(ind, function(i){xVal[i]}),
+#'                   X = lapply(ind, function(i){sample(1:10, 1)/10*xVal[i]^2}))
+#' 
+#' plot(object, main = "Irregular functional data")
+#' 
+#' par(oldpar)
+plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
+                              col =rainbow(nObs(x)), xlab = "xVal", ylab = "",
+                              xlim = range(x@xVal[obs]), ylim = range(x@X[obs]),
+                              add = FALSE, ...)
+{
+  if(length(col) < nObs(x))
+    col <- rep(col, nObs(x))
+  
+  if(add == FALSE) # plot new window
+  {
+    plot(x = NULL, y = NULL, type = "n", xlim = xlim, ylim = ylim,  xlab= xlab, ylab = ylab, ...)
+  }
+  
+  for(i in obs)
+    points(x = x@xVal[[i]], y = x@X[[i]], type = type, pch = pch, col = col[i], ...)
+  
+}
+
 #' @rdname plot.funData
 #'
 #' @exportMethod plot
 setMethod("plot", signature = signature(x = "funData", y = "missing"),
           function(x,y,...){plot.funData(x,y,...)})
 
-#' @rdname plot.funData
+#' @rdname plot.multiFunData
 #'
 #' @exportMethod plot
 setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
           function(x,y,...){plot.multiFunData(x,y,...)})
+
+# @rdname plot.irregFunData
+# 
+# @exportMethod plot
+setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
+          function(x,y,...){plot.irregFunData(x,y,...)})
 
 
 
