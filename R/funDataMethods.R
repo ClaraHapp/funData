@@ -369,21 +369,35 @@ setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
 #' based on \code{\link[methods]{Arith}}.  The operations are made pointwise for
 #' each observation.
 #' 
+#' If two objects of a functional data class (\code{funData}, 
+#' \code{irregFunData} or \code{multiFunData}) are used, they normally must be 
+#' of the same class, have the same domain and the same number of observations. 
+#' Exceptions are accepted if \itemize{\item one object has only one 
+#' observation. In this case, the arithmetic operations are done pairwise for 
+#' this single function and all functions of the other object (e.g. when 
+#' subtracting the mean function from a \code{funData} object). This single
+#' function must be defined on the same domain as the other functions (or, in
+#' case of \code{irregFunData}, on the union of all observation grids). \item
+#' one of the two objects is of class \code{irregFunData}. Then, the other
+#' object can be of class \code{fundata}, too, if it is defined on the union of
+#' all observation grids. The result is an \code{irregFunData} object which is
+#' defined on the same observation grid as the original \code{irregFunData}
+#' object.}
+#' 
 #' @section Warning: Note that not all combinations of operations and classes 
 #'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class 
-#'   \code{funData} or \code{multiFunData} and \code{e2} is numeric. The reverse
-#'   is not true.
+#'   \code{funData}, \code{irregFunData} or \code{multiFunData} and \code{e2} is
+#'   numeric. The reverse is not true.
 #'   
-#' @param e1,e2 Objects of class \code{funData}, \code{multiFunData} or 
-#'   \code{numeric}. If two functional data objects are used, they must be of 
-#'   the same class, have the same domain and the same number of observations
-#'   (or one object with only one observation that is added, substracted,.. from
-#'   each of the other observations).
+#' @param e1,e2 Objects of class \code{funData}, \code{irregFunData}, 
+#'   \code{multiFunData} or \code{numeric}. If two functional data objects are 
+#'   used, they must be of the same class, have the same domain and the same 
+#'   number of observations. For exceptions, see Details.
 #'   
 #' @return An object of the same functional data class as \code{e1} or 
 #'   \code{e2}, respectively.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}, 
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}, 
 #'   \link[methods]{Arith}
 #'   
 #' @name Arith.funData
@@ -399,7 +413,7 @@ setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
 #' plot(object1, main = "Object1")
 #' plot(object2, main = "Object2")
 #' 
-#' # Only Functional data objects
+#' # Only functional data objects
 #' plot(object1 + object2, main = "Sum")
 #' plot(object1 - object2, main = "Difference")
 #' 
@@ -407,6 +421,23 @@ setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
 #' plot(4*object1 + 5,  main = "4*Object1 + 5") # Note y-axis!
 #' plot(object1^2 + object2^2, main = "Pythagoras")
 #' 
+#' ### Irregular
+#' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10, 1))))
+#' i1 <- irregFunData(xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@@xVal[[1]]),
+#' X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object1@@X))
+#' i2 <- irregFunData(xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@xVal[[1]]),
+#' X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@@X))
+#' 
+#' plot(i1, main = "Object 1 (irregular)")
+#' plot(i2, main = "Object 2 (irregular)")
+#' 
+#' # Irregular and regular functional data objects
+#' plot(i1 + i2, main = "Sum")
+#' plot(i1 - object2, main = "Difference")
+#' 
+#' # Mixed
+#' plot(4*i1 + 5,  main = "4*i1 + 5") # Note y-axis!
+#' plot(i1^2 + i2^2, main = "Pythagoras")
 #' par(oldpar)
 NULL
 
@@ -468,6 +499,104 @@ setMethod("Arith", signature = signature(e1 = "numeric", e2 = "multiFunData"),
               m[[i]] <- methods::callGeneric(e1, e2[[i]])
             multiFunData(m)
           })
+
+
+#' @rdname Arith.funData
+setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "numeric"),
+          function(e1, e2) {
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
+            irregFunData(xVal = e1@xVal, X = lapply(e1@X, function(x){f(x,e2)}))
+          })
+
+#' @rdname Arith.funData
+setMethod("Arith", signature = c(e1 = "numeric", e2 = "irregFunData"),
+          function(e1, e2) {
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
+            irregFunData(xVal = e2@xVal, X = lapply(e2@X, function(x){f(e1,x)}))
+          })
+
+#' @rdname Arith.funData
+setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
+          function(e1,e2){
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in mapply)
+            
+            if(nObs(e1) != nObs(e2))
+            {
+              if(nObs(e1) == 1)
+              {
+                if(!all(unlist(e2@xVal) %in% unlist(e1@xVal)))
+                  stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
+                
+                res <- irregFunData(xVal = e2@xVal, 
+                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e1@xVal[[1]] %in% e2@xVal[[i]])], e2@X[[i]])}))
+              }
+              else
+              {
+                if(nObs(e2) == 1)
+                {
+                  if(!all(unlist(e1@xVal) %in% unlist(e2@xVal)))
+                    stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
+                  
+                  res <- irregFunData(xVal = e1@xVal,
+                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e2@xVal[[1]] %in% e1@xVal[[i]])])}))
+                }
+                else
+                  stop("Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
+              } 
+            }            
+            else
+            {
+              if(!isTRUE(all.equal(e1@xVal, e2@xVal)))
+                stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
+              
+              res <- irregFunData(xVal = e1@xVal, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
+            }
+            
+            return(res)
+          })
+
+#' @rdname Arith.funData
+setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
+          function(e1, e2){
+            #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
+            #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
+            
+            if(!any(unlist(e1@xVal) %in% e2@xVal[[1]]))
+              stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
+            
+            # if funData object has only a single observation: apply to all of the other object
+            if(nObs(e1) != nObs(e2))
+            {
+              if(nObs(e2) == 1 & nObs(e1) > 1) 
+                e2@X <- t(replicate(nObs(e1),e2@X[1,]))            
+              else
+                stop("funData object must have either one observation or the same number of observations as the irregFunData object")
+            }
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
+            irregFunData(xVal = e1@xVal, X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[i,e2@xVal[[1]] %in% e1@xVal[[i]]])}, simplify = FALSE))
+          })
+
+#' @rdname Arith.funData
+setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
+          function(e1, e2){
+            #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
+            #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
+            
+            if(!any(unlist(e2@xVal) %in% e1@xVal[[1]]))
+              stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
+            
+            # if funData object has only a single observation: apply to all of the other object
+            if(nObs(e1) != nObs(e2))
+            {
+              if(nObs(e1) == 1 & nObs(e2) > 1) 
+                e1@X <- t(replicate(nObs(e2),e1@X[1,]))            
+              else
+                stop("funData object must have either one observation or the same number of observations as the irregFunData object")
+            }
+            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
+            irregFunData(xVal = e2@xVal, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@xVal[[1]] %in% e2@xVal[[i]]])}, simplify = FALSE))
+          })
+
 
 #' Get the number of observations
 #'
