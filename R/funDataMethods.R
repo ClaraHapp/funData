@@ -1670,7 +1670,7 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
 #' f1 <- funData(x, outer(seq(0.75, 1.25, 0.05), sin(x)))
 #' 
 #' plot(f1)
-#' plot(meanFunction(f1), col = 1, lwd = 2, add = T)
+#' plot(meanFunction(f1), col = 1, lwd = 2, add = TRUE)
 #' 
 #' ### Univariate (two-dimensional support)
 #' f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
@@ -1678,7 +1678,7 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
 #' 
 #' ### Multivariate
 #' m1 <- multiFunData(f1,f2)
-#' all.equal(extractObs(m1, obs = 6), meanFunction(m)) # observation 6 is identical to the pointwise mean
+#' all.equal(extractObs(m1, obs = 6), meanFunction(m1)) # observation 6 equals the pointwise mean
 #' 
 #' ### Irregular
 #' i1 <- irregFunData(xVal = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))

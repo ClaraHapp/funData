@@ -3,12 +3,12 @@
 \docType{methods}
 \name{flipFuns,funData,irregFunData-method}
 \alias{flipFuns,funData,irregFunData-method}
-\title{Flip multivariate functional data - funData as reference}
+\title{Flip irregular functional data - funData as reference}
 \usage{
 \S4method{flipFuns}{funData,irregFunData}(refObject, newObject, ...)
 }
 \description{
-Flip multivariate functional data - funData as reference
+Flip irregular functional data - funData as reference
 }
 \seealso{
 \link{flipFuns}
