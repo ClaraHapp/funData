@@ -1637,3 +1637,90 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
             
             return(newObject)
           })
+
+
+
+#' Mean for functional data
+#' 
+#' This function calculates the pointwise mean function for objects of class 
+#' \code{funData}, \code{irregFunData} or \code{multiFunData}.
+#' 
+#' @section Warning:
+#' If \code{object} is of class \code{irregFunData}, the option \code{na.rm =
+#' TRUE} is not implemented and throws an error. If \code{na.rm = FALSE}, the
+#' functions must be observed on the same domain.
+#' 
+#' @param object An object of class \code{funData}, \code{irregFunData} or 
+#'   \code{multiFunData}.
+#' @param na.rm Logical. If \code{TRUE}, NA values are removed before computing 
+#'   the mean. Defaults to \code{FALSE}.
+#'   
+#' @return An object of the same class as \code{object} with one observation 
+#'   that corresponds to the pointwise mean function of the functions in 
+#'   \code{object}.
+#'   
+#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, 
+#'   \linkS4class{multiFunData}, \link{Arith.funData}
+#'   
+#' @export meanFunction
+#'   
+#' @examples
+#' ### Univariate (one-dimensional support)
+#' x <- seq(0, 2*pi, 0.01)
+#' f1 <- funData(x, outer(seq(0.75, 1.25, 0.05), sin(x)))
+#' 
+#' plot(f1)
+#' plot(meanFunction(f1), col = 1, lwd = 2, add = T)
+#' 
+#' ### Univariate (two-dimensional support)
+#' f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
+#' all.equal(extractObs(f2,1), meanFunction(f2)) # f2 has 11 identical observations
+#' 
+#' ### Multivariate
+#' m1 <- multiFunData(f1,f2)
+#' all.equal(extractObs(m1, obs = 6), meanFunction(m)) # observation 6 is identical to the pointwise mean
+#' 
+#' ### Irregular
+#' i1 <- irregFunData(xVal = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
+#' all.equal(meanFunction(i1), extractObs(i1, obs = 2))
+#' # don't run: functions are not defined on the same domain
+#' \dontrun{meanFunction(irregFunData(xVal = list(1:3,1:5), X = list(1:3,1:5))) }
+setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("meanFunction")})
+
+
+#' Mean for functional data
+#'
+#' @seealso \link{meanFunction}
+#'
+#' @keywords internal
+setMethod("meanFunction", signature = c("funData", "ANY"),
+          function(object, na.rm){
+            funData(xVal = object@xVal, X = array(apply(object@X, 1+1:dimSupp(object), mean, na.rm = na.rm),
+                                                  c(1,dim(object@X)[-1]))) # resize to array with one observation
+          })
+            
+#' Mean for multivariate functional data
+#'
+#' @seealso \link{meanFunction}
+#'
+#' @keywords internal
+setMethod("meanFunction", signature = c("multiFunData", "ANY"),
+          function(object, na.rm){
+            multiFunData(lapply(object, meanFunction, na.rm))
+          })
+
+#' Mean for irregular functional data
+#'
+#' @seealso \link{meanFunction}
+#'
+#' @keywords internal
+setMethod("meanFunction", signature = c("irregFunData", "ANY"),
+          function(object, na.rm){
+            if(na.rm == TRUE)
+              stop("Option na.rm = TRUE is not implemented for mean functions of irregular data.")
+            
+            if(!all(sapply(object@xVal[-1], function(x){isTRUE(all.equal(object@xVal[[1]], x))})))
+              stop("Mean function defined only for irregular functional data objects on the same domain.")
+            
+            irregFunData(object@xVal[1], list(sapply(object@X, mean)))
+          })

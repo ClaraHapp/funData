@@ -290,3 +290,31 @@ test_that("flipFun", {
   expect_equal(flipFuns(i1, -1*i1), i1) # irreg reference for each observation
   expect_equal(flipFuns(extractObs(i1, obs = 1), -1*i1), i1) # irreg reference for each observation
 })
+
+
+test_that("meanFunction",{
+  x <- seq(0, 2*pi, 0.01)
+  f1 <- funData(x, outer(seq(0.75, 1.25, 0.05), sin(x)))
+  f1NA <- f1; f1NA@X[sample(prod(dim(f1NA@X)), 100)] <- NA
+  f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
+  m <- multiFunData(f1,f2)
+  i1 <- irregFunData(xVal = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
+ 
+  # Check errors:
+  # irreg FD object
+  expect_error(meanFunction(irregFunData(xVal = list(1:3,1:5), X = list(1:3,1:5))),
+                             "Mean function defined only for irregular functional data objects on the same domain.")
+  expect_error(meanFunction(i1, na.rm = TRUE),
+               "Option na.rm = TRUE is not implemented for mean functions of irregular data.")
+  
+  # Check functionality:
+  # univariate FD object (one-dim)
+  expect_equal(meanFunction(f1), extractObs(f1, obs = 6))
+  expect_equal(meanFunction(f1NA), funData(f1NA@xVal, array(colMeans(f1NA@X), dim = c(1, length(x)))))
+  # univariate FD object (two-dim)
+  expect_equal(meanFunction(f2), extractObs(f2, obs = 6)) # or any other observation
+  # multivariate FD object
+  expect_equal(meanFunction(m), extractObs(m, obs = 6))
+  # irregular FD object
+  expect_equal(meanFunction(i1), extractObs(i1, 2))
+ })
