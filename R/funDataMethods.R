@@ -1585,7 +1585,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
           })
 
 
-#' Flip multivariate functional data - funData as reference
+#' Flip irregular functional data - funData as reference
 #'
 #' @seealso \link{flipFuns}
 #'
@@ -1612,7 +1612,7 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
           })
 
 
-#' Flip multivariate functional data - irregFunData as reference
+#' Flip irregular functional data - irregFunData as reference
 #'
 #' @seealso \link{flipFuns}
 #'
