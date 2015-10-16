@@ -1,5 +1,7 @@
 ### generic functions ###
 
+#### show ####
+
 #' A print method for univariate functional data
 #'
 #' This function prints basic information about a \code{funData} object. This is
@@ -67,6 +69,7 @@ print.irregFunData <- function(x,...){
 setMethod("show", signature = "irregFunData",
           function(object){print.irregFunData(object)})
 
+#### dimSupp ####
 
 #' Support dimension of functional data
 #'
@@ -121,6 +124,8 @@ setMethod("dimSupp", signature = "multiFunData",
 #' @keywords internal
 setMethod("dimSupp", signature = "irregFunData",
           function(object){length(dim(as.array(object@xVal[[1]])))})
+
+#### Plot ####
 
 #' Plotting univariate functional data
 #'
@@ -426,6 +431,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
           function(x,y,...){plot.irregFunData(x,y,...)})
 
 
+#### Arith ####
 
 #' Arithmetics of functional data objects
 #' 
@@ -663,6 +669,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             irregFunData(xVal = e2@xVal, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@xVal[[1]] %in% e2@xVal[[i]]])}, simplify = FALSE))
           })
 
+#### nObs ####
 
 #' Get the number of observations
 #'
@@ -708,6 +715,7 @@ setMethod("nObs", signature = "multiFunData",
 setMethod("nObs", signature = "irregFunData",
           function(object){length(object@X)})
 
+#### nObsPoints ####
 
 #' Get the number of observation points
 #' 
@@ -774,6 +782,7 @@ setMethod("nObsPoints", signature = "multiFunData",
 setMethod("nObsPoints", signature = "irregFunData", 
           function(object){sapply(object@xVal, length)})
 
+#### extractObs ####
 
 #' Extract observations of functional data
 #' 
@@ -926,6 +935,8 @@ function(object, obs, xVal){
 })
 
 
+#### integrate ####
+
 #' Integrate functional data
 #' 
 #' Integrate all observations of a \code{funData}, \code{irregFunData} or 
@@ -1050,6 +1061,9 @@ setMethod("integrate", signature = c(object = "irregFunData"),
                           x = object@xVal, y = object@X, MoreArgs = list(method = method)))
           })
 
+
+#### extrapolateIrreg ####
+
 #' Extrapolate irregular functional data to a given domain
 #' 
 #' This function extrapolates an \code{irregFunData} object to a given domain.
@@ -1087,6 +1101,8 @@ extrapolateIrreg <- function(object, rangex = range(object@xVal))
   return(list(x=x, y=y))
 }
 
+
+#### norm ####
 
 #' Calculate the norm of functional data
 #' 
@@ -1209,6 +1225,7 @@ setMethod("norm", signature = "irregFunData",
           })
 
 
+#### get/set ####
 
 #' Extract and set slots from functional data objects
 #' 
@@ -1450,6 +1467,9 @@ setMethod("setX", signature = "irregFunData",
             return(object)
           })
 
+
+#### flipFuns ####
+
 #' Flip functional data objects
 #' 
 #' This function flips an object \code{newObject} of class \code{funData}, 
@@ -1675,6 +1695,7 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
           })
 
 
+#### meanFunction ####
 
 #' Mean for functional data
 #' 
