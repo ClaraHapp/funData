@@ -35,6 +35,24 @@ test_that("nObs", {
   
 })
 
+
+test_that("nObsPoints", {
+  f1 <- funData(xVal = 1:5, X = matrix(1:20, nrow = 4))
+  f2 <- funData(xVal = list(1:5, 6:10), X = array(1:100, c(4, 5, 5)))
+  m1 <- multiFunData(f1, f2)
+  i1 <- irregFunData(xVal = list(1:5, 2:4), X = list(1:5, 2:4))
+  
+  # Check functionality:
+  # univariate FD object (one-dim)
+  expect_equal(nObsPoints(f1), 5)
+  # univariate FD object (two-dim)
+  expect_equal(nObsPoints(f2), c(5,5))
+  # multivariate FD object
+  expect_equal(nObsPoints(m1), list(5,c(5,5)))
+  # irreg FD object
+  expect_equal(nObsPoints(i1), c(5,3))  
+})
+
 test_that("extractObs", {
   f1 <- funData(xVal = 1:5, X = matrix(1:20, nrow = 4))
   f2 <- funData(xVal = list(1:5, 1:6), X = array(1:120, c(4, 5, 6)))

@@ -709,34 +709,70 @@ setMethod("nObs", signature = "irregFunData",
           function(object){length(object@X)})
 
 
-#' Get the number of observation points for irregular functional data
+#' Get the number of observation points
 #' 
-#' This functions returns the number of observation points in an
-#' \code{irregFunData}  object.
+#' This functions returns the number of observation points in an object of class
+#' \code{funData}, \code{multiFunData} or \code{irregFunData}.
 #' 
-#' @section Warning: Do not confound with \code{\link{nObs}}, which returns the
+#' Depending on the class of \code{object}, the function returns different 
+#' values: \itemize{ \item If \code{object} is of class \code{funData}, the 
+#' function returns a vector of length \code{dimSupp(object)}, giving the number
+#' of observations in each dimension. \item If \code{object} is of class 
+#' \code{multiFunData}, the function returns a list of the same length as 
+#' \code{object}, where the \code{j}-th entry is a vector, corresponding to the 
+#' observations point of \code{object[[j]]}. \item If \code{object} is of class
+#' \code{irregFunData}, the function returns an array of length
+#' \code{nObs(object)}, where the \code{j}-th entry corresponds to the number of
+#' observations in the \code{j}-th observed function.}
+#' 
+#' @section Warning: Do not confound with \code{\link{nObs}}, which returns the 
 #'   number of observations (i.e. the number of observed functions) in an object
 #'   of a functional data class.
 #'   
-#' @param object An object of class \code{irregFunData}.
+#' @param object An object of class \code{funData}, \code{multiFunData} or 
+#'   \code{irregFunData}.
 #'   
-#' @return The number of observation points in each functions of \code{object}.
+#' @return The number of observation points in \code{object}. See Details.
 #'   
 #' @seealso \linkS4class{irregFunData}, \code{\link{extractObs}}
 #'   
 #' @export nObsPoints
 #'   
 #' @examples
+#' # Univariate (one-dimensional)
+#' object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' nObsPoints(object1)
+#' 
+#' # Univariate (two-dimensional)
+#' object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
+#' nObsPoints(object2)
+#' 
+#' # Multivariate
+#' multiObject <- multiFunData(object1, object2)
+#' nObsPoints(multiObject)
+#' 
 #' # Univariate (irregular)
 #' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
 #' nObsPoints(irregObject)
 setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 
+#' nObsPoints for funData objects
+#'
+#' @keywords internal
+setMethod("nObsPoints", signature = "funData", 
+          function(object){sapply(object@xVal, length)})
+
+#' nObsPoints for multiFunData objects
+#'
+#' @keywords internal
+setMethod("nObsPoints", signature = "multiFunData", 
+          function(object){lapply(object, nObsPoints)})
+
 #' nObsPoints for irregular functional data objects
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "irregFunData", 
-          function(object){sapply(object@xVal, function(l){length(l)})})
+          function(object){sapply(object@xVal, length)})
 
 
 #' Extract observations of functional data
