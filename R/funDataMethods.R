@@ -514,19 +514,31 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 NULL
 
 #' @rdname Arith.funData
+#' 
+#' @importFrom plyr aaply
 setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
             if(!all.equal(e1@xVal, e2@xVal))
-              stop("arithmetic operations: functions must be defined on the same domain!")
+              stop("Arithmetics: Functions must be defined on the same domain!")
             
-            # if one funData object has only a single observation: apply to all of the other object
-            if(nObs(e1) == 1 & nObs(e2) > 1) 
-              e1@X <- t(replicate(nObs(e2),e1@X[1,]))
+            if(nObs(e1) == nObs(e2))
+              resX <- methods::callGeneric(e1@X, e2@X)
+            else
+            {
+              if(all(c(nObs(e1), nObs(e2)) > 1))
+                stop("Arithmethics: nObs of funData objects is neigther equal nor one.")
+              
+              f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
+              
+              # if one funData object has only a single observation: apply to all of the other object
+              if(nObs(e1) == 1 & nObs(e2) > 1) 
+                resX <- plyr::aaply(e2@X, 1, function(x){ f(array(e1@X, dim = dim(e1@X)[-1]), x) })
+              
+              if(nObs(e2) == 1 & nObs(e1) > 1) 
+                resX <- plyr::aaply(e1@X, 1, function(x){ f(x, array(e2@X, dim = dim(e2@X)[-1])) })      
+            }
             
-            if(nObs(e2) == 1 & nObs(e1) > 1) 
-              e2@X <- t(replicate(nObs(e1),e2@X[1,]))            
-            
-            funData(xVal = e1@xVal, X = methods::callGeneric(e1@X, e2@X))
+            funData(xVal = e1@xVal, X = resX)
           })
 
 #' @rdname Arith.funData

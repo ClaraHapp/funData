@@ -108,6 +108,11 @@ test_that("Arith", {
   x1 <- unique(unlist(i1@xVal))
   
   # Check errors:
+  # univariateFD, univariate FD
+  expect_error(f1 + extractObs(f1,1:2), 
+               "Arithmethics: nObs of funData objects is neigther equal nor one.")
+  
+  
   # irreg & irreg
   expect_error(extractObs(i1, obs = 1) + i1,
                "Arithmetics: Multiple functions must be defined on subdomain of single function.")
