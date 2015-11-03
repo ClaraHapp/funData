@@ -228,6 +228,25 @@ test_that("integrate", {
   expect_equal(integrate(i1, fullDom = TRUE), c(2/3, 7/12), tolerance = 5e-3)
 })
 
+test_that("integrate3D",{
+  x <- seq(0,1, 0.02)
+  y <- seq(-0.5,0.5, 0.02)
+  z <- seq(1,2,0.02)
+  
+  nX <- length(x)
+  nY <- length(y)
+  nZ <- length(z)
+  
+  A <- array(NA, c(nX, nY, nZ))
+  
+  for(ix in 1:nX)
+    for(iy in 1:nY)
+      for(iz in 1:nZ)
+        A[ix,iy,iz] <-  x[ix]*cos(pi*y[iy])*z[iz]^2
+  
+  all.equal(integrate3D(A, xVal = list(x,y,z)), 7/(3*pi), tolerance = 1e-3)
+})
+
 test_that("set/get", {
   f1 <- funData(xVal = 1:5, X = matrix(1:20, nrow = 4))
   f2 <- funData(xVal = list(1:5, 1:6), X = array(1:120,c(4,5,6)))

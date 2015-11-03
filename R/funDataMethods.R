@@ -878,10 +878,19 @@ setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
               stop("Trying to extract x-values that do not exist!")
             
             if(dimSupp(object) == 1)
-              return(funData(xVal, object@X[obs,object@xVal[[1]] %in% xVal[[1]], drop = FALSE]))
+              return(funData(xVal, object@X[obs,
+                                            object@xVal[[1]] %in% xVal[[1]], drop = FALSE]))
             
             if(dimSupp(object) == 2)
-              return(funData(xVal, object@X[obs,object@xVal[[1]] %in% xVal[[1]],object@xVal[[2]] %in% xVal[[2]], drop = FALSE]))
+              return(funData(xVal, object@X[obs,
+                                            object@xVal[[1]] %in% xVal[[1]],
+                                            object@xVal[[2]] %in% xVal[[2]], drop = FALSE]))
+            
+            if(dimSupp(object) == 3)
+              return(funData(xVal, object@X[obs,
+                                            object@xVal[[1]] %in% xVal[[1]],
+                                            object@xVal[[2]] %in% xVal[[2]], 
+                                            object@xVal[[3]] %in% xVal[[3]], drop = FALSE]))
           })
 
 #' extractObs for multiFunData objects
@@ -964,7 +973,7 @@ function(object, obs, xVal){
 #' \code{\link{extrapolateIrreg}}.}
 #' 
 #' @section Warning: The function is currently implemented only for functional 
-#'   data with one- and two-dimensional domains.
+#'   data with up to three-dimensional domains.
 #'   
 #' @param object An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.
 #' @param ... Further parameters (see Details).
@@ -1022,6 +1031,21 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
   return(ret)
 }
 
+#' Integrate a function on a rectangular 3D grid
+#' 
+#' @param f A 3D array, representing the function evaluations on the grid
+#' @param xVal A list with 3 elements, representing the grid points in the first, second and third dimension of f
+#' 
+#' @return The result of the numerical integration of f on the given grid.
+#' 
+#' @keywords internal
+integrate3D <- function(f, xVal)
+{
+  res <- t(.intWeights(xVal[[1]])) %*% apply(f, 1:2, function(w){w %*% .intWeights(xVal[[3]])}) %*% .intWeights(xVal[[2]])
+  
+  return(res)
+}
+
 #' Integrate method for funData objects
 #'
 #' @seealso \link{integrate} \linkS4class{funData}
@@ -1029,14 +1053,17 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
 #' @keywords internal
 setMethod("integrate", signature = "funData",
           function(object, method = "trapezoidal"){
-            if(dimSupp(object) > 2)
-              stop("Integration is not yet defined for functional data objects with dim > 2")
+            if(dimSupp(object) > 3)
+              stop("Integration is not yet defined for functional data objects with dim > 3")
             
             if(dimSupp(object) == 1)
               res <- object@X %*% .intWeights(object@xVal[[1]],method)
             
             if(dimSupp(object) == 2)
               res <- apply( object@X , 1, function(x){t(.intWeights(object@xVal[[1]])) %*% x %*% .intWeights(object@xVal[[2]])})
+            
+            if(dimSupp(object) == 3)
+              res <- apply(object@X, 1, integrate3D, xVal = object@xVal)
             
             return(as.numeric(res))
           })

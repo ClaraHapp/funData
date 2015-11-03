@@ -31,7 +31,7 @@ functions linearly to the full domain before calculating the integrals. Defaults
 }
 \section{Warning}{
  The function is currently implemented only for functional
-  data with one- and two-dimensional domains.
+  data with up to three-dimensional domains.
 }
 \examples{
 # Univariate
