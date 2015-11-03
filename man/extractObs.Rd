@@ -34,7 +34,7 @@ functions are removed from the extracted dataset and a warning is thrown.
 }
 \section{Warning}{
  The function is currently implemented only for functional
-  data with one- and two-dimensional domains.
+  data with up to three-dimensional domains.
 }
 \examples{
 # Univariate - one-dimensional domain

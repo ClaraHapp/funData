@@ -807,7 +807,7 @@ setMethod("nObsPoints", signature = "irregFunData",
 #' functions are removed from the extracted dataset and a warning is thrown.
 #' 
 #' @section Warning: The function is currently implemented only for functional
-#'   data with one- and two-dimensional domains.
+#'   data with up to three-dimensional domains.
 #'   
 #' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
@@ -857,8 +857,8 @@ setGeneric("extractObs", function(object, obs = 1:nObs(object), xVal= getxVal(ob
 setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
           function(object, obs, xVal){
             
-            if(dimSupp(object) > 2)
-              stop("extracting observations is not implemented yet for functional data of dimension > 2")
+            if(dimSupp(object) > 3)
+              stop("extracting observations is not implemented yet for functional data of dimension > 3")
             
             if(!is.numeric(obs))
               stop("Supply observations as numeric vector")
