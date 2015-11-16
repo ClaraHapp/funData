@@ -907,51 +907,51 @@ setMethod("extractObs", signature = signature("multiFunData", "ANY", "ANY"), def
 #' 
 #' @keywords internal
 setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
-function(object, obs, xVal){
-  #  if(dimSupp(object) > 1)
-  #    stop("Extracting observations is not implemented yet for functional data of dimension > 1")
-  
-  if(!is.numeric(obs))
-    stop("Supply observations as numeric vector")
-  
-  if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
-    stop("Trying to extract observations that do not exist!")
-  
-  if(!is.list(xVal))
-  {
-    if(is.numeric(xVal))
-      xVal = list(xVal)
-    else
-      stop("Supply xVals for extracted observations either as list or as numeric vector")
-  }
-  
-  if(!any(unlist(xVal) %in% unlist(object@xVal[obs])))
-    stop("Trying to extract x-values that do not exist!")
-  
-  extractxVal <- extractX <- vector("list", length(obs))
-  omit <- NULL
-  
-  for(i in 1:length(obs))
-  {
-    ind <- which(object@xVal[[obs[i]]] %in% unlist(xVal))
-    
-    if(length(ind) == 0)
-    {
-      warning("Some functions were not observed on the given xVal and therefore removed.")
-      
-      omit <- c(omit, i)
-    }
-    
-    extractxVal[[i]] <- object@xVal[[obs[i]]][ind]
-    extractX[[i]] <- object@X[[obs[i]]][ind]
-  }
-  
-  # omit empty observations
-  extractxVal[omit] <- NULL
-  extractX[omit] <- NULL
-  
-  return(irregFunData(extractxVal, extractX))
-})
+          function(object, obs, xVal){
+            #  if(dimSupp(object) > 1)
+            #    stop("Extracting observations is not implemented yet for functional data of dimension > 1")
+            
+            if(!is.numeric(obs))
+              stop("Supply observations as numeric vector")
+            
+            if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
+              stop("Trying to extract observations that do not exist!")
+            
+            if(!is.list(xVal))
+            {
+              if(is.numeric(xVal))
+                xVal = list(xVal)
+              else
+                stop("Supply xVals for extracted observations either as list or as numeric vector")
+            }
+            
+            if(!any(unlist(xVal) %in% unlist(object@xVal[obs])))
+              stop("Trying to extract x-values that do not exist!")
+            
+            extractxVal <- extractX <- vector("list", length(obs))
+            omit <- NULL
+            
+            for(i in 1:length(obs))
+            {
+              ind <- which(object@xVal[[obs[i]]] %in% unlist(xVal))
+              
+              if(length(ind) == 0)
+              {
+                warning("Some functions were not observed on the given xVal and therefore removed.")
+                
+                omit <- c(omit, i)
+              }
+              
+              extractxVal[[i]] <- object@xVal[[obs[i]]][ind]
+              extractX[[i]] <- object@X[[obs[i]]][ind]
+            }
+            
+            # omit empty observations
+            extractxVal[omit] <- NULL
+            extractX[omit] <- NULL
+            
+            return(irregFunData(extractxVal, extractX))
+          })
 
 
 #### integrate ####
