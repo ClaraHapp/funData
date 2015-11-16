@@ -515,30 +515,28 @@ NULL
 
 #' @rdname Arith.funData
 #' 
-#' @importFrom plyr aaply
+#' @importFrom abind abind
 setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
             if(!all.equal(e1@xVal, e2@xVal))
-              stop("Arithmetics: Functions must be defined on the same domain!")
-            
-            if(nObs(e1) == nObs(e2))
-              resX <- methods::callGeneric(e1@X, e2@X)
-            else
+              stop("Arithmetics: Functions must be defined on the same domain!")        
+                   
+            # different number of observations
+            if(nObs(e1) != nObs(e2))
             {
               if(all(c(nObs(e1), nObs(e2)) > 1))
-                stop("Arithmethics: nObs of funData objects is neigther equal nor one.")
+                stop("Arithmetics: nObs of funData objects is neither equal nor one.")
               
-              f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
-              
-              # if one funData object has only a single observation: apply to all of the other object
+              # if one of e1, e2 has only one observation: replicate it nObs(e2) / nObs(e1) times 
+              # is more efficient than aaply / apply
               if(nObs(e1) == 1 & nObs(e2) > 1) 
-                resX <- plyr::aaply(e2@X, 1, function(x){ f(array(e1@X, dim = dim(e1@X)[-1]), x) })
+                e1@X <- do.call(abind::abind, args = list(rep(list(e1@X), nObs(e2)), along = 1) )
               
-              if(nObs(e2) == 1 & nObs(e1) > 1) 
-                resX <- plyr::aaply(e1@X, 1, function(x){ f(x, array(e2@X, dim = dim(e2@X)[-1])) })      
+              if(nObs(e1) > 1 & nObs(e2) == 1) 
+                e2@X <- do.call(abind::abind, args = list(rep(list(e2@X), nObs(e1)), along = 1) )  
             }
             
-            funData(xVal = e1@xVal, X = resX)
+            funData(xVal = e1@xVal, X =  methods::callGeneric(e1@X, e2@X))
           })
 
 #' @rdname Arith.funData

@@ -102,6 +102,7 @@ test_that("Arith", {
   x <- seq(0,1,length.out = 100)
   ind <- replicate(10, sort(sample(1:100, sample(10:20, 1))))
   f1 <- funData(x, t(replicate(40, sin(x) + rnorm(100, sd = 0.1))))
+  f2 <- funData(xVal = list(1:5, 1:6), X = array(1:120, c(4, 5, 6)))
   m1 <- multiFunData(f1, funData(x, t(replicate(40, cos(x) + rnorm(100, sd = 0.1)))))
   i1 <- irregFunData(xVal = lapply(ind, function(i, x){x[i]}, x = f1@xVal[[1]]),
                      X = lapply(1:10, function(i, y){y[i,ind[[i]]]}, y = f1@X))
@@ -110,7 +111,7 @@ test_that("Arith", {
   # Check errors:
   # univariateFD, univariate FD
   expect_error(f1 + extractObs(f1,1:2), 
-               "Arithmethics: nObs of funData objects is neigther equal nor one.")
+               "Arithmetics: nObs of funData objects is neither equal nor one.")
   
   
   # irreg & irreg
@@ -144,6 +145,9 @@ test_that("Arith", {
   expect_equal(f1*f1, f1^2)
   expect_equal(f1/f1, 0*f1+1)
   expect_equal(f1/f1, 1+ f1*0)  
+  # univariate with e1/e2 having only one observation
+  expect_equal(extractObs(f1 + extractObs(f1,1),1), extractObs(2*f1,1), check.attributes = FALSE)
+  expect_equal(extractObs(f2 + extractObs(f2,1),1), extractObs(2*f2,1), check.attributes = FALSE)
   # multivariate & multivariate
   expect_equal(m1+m1, multiFunData(mapply("+", m1, m1)))
   expect_equal(m1-m1, multiFunData(mapply("-", m1, m1)))
