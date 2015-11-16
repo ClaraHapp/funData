@@ -1789,10 +1789,16 @@ setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("mea
 #' @keywords internal
 setMethod("meanFunction", signature = c("funData", "ANY"),
           function(object, na.rm){
-            funData(xVal = object@xVal, X = array(apply(object@X, 1+1:dimSupp(object), mean, na.rm = na.rm),
-                                                  c(1,dim(object@X)[-1]))) # resize to array with one observation
-          })
+            meanX <- colMeans(object@X, na.rm = na.rm, dims = 1) 
             
+            # resize to array with one observation
+            if(dimSupp(object) == 1)
+              dim(meanX) <- length(meanX)
+            dim(meanX) <- c(1, dim(meanX))
+            
+            funData(xVal = object@xVal, X = meanX)
+          })
+
 #' Mean for multivariate functional data
 #'
 #' @seealso \link{meanFunction}
@@ -1800,7 +1806,8 @@ setMethod("meanFunction", signature = c("funData", "ANY"),
 #' @keywords internal
 setMethod("meanFunction", signature = c("multiFunData", "ANY"),
           function(object, na.rm){
-            multiFunData(lapply(object, meanFunction, na.rm))
+            univMean <- selectMethod("meanFunction", "funData")
+            multiFunData(lapply(object, univMean, na.rm))
           })
 
 #' Mean for irregular functional data

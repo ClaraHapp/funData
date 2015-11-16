@@ -364,3 +364,5 @@ test_that("meanFunction",{
   # irregular FD object
   expect_equal(meanFunction(i1), extractObs(i1, 2))
  })
+
+
