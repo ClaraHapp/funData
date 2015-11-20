@@ -7,7 +7,8 @@
 norm(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.}
+\item{object}{An object of class \code{funData}, \code{irregFunData} or
+\code{multiFunData}.}
 
 \item{...}{Further parameters (see Details).}
 }
@@ -25,9 +26,13 @@ the squared norm, otherwise the result is not squared. \item \code{obs}: A
 numeric vector, giving the indices of the observations, for which the norm is
 to be calculated. Defaults to all observations. \item \code{method}: A
 character string, giving the integration method to be used. See
-\link{integrate} for details. \item \code{fullDom}: Logical. If \code{object}
-is of class \linkS4class{irregFunData} and \code{fullDom = TRUE}, all functions are extrapolated
-to the same domain. Defaults to \code{FALSE}. See \link{integrate} for details. }
+\link{integrate} for details. \item \code{weight}: An optional vector of
+weights for the scalar product; particularly useful for multivariate
+functional data, where each entry can be weighted in the scalar product /
+norm. Defaults to 1 for each element. \item \code{fullDom}: Logical. If
+\code{object} is of class \linkS4class{irregFunData} and \code{fullDom =
+TRUE}, all functions are extrapolated to the same domain. Defaults to
+\code{FALSE}. See \link{integrate} for details. }
 }
 \section{Warning}{
  The function is currently implemented only for functional
@@ -46,9 +51,10 @@ norm(irregObject, fullDom = TRUE) # extrapolation (of second function)
 # Multivariate
 multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 norm(multiObject)
+norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to the first element
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData},
-  \code{\link{integrate}}
+\linkS4class{funData}, \linkS4class{irregFunData},
+  \linkS4class{multiFunData}, \code{\link{integrate}}
 }
 

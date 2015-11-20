@@ -4,7 +4,7 @@
 \alias{norm.funData}
 \title{Calculate the norm for univariate functional data}
 \usage{
-norm.funData(object, squared, obs, method)
+norm.funData(object, squared, obs, method, weight)
 }
 \description{
 Calculate the norm for univariate functional data
