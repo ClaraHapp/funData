@@ -6,7 +6,7 @@
 \title{Calculate the norm for univariate functional data}
 \usage{
 \S4method{norm}{funData}(object, squared = TRUE, obs = 1:nObs(object),
-  method = "trapezoidal")
+  method = "trapezoidal", weight = 1)
 }
 \description{
 Calculate the norm for univariate functional data

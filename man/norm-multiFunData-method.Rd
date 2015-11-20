@@ -6,7 +6,7 @@
 \title{Calculate the norm for multivariate functional data}
 \usage{
 \S4method{norm}{multiFunData}(object, squared = TRUE, obs = 1:nObs(object),
-  method = "trapezoidal")
+  method = "trapezoidal", weight = rep(1, length(object)))
 }
 \description{
 Calculate the norm for multivariate functional data

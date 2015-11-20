@@ -194,13 +194,16 @@ test_that("norm", {
                apply((f1^2)@X, 1, function(f, xVal, method){.intWeights(xVal, method) %*% f}, xVal = f1@xVal[[1]], method = "trapezoidal") )
   expect_equal(norm(f1)[1:3], norm(f1, obs = 1:3))   # only some observations
   expect_equal(norm(f1, squared = FALSE)[2], sqrt(norm(f1)[2])) # squared option
+  expect_equal(norm(f1, weight = 2), 2*norm(f1)) # weight (makes little sense for univariate funData objects...)
   # multivariate FD object
   expect_equal(norm(m1), rowSums(sapply(m1, norm, simplify = TRUE))) # all observations
   expect_equal(norm(m1)[1], norm(m1, obs = 1)) # only one observation
   expect_equal(norm(m1, squared = FALSE), sqrt(rowSums(sapply(m1, norm, squared = TRUE, simplify = TRUE)))) # squared option
+  expect_equal(norm(m1, weight = c(2,1)), norm(multiFunData(sqrt(2)*f1,f1))) # with weight
   # irreg FD object  
   expect_equal(norm(i1), c(2/5, 1/80), tolerance = 5e-4) # result calculated explicitly
   expect_equal(norm(i1, fullDom = TRUE), c(2/5, 1/80 + 2*13/96), tolerance = 1e-1) # result calculated explicitly
+  expect_equal(norm(i1, weight = 2), 2*norm(i1)) # weight (makes little sense for univariate funData objects...)
 })
 
 test_that("integrate", {

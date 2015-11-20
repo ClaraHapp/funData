@@ -6,7 +6,7 @@
 \title{Calculate the norm for irregular functional data}
 \usage{
 \S4method{norm}{irregFunData}(object, squared = TRUE, obs = 1:nObs(object),
-  method = "trapezoidal", fullDom = FALSE)
+  method = "trapezoidal", weight = 1, fullDom = FALSE)
 }
 \description{
 Calculate the norm for irregular functional data

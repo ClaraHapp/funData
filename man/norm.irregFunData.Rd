@@ -4,7 +4,7 @@
 \alias{norm.irregFunData}
 \title{Calculate the norm for irregular functional data}
 \usage{
-norm.irregFunData(object, squared, obs, method, fullDom)
+norm.irregFunData(object, squared, obs, method, weight, fullDom)
 }
 \description{
 Calculate the norm for irregular functional data
