@@ -7,7 +7,8 @@
 \title{Plotting multivariate functional data}
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
-  par.plot = NULL, add = FALSE, main = NULL, ...)
+  par.plot = NULL, add = FALSE, main = NULL, xlab = "xVal", ylab = "",
+  ...)
 
 \S4method{plot}{multiFunData,missing}(x, y, ...)
 }
@@ -33,6 +34,12 @@ one-dimensional functions). Defaults to \code{FALSE}.}
 length as \code{dim} (different titles for each dimension) or length
 \code{1} (one title for all dimensions). Defaults to \code{NULL}.}
 
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "xVal" for the
+x-axis and no title for the y-axis for all elements. Can be supplied as a
+vector of the same length as \code{x} (one x-/y-lab for each element) or a
+single strin that is applied for all elements. See
+\code{\link[graphics]{plot}} for details.}
+
 \item{...}{Additional arguments to \code{plot}.}
 }
 \description{
@@ -42,9 +49,8 @@ domain. The graphic device is split in a number of subplots (specified by
 elements are plotted using \code{plot}.
 }
 \section{Warning}{
-
-The function is currently implemented only for functional data with one- and
-two-dimensional domains.
+ The function is currently implemented only for functional
+  data with one- and two-dimensional domains.
 }
 \examples{
 oldpar <- par(no.readonly = TRUE)
@@ -64,7 +70,7 @@ X[1,,] <- outer(xVal, xVal, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
 object2D <- funData(list(xVal, xVal), X)
 
 multiObject <- multiFunData(object1, object2D)
-plot(multiObject, main = c("1st element", "2nd element"), obs = 1) # different titles
+plot(multiObject, main = c("1st element", "2nd element"), obs = 1, xlab = c("xlab1", "xlab2"), ylab = "one ylab for all") # different titles and labels
 plot(multiObject, main = "Multivariate Functional Data", obs = 1) # one title for all
 
 \dontrun{plot(multiObject, main = c("1st element", "2nd element")) # must specify obs!}
