@@ -51,11 +51,7 @@ norm(irregObject, fullDom = TRUE) # extrapolation (of second function)
 # Multivariate
 multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
 norm(multiObject)
-<<<<<<< HEAD
 norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to the first element
-=======
-norm(multiObject, weights = c(2,1)) # with weight vector, giving more weight to the first element
->>>>>>> 94b4f22ea4e3e71bea64692803f5db0514d9dd42
 }
 \seealso{
 \linkS4class{funData}, \linkS4class{irregFunData},
