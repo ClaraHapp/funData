@@ -856,7 +856,7 @@ setMethod("nObsPoints", signature = "irregFunData",
 #' multiObject <- multiFunData(object1, object2)
 #' extractObs(multiObject, obs = 2)
 #' extractObs(multiObject, xVal = list(1:3, list(1:3, c(2,4,6))))
-setGeneric("extractObs", function(object, obs = 1:nObs(object), xVal= getxVal(object)) {
+setGeneric("extractObs", function(object, obs = 1:nObs(object), xVal= getArgvals(object)) {
   standardGeneric("extractObs")
 })
 
@@ -1289,21 +1289,21 @@ setMethod("norm", signature = "irregFunData",
 #' 
 #' Objects of class \code{funData} or \code{irregFunData} have two slots, 
 #' \code{xVal} (for the x-values) and \code{X} (for the y-values for each 
-#' observation). Using the \code{getxVal} and \code{getX} methods for the 
+#' observation). Using the \code{getArgvals} and \code{getX} methods for the 
 #' classes \code{funData} and \code{irregFunData} is equivalent to accessing the
 #' slots directly via \code{object@@xVal} and \code{object@@X}. Analogously, the
-#' \code{setxVal} and \code{setX} functions are equivalent to setting 
-#' \code{object@@xVal} to \code{newxVal} or \code{object@@X} to \code{newX}, 
+#' \code{setArgvals} and \code{setX} functions are equivalent to setting 
+#' \code{object@@xVal} to \code{newArgvals} or \code{object@@X} to \code{newX}, 
 #' respectively. The new values must hence have the same structure as the 
 #' original ones. As an exception, for an object of class \code{funData}  the
 #' number of new observations in \code{newX} may differ from the current. In
 #' this case, the function throws a warning. 
 #' 
 #' Objects of class \code{multiFunData} are lists of several \code{funData} 
-#' objects. The functions \code{getxVal} and \code{getX} for \code{multiFunData}
+#' objects. The functions \code{getArgvals} and \code{getX} for \code{multiFunData}
 #' objects therefore return a list of the same length as \code{object}, where 
 #' each list element corresponds to the \code{xVal} or \code{X} slot of the 
-#' univariate element. The \code{setxVal} and \code{getxVal} functions for 
+#' univariate element. The \code{setArgvals} and \code{getArgvals} functions for 
 #' \code{multiFunData} objects must be lists of the same length as 
 #' \code{object}, where each list element corresponds to the new \code{xVal} or 
 #' new \code{X} slot for the univariate elements.
@@ -1313,7 +1313,7 @@ setMethod("norm", signature = "irregFunData",
 #' 
 #' @param object An object of class \code{funData}, \code{irregFunData} or 
 #'   \code{multiFunData}.
-#' @param newxVal See Details.
+#' @param newArgvals See Details.
 #' @param newX See Details.
 #'   
 #' @return See Details.
@@ -1321,7 +1321,7 @@ setMethod("norm", signature = "irregFunData",
 #' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, 
 #'   \linkS4class{multiFunData}
 #'   
-#' @export getxVal
+#' @export getArgvals
 #'   
 #' @examples
 #' ### Univariate
@@ -1329,15 +1329,15 @@ setMethod("norm", signature = "irregFunData",
 #' object
 #' 
 #' # get-methods
-#' getxVal(object)
+#' getArgvals(object)
 #' getX(object)
 #' 
 #' # set-methods
-#' setxVal(object, 0:4)
+#' setArgvals(object, 0:4)
 #' object # no change
-#' object <- setxVal(object, 0:4) # reassign the result to object
+#' object <- setArgvals(object, 0:4) # reassign the result to object
 #' object # now, xVal is changed
-#' \dontrun{object <- setxVal(object, 1:4)} # wrong length
+#' \dontrun{object <- setArgvals(object, 1:4)} # wrong length
 #' object <- setX(object, rbind(0:4, 5:9))
 #' newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations (was 2 before)
 #' \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
@@ -1347,10 +1347,10 @@ setMethod("norm", signature = "irregFunData",
 #' irregObject
 #' 
 #' # get-methods
-#' getxVal(irregObject)
+#' getArgvals(irregObject)
 #' getX(irregObject)
 #' 
-#' newIrregObject <- setxVal(irregObject, list(0:4, 1:3))
+#' newIrregObject <- setArgvals(irregObject, list(0:4, 1:3))
 #' newIrregObject <- setX(irregObject, list(12:16, 13:15))
 #' 
 #' ### Multivariate
@@ -1358,40 +1358,40 @@ setMethod("norm", signature = "irregFunData",
 #' multiObject
 #' 
 #' # get-methods
-#' getxVal(multiObject)
+#' getArgvals(multiObject)
 #' getX(multiObject)
 #' 
 #' # set-methods (for special cases see univariate version)
-#' multiObject <- setxVal(multiObject, list(5:1, 3:1))
+#' multiObject <- setArgvals(multiObject, list(5:1, 3:1))
 #' multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
-setGeneric("getxVal", function(object) {standardGeneric("getxVal")})
+setGeneric("getArgvals", function(object) {standardGeneric("getArgvals")})
 
 #' Get xVal slot for funData objects
 #'
-#' @seealso \link{getxVal}
+#' @seealso \link{getArgvals}
 #'
 #' @keywords internal
-setMethod("getxVal", signature = "funData",
+setMethod("getArgvals", signature = "funData",
           function(object){object@xVal})
 
 #' Get xVal slot for multiFunData objects
 #'
-#' @seealso \link{getxVal}
+#' @seealso \link{getArgvals}
 #'
 #' @keywords internal
-setMethod("getxVal", signature = "multiFunData",
-          function(object){sapply(object, getxVal)})
+setMethod("getArgvals", signature = "multiFunData",
+          function(object){sapply(object, getArgvals)})
 
 #' Get xVal slot for irregular functional data objects
 #'
-#' @seealso \link{getxVal}
+#' @seealso \link{getArgvals}
 #'
 #' @keywords internal
-setMethod("getxVal", signature = "irregFunData",
+setMethod("getArgvals", signature = "irregFunData",
           function(object){object@xVal})
 
 
-#'@rdname getxVal
+#'@rdname getArgvals
 #'
 #'@export getX
 setGeneric("getX", function(object) {standardGeneric("getX")})
@@ -1422,56 +1422,56 @@ setMethod("getX", signature = "irregFunData",
 
 
 
-#' @rdname getxVal
+#' @rdname getArgvals
 #'
-#' @export setxVal
-setGeneric("setxVal", function(object, newxVal) {standardGeneric("setxVal")})
+#' @export setArgvals
+setGeneric("setArgvals", function(object, newArgvals) {standardGeneric("setArgvals")})
 
 #' Set xVal slot for funData objects
 #'
-#' @seealso \link{setxVal}
+#' @seealso \link{setArgvals}
 #'
 #' @keywords internal
-setMethod("setxVal", signature = "funData",
-          function(object, newxVal){
-            if(is.numeric(newxVal))
-              newxVal <- list(newxVal)
-            object@xVal <- newxVal; validObject(object); return(object)
+setMethod("setArgvals", signature = "funData",
+          function(object, newArgvals){
+            if(is.numeric(newArgvals))
+              newArgvals <- list(newArgvals)
+            object@xVal <- newArgvals; validObject(object); return(object)
           })
 
 #' Set xVal slot for multiFunData objects
 #'
-#' @seealso \link{setxVal}
+#' @seealso \link{setArgvals}
 #'
 #' @keywords internal
-setMethod("setxVal", signature = "multiFunData",
-          function(object, newxVal){
-            if(length(object)!=length(newxVal))
-              stop("setxVal: multiFunData object and newxVal must have the same length")
-            multiFunData(mapply(setxVal, object, newxVal))
+setMethod("setArgvals", signature = "multiFunData",
+          function(object, newArgvals){
+            if(length(object)!=length(newArgvals))
+              stop("setArgvals: multiFunData object and newArgvals must have the same length")
+            multiFunData(mapply(setArgvals, object, newArgvals))
           })
 
 
 #' Set xVal slot for irregular functional objects
 #'
-#' @seealso \link{setxVal}
+#' @seealso \link{setArgvals}
 #'
 #' @keywords internal
-setMethod("setxVal", signature = "irregFunData",
-          function(object, newxVal){
-            if(length(object@xVal) != length(newxVal))
-              stop("setxVal: newxVal must be a list of the same length as the original xVal.")
+setMethod("setArgvals", signature = "irregFunData",
+          function(object, newArgvals){
+            if(length(object@xVal) != length(newArgvals))
+              stop("setArgvals: newArgvals must be a list of the same length as the original xVal.")
             
-            if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newxVal, function(l){length(l)})))
-              stop("setxVal: newxVal must have the same structure as the original xVal.")
+            if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newArgvals, function(l){length(l)})))
+              stop("setArgvals: newArgvals must have the same structure as the original xVal.")
             
-            object@xVal <- newxVal
+            object@xVal <- newArgvals
             
             return(object)
           })
 
 
-#' @rdname getxVal
+#' @rdname getArgvals
 #'
 #' @export setX
 setGeneric("setX", function(object, newX) {standardGeneric("setX")})
@@ -1683,7 +1683,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             if(any(dimSupp(refObject) != dimSupp(newObject)))
               stop("flipFuns: Functions must have the dimension.")
             
-            if(!isTRUE(all.equal(getxVal(refObject), getxVal(newObject))))
+            if(!isTRUE(all.equal(getArgvals(refObject), getArgvals(newObject))))
               stop("flipFuns: Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject

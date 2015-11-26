@@ -125,7 +125,7 @@ test_that("Arith", {
                "Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
    
   # irreg & reg
-  expect_error(i1+setxVal(extractObs(f1, obs = 1:10), x+2),
+  expect_error(i1+setArgvals(extractObs(f1, obs = 1:10), x+2),
                "irregFunData object must be defined on a subdomain of the funData object!")
   expect_error(i1+f1,
                "funData object must have either one observation or the same number of observations as the irregFunData object")
@@ -262,40 +262,40 @@ test_that("set/get", {
   
   #Check errors:
   # univariate FD object (one-dim)
-  expect_error(setxVal(f1, 1:6), 
+  expect_error(setArgvals(f1, 1:6), 
                "xVal and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (xVal)
   expect_error(setX(f1, matrix(1:24, nrow = 4)), 
                "xVal and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (X)
   expect_warning(setX(f1, matrix(1:25, nrow = 5)), 'setX: Number of observations has changed') # warning: more observations
   # univariate FD object (two-dim)
-  expect_error(setxVal(f2, 1:5), 
+  expect_error(setArgvals(f2, 1:5), 
                "xVal and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (xVal)
   expect_error(setX(f2, matrix(1:20, nrow = 4)), 
                "xVal and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (X)
   # multivariate FD object
-  expect_error(setxVal(m, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'setxVal: multiFunData object and newxVal must have the same length') # wrong length (xVal, multiFunData)
+  expect_error(setArgvals(m, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'setArgvals: multiFunData object and newArgvals must have the same length') # wrong length (xVal, multiFunData)
   expect_error(setX(m, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'setX: multiFunData object and newX must have the same length\n') # wrong length (X, multiFunData)
   expect_error(setX(m, list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))), 'setX: newX object must have the same number of observations in all elements!') # different number of observations
   expect_warning(setX(m, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'setX: Number of observations has changed') # warning: more observations
   # irreg FD object
-  expect_error(setxVal(i1, list(1:4)), "setxVal: newxVal must be a list of the same length as the original xVal.")
-  expect_error(setxVal(i1, list(1:6, 1:3)), "setxVal: newxVal must have the same structure as the original xVal.")
+  expect_error(setArgvals(i1, list(1:4)), "setArgvals: newArgvals must be a list of the same length as the original xVal.")
+  expect_error(setArgvals(i1, list(1:6, 1:3)), "setArgvals: newArgvals must have the same structure as the original xVal.")
   expect_error(setX(i1, list(1:4)), "setX: newX must be a list of the same length as the original X.")
   expect_error(setX(i1, list(1:6, 1:3)), "setX: newX must have the same structure as the original X.")
   
   # Check functionality:
   # univariate FD object (one-dim)
-  expect_equal(getxVal(setxVal(f1, list(1+1:5))), list(1+1:5))
-  expect_equal(getxVal(setxVal(f1, 1+1:5)), list(1+1:5)) # special case: one-dimensional domain
+  expect_equal(getArgvals(setArgvals(f1, list(1+1:5))), list(1+1:5))
+  expect_equal(getArgvals(setArgvals(f1, 1+1:5)), list(1+1:5)) # special case: one-dimensional domain
   expect_equal(getX(setX(f1, matrix(1+1:20, nrow = 4))), matrix(1+1:20, nrow = 4))
   # univariate FD object (two-dim)
-  expect_equal(getxVal(setxVal(f2, list(1+1:5, 2+1:6))), list(1+1:5, 2+1:6))  
+  expect_equal(getArgvals(setArgvals(f2, list(1+1:5, 2+1:6))), list(1+1:5, 2+1:6))  
   # multivariate FD object
-  expect_equal(getxVal(setxVal(m, list(list(2+1:5), list(1+1:5, 3+1:6)))), list(list(2+1:5), list(1+1:5, 3+1:6)))
+  expect_equal(getArgvals(setArgvals(m, list(list(2+1:5), list(1+1:5, 3+1:6)))), list(list(2+1:5), list(1+1:5, 3+1:6)))
   expect_equal(getX(setX(m, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))), list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))
-  expect_equal(getxVal(setxVal(m, list(1+1:5, list(2+1:5, 3+1:6)))), list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
+  expect_equal(getArgvals(setArgvals(m, list(1+1:5, list(2+1:5, 3+1:6)))), list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
   # irreg FD object
-  expect_equal(getxVal(setxVal(i1, list(0:4,0:2))), list(0:4, 0:2))
+  expect_equal(getArgvals(setArgvals(i1, list(0:4,0:2))), list(0:4, 0:2))
   expect_equal(getX(setX(i1, list(0:4,0:2))), list(0:4, 0:2))
 })
 

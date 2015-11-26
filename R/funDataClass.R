@@ -31,7 +31,7 @@
 #' \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}. 
 #' Further methods for \code{funData}: \itemize{ \item \code{\link{dimSupp}}, 
 #' \code{\link{nObs}}: Informations about the support dimensions and the number 
-#' of observations, \item \code{\link{getxVal}}, \code{\link{extractObs}}: 
+#' of observations, \item \code{\link{getArgvals}}, \code{\link{extractObs}}: 
 #' Getting/Setting slot values (instead of accessing them directly via 
 #' \code{funData@@xVal, funData@@X}) and extracting single observations or data 
 #' on a subset of the domain, \item \code{\link{integrate}}, \code{\link{norm}}:
@@ -344,7 +344,7 @@ setMethod("as.multiFunData", signature = "funData",
 #' \link[=plot.irregFunData]{plotting} and \link[=Arith.funData]{basic 
 #' arithmetics}. Further methods for \code{irregFunData}: \itemize{ \item 
 #' \code{\link{dimSupp}}, \code{\link{nObs}}: Informations about the support 
-#' dimensions and the number of observations, \item \code{\link{getxVal}}, 
+#' dimensions and the number of observations, \item \code{\link{getArgvals}}, 
 #' \code{\link{extractObs}}: Getting/Setting slot values (instead of accessing 
 #' them directly via \code{irregObject@@xVal, irregObject@@X}) and extracting 
 #' single observations or data on a subset of the domain, \item 
