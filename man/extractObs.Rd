@@ -46,7 +46,7 @@ extractObs(object1, xVal = list(1:3)) # the same as the statement before
 # Univariate - two-dimensional domains
 object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 extractObs(object2, obs = 1)
-extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVals must be supplied as list
+extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVal must be supplied as list
 
 # Univariate - irregular
 irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))

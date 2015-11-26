@@ -844,7 +844,7 @@ setMethod("nObsPoints", signature = "irregFunData",
 #' # Univariate - two-dimensional domains
 #' object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 #' extractObs(object2, obs = 1)
-#' extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVals must be supplied as list
+#' extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVal must be supplied as list
 #' 
 #' # Univariate - irregular
 #' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
@@ -880,7 +880,7 @@ setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
               if(dimSupp(object) == 1 & is.numeric(xVal))
                 xVal = list(xVal)
               else
-                stop("Supply xVals for exstracted observations either as list or as numeric vector (only if support is one-dimensional)")
+                stop("Supply xVal for extracted observations either as list or as numeric vector (only if support is one-dimensional)")
             }
             
             if(!all(unlist(mapply(function(x,y){x%in%y}, xVal,object@xVal))))
@@ -933,7 +933,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
               if(is.numeric(xVal))
                 xVal = list(xVal)
               else
-                stop("Supply xVals for extracted observations either as list or as numeric vector")
+                stop("Supply xVal for extracted observations either as list or as numeric vector")
             }
             
             if(!any(unlist(xVal) %in% unlist(object@xVal[obs])))
