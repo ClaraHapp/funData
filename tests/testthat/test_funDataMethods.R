@@ -64,19 +64,19 @@ test_that("extractObs", {
   expect_error(extractObs(f1, obs = 5), 
                "Trying to extract observations that do not exist!") # observation does not exist
   expect_error(extractObs(f1, argvals = list(4:6)), 
-               "Trying to extract x-values that do not exist!") # argvalss do not exist
+               "Trying to extract x-values that do not exist!") # argvals do not exist
   expect_error(extractObs(f1, argvals = "a"), # wrong data type
-               "Supply argvalss for exstracted observations either as list or as numeric vector (only if support is one-dimensional)", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
+               "Supply argvals for extracted observations either as list or as numeric vector (only if support is one-dimensional)", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
   # univariate FD object (two-dim)
   expect_error(extractObs(f2, argvals = 1:5),
-               "Supply argvalss for exstracted observations either as list or as numeric vector (only if support is one-dimensional", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
+               "Supply argvals for extracted observations either as list or as numeric vector (only if support is one-dimensional", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
   # irreg FD object
   expect_error(extractObs(i1, obs = list(1:3)), 
                "Supply observations as numeric vector")
   expect_error(extractObs(i1, obs = 3),
                "Trying to extract observations that do not exist!")
   expect_error(extractObs(extractObs(i1, argvals = "1")),
-               "Supply argvalss for extracted observations either as list or as numeric vector")
+               "Supply argvals for extracted observations either as list or as numeric vector")
   expect_error(extractObs(i1, argvals = 6),
                "Trying to extract x-values that do not exist!")
   expect_warning(extractObs(i1, argvals = 4:5),
