@@ -7,8 +7,8 @@
 \title{Plotting univariate functional data}
 \usage{
 plot.funData(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
-  col = NULL, xlab = "xVal", ylab = "", legend = TRUE, plotNA = FALSE,
-  add = FALSE, ...)
+  col = NULL, xlab = "argvals", ylab = "", legend = TRUE,
+  plotNA = FALSE, add = FALSE, ...)
 
 \S4method{plot}{funData,missing}(x, y, ...)
 }
@@ -36,7 +36,7 @@ value), one-dimensional functions are plotted in the
 plotted using \code{\link[fields]{tim.colors}} from package
 \code{\link[fields]{fields-package}}.}
 
-\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "xVal" for the
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
 x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for
 details.}
 
@@ -74,17 +74,17 @@ two-dimensional domains.
 oldpar <- par(no.readonly = TRUE)
 
 # One-dimensional
-xVal <- seq(0,2*pi,0.01)
-object <- funData(xVal,
-                   outer(seq(0.75, 1.25, length.out = 11), sin(xVal)))
+argvals <- seq(0,2*pi,0.01)
+object <- funData(argvals,
+                   outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
 
 plot(object, main = "One-dimensional functional data")
 
 # Two-dimensional
-X <- array(0, dim = c(2, length(xVal), length(xVal)))
-X[1,,] <- outer(xVal, xVal, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-X[2,,] <- outer(xVal, xVal, function(x,y){sin(2*x*pi)*cos(2*y*pi)})
-object2D <- funData(list(xVal, xVal), X)
+X <- array(0, dim = c(2, length(argvals), length(argvals)))
+X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
+X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi)*cos(2*y*pi)})
+object2D <- funData(list(argvals, argvals), X)
 
 plot(object2D, main = "Two-dimensional functional data (obs 1)", obs = 1)
 plot(object2D, main = "Two-dimensional functional data (obs 2)", obs = 2)

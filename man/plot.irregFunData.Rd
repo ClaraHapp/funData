@@ -7,8 +7,8 @@
 \title{Plotting irregular functional data}
 \usage{
 plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
-  col = rainbow(nObs(x)), xlab = "xVal", ylab = "",
-  xlim = range(x@xVal[obs]), ylim = range(x@X[obs]), add = FALSE, ...)
+  col = rainbow(nObs(x)), xlab = "argvals", ylab = "",
+  xlim = range(x@argvals[obs]), ylim = range(x@X[obs]), add = FALSE, ...)
 
 \S4method{plot}{irregFunData,missing}(x, y, ...)
 }
@@ -29,7 +29,7 @@ all observations in \code{x}.}
 \item{col}{The color of the functions. Defaults to the
 \code{\link[grDevices]{rainbow}} palette.}
 
-\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "xVal" for the
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
 x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for
 details.}
 
@@ -49,10 +49,10 @@ domain.
 oldpar <- par(no.readonly = TRUE)
 
 # Generate data
-xVal <- seq(0,2*pi,0.01)
-ind <- replicate(5, sort(sample(1:length(xVal), sample(5:10,1))))
-object <- irregFunData(xVal = lapply(ind, function(i){xVal[i]}),
-                  X = lapply(ind, function(i){sample(1:10, 1)/10*xVal[i]^2}))
+argvals <- seq(0,2*pi,0.01)
+ind <- replicate(5, sort(sample(1:length(argvals), sample(5:10,1))))
+object <- irregFunData(argvals = lapply(ind, function(i){argvals[i]}),
+                  X = lapply(ind, function(i){sample(1:10, 1)/10*argvals[i]^2}))
 
 plot(object, main = "Irregular functional data")
 

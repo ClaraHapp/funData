@@ -5,7 +5,7 @@
 \alias{irregFunData-constructor}
 \title{Constructor for irregular functional data objects}
 \usage{
-irregFunData(xVal, X)
+irregFunData(argvals, X)
 }
 \description{
 Constructor for irregular functional data objects

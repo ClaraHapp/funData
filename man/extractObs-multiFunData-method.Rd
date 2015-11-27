@@ -6,7 +6,7 @@
 \title{extractObs for multiFunData objects}
 \usage{
 \S4method{extractObs}{multiFunData}(object, obs = 1:nObs(object),
-  xVal = getxVal(object))
+  argvals = getArgvals(object))
 }
 \description{
 extractObs for multiFunData objects

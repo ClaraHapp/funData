@@ -17,15 +17,15 @@ This functions returns the number of observations in a \code{funData}, \code{irr
 }
 \examples{
 # Univariate
-object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 nObs(object)
 
 # Univariate (irregular)
-irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 nObs(irregObject)
 
 # Multivariate
-multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
+multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 nObs(multiObject)
 }
 \seealso{

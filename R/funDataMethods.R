@@ -11,16 +11,16 @@
 #'
 #' @keywords internal
 print.funData <- function(x,...){
-  cat("Functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\nxVal:\n")
+  cat("Functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\nargvals:\n")
   
   for(i in 1:dimSupp(x))
   {
     cat("\t")
-    if(length(x@xVal[[i]]) > 5)
-      cat(x@xVal[[i]][1], x@xVal[[i]][2], "...", x@xVal[[i]][length(x@xVal[[i]])])
+    if(length(x@argvals[[i]]) > 5)
+      cat(x@argvals[[i]][1], x@argvals[[i]][2], "...", x@argvals[[i]][length(x@argvals[[i]])])
     else
-      cat(x@xVal[[i]])
-    cat("\t\t(", length(x@xVal[[i]]), " sampling points)\n", sep = "")
+      cat(x@argvals[[i]])
+    cat("\t\t(", length(x@argvals[[i]]), " sampling points)\n", sep = "")
   }
   
   cat("X:\n\tarray of size", paste(dim(x@X), collapse = " x "),"\n")
@@ -49,11 +49,11 @@ setMethod("show", signature = "funData",
 print.irregFunData <- function(x,...){
   cat("Irregular functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\n")
   
-  cat("xVal:\n\tValues in ", paste(round(range(x@xVal),3), collapse = " ... "), ".\n", sep = "")
+  cat("argvals:\n\tValues in ", paste(round(range(x@argvals),3), collapse = " ... "), ".\n", sep = "")
   
   cat("X:\n\tValues in ", paste(round(range(x@X),3), collapse = " ... "),".\n", sep = "")
   
-  cat("Total:\n\t", length(unlist(x@xVal)), " observations on " , length(unique(unlist(x@xVal))), " different x-values (",
+  cat("Total:\n\t", length(unlist(x@argvals)), " observations on " , length(unique(unlist(x@argvals))), " different x-values (",
       paste(range(nObsPoints(x)), collapse = " - "), " per observation).\n", sep = "")
 }
 
@@ -89,15 +89,15 @@ setMethod("show", signature = "irregFunData",
 #'
 #' @examples
 #' # Univariate (one-dimensional)
-#' object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' dimSupp(object1)
 #'
 #' # Univariate (two-dimensional)
-#' object2 <- funData(xVal = list(1:10, 1:5), X = array(rnorm(100), dim = c(2,10,5)))
+#' object2 <- funData(argvals = list(1:10, 1:5), X = array(rnorm(100), dim = c(2,10,5)))
 #' dimSupp(object2)
 #' 
 #' # Univariate (irregular)
-#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' dimSupp(irregObject)
 #'
 #' # Multivariate
@@ -110,7 +110,7 @@ setGeneric("dimSupp", function(object) {standardGeneric("dimSupp")})
 #'
 #' @keywords internal
 setMethod("dimSupp", signature = "funData",
-          function(object){length(object@xVal)})
+          function(object){length(object@argvals)})
 
 
 #' dimSupp for multiFunData objects
@@ -123,7 +123,7 @@ setMethod("dimSupp", signature = "multiFunData",
 #'
 #' @keywords internal
 setMethod("dimSupp", signature = "irregFunData",
-          function(object){length(dim(as.array(object@xVal[[1]])))})
+          function(object){length(dim(as.array(object@argvals[[1]])))})
 
 #### Plot ####
 
@@ -158,7 +158,7 @@ setMethod("dimSupp", signature = "irregFunData",
 #'   \code{\link[grDevices]{rainbow}} palette and two-dimensional functions are
 #'   plotted using \code{\link[fields]{tim.colors}} from package
 #'   \code{\link[fields]{fields-package}}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to "xVal" for the
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the
 #'   x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for
 #'   details.
 #' @param legend Logical. If \code{TRUE}, a color legend is plotted for
@@ -180,17 +180,17 @@ setMethod("dimSupp", signature = "irregFunData",
 #' oldpar <- par(no.readonly = TRUE)
 #'
 #' # One-dimensional
-#' xVal <- seq(0,2*pi,0.01)
-#' object <- funData(xVal,
-#'                    outer(seq(0.75, 1.25, length.out = 11), sin(xVal)))
+#' argvals <- seq(0,2*pi,0.01)
+#' object <- funData(argvals,
+#'                    outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
 #'
 #' plot(object, main = "One-dimensional functional data")
 #'
 #' # Two-dimensional
-#' X <- array(0, dim = c(2, length(xVal), length(xVal)))
-#' X[1,,] <- outer(xVal, xVal, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-#' X[2,,] <- outer(xVal, xVal, function(x,y){sin(2*x*pi)*cos(2*y*pi)})
-#' object2D <- funData(list(xVal, xVal), X)
+#' X <- array(0, dim = c(2, length(argvals), length(argvals)))
+#' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
+#' X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi)*cos(2*y*pi)})
+#' object2D <- funData(list(argvals, argvals), X)
 #'
 #' plot(object2D, main = "Two-dimensional functional data (obs 1)", obs = 1)
 #' plot(object2D, main = "Two-dimensional functional data (obs 2)", obs = 2)
@@ -216,7 +216,7 @@ setMethod("dimSupp", signature = "irregFunData",
 
 #' par(oldpar)
 plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
-                         col =NULL, xlab = "xVal", ylab = "", legend = TRUE,
+                         col =NULL, xlab = "argvals", ylab = "", legend = TRUE,
                          plotNA = FALSE, add = FALSE, ...)
 {
   if(dimSupp(x) > 2)
@@ -233,7 +233,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
       # require zoo
       if (requireNamespace("zoo", quietly = TRUE))
       {
-        matplot(x = x@xVal[[1]], y = zoo::na.approx(t(x@X[obs,, drop = FALSE])), type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, ...)
+        matplot(x = x@argvals[[1]], y = zoo::na.approx(t(x@X[obs,, drop = FALSE])), type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, ...)
         
         add = TRUE # add the standard plot
       }
@@ -241,7 +241,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
         warning("Package zoo needed for interpolating missing values in plot for funData. Ignoring plotNA = TRUE.")
     }
     
-    matplot(x = x@xVal[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
+    matplot(x = x@argvals[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
   }
   if(dimSupp(x) == 2)
   {
@@ -257,11 +257,11 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
     
     if(legend == TRUE)
     {
-      fields::image.plot(x = x@xVal[[1]], y = x@xVal[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
+      fields::image.plot(x = x@argvals[[1]], y = x@argvals[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
     }
     else
     {
-      image(x = x@xVal[[1]], y = x@xVal[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
+      image(x = x@argvals[[1]], y = x@argvals[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
     }
     
     
@@ -293,7 +293,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param main A string vector, giving the title of the plot. Can have the same 
 #'   length as \code{dim} (different titles for each dimension) or length 
 #'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to "xVal" for the 
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the 
 #'   x-axis and no title for the y-axis for all elements. Can be supplied as a
 #'   vector of the same length as \code{x} (one x-/y-lab for each element) or a
 #'   single strin that is applied for all elements. See
@@ -305,20 +305,20 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
-#' xVal <- seq(0, 2*pi, 0.1)
+#' argvals <- seq(0, 2*pi, 0.1)
 #' 
 #' # One-dimensional elements
-#' object1 <- funData(xVal, outer(seq(0.75, 1.25, length.out = 11), sin(xVal)))
-#' object2 <- funData(xVal, outer(seq(0.75, 1.25, length.out = 11), cos(xVal)))
+#' object1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
+#' object2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
 #' 
 #' multiObject <- multiFunData(object1, object2)
 #' plot(multiObject, main = c("1st element", "2nd element")) # different titles
 #' plot(multiObject, main = "Multivariate Functional Data") # one title for all
 #' 
 #' # Mixed-dimensional elements
-#' X <- array(0, dim = c(11, length(xVal), length(xVal)))
-#' X[1,,] <- outer(xVal, xVal, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-#' object2D <- funData(list(xVal, xVal), X)
+#' X <- array(0, dim = c(11, length(argvals), length(argvals)))
+#' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
+#' object2D <- funData(list(argvals, argvals), X)
 #' 
 #' multiObject <- multiFunData(object1, object2D)
 #' plot(multiObject, main = c("1st element", "2nd element"), obs = 1, xlab = c("xlab1", "xlab2"), ylab = "one ylab for all") # different titles and labels
@@ -329,7 +329,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' 
 #' par(oldpar)
 plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, add = FALSE, main = NULL, 
-                              xlab = "xVal", ylab=  "", ...){
+                              xlab = "argvals", ylab=  "", ...){
   
   if(length(xlab) == 1)
     xlab <- rep(xlab, length(x))
@@ -382,7 +382,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #'   \code{\link[graphics]{par}} for details.
 #' @param col The color of the functions. Defaults to the 
 #'   \code{\link[grDevices]{rainbow}} palette.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to "xVal" for the 
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the 
 #'   x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for 
 #'   details.
 #' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of
@@ -397,17 +397,17 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' oldpar <- par(no.readonly = TRUE)
 #' 
 #' # Generate data
-#' xVal <- seq(0,2*pi,0.01)
-#' ind <- replicate(5, sort(sample(1:length(xVal), sample(5:10,1))))
-#' object <- irregFunData(xVal = lapply(ind, function(i){xVal[i]}),
-#'                   X = lapply(ind, function(i){sample(1:10, 1)/10*xVal[i]^2}))
+#' argvals <- seq(0,2*pi,0.01)
+#' ind <- replicate(5, sort(sample(1:length(argvals), sample(5:10,1))))
+#' object <- irregFunData(argvals = lapply(ind, function(i){argvals[i]}),
+#'                   X = lapply(ind, function(i){sample(1:10, 1)/10*argvals[i]^2}))
 #' 
 #' plot(object, main = "Irregular functional data")
 #' 
 #' par(oldpar)
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
-                              col =rainbow(nObs(x)), xlab = "xVal", ylab = "",
-                              xlim = range(x@xVal[obs]), ylim = range(x@X[obs]),
+                              col =rainbow(nObs(x)), xlab = "argvals", ylab = "",
+                              xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               add = FALSE, ...)
 {
   if(length(col) < nObs(x))
@@ -419,7 +419,7 @@ plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
   }
   
   for(i in obs)
-    points(x = x@xVal[[i]], y = x@X[[i]], type = type, pch = pch, col = col[i], ...)
+    points(x = x@argvals[[i]], y = x@X[[i]], type = type, pch = pch, col = col[i], ...)
   
 }
 
@@ -487,9 +487,9 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' oldpar <- par(no.readonly = TRUE)
 #' par(mfrow = c(3,2), mar = rep(2.1,4))
 #' 
-#' xVal <- seq(0, 2*pi, 0.01)
-#' object1 <- funData(xVal, outer(seq(0.75, 1.25, by = 0.05), sin(xVal)))
-#' object2 <- funData(xVal, outer(seq(0.75, 1.25, by = 0.05), cos(xVal)))
+#' argvals <- seq(0, 2*pi, 0.01)
+#' object1 <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
+#' object2 <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), cos(argvals)))
 #' 
 #' plot(object1, main = "Object1")
 #' plot(object2, main = "Object2")
@@ -503,12 +503,12 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' plot(object1^2 + object2^2, main = "Pythagoras")
 #' 
 #' ### Irregular
-#' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10, 1))))
+#' ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10, 1))))
 #' i1 <- irregFunData(
-#'    xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@@xVal[[1]]),
+#'    argvals = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object1@@argvals[[1]]),
 #'    X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object1@@X))
 #' i2 <- irregFunData(
-#'    xVal = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@xVal[[1]]),
+#'    argvals = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@argvals[[1]]),
 #'    X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@@X))
 #' 
 #' plot(i1, main = "Object 1 (irregular)")
@@ -529,7 +529,7 @@ NULL
 #' @importFrom abind abind
 setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
-            if(!all.equal(e1@xVal, e2@xVal))
+            if(!all.equal(e1@argvals, e2@argvals))
               stop("Arithmetics: Functions must be defined on the same domain!")        
                    
             # different number of observations
@@ -547,19 +547,19 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
                 e2@X <- do.call(abind::abind, args = list(rep(list(e2@X), nObs(e1)), along = 1) )  
             }
             
-            funData(xVal = e1@xVal, X =  methods::callGeneric(e1@X, e2@X))
+            funData(argvals = e1@argvals, X =  methods::callGeneric(e1@X, e2@X))
           })
 
 #' @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "funData", e2 = "numeric"),
           function(e1, e2) {
-            funData(xVal = e1@xVal, X = methods::callGeneric(e1@X, e2))
+            funData(argvals = e1@argvals, X = methods::callGeneric(e1@X, e2))
           })
 
 #' @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "numeric", e2 = "funData"),
           function(e1, e2) {
-            funData(xVal = e2@xVal, X = methods::callGeneric(e1, e2@X))
+            funData(argvals = e2@argvals, X = methods::callGeneric(e1, e2@X))
           })
 
 
@@ -598,14 +598,14 @@ setMethod("Arith", signature = signature(e1 = "numeric", e2 = "multiFunData"),
 setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "numeric"),
           function(e1, e2) {
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
-            irregFunData(xVal = e1@xVal, X = lapply(e1@X, function(x){f(x,e2)}))
+            irregFunData(argvals = e1@argvals, X = lapply(e1@X, function(x){f(x,e2)}))
           })
 
 #' @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "numeric", e2 = "irregFunData"),
           function(e1, e2) {
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
-            irregFunData(xVal = e2@xVal, X = lapply(e2@X, function(x){f(e1,x)}))
+            irregFunData(argvals = e2@argvals, X = lapply(e2@X, function(x){f(e1,x)}))
           })
 
 #' @rdname Arith.funData
@@ -617,21 +617,21 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
             {
               if(nObs(e1) == 1)
               {
-                if(!all(unlist(e2@xVal) %in% unlist(e1@xVal)))
+                if(!all(unlist(e2@argvals) %in% unlist(e1@argvals)))
                   stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
                 
-                res <- irregFunData(xVal = e2@xVal, 
-                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e1@xVal[[1]] %in% e2@xVal[[i]])], e2@X[[i]])}))
+                res <- irregFunData(argvals = e2@argvals, 
+                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]])}))
               }
               else
               {
                 if(nObs(e2) == 1)
                 {
-                  if(!all(unlist(e1@xVal) %in% unlist(e2@xVal)))
+                  if(!all(unlist(e1@argvals) %in% unlist(e2@argvals)))
                     stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
                   
-                  res <- irregFunData(xVal = e1@xVal,
-                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e2@xVal[[1]] %in% e1@xVal[[i]])])}))
+                  res <- irregFunData(argvals = e1@argvals,
+                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])])}))
                 }
                 else
                   stop("Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
@@ -639,10 +639,10 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
             }            
             else
             {
-              if(!isTRUE(all.equal(e1@xVal, e2@xVal)))
+              if(!isTRUE(all.equal(e1@argvals, e2@argvals)))
                 stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
               
-              res <- irregFunData(xVal = e1@xVal, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
+              res <- irregFunData(argvals = e1@argvals, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
             }
             
             return(res)
@@ -654,7 +654,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
             #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
             
-            if(!any(unlist(e1@xVal) %in% e2@xVal[[1]]))
+            if(!any(unlist(e1@argvals) %in% e2@argvals[[1]]))
               stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
@@ -666,7 +666,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
                 stop("funData object must have either one observation or the same number of observations as the irregFunData object")
             }
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
-            irregFunData(xVal = e1@xVal, X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[i,e2@xVal[[1]] %in% e1@xVal[[i]]])}, simplify = FALSE))
+            irregFunData(argvals = e1@argvals, X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[i,e2@argvals[[1]] %in% e1@argvals[[i]]])}, simplify = FALSE))
           })
 
 #' @rdname Arith.funData
@@ -675,7 +675,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
             #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
             
-            if(!any(unlist(e2@xVal) %in% e1@xVal[[1]]))
+            if(!any(unlist(e2@argvals) %in% e1@argvals[[1]]))
               stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
@@ -687,7 +687,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
                 stop("funData object must have either one observation or the same number of observations as the irregFunData object")
             }
             f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
-            irregFunData(xVal = e2@xVal, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@xVal[[1]] %in% e2@xVal[[i]]])}, simplify = FALSE))
+            irregFunData(argvals = e2@argvals, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]])}, simplify = FALSE))
           })
 
 #### nObs ####
@@ -706,15 +706,15 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
 #'
 #' @examples
 #' # Univariate
-#' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' nObs(object)
 #' 
 #' # Univariate (irregular)
-#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' nObs(irregObject)
 #'
 #' # Multivariate
-#' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
+#' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' nObs(multiObject)
 setGeneric("nObs", function(object) {standardGeneric("nObs")})
 
@@ -769,11 +769,11 @@ setMethod("nObs", signature = "irregFunData",
 #'   
 #' @examples
 #' # Univariate (one-dimensional)
-#' object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' nObsPoints(object1)
 #' 
 #' # Univariate (two-dimensional)
-#' object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
+#' object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 #' nObsPoints(object2)
 #' 
 #' # Multivariate
@@ -781,7 +781,7 @@ setMethod("nObs", signature = "irregFunData",
 #' nObsPoints(multiObject)
 #' 
 #' # Univariate (irregular)
-#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' nObsPoints(irregObject)
 setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 
@@ -789,7 +789,7 @@ setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "funData", 
-          function(object){sapply(object@xVal, length)})
+          function(object){sapply(object@argvals, length)})
 
 #' nObsPoints for multiFunData objects
 #'
@@ -801,7 +801,7 @@ setMethod("nObsPoints", signature = "multiFunData",
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "irregFunData", 
-          function(object){sapply(object@xVal, length)})
+          function(object){sapply(object@argvals, length)})
 
 #### extractObs ####
 
@@ -822,8 +822,8 @@ setMethod("nObsPoints", signature = "irregFunData",
 #'   \code{multiFunData}.
 #' @param obs A numeric vector, giving the indices of the observations to 
 #'   extract (default: all obervations).
-#' @param xVal The part of the domain to be extracted (default: the whole domain
-#'   object@@xVal). Must be a list or a numeric vector (only for one-dimensional
+#' @param argvals The part of the domain to be extracted (default: the whole domain
+#'   object@@argvals). Must be a list or a numeric vector (only for one-dimensional
 #'   domains, see also the definition of \linkS4class{funData}, 
 #'   \linkS4class{multiFunData}).
 #'   
@@ -836,27 +836,27 @@ setMethod("nObsPoints", signature = "irregFunData",
 #'   
 #' @examples
 #' # Univariate - one-dimensional domain
-#' object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' extractObs(object1, obs = 1)
-#' extractObs(object1, xVal = 1:3)
-#' extractObs(object1, xVal = list(1:3)) # the same as the statement before
+#' extractObs(object1, argvals = 1:3)
+#' extractObs(object1, argvals = list(1:3)) # the same as the statement before
 #' 
 #' # Univariate - two-dimensional domains
-#' object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
+#' object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 #' extractObs(object2, obs = 1)
-#' extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVals must be supplied as list
+#' extractObs(object2, argvals = list(1:3, c(2,4,6))) # argvals must be supplied as list
 #' 
 #' # Univariate - irregular
-#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' extractObs(irregObject, obs = 2)
-#' extractObs(irregObject, xVal = 1:3)
-#' extractObs(irregObject, xVal = c(1,5)) # throws a warning, as second function has no observations
+#' extractObs(irregObject, argvals = 1:3)
+#' extractObs(irregObject, argvals = c(1,5)) # throws a warning, as second function has no observations
 #' 
 #' # Multivariate
 #' multiObject <- multiFunData(object1, object2)
 #' extractObs(multiObject, obs = 2)
-#' extractObs(multiObject, xVal = list(1:3, list(1:3, c(2,4,6))))
-setGeneric("extractObs", function(object, obs = 1:nObs(object), xVal= getxVal(object)) {
+#' extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
+setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals= getArgvals(object)) {
   standardGeneric("extractObs")
 })
 
@@ -864,7 +864,7 @@ setGeneric("extractObs", function(object, obs = 1:nObs(object), xVal= getxVal(ob
 #'
 #' @keywords internal
 setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
-          function(object, obs, xVal){
+          function(object, obs, argvals){
             
             if(dimSupp(object) > 3)
               stop("extracting observations is not implemented yet for functional data of dimension > 3")
@@ -875,50 +875,50 @@ setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
             if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
               stop("Trying to extract observations that do not exist!")
             
-            if(!is.list(xVal))
+            if(!is.list(argvals))
             {
-              if(dimSupp(object) == 1 & is.numeric(xVal))
-                xVal = list(xVal)
+              if(dimSupp(object) == 1 & is.numeric(argvals))
+                argvals = list(argvals)
               else
-                stop("Supply xVals for exstracted observations either as list or as numeric vector (only if support is one-dimensional)")
+                stop("Supply argvals for extracted observations either as list or as numeric vector (only if support is one-dimensional)")
             }
             
-            if(!all(unlist(mapply(function(x,y){x%in%y}, xVal,object@xVal))))
+            if(!all(unlist(mapply(function(x,y){x%in%y}, argvals,object@argvals))))
               stop("Trying to extract x-values that do not exist!")
             
             if(dimSupp(object) == 1)
-              return(funData(xVal, object@X[obs,
-                                            object@xVal[[1]] %in% xVal[[1]], drop = FALSE]))
+              return(funData(argvals, object@X[obs,
+                                            object@argvals[[1]] %in% argvals[[1]], drop = FALSE]))
             
             if(dimSupp(object) == 2)
-              return(funData(xVal, object@X[obs,
-                                            object@xVal[[1]] %in% xVal[[1]],
-                                            object@xVal[[2]] %in% xVal[[2]], drop = FALSE]))
+              return(funData(argvals, object@X[obs,
+                                            object@argvals[[1]] %in% argvals[[1]],
+                                            object@argvals[[2]] %in% argvals[[2]], drop = FALSE]))
             
             if(dimSupp(object) == 3)
-              return(funData(xVal, object@X[obs,
-                                            object@xVal[[1]] %in% xVal[[1]],
-                                            object@xVal[[2]] %in% xVal[[2]], 
-                                            object@xVal[[3]] %in% xVal[[3]], drop = FALSE]))
+              return(funData(argvals, object@X[obs,
+                                            object@argvals[[1]] %in% argvals[[1]],
+                                            object@argvals[[2]] %in% argvals[[2]], 
+                                            object@argvals[[3]] %in% argvals[[3]], drop = FALSE]))
           })
 
 #' extractObs for multiFunData objects
 #'
 #' @keywords internal
-setMethod("extractObs", signature = signature("multiFunData", "ANY", "ANY"), def = function(object, obs, xVal){
-  if(!missing(xVal) & !is.list(xVal))
-    stop("extractObs for multiFunData: xVal must be supplied as list (or missing).")
+setMethod("extractObs", signature = signature("multiFunData", "ANY", "ANY"), def = function(object, obs, argvals){
+  if(!missing(argvals) & !is.list(argvals))
+    stop("extractObs for multiFunData: argvals must be supplied as list (or missing).")
   if(is.list(obs))
-    res <-   multiFunData(mapply(extractObs, object = object, obs = obs, xVal = xVal))
+    res <-   multiFunData(mapply(extractObs, object = object, obs = obs, argvals = argvals))
   else
-    res <-  multiFunData(mapply(extractObs, object = object, xVal = xVal, MoreArgs = list(obs = obs)))
+    res <-  multiFunData(mapply(extractObs, object = object, argvals = argvals, MoreArgs = list(obs = obs)))
 })
 
 #' extractObs for irregular functional data
 #' 
 #' @keywords internal
 setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
-          function(object, obs, xVal){
+          function(object, obs, argvals){
             #  if(dimSupp(object) > 1)
             #    stop("Extracting observations is not implemented yet for functional data of dimension > 1")
             
@@ -928,40 +928,40 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
             if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
               stop("Trying to extract observations that do not exist!")
             
-            if(!is.list(xVal))
+            if(!is.list(argvals))
             {
-              if(is.numeric(xVal))
-                xVal = list(xVal)
+              if(is.numeric(argvals))
+                argvals = list(argvals)
               else
-                stop("Supply xVals for extracted observations either as list or as numeric vector")
+                stop("Supply argvals for extracted observations either as list or as numeric vector")
             }
             
-            if(!any(unlist(xVal) %in% unlist(object@xVal[obs])))
+            if(!any(unlist(argvals) %in% unlist(object@argvals[obs])))
               stop("Trying to extract x-values that do not exist!")
             
-            extractxVal <- extractX <- vector("list", length(obs))
+            extractargvals <- extractX <- vector("list", length(obs))
             omit <- NULL
             
             for(i in 1:length(obs))
             {
-              ind <- which(object@xVal[[obs[i]]] %in% unlist(xVal))
+              ind <- which(object@argvals[[obs[i]]] %in% unlist(argvals))
               
               if(length(ind) == 0)
               {
-                warning("Some functions were not observed on the given xVal and therefore removed.")
+                warning("Some functions were not observed on the given argvals and therefore removed.")
                 
                 omit <- c(omit, i)
               }
               
-              extractxVal[[i]] <- object@xVal[[obs[i]]][ind]
+              extractargvals[[i]] <- object@argvals[[obs[i]]][ind]
               extractX[[i]] <- object@X[[obs[i]]][ind]
             }
             
             # omit empty observations
-            extractxVal[omit] <- NULL
+            extractargvals[omit] <- NULL
             extractX[omit] <- NULL
             
-            return(irregFunData(extractxVal, extractX))
+            return(irregFunData(extractargvals, extractX))
           })
 
 
@@ -996,16 +996,16 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #'   
 #' @examples
 #' # Univariate
-#' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' integrate(object)
 #' 
 #' # Univariate (irregular)
-#' irregObject <-irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' irregObject <-irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' integrate(irregObject) # fullDom = FALSE
 #' integrate(irregObject, fullDom = TRUE)
 #' 
 #' # Multivariate
-#' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
+#' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' integrate(multiObject)
 setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
 
@@ -1015,7 +1015,7 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
 #'
 #' This function calculates the weights for numerical integration
 #'
-#' @param xVal A numeric vector of x-Values
+#' @param argvals A numeric vector of x-Values
 #' @param method A character string, giving the numerical integration method to use (default is \code{trapezoidal}, alternatively use \code{midpoint})
 #'
 #' @return A vector of integration weights
@@ -1023,18 +1023,18 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
 #' @seealso \ref{integrate}
 #'
 #' @keywords internal
-.intWeights <- function(xVal, method = "trapezoidal")
+.intWeights <- function(argvals, method = "trapezoidal")
 {
-  if(method == "trapezoidal" & (length(xVal) < 3))
+  if(method == "trapezoidal" & (length(argvals) < 3))
   {
     method <- "midpoint"
     warning("Trapezoidal quadrature is not applicable for functions with < 3 observation points. 'method' changed to 'midpoint'.")
   } 
   
   ret <- switch(method,
-                midpoint = c(0,diff(xVal)),
-                trapezoidal = {D <- length(xVal)
-                               1/2*c(xVal[2] - xVal[1], xVal[3:D] -xVal[1:(D-2)], xVal[D] - xVal[D-1])},
+                midpoint = c(0,diff(argvals)),
+                trapezoidal = {D <- length(argvals)
+                               1/2*c(argvals[2] - argvals[1], argvals[3:D] -argvals[1:(D-2)], argvals[D] - argvals[D-1])},
                 stop("function intWeights: choose either midpoint or trapezoidal quadrature rule"))
   
   return(ret)
@@ -1043,14 +1043,14 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
 #' Integrate a function on a rectangular 3D grid
 #' 
 #' @param f A 3D array, representing the function evaluations on the grid
-#' @param xVal A list with 3 elements, representing the grid points in the first, second and third dimension of f
+#' @param argvals A list with 3 elements, representing the grid points in the first, second and third dimension of f
 #' 
 #' @return The result of the numerical integration of f on the given grid.
 #' 
 #' @keywords internal
-integrate3D <- function(f, xVal)
+integrate3D <- function(f, argvals)
 {
-  res <- t(.intWeights(xVal[[1]])) %*% apply(f, 1:2, function(w){w %*% .intWeights(xVal[[3]])}) %*% .intWeights(xVal[[2]])
+  res <- t(.intWeights(argvals[[1]])) %*% apply(f, 1:2, function(w){w %*% .intWeights(argvals[[3]])}) %*% .intWeights(argvals[[2]])
   
   return(res)
 }
@@ -1066,13 +1066,13 @@ setMethod("integrate", signature = "funData",
               stop("Integration is not yet defined for functional data objects with dim > 3")
             
             if(dimSupp(object) == 1)
-              res <- object@X %*% .intWeights(object@xVal[[1]],method)
+              res <- object@X %*% .intWeights(object@argvals[[1]],method)
             
             if(dimSupp(object) == 2)
-              res <- apply( object@X , 1, function(x){t(.intWeights(object@xVal[[1]])) %*% x %*% .intWeights(object@xVal[[2]])})
+              res <- apply( object@X , 1, function(x){t(.intWeights(object@argvals[[1]])) %*% x %*% .intWeights(object@argvals[[2]])})
             
             if(dimSupp(object) == 3)
-              res <- apply(object@X, 1, integrate3D, xVal = object@xVal)
+              res <- apply(object@X, 1, integrate3D, argvals = object@argvals)
             
             return(as.numeric(res))
           })
@@ -1106,7 +1106,7 @@ setMethod("integrate", signature = c(object = "irregFunData"),
               object <- extrapolateIrreg(object)
             
             return(mapply(function(x,y, method){sum(.intWeights(x, method)*y)}, 
-                          x = object@xVal, y = object@X, MoreArgs = list(method = method)))
+                          x = object@argvals, y = object@X, MoreArgs = list(method = method)))
           })
 
 
@@ -1119,12 +1119,12 @@ setMethod("integrate", signature = c(object = "irregFunData"),
 #' all other cases it is extrapolated linearly.
 #' 
 #' @keywords internal
-extrapolateIrreg <- function(object, rangex = range(object@xVal))
+extrapolateIrreg <- function(object, rangex = range(object@argvals))
 {  
   for(i in 1:nObs(object))
   {
-    e <- .extrapolate(object@xVal[[i]], object@X[[i]], rangex)
-    object@xVal[[i]] <- e$x
+    e <- .extrapolate(object@argvals[[i]], object@X[[i]], rangex)
+    object@argvals[[i]] <- e$x
     object@X[[i]] <- e$y
   } 
   
@@ -1187,16 +1187,16 @@ extrapolateIrreg <- function(object, rangex = range(object@xVal))
 #'   
 #' @examples
 #' # Univariate
-#' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' norm(object)
 #' 
 #' # Univariate (irregular)
-#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' norm(irregObject) # no extrapolation
 #' norm(irregObject, fullDom = TRUE) # extrapolation (of second function)
 #' 
 #' # Multivariate
-#' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
+#' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' norm(multiObject)
 #' norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to the first element
 setGeneric("norm", function(object,...) {
@@ -1288,24 +1288,24 @@ setMethod("norm", signature = "irregFunData",
 #' \code{irregFunData} and \code{multiFunData} objects.
 #' 
 #' Objects of class \code{funData} or \code{irregFunData} have two slots, 
-#' \code{xVal} (for the x-values) and \code{X} (for the y-values for each 
-#' observation). Using the \code{getxVal} and \code{getX} methods for the 
+#' \code{argvals} (for the x-values) and \code{X} (for the y-values for each 
+#' observation). Using the \code{getArgvals} and \code{getX} methods for the 
 #' classes \code{funData} and \code{irregFunData} is equivalent to accessing the
-#' slots directly via \code{object@@xVal} and \code{object@@X}. Analogously, the
-#' \code{setxVal} and \code{setX} functions are equivalent to setting 
-#' \code{object@@xVal} to \code{newxVal} or \code{object@@X} to \code{newX}, 
+#' slots directly via \code{object@@argvals} and \code{object@@X}. Analogously, the
+#' \code{setArgvals} and \code{setX} functions are equivalent to setting 
+#' \code{object@@argvals} to \code{newArgvals} or \code{object@@X} to \code{newX}, 
 #' respectively. The new values must hence have the same structure as the 
 #' original ones. As an exception, for an object of class \code{funData}  the
 #' number of new observations in \code{newX} may differ from the current. In
 #' this case, the function throws a warning. 
 #' 
 #' Objects of class \code{multiFunData} are lists of several \code{funData} 
-#' objects. The functions \code{getxVal} and \code{getX} for \code{multiFunData}
+#' objects. The functions \code{getArgvals} and \code{getX} for \code{multiFunData}
 #' objects therefore return a list of the same length as \code{object}, where 
-#' each list element corresponds to the \code{xVal} or \code{X} slot of the 
-#' univariate element. The \code{setxVal} and \code{getxVal} functions for 
+#' each list element corresponds to the \code{argvals} or \code{X} slot of the 
+#' univariate element. The \code{setArgvals} and \code{getArgvals} functions for 
 #' \code{multiFunData} objects must be lists of the same length as 
-#' \code{object}, where each list element corresponds to the new \code{xVal} or 
+#' \code{object}, where each list element corresponds to the new \code{argvals} or 
 #' new \code{X} slot for the univariate elements.
 #' 
 #' For all classes classes, the set functions do not change the object, unless 
@@ -1313,7 +1313,7 @@ setMethod("norm", signature = "irregFunData",
 #' 
 #' @param object An object of class \code{funData}, \code{irregFunData} or 
 #'   \code{multiFunData}.
-#' @param newxVal See Details.
+#' @param newArgvals See Details.
 #' @param newX See Details.
 #'   
 #' @return See Details.
@@ -1321,77 +1321,77 @@ setMethod("norm", signature = "irregFunData",
 #' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, 
 #'   \linkS4class{multiFunData}
 #'   
-#' @export getxVal
+#' @export getArgvals
 #'   
 #' @examples
 #' ### Univariate
-#' object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+#' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' object
 #' 
 #' # get-methods
-#' getxVal(object)
+#' getArgvals(object)
 #' getX(object)
 #' 
 #' # set-methods
-#' setxVal(object, 0:4)
+#' setArgvals(object, 0:4)
 #' object # no change
-#' object <- setxVal(object, 0:4) # reassign the result to object
-#' object # now, xVal is changed
-#' \dontrun{object <- setxVal(object, 1:4)} # wrong length
+#' object <- setArgvals(object, 0:4) # reassign the result to object
+#' object # now, argvals is changed
+#' \dontrun{object <- setArgvals(object, 1:4)} # wrong length
 #' object <- setX(object, rbind(0:4, 5:9))
 #' newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations (was 2 before)
 #' \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
 #' 
 #' ### Univariate (irregular)
-#' irregObject <- irregFunData(xVal = list(1:5, 2:4), X=  list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X=  list(2:6, 3:5))
 #' irregObject
 #' 
 #' # get-methods
-#' getxVal(irregObject)
+#' getArgvals(irregObject)
 #' getX(irregObject)
 #' 
-#' newIrregObject <- setxVal(irregObject, list(0:4, 1:3))
+#' newIrregObject <- setArgvals(irregObject, list(0:4, 1:3))
 #' newIrregObject <- setX(irregObject, list(12:16, 13:15))
 #' 
 #' ### Multivariate
-#' multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
+#' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' multiObject
 #' 
 #' # get-methods
-#' getxVal(multiObject)
+#' getArgvals(multiObject)
 #' getX(multiObject)
 #' 
 #' # set-methods (for special cases see univariate version)
-#' multiObject <- setxVal(multiObject, list(5:1, 3:1))
+#' multiObject <- setArgvals(multiObject, list(5:1, 3:1))
 #' multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
-setGeneric("getxVal", function(object) {standardGeneric("getxVal")})
+setGeneric("getArgvals", function(object) {standardGeneric("getArgvals")})
 
-#' Get xVal slot for funData objects
+#' Get argvals slot for funData objects
 #'
-#' @seealso \link{getxVal}
+#' @seealso \link{getArgvals}
 #'
 #' @keywords internal
-setMethod("getxVal", signature = "funData",
-          function(object){object@xVal})
+setMethod("getArgvals", signature = "funData",
+          function(object){object@argvals})
 
-#' Get xVal slot for multiFunData objects
+#' Get argvals slot for multiFunData objects
 #'
-#' @seealso \link{getxVal}
-#'
-#' @keywords internal
-setMethod("getxVal", signature = "multiFunData",
-          function(object){sapply(object, getxVal)})
-
-#' Get xVal slot for irregular functional data objects
-#'
-#' @seealso \link{getxVal}
+#' @seealso \link{getArgvals}
 #'
 #' @keywords internal
-setMethod("getxVal", signature = "irregFunData",
-          function(object){object@xVal})
+setMethod("getArgvals", signature = "multiFunData",
+          function(object){sapply(object, getArgvals)})
+
+#' Get argvals slot for irregular functional data objects
+#'
+#' @seealso \link{getArgvals}
+#'
+#' @keywords internal
+setMethod("getArgvals", signature = "irregFunData",
+          function(object){object@argvals})
 
 
-#'@rdname getxVal
+#'@rdname getArgvals
 #'
 #'@export getX
 setGeneric("getX", function(object) {standardGeneric("getX")})
@@ -1422,56 +1422,56 @@ setMethod("getX", signature = "irregFunData",
 
 
 
-#' @rdname getxVal
+#' @rdname getArgvals
 #'
-#' @export setxVal
-setGeneric("setxVal", function(object, newxVal) {standardGeneric("setxVal")})
+#' @export setArgvals
+setGeneric("setArgvals", function(object, newArgvals) {standardGeneric("setArgvals")})
 
-#' Set xVal slot for funData objects
+#' Set argvals slot for funData objects
 #'
-#' @seealso \link{setxVal}
+#' @seealso \link{setArgvals}
 #'
 #' @keywords internal
-setMethod("setxVal", signature = "funData",
-          function(object, newxVal){
-            if(is.numeric(newxVal))
-              newxVal <- list(newxVal)
-            object@xVal <- newxVal; validObject(object); return(object)
+setMethod("setArgvals", signature = "funData",
+          function(object, newArgvals){
+            if(is.numeric(newArgvals))
+              newArgvals <- list(newArgvals)
+            object@argvals <- newArgvals; validObject(object); return(object)
           })
 
-#' Set xVal slot for multiFunData objects
+#' Set argvals slot for multiFunData objects
 #'
-#' @seealso \link{setxVal}
+#' @seealso \link{setArgvals}
 #'
 #' @keywords internal
-setMethod("setxVal", signature = "multiFunData",
-          function(object, newxVal){
-            if(length(object)!=length(newxVal))
-              stop("setxVal: multiFunData object and newxVal must have the same length")
-            multiFunData(mapply(setxVal, object, newxVal))
+setMethod("setArgvals", signature = "multiFunData",
+          function(object, newArgvals){
+            if(length(object)!=length(newArgvals))
+              stop("setArgvals: multiFunData object and newArgvals must have the same length")
+            multiFunData(mapply(setArgvals, object, newArgvals))
           })
 
 
-#' Set xVal slot for irregular functional objects
+#' Set argvals slot for irregular functional objects
 #'
-#' @seealso \link{setxVal}
+#' @seealso \link{setArgvals}
 #'
 #' @keywords internal
-setMethod("setxVal", signature = "irregFunData",
-          function(object, newxVal){
-            if(length(object@xVal) != length(newxVal))
-              stop("setxVal: newxVal must be a list of the same length as the original xVal.")
+setMethod("setArgvals", signature = "irregFunData",
+          function(object, newArgvals){
+            if(length(object@argvals) != length(newArgvals))
+              stop("setArgvals: newArgvals must be a list of the same length as the original argvals.")
             
-            if(any(sapply(object@xVal, function(l){length(l)}) != sapply(newxVal, function(l){length(l)})))
-              stop("setxVal: newxVal must have the same structure as the original xVal.")
+            if(any(sapply(object@argvals, function(l){length(l)}) != sapply(newArgvals, function(l){length(l)})))
+              stop("setArgvals: newArgvals must have the same structure as the original argvals.")
             
-            object@xVal <- newxVal
+            object@argvals <- newArgvals
             
             return(object)
           })
 
 
-#' @rdname getxVal
+#' @rdname getArgvals
 #'
 #' @export setX
 setGeneric("setX", function(object, newX) {standardGeneric("setX")})
@@ -1575,10 +1575,10 @@ setMethod("setX", signature = "irregFunData",
 #' @examples
 #' 
 #' ### Univariate
-#' xVal <- seq(0,2*pi,0.01)
-#' refData <- funData(xVal, rbind(sin(xVal))) # one observation as reference
-#' newData <- funData(xVal, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
-#'                                sin(xVal)))
+#' argvals <- seq(0,2*pi,0.01)
+#' refData <- funData(argvals, rbind(sin(argvals))) # one observation as reference
+#' newData <- funData(argvals, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
+#'                                sin(argvals)))
 #' 
 #' oldpar <- par(no.readonly = TRUE)
 #' par(mfrow = c(1,2))
@@ -1590,15 +1590,15 @@ setMethod("setX", signature = "irregFunData",
 #' plot(refData, col = "red", lwd = 2, add = TRUE)
 #' 
 #' ### Univariate (irregular)
-#' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
-#' xValIrreg <- lapply(ind, function(i){xVal[i]})
-#' xValIrregAll <- unique(sort(unlist(xValIrreg)))
+#' ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10,1)))) # sample observation points
+#' argvalsIrreg <- lapply(ind, function(i){argvals[i]})
+#' argvalsIrregAll <- unique(sort(unlist(argvalsIrreg)))
 #'  # one observation as reference (fully observed)
-#' refDataFull <- funData(xVal, rbind(sin(xVal)))
+#' refDataFull <- funData(argvals, rbind(sin(argvals)))
 #'  # one observation as reference (irregularly observed)
-#' refDataIrreg <- irregFunData(xVal = list(xValIrregAll), X = list(sin(xValIrregAll)))
-#' newData <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
-#'      x = xValIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
+#' refDataIrreg <- irregFunData(argvals = list(argvalsIrregAll), X = list(sin(argvalsIrregAll)))
+#' newData <- irregFunData(argvals = argvalsIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
+#'      x = argvalsIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
 #' 
 #' plot(newData, col = "grey", main = "Original data (regular reference)")
 #' plot(refDataFull, col = "red", lwd = 2, add = TRUE)
@@ -1613,11 +1613,11 @@ setMethod("setX", signature = "irregFunData",
 #' plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
 #' 
 #' ### Multivariate
-#' refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
-#'                         funData(xVal, rbind(cos(xVal)))) 
+#' refData <- multiFunData(funData(argvals, rbind(sin(argvals))), # one observation as reference
+#'                         funData(argvals, rbind(cos(argvals)))) 
 #' sig <- sample(c(-1,1), 11, replace = TRUE) 
-#' newData <- multiFunData(funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), sin(xVal))),
-#'                         funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), cos(xVal))))
+#' newData <- multiFunData(funData(argvals, outer(sig * seq(0.75, 1.25, by = 0.05), sin(argvals))),
+#'                         funData(argvals, outer(sig * seq(0.75, 1.25, by = 0.05), cos(argvals))))
 #'                         
 #' par(mfrow = c(2,2))
 #' 
@@ -1654,7 +1654,7 @@ setMethod("flipFuns", signature = c("funData", "funData"),
             if(dimSupp(refObject) != dimSupp(newObject))
               stop("flipFuns: Functions must have the dimension.")
             
-            if(!isTRUE(all.equal(refObject@xVal, newObject@xVal)))
+            if(!isTRUE(all.equal(refObject@argvals, newObject@argvals)))
               stop("flipFuns: Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
@@ -1683,7 +1683,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             if(any(dimSupp(refObject) != dimSupp(newObject)))
               stop("flipFuns: Functions must have the dimension.")
             
-            if(!isTRUE(all.equal(getxVal(refObject), getxVal(newObject))))
+            if(!isTRUE(all.equal(getArgvals(refObject), getArgvals(newObject))))
               stop("flipFuns: Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
@@ -1710,7 +1710,7 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
               stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
             
-            if(!all(unlist(newObject@xVal) %in% unlist(refObject@xVal)))
+            if(!all(unlist(newObject@argvals) %in% unlist(refObject@argvals)))
               stop("flipFuns: Irregular functions must be defined on a sub-domain of the reference function(s).")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
@@ -1737,7 +1737,7 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
               stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
             
-            if(!all(unlist(newObject@xVal) %in% unlist(refObject@xVal)))
+            if(!all(unlist(newObject@argvals) %in% unlist(refObject@argvals)))
               stop("flipFuns: New functions must be defined on a sub-domain of the reference function(s).")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
@@ -1793,10 +1793,10 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
 #' all.equal(extractObs(m1, obs = 6), meanFunction(m1)) # observation 6 equals the pointwise mean
 #' 
 #' ### Irregular
-#' i1 <- irregFunData(xVal = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
+#' i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
 #' all.equal(meanFunction(i1), extractObs(i1, obs = 2))
 #' # don't run: functions are not defined on the same domain
-#' \dontrun{meanFunction(irregFunData(xVal = list(1:3,1:5), X = list(1:3,1:5))) }
+#' \dontrun{meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))) }
 setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("meanFunction")})
 
 
@@ -1814,7 +1814,7 @@ setMethod("meanFunction", signature = c("funData", "ANY"),
               dim(meanX) <- length(meanX)
             dim(meanX) <- c(1, dim(meanX))
             
-            funData(xVal = object@xVal, X = meanX)
+            funData(argvals = object@argvals, X = meanX)
           })
 
 #' Mean for multivariate functional data
@@ -1838,8 +1838,8 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
             if(na.rm == TRUE)
               stop("Option na.rm = TRUE is not implemented for mean functions of irregular data.")
             
-            if(!all(sapply(object@xVal[-1], function(x){isTRUE(all.equal(object@xVal[[1]], x))})))
+            if(!all(sapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))})))
               stop("Mean function defined only for irregular functional data objects on the same domain.")
             
-            irregFunData(object@xVal[1], list(sapply(object@X, mean)))
+            irregFunData(object@argvals[1], list(sapply(object@X, mean)))
           })

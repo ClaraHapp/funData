@@ -35,16 +35,16 @@ functions linearly to the full domain before calculating the integrals. Defaults
 }
 \examples{
 # Univariate
-object <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 integrate(object)
 
 # Univariate (irregular)
-irregObject <-irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+irregObject <-irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 integrate(irregObject) # fullDom = FALSE
 integrate(irregObject, fullDom = TRUE)
 
 # Multivariate
-multiObject <- multiFunData(object, funData(xVal = 1:3, X = rbind(3:5, 6:8)))
+multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 integrate(multiObject)
 }
 \seealso{

@@ -3,12 +3,12 @@
 \docType{methods}
 \name{funData-constructor}
 \alias{funData-constructor}
-\title{Constructor for functional data objects, first argument (xVal) passed as list or vector of numerics}
+\title{Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics}
 \usage{
-funData(xVal, X)
+funData(argvals, X)
 }
 \arguments{
-\item{xVal}{A list of numeric vectors or a single numeric vector, giving the
+\item{argvals}{A list of numeric vectors or a single numeric vector, giving the
 sampling points in the domains. See Details.}
 
 \item{X}{An array of dimension  \eqn{N \times M}{N x M} (for one-dimensional
@@ -18,7 +18,7 @@ sampling points in the domains. See Details.}
   Details.}
 }
 \description{
-Constructor for functional data objects, first argument (xVal) passed as list or vector of numerics
+Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
 }
 \seealso{
 \linkS4class{funData}

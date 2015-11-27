@@ -8,12 +8,12 @@
 #' \mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional 
 #' domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid 
 #' \eqn{T \subset \mathcal{T}}{T subset of \calT}, which is represented in the 
-#' \code{xVal} slot of a \code{funData} object. All observations are assumed to 
+#' \code{argvals} slot of a \code{funData} object. All observations are assumed to 
 #' be sampled over the same grid \eqn{T}{T}, but can contain missing values (see
-#' below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{xVal} can be 
+#' below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{argvals} can be 
 #' supplied either as a numeric vector, containing the x-values or as a list, 
 #' containing such a vector. If \eqn{\mathcal{T}}{\calT} is higher-dimensional, 
-#' \code{xVal} must always be supplied as a list, containing numeric vectors of 
+#' \code{argvals} must always be supplied as a list, containing numeric vectors of 
 #' the x-values in dimensions \eqn{1,\ldots,d}{1,\ldots,d}.
 #' 
 #' The observed values are represented in the \code{X} slot of a \code{funData} 
@@ -31,9 +31,9 @@
 #' \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}. 
 #' Further methods for \code{funData}: \itemize{ \item \code{\link{dimSupp}}, 
 #' \code{\link{nObs}}: Informations about the support dimensions and the number 
-#' of observations, \item \code{\link{getxVal}}, \code{\link{extractObs}}: 
+#' of observations, \item \code{\link{getArgvals}}, \code{\link{extractObs}}: 
 #' Getting/Setting slot values (instead of accessing them directly via 
-#' \code{funData@@xVal, funData@@X}) and extracting single observations or data 
+#' \code{funData@@argvals, funData@@X}) and extracting single observations or data 
 #' on a subset of the domain, \item \code{\link{integrate}}, \code{\link{norm}}:
 #' Integrate all observations over their domain or calculating the 
 #' \eqn{L^2}{L^2} norm.}
@@ -41,7 +41,7 @@
 #' A \code{funData} object can be coerced to a \code{multiFunData} object using 
 #' \code{as.multiFunData(funDataObject).}
 #' 
-#' @slot xVal The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.
+#' @slot argvals The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.
 #' @slot X The functional data samples. See Details.
 #'   
 #' @aliases funData
@@ -51,11 +51,11 @@
 #' @examples
 #' ### Creating a one-dimensional funData object with 2 observations
 #' # Basic
-#' f1 <- new("funData", xVal = list(1:5), X = rbind(1:5,6:10))
+#' f1 <- new("funData", argvals = list(1:5), X = rbind(1:5,6:10))
 #' # Using the constructor with first argument supplied as array
-#' f2 <- funData(xVal = list(1:5), X = rbind(1:5, 6:10)) 
+#' f2 <- funData(argvals = list(1:5), X = rbind(1:5, 6:10)) 
 #' # Using the constructor with first argument supplied as numeric vector
-#' f3 <- funData(xVal = 1:5, X = rbind(1:5, 6:10)) 
+#' f3 <- funData(argvals = 1:5, X = rbind(1:5, 6:10)) 
 #' # Test if all the same
 #' all.equal(f1,f2) 
 #' all.equal(f1,f3)
@@ -63,8 +63,8 @@
 #' f3 
 #' 
 #' # A more realistic object
-#' xVal <- seq(0,2*pi,0.01)
-#' object <- funData(xVal, outer(seq(0.75, 1.25, by = 0.05), sin(xVal)))
+#' argvals <- seq(0,2*pi,0.01)
+#' object <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
 #' # Display gives basic information
 #' object 
 #' # Use the plot function to get an impression of the data
@@ -73,44 +73,44 @@
 #' 
 #' ### Higher-dimensional funData objects with 2 observations
 #' # Basic
-#' g1 <- new("funData", xVal = list(1:5, 1:3),
+#' g1 <- new("funData", argvals = list(1:5, 1:3),
 #'                      X = array(1:30, dim = c(2,5,3))) 
 #' # Using the constructor
-#' g2 <- funData(xVal = list(1:5, 1:3),
+#' g2 <- funData(argvals = list(1:5, 1:3),
 #'               X = array(1:30, dim = c(2,5,3)))
 #' # Test if the same
 #' all.equal(g1,g2)
 #' # Display funData object in the console
 #' g2 
-setClass("funData", representation = representation(xVal = "list", X = "array"))
+setClass("funData", representation = representation(argvals = "list", X = "array"))
 
 
 # Validity checks for funData objects
 setValidity("funData", function(object){
-  if(!is(object@xVal, "list"))
+  if(!is(object@argvals, "list"))
   {
-    return("xVal objects must be supplied as lists of numerics")
+    return("argvals objects must be supplied as lists of numerics")
   } else {
-    if(!all(sapply(object@xVal, is.numeric, simplify = TRUE)))
-      return("all xVal elements must be numeric")
+    if(!all(sapply(object@argvals, is.numeric, simplify = TRUE)))
+      return("all argvals elements must be numeric")
   }
   if(!is(object@X, "array"))
   {
     return("X elements must be supplied as arrays")
   } else {
-    if(length(object@xVal) != length(dim(object@X)[-1]))
-      return("xVal and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md")
+    if(length(object@argvals) != length(dim(object@X)[-1]))
+      return("argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md")
     
-    if(!all(dim(object@X)[-1] == sapply(object@xVal, length, simplify = TRUE)))
-      return("xVal and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md")
+    if(!all(dim(object@X)[-1] == sapply(object@argvals, length, simplify = TRUE)))
+      return("argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md")
   }
   
   return(TRUE)
 })
 
-#' Constructor for functional data objects, first argument (xVal) passed as list or vector of numerics
+#' Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
 #' 
-#' @param xVal A list of numeric vectors or a single numeric vector, giving the 
+#' @param argvals A list of numeric vectors or a single numeric vector, giving the 
 #'   sampling points in the domains. See Details.
 #' @param X An array of dimension  \eqn{N \times M}{N x M} (for one-dimensional
 #'   domains, or \eqn{N \times M_1 \times \ldots \times M_d}{N x M_1 x \ldots x
@@ -127,12 +127,12 @@ setValidity("funData", function(object){
 #' @export funData
 #' 
 #' @keywords internal
-setGeneric("funData", function(xVal, X){standardGeneric("funData")})
+setGeneric("funData", function(argvals, X){standardGeneric("funData")})
 
 
-#' @describeIn funData Constructor for functional data objects with \code{xVal} given as list.
+#' @describeIn funData Constructor for functional data objects with \code{argvals} given as list.
 #' 
-#' @param xVal A list of numeric vectors or a single numeric vector, giving the 
+#' @param argvals A list of numeric vectors or a single numeric vector, giving the 
 #'   sampling points in the domains. See Details.
 #' @param X An array of dimension  \eqn{N \times M}{N x M} (for one-dimensional
 #'   domains, or \eqn{N \times M_1 \times \ldots \times M_d}{N x M_1 x \ldots x
@@ -141,16 +141,16 @@ setGeneric("funData", function(xVal, X){standardGeneric("funData")})
 #'   Details.
 #' 
 #' @docType methods
-setMethod("funData", signature = c(xVal = "list", X = "array"),
-          function(xVal, X){new("funData", xVal = xVal, X = X)})
+setMethod("funData", signature = c(argvals = "list", X = "array"),
+          function(argvals, X){new("funData", argvals = argvals, X = X)})
 
 
-#' @describeIn funData Constructor for functional data objects with \code{xVal}
+#' @describeIn funData Constructor for functional data objects with \code{argvals}
 #'   given as vector of numerics (only valid for one-dimensional domains).
 #'   
 #' @docType methods
-setMethod("funData", signature = c(xVal = "numeric", X = "array"), 
-          function(xVal, X){new("funData", xVal = list(xVal), X = X)})
+setMethod("funData", signature = c(argvals = "numeric", X = "array"), 
+          function(argvals, X){new("funData", argvals = list(argvals), X = X)})
 
 
 
@@ -164,7 +164,7 @@ setMethod("funData", signature = c(xVal = "numeric", X = "array"),
 #' \code{funData} objects, see Details.
 #' 
 #' A \code{multiFunData} object is represented as a list of univariate 
-#' \code{funData} objects, each having a \code{xVal} and \code{X} slot, 
+#' \code{funData} objects, each having a \code{argvals} and \code{X} slot, 
 #' representing the x-values and the observed y-values (see the 
 #' \code{\link{funData}} class). When constructing a \code{multiFunData} object,
 #' the  elements can be supplied as a list of \code{funData} objects or can be
@@ -333,10 +333,10 @@ setMethod("as.multiFunData", signature = "funData",
 #' \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset 
 #' \mathcal{T}}{T_i \subset \calT} of observation points. As for the 
 #' \linkS4class{funData} class, each object of the \code{irregFunData} class has
-#' two slots; the \code{xVal} slot represents the observation points and the
+#' two slots; the \code{argvals} slot represents the observation points and the
 #' \code{X} slot represents the observed data. In contrast to the regularly
 #' sampled data, both slots are defined as lists of vectors, where each entry 
-#' corresponds to one function: \itemize{\item \code{xVal[[i]]} contains the 
+#' corresponds to one function: \itemize{\item \code{argvals[[i]]} contains the 
 #' vector of observation points \eqn{T_i} for the i-th function, \item 
 #' \code{X[[i]]} contains the corresponding observed data \eqn{X_i(t_{i,j})}.}
 #' 
@@ -344,9 +344,9 @@ setMethod("as.multiFunData", signature = "funData",
 #' \link[=plot.irregFunData]{plotting} and \link[=Arith.funData]{basic 
 #' arithmetics}. Further methods for \code{irregFunData}: \itemize{ \item 
 #' \code{\link{dimSupp}}, \code{\link{nObs}}: Informations about the support 
-#' dimensions and the number of observations, \item \code{\link{getxVal}}, 
+#' dimensions and the number of observations, \item \code{\link{getArgvals}}, 
 #' \code{\link{extractObs}}: Getting/Setting slot values (instead of accessing 
-#' them directly via \code{irregObject@@xVal, irregObject@@X}) and extracting 
+#' them directly via \code{irregObject@@argvals, irregObject@@X}) and extracting 
 #' single observations or data on a subset of the domain, \item 
 #' \code{\link{integrate}}, \code{\link{norm}}: Integrate all observations over 
 #' their domain or calculating the \eqn{L^2}{L^2} norm.}
@@ -361,7 +361,7 @@ setMethod("as.multiFunData", signature = "funData",
 #'   data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{\calT
 #'   \subset IR}.
 #'   
-#' @slot xVal A list of numerics, representing the observation grid \eqn{T_i}
+#' @slot argvals A list of numerics, representing the observation grid \eqn{T_i}
 #'   for each realization \eqn{X_i} of \eqn{X}.
 #' @slot X A list of numerics, representing the values of each observation
 #'   \eqn{X_i} of \eqn{X} on the corresponding observation points \eqn{T_i}.
@@ -372,30 +372,30 @@ setMethod("as.multiFunData", signature = "funData",
 #' 
 #' @examples
 #' # Construct an irregular functional data object
-#' i1 <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+#' i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' # Display in the console
 #' i1
 #' 
 #' # A more realistic object
-#' xVal <- seq(0,2*pi, 0.01)
-#' ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
-#' xValIrreg <- lapply(ind, function(i){xVal[i]})
-#' i2 <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a){a * sin(x)},
-#'              x = xValIrreg, a = seq(0.75, 1.25, by = 0.05)))
+#' argvals <- seq(0,2*pi, 0.01)
+#' ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10,1)))) # sample observation points
+#' argvalsIrreg <- lapply(ind, function(i){argvals[i]})
+#' i2 <- irregFunData(argvals = argvalsIrreg, X = mapply(function(x, a){a * sin(x)},
+#'              x = argvalsIrreg, a = seq(0.75, 1.25, by = 0.05)))
 #' # Display gives basic information
 #' i2
 #' # Use the plot function to get an impression of the data
 #' plot(i2) 
-setClass("irregFunData", representation = representation(xVal = "list", X = "list"))
+setClass("irregFunData", representation = representation(argvals = "list", X = "list"))
 
 
 # Validity checks for irregfunData objects
 setValidity("irregFunData", function(object){
-  if(!is(object@xVal, "list"))
-    return("xVal objects must be supplied as list (of numerics)")
+  if(!is(object@argvals, "list"))
+    return("argvals objects must be supplied as list (of numerics)")
   
-  if(any(sapply(object@xVal, function(l){!is.numeric(l)})))
-    return("xVal must be supplied as list of numerics")
+  if(any(sapply(object@argvals, function(l){!is.numeric(l)})))
+    return("argvals must be supplied as list of numerics")
   
   if(!is(object@X, "list"))
     return("X elements must be supplied as list (of numerics)")
@@ -403,11 +403,11 @@ setValidity("irregFunData", function(object){
   if(any(sapply(object@X, function(l){!is.numeric(l)})))
     return("X must be supplied as list of numerics")
   
-  if(length(object@xVal) != length(object@X))
-    return("Different number of observations for xVal and X")
+  if(length(object@argvals) != length(object@X))
+    return("Different number of observations for argvals and X")
   
-  if(any(mapply(function(x,y){dim(as.array(x)) != dim(as.array(y))}, object@xVal, object@X)))
-    return("Different numbers of observation points in xVal and X")
+  if(any(mapply(function(x,y){dim(as.array(x)) != dim(as.array(y))}, object@argvals, object@X)))
+    return("Different numbers of observation points in argvals and X")
   
   return(TRUE)
 })
@@ -424,18 +424,18 @@ setValidity("irregFunData", function(object){
 #' @export irregFunData
 #' 
 #' @keywords internal
-setGeneric("irregFunData", function(xVal, X){standardGeneric("irregFunData")})
+setGeneric("irregFunData", function(argvals, X){standardGeneric("irregFunData")})
 
 
 #' @describeIn irregFunData  Constructor for irregular functional data
 #'   objects.
 #'   
-#' @param xVal A list of numerics, corresponding to the observation points for each realization \eqn{X_i} (see Details).
+#' @param argvals A list of numerics, corresponding to the observation points for each realization \eqn{X_i} (see Details).
 #' @param X A list of numerics, corresponding to the observed functions \eqn{X_i} (see Details).
 #'   
 #' @docType methods
-setMethod("irregFunData", signature = c(xVal = "list", X = "list"),
-          function(xVal, X){new("irregFunData", xVal = xVal, X = X)})
+setMethod("irregFunData", signature = c(argvals = "list", X = "list"),
+          function(argvals, X){new("irregFunData", argvals = argvals, X = X)})
 
 
 #' Coerce an irregFunData object to class funData
@@ -450,14 +450,14 @@ setAs("irregFunData", "funData",
    #     if(dimSupp(from) > 1)
    #      stop("as.funData is implemented only for irregular functional data on one-dimensional domains.")
         
-        xVal <- sort(unique(unlist(from@xVal)))
+        argvals <- sort(unique(unlist(from@argvals)))
         
-        X <- array(NA, dim = c(nObs(from), length(xVal)))
+        X <- array(NA, dim = c(nObs(from), length(argvals)))
         
         for(i in 1:nObs(from))
-          X[i, xVal %in% from@xVal[[i]]] <- from@X[[i]]
+          X[i, argvals %in% from@argvals[[i]]] <- from@X[[i]]
         
-        return(funData(xVal = xVal, X = X))})
+        return(funData(argvals = argvals, X = X))})
 
 #' Coerce an irregFunData object to class funData
 #' 

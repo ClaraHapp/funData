@@ -8,12 +8,12 @@
 \alias{show,irregFunData-method}
 \title{A class for irregularly sampled functional data}
 \usage{
-\S4method{irregFunData}{list,list}(xVal, X)
+\S4method{irregFunData}{list,list}(argvals, X)
 
 \S4method{show}{irregFunData}(object)
 }
 \arguments{
-\item{xVal}{A list of numerics, corresponding to the observation points for each realization \eqn{X_i} (see Details).}
+\item{argvals}{A list of numerics, corresponding to the observation points for each realization \eqn{X_i} (see Details).}
 
 \item{X}{A list of numerics, corresponding to the observed functions \eqn{X_i} (see Details).}
 
@@ -30,10 +30,10 @@ Irregular functional data are realizations of a random process \deqn{X:
 \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset
 \mathcal{T}}{T_i \subset \calT} of observation points. As for the
 \linkS4class{funData} class, each object of the \code{irregFunData} class has
-two slots; the \code{xVal} slot represents the observation points and the
+two slots; the \code{argvals} slot represents the observation points and the
 \code{X} slot represents the observed data. In contrast to the regularly
 sampled data, both slots are defined as lists of vectors, where each entry
-corresponds to one function: \itemize{\item \code{xVal[[i]]} contains the
+corresponds to one function: \itemize{\item \code{argvals[[i]]} contains the
 vector of observation points \eqn{T_i} for the i-th function, \item
 \code{X[[i]]} contains the corresponding observed data \eqn{X_i(t_{i,j})}.}
 
@@ -41,9 +41,9 @@ Generic functions for the \code{irregFunData} class include a print method,
 \link[=plot.irregFunData]{plotting} and \link[=Arith.funData]{basic
 arithmetics}. Further methods for \code{irregFunData}: \itemize{ \item
 \code{\link{dimSupp}}, \code{\link{nObs}}: Informations about the support
-dimensions and the number of observations, \item \code{\link{getxVal}},
+dimensions and the number of observations, \item \code{\link{getArgvals}},
 \code{\link{extractObs}}: Getting/Setting slot values (instead of accessing
-them directly via \code{irregObject@xVal, irregObject@X}) and extracting
+them directly via \code{irregObject@argvals, irregObject@X}) and extracting
 single observations or data on a subset of the domain, \item
 \code{\link{integrate}}, \code{\link{norm}}: Integrate all observations over
 their domain or calculating the \eqn{L^2}{L^2} norm.}
@@ -65,7 +65,7 @@ are in the union, but not in the original observation grid.
 \section{Slots}{
 
 \describe{
-\item{\code{xVal}}{A list of numerics, representing the observation grid \eqn{T_i}
+\item{\code{argvals}}{A list of numerics, representing the observation grid \eqn{T_i}
 for each realization \eqn{X_i} of \eqn{X}.}
 
 \item{\code{X}}{A list of numerics, representing the values of each observation
@@ -78,16 +78,16 @@ for each realization \eqn{X_i} of \eqn{X}.}
 }
 \examples{
 # Construct an irregular functional data object
-i1 <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 # Display in the console
 i1
 
 # A more realistic object
-xVal <- seq(0,2*pi, 0.01)
-ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
-xValIrreg <- lapply(ind, function(i){xVal[i]})
-i2 <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a){a * sin(x)},
-             x = xValIrreg, a = seq(0.75, 1.25, by = 0.05)))
+argvals <- seq(0,2*pi, 0.01)
+ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10,1)))) # sample observation points
+argvalsIrreg <- lapply(ind, function(i){argvals[i]})
+i2 <- irregFunData(argvals = argvalsIrreg, X = mapply(function(x, a){a * sin(x)},
+             x = argvalsIrreg, a = seq(0.75, 1.25, by = 0.05)))
 # Display gives basic information
 i2
 # Use the plot function to get an impression of the data

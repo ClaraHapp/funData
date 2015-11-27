@@ -4,12 +4,12 @@
 \alias{integrate3D}
 \title{Integrate a function on a rectangular 3D grid}
 \usage{
-integrate3D(f, xVal)
+integrate3D(f, argvals)
 }
 \arguments{
 \item{f}{A 3D array, representing the function evaluations on the grid}
 
-\item{xVal}{A list with 3 elements, representing the grid points in the first, second and third dimension of f}
+\item{argvals}{A list with 3 elements, representing the grid points in the first, second and third dimension of f}
 }
 \value{
 The result of the numerical integration of f on the given grid.

@@ -6,7 +6,7 @@
 \title{extractObs for irregular functional data}
 \usage{
 \S4method{extractObs}{irregFunData}(object, obs = 1:nObs(object),
-  xVal = getxVal(object))
+  argvals = getArgvals(object))
 }
 \description{
 extractObs for irregular functional data

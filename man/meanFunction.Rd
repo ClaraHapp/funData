@@ -45,10 +45,10 @@ m1 <- multiFunData(f1,f2)
 all.equal(extractObs(m1, obs = 6), meanFunction(m1)) # observation 6 equals the pointwise mean
 
 ### Irregular
-i1 <- irregFunData(xVal = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
+i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
 all.equal(meanFunction(i1), extractObs(i1, obs = 2))
 # don't run: functions are not defined on the same domain
-\dontrun{meanFunction(irregFunData(xVal = list(1:3,1:5), X = list(1:3,1:5))) }
+\dontrun{meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))) }
 }
 \seealso{
 \linkS4class{funData}, \linkS4class{irregFunData},

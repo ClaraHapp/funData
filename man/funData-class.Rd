@@ -9,14 +9,14 @@
 \alias{show,funData-method}
 \title{A class for (univariate) functional data}
 \usage{
-\S4method{funData}{list,array}(xVal, X)
+\S4method{funData}{list,array}(argvals, X)
 
-\S4method{funData}{numeric,array}(xVal, X)
+\S4method{funData}{numeric,array}(argvals, X)
 
 \S4method{show}{funData}(object)
 }
 \arguments{
-\item{xVal}{A list of numeric vectors or a single numeric vector, giving the
+\item{argvals}{A list of numeric vectors or a single numeric vector, giving the
 sampling points in the domains. See Details.}
 
 \item{X}{An array of dimension  \eqn{N \times M}{N x M} (for one-dimensional
@@ -37,12 +37,12 @@ Functional data can be seen as realizations of a random process \deqn{X:
 \mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional
 domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid
 \eqn{T \subset \mathcal{T}}{T subset of \calT}, which is represented in the
-\code{xVal} slot of a \code{funData} object. All observations are assumed to
+\code{argvals} slot of a \code{funData} object. All observations are assumed to
 be sampled over the same grid \eqn{T}{T}, but can contain missing values (see
-below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{xVal} can be
+below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{argvals} can be
 supplied either as a numeric vector, containing the x-values or as a list,
 containing such a vector. If \eqn{\mathcal{T}}{\calT} is higher-dimensional,
-\code{xVal} must always be supplied as a list, containing numeric vectors of
+\code{argvals} must always be supplied as a list, containing numeric vectors of
 the x-values in dimensions \eqn{1,\ldots,d}{1,\ldots,d}.
 
 The observed values are represented in the \code{X} slot of a \code{funData}
@@ -60,9 +60,9 @@ Generic functions for the \code{funData} class include a print method,
 \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}.
 Further methods for \code{funData}: \itemize{ \item \code{\link{dimSupp}},
 \code{\link{nObs}}: Informations about the support dimensions and the number
-of observations, \item \code{\link{getxVal}}, \code{\link{extractObs}}:
+of observations, \item \code{\link{getArgvals}}, \code{\link{extractObs}}:
 Getting/Setting slot values (instead of accessing them directly via
-\code{funData@xVal, funData@X}) and extracting single observations or data
+\code{funData@argvals, funData@X}) and extracting single observations or data
 on a subset of the domain, \item \code{\link{integrate}}, \code{\link{norm}}:
 Integrate all observations over their domain or calculating the
 \eqn{L^2}{L^2} norm.}
@@ -72,9 +72,9 @@ A \code{funData} object can be coerced to a \code{multiFunData} object using
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{funData}: Constructor for functional data objects with \code{xVal} given as list.
+\item \code{funData}: Constructor for functional data objects with \code{argvals} given as list.
 
-\item \code{funData}: Constructor for functional data objects with \code{xVal}
+\item \code{funData}: Constructor for functional data objects with \code{argvals}
   given as vector of numerics (only valid for one-dimensional domains).
 
 \item \code{show}: Print basic information about the \code{funData} object
@@ -83,18 +83,18 @@ A \code{funData} object can be coerced to a \code{multiFunData} object using
 \section{Slots}{
 
 \describe{
-\item{\code{xVal}}{The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.}
+\item{\code{argvals}}{The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.}
 
 \item{\code{X}}{The functional data samples. See Details.}
 }}
 \examples{
 ### Creating a one-dimensional funData object with 2 observations
 # Basic
-f1 <- new("funData", xVal = list(1:5), X = rbind(1:5,6:10))
+f1 <- new("funData", argvals = list(1:5), X = rbind(1:5,6:10))
 # Using the constructor with first argument supplied as array
-f2 <- funData(xVal = list(1:5), X = rbind(1:5, 6:10))
+f2 <- funData(argvals = list(1:5), X = rbind(1:5, 6:10))
 # Using the constructor with first argument supplied as numeric vector
-f3 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+f3 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 # Test if all the same
 all.equal(f1,f2)
 all.equal(f1,f3)
@@ -102,8 +102,8 @@ all.equal(f1,f3)
 f3
 
 # A more realistic object
-xVal <- seq(0,2*pi,0.01)
-object <- funData(xVal, outer(seq(0.75, 1.25, by = 0.05), sin(xVal)))
+argvals <- seq(0,2*pi,0.01)
+object <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
 # Display gives basic information
 object
 # Use the plot function to get an impression of the data
@@ -112,10 +112,10 @@ plot(object)
 
 ### Higher-dimensional funData objects with 2 observations
 # Basic
-g1 <- new("funData", xVal = list(1:5, 1:3),
+g1 <- new("funData", argvals = list(1:5, 1:3),
                      X = array(1:30, dim = c(2,5,3)))
 # Using the constructor
-g2 <- funData(xVal = list(1:5, 1:3),
+g2 <- funData(argvals = list(1:5, 1:3),
               X = array(1:30, dim = c(2,5,3)))
 # Test if the same
 all.equal(g1,g2)

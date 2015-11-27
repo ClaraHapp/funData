@@ -4,7 +4,7 @@
 \alias{extrapolateIrreg}
 \title{Extrapolate irregular functional data to a given domain}
 \usage{
-extrapolateIrreg(object, rangex = range(object@xVal))
+extrapolateIrreg(object, rangex = range(object@argvals))
 }
 \description{
 This function extrapolates an \code{irregFunData} object to a given domain.

@@ -7,8 +7,8 @@
 \title{Plotting multivariate functional data}
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
-  par.plot = NULL, add = FALSE, main = NULL, xlab = "xVal", ylab = "",
-  ...)
+  par.plot = NULL, add = FALSE, main = NULL, xlab = "argvals",
+  ylab = "", ...)
 
 \S4method{plot}{multiFunData,missing}(x, y, ...)
 }
@@ -34,7 +34,7 @@ one-dimensional functions). Defaults to \code{FALSE}.}
 length as \code{dim} (different titles for each dimension) or length
 \code{1} (one title for all dimensions). Defaults to \code{NULL}.}
 
-\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "xVal" for the
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
 x-axis and no title for the y-axis for all elements. Can be supplied as a
 vector of the same length as \code{x} (one x-/y-lab for each element) or a
 single strin that is applied for all elements. See
@@ -54,20 +54,20 @@ elements are plotted using \code{plot}.
 }
 \examples{
 oldpar <- par(no.readonly = TRUE)
-xVal <- seq(0, 2*pi, 0.1)
+argvals <- seq(0, 2*pi, 0.1)
 
 # One-dimensional elements
-object1 <- funData(xVal, outer(seq(0.75, 1.25, length.out = 11), sin(xVal)))
-object2 <- funData(xVal, outer(seq(0.75, 1.25, length.out = 11), cos(xVal)))
+object1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
+object2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
 
 multiObject <- multiFunData(object1, object2)
 plot(multiObject, main = c("1st element", "2nd element")) # different titles
 plot(multiObject, main = "Multivariate Functional Data") # one title for all
 
 # Mixed-dimensional elements
-X <- array(0, dim = c(11, length(xVal), length(xVal)))
-X[1,,] <- outer(xVal, xVal, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-object2D <- funData(list(xVal, xVal), X)
+X <- array(0, dim = c(11, length(argvals), length(argvals)))
+X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
+object2D <- funData(list(argvals, argvals), X)
 
 multiObject <- multiFunData(object1, object2D)
 plot(multiObject, main = c("1st element", "2nd element"), obs = 1, xlab = c("xlab1", "xlab2"), ylab = "one ylab for all") # different titles and labels

@@ -54,10 +54,10 @@ two-dimensional domains.
 }
 \examples{
 ### Univariate
-xVal <- seq(0,2*pi,0.01)
-refData <- funData(xVal, rbind(sin(xVal))) # one observation as reference
-newData <- funData(xVal, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
-                               sin(xVal)))
+argvals <- seq(0,2*pi,0.01)
+refData <- funData(argvals, rbind(sin(argvals))) # one observation as reference
+newData <- funData(argvals, outer(sample(c(-1,1), 11, replace = TRUE) * seq(0.75, 1.25, by = 0.05),
+                               sin(argvals)))
 
 oldpar <- par(no.readonly = TRUE)
 par(mfrow = c(1,2))
@@ -69,15 +69,15 @@ plot(flipFuns(refData, newData), col = "grey", main = "Flipped data")
 plot(refData, col = "red", lwd = 2, add = TRUE)
 
 ### Univariate (irregular)
-ind <- replicate(11, sort(sample(1:length(xVal), sample(5:10,1)))) # sample observation points
-xValIrreg <- lapply(ind, function(i){xVal[i]})
-xValIrregAll <- unique(sort(unlist(xValIrreg)))
+ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10,1)))) # sample observation points
+argvalsIrreg <- lapply(ind, function(i){argvals[i]})
+argvalsIrregAll <- unique(sort(unlist(argvalsIrreg)))
  # one observation as reference (fully observed)
-refDataFull <- funData(xVal, rbind(sin(xVal)))
+refDataFull <- funData(argvals, rbind(sin(argvals)))
  # one observation as reference (irregularly observed)
-refDataIrreg <- irregFunData(xVal = list(xValIrregAll), X = list(sin(xValIrregAll)))
-newData <- irregFunData(xVal = xValIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
-     x = xValIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
+refDataIrreg <- irregFunData(argvals = list(argvalsIrregAll), X = list(sin(argvalsIrregAll)))
+newData <- irregFunData(argvals = argvalsIrreg, X = mapply(function(x, a, s){s * a * sin(x)},
+     x = argvalsIrreg, a = seq(0.75, 1.25, by = 0.05), s = sample(c(-1,1), 11, replace = TRUE)))
 
 plot(newData, col = "grey", main = "Original data (regular reference)")
 plot(refDataFull, col = "red", lwd = 2, add = TRUE)
@@ -92,11 +92,11 @@ plot(flipFuns(refDataIrreg, newData), col = "grey", main = "Flipped data")
 plot(refDataIrreg, col = "red", lwd = 2, add = TRUE)
 
 ### Multivariate
-refData <- multiFunData(funData(xVal, rbind(sin(xVal))), # one observation as reference
-                        funData(xVal, rbind(cos(xVal))))
+refData <- multiFunData(funData(argvals, rbind(sin(argvals))), # one observation as reference
+                        funData(argvals, rbind(cos(argvals))))
 sig <- sample(c(-1,1), 11, replace = TRUE)
-newData <- multiFunData(funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), sin(xVal))),
-                        funData(xVal, outer(sig * seq(0.75, 1.25, by = 0.05), cos(xVal))))
+newData <- multiFunData(funData(argvals, outer(sig * seq(0.75, 1.25, by = 0.05), sin(argvals))),
+                        funData(argvals, outer(sig * seq(0.75, 1.25, by = 0.05), cos(argvals))))
 
 par(mfrow = c(2,2))
 

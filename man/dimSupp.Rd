@@ -21,15 +21,15 @@ This function returns the support dimension of an object of class
 }
 \examples{
 # Univariate (one-dimensional)
-object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 dimSupp(object1)
 
 # Univariate (two-dimensional)
-object2 <- funData(xVal = list(1:10, 1:5), X = array(rnorm(100), dim = c(2,10,5)))
+object2 <- funData(argvals = list(1:10, 1:5), X = array(rnorm(100), dim = c(2,10,5)))
 dimSupp(object2)
 
 # Univariate (irregular)
-irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 dimSupp(irregObject)
 
 # Multivariate

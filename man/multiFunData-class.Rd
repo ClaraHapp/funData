@@ -23,7 +23,7 @@ is a vector of (univariate) functional data objects, just as a vector in
 }
 \details{
 A \code{multiFunData} object is represented as a list of univariate
-\code{funData} objects, each having a \code{xVal} and \code{X} slot,
+\code{funData} objects, each having a \code{argvals} and \code{X} slot,
 representing the x-values and the observed y-values (see the
 \code{\link{funData}} class). When constructing a \code{multiFunData} object,
 the  elements can be supplied as a list of \code{funData} objects or can be

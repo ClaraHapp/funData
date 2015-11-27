@@ -4,7 +4,7 @@
 \alias{extractObs}
 \title{Extract observations of functional data}
 \usage{
-extractObs(object, obs = 1:nObs(object), xVal = getxVal(object))
+extractObs(object, obs = 1:nObs(object), argvals = getArgvals(object))
 }
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or
@@ -13,8 +13,8 @@ extractObs(object, obs = 1:nObs(object), xVal = getxVal(object))
 \item{obs}{A numeric vector, giving the indices of the observations to
 extract (default: all obervations).}
 
-\item{xVal}{The part of the domain to be extracted (default: the whole domain
-  object@xVal). Must be a list or a numeric vector (only for one-dimensional
+\item{argvals}{The part of the domain to be extracted (default: the whole domain
+  object@argvals). Must be a list or a numeric vector (only for one-dimensional
   domains, see also the definition of \linkS4class{funData},
   \linkS4class{multiFunData}).}
 }
@@ -38,26 +38,26 @@ functions are removed from the extracted dataset and a warning is thrown.
 }
 \examples{
 # Univariate - one-dimensional domain
-object1 <- funData(xVal = 1:5, X = rbind(1:5, 6:10))
+object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 extractObs(object1, obs = 1)
-extractObs(object1, xVal = 1:3)
-extractObs(object1, xVal = list(1:3)) # the same as the statement before
+extractObs(object1, argvals = 1:3)
+extractObs(object1, argvals = list(1:3)) # the same as the statement before
 
 # Univariate - two-dimensional domains
-object2 <- funData(xVal = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
+object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
 extractObs(object2, obs = 1)
-extractObs(object2, xVal = list(1:3, c(2,4,6))) # xVals must be supplied as list
+extractObs(object2, argvals = list(1:3, c(2,4,6))) # argvals must be supplied as list
 
 # Univariate - irregular
-irregObject <- irregFunData(xVal = list(1:5, 2:4), X = list(2:6, 3:5))
+irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 extractObs(irregObject, obs = 2)
-extractObs(irregObject, xVal = 1:3)
-extractObs(irregObject, xVal = c(1,5)) # throws a warning, as second function has no observations
+extractObs(irregObject, argvals = 1:3)
+extractObs(irregObject, argvals = c(1,5)) # throws a warning, as second function has no observations
 
 # Multivariate
 multiObject <- multiFunData(object1, object2)
 extractObs(multiObject, obs = 2)
-extractObs(multiObject, xVal = list(1:3, list(1:3, c(2,4,6))))
+extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
 }
 \seealso{
 \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
