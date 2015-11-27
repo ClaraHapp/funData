@@ -1,9 +1,3 @@
-#' @import funData
-NULL
-
-#' @importFrom methods setGeneric setMethod
-NULL
-
 #' Generate a sparse version of functional data objects
 #'
 #' This function generates an artificially sparsified version of a functional
@@ -714,8 +708,6 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 
 
 #' Simulate multivariate eigenfunctions based on weighted orthonormal bases
-#'
-#'@importFrom foreach %do%
 #'
 #' @keywords internal
 simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
