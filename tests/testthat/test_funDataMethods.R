@@ -369,3 +369,33 @@ test_that("meanFunction",{
  })
 
 
+test_that("tensorProduct",{
+  x <- seq(0, 2*pi, 0.1)
+  f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), sin(x)))
+  y <- seq(-pi, pi, 0.1)
+  f2 <- funData(y, outer(seq(0.25, 0.75, 0.1), sin(y)))
+  
+  # Check errors:
+ expect_error(tensorProduct(f1), "tensorProduct currently accepts only 2 or 3 arguments.")
+ expect_error(tensorProduct(f1, f2, f2, f1), "tensorProduct currently accepts only 2 or 3 arguments.")
+ expect_error(tensorProduct(f1, tensorProduct(f1,f2)), "tensorProduct is defined only for funData objects on one-dimensional domains!")
+ 
+ # Check functionality:
+ # tensor product of two functions
+ TP1 <- tensorProduct(f1, f2)
+ expect_equal(dimSupp(TP1), 2)
+ expect_equal(TP1@argvals, list(f1@argvals[[1]], f2@argvals[[1]]))
+ expect_equal(nObs(TP1), nObs(f1)*nObs(f2))
+ expect_equal(mean(TP1@X[1,-1,]/TP1@X[2,-1,]), 0.88235294)
+ expect_equal(sum(var(TP1@X[1,-1,]/TP1@X[2,-1,])), 0)
+ 
+ # tensor product of three functions
+ TP2 <- tensorProduct(f1, f2, f1)
+ expect_equal(dimSupp(TP2), 3)
+ expect_equal(TP2@argvals, list(f1@argvals[[1]], f2@argvals[[1]], f1@argvals[[1]]))
+ expect_equal(nObs(TP2), nObs(f1)^2*nObs(f2))
+ expect_equal(mean(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.88235294)
+ expect_equal(sum(var(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1])), 0)
+ })
+
+

@@ -1843,3 +1843,86 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
             
             irregFunData(object@argvals[1], list(sapply(object@X, mean)))
           })
+
+
+#### tensorProduct ####
+
+#' Tensor product for univariate functions on one-dimensional domains
+#' 
+#' This function calculates the tensor product function for objects of class 
+#' \code{funData} defined on one-dimensional domains.
+#' 
+#' @section Warning: The function is only implemented for up to three functions 
+#'   f1, f2, f3 on one-dimensional domains.
+#'   
+#' @param ... Two or three objects of class \code{funData}, that must be defined
+#'   on a one-dimensional domain, each.
+#'   
+#' @return An object of class as \code{funData} that corresponds to the tensor
+#'   product of the input functions.
+#'   
+#' @seealso \linkS4class{funData}
+#'   
+#' @export tensorProduct
+#'   
+#' @examples
+#' 
+#' ### Tensor product of two functional data objects
+#' x <- seq(0, 2*pi, 0.1)
+#' f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), sin(x)))
+#' y <- seq(-pi, pi, 0.1)
+#' f2 <- funData(y, outer(seq(0.25, 0.75, 0.1), sin(y)))
+#' 
+#' plot(f1, main = "f1")
+#' plot(f2, main = "f2")
+#' 
+#' tP <- tensorProduct(f1, f2)
+#' dimSupp(tP)
+#' plot(tP, obs = 1)
+#' 
+#' ### Tensor product of three functional data objects
+#' z <- seq(-1, 1, 0.05)
+#' f3 <- funData(z, outer(seq(0.75, 1.25, 0.1), z^2))
+#' 
+#' plot(f1, main = "f1")
+#' plot(f2, main = "f2")
+#' plot(f3, main = "f3")
+#' 
+#' tP2 <- tensorProduct(f1, f2, f3)
+#' dimSupp(tP2)
+setGeneric("tensorProduct", function(...) {standardGeneric("tensorProduct")})
+
+
+#' Tensor product for functional data
+#'
+#' @seealso \link{meanFunction}
+#'
+#' @keywords internal
+setMethod("tensorProduct", signature = c("funData"),
+          function(...){
+          
+            l <- list(...) # combine all arguments in a list
+          
+            if(length(l) != 2 & length(l) != 3)
+              stop("tensorProduct currently accepts only 2 or 3 arguments.")
+            
+            if(any(sapply(l, dimSupp) != 1))
+              stop("tensorProduct is defined only for funData objects on one-dimensional domains!")
+            
+            g <- expand.grid(lapply(l, function(f){1:nObs(f)}))
+            
+            if(length(l) == 2)
+            {
+              res <- sapply(1:dim(g)[1], function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] }, simplify = "array")
+              res <- aperm(res, c(3,1,2))
+            } 
+            else # length(l) = 3
+            {
+              res <- sapply(1:dim(g)[1], function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] %o% l[[3]]@X[g[i,3],]}, simplify = "array")
+              res <- aperm(res, c(4,1,2,3))
+            } 
+            
+            resFun <- funData(argvals = lapply(l, function(f){f@argvals[[1]]}), X = res)
+            
+            return(resFun)
+})
