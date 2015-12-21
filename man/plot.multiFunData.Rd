@@ -70,8 +70,12 @@ X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
 object2D <- funData(list(argvals, argvals), X)
 
 multiObject <- multiFunData(object1, object2D)
-plot(multiObject, main = c("1st element", "2nd element"), obs = 1, xlab = c("xlab1", "xlab2"), ylab = "one ylab for all") # different titles and labels
-plot(multiObject, main = "Multivariate Functional Data", obs = 1) # one title for all
+# different titles and labels
+plot(multiObject, main = c("1st element", "2nd element"), obs = 1,
+     xlab = c("xlab1", "xlab2"),
+     ylab = "one ylab for all")
+# one title for all
+plot(multiObject, main = "Multivariate Functional Data", obs = 1)
 
 \dontrun{plot(multiObject, main = c("1st element", "2nd element")) # must specify obs!}
 \dontrun{plot(multiObject, main = "Multivariate Functional Data") # must specify obs!}
