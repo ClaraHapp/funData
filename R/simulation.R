@@ -708,6 +708,8 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 
 
 #' Simulate multivariate eigenfunctions based on weighted orthonormal bases
+#' 
+#' @importFrom foreach "%do%"
 #'
 #' @keywords internal
 simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
