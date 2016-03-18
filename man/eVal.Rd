@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulation.R
 \name{eVal}
 \alias{eVal}
-\title{Generate eigenvalues}
+\title{Generate a sequence of simulated eigenvalues}
 \usage{
 eVal(M, type)
 }

@@ -15,7 +15,9 @@ as.funData(object)
   \code{funData} object with missing values.}
 }
 \description{
-Coerce an \code{irregFunData} object to class \code{funData}.
+This function coerces an object of class \code{irregFunData} to a
+\code{funData} object with missing values, which is defined on the union of
+all observation points.
 }
 \seealso{
 \linkS4class{funData}, \linkS4class{irregFunData}

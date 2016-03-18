@@ -448,7 +448,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 
 #### Arith ####
 
-#' Arithmetics of functional data objects
+#' Arithmetics for functional data objects
 #' 
 #' These functions allow basic arithmetics for functional data and numerics 
 #' based on \code{\link[methods]{Arith}}.  The operations are made pointwise for
@@ -827,7 +827,7 @@ setMethod("nObsPoints", signature = "irregFunData",
 #' @param obs A numeric vector, giving the indices of the observations to 
 #'   extract (default: all obervations).
 #' @param argvals The part of the domain to be extracted (default: the whole domain
-#'   object@@argvals). Must be a list or a numeric vector (only for one-dimensional
+#'   \code{object}@@\code{argvals}). Must be a list or a numeric vector (only for one-dimensional
 #'   domains, see also the definition of \linkS4class{funData}, 
 #'   \linkS4class{multiFunData}).
 #'   

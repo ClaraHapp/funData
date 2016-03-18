@@ -127,7 +127,7 @@ setMethod("sparsify", signature = "multiFunData",
 #' set.seed(1)
 #'
 #' # Univariate functional data
-#' plain <- simFunData(argvals = seq(0,1, 0.01), M = 10, eFunType = "Fourier",
+#' plain <- simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier",
 #'                     eValType = "linear", N = 1)$simData
 #' noisy <- addError(plain , sd = 0.5)
 #' veryNoisy <- addError(plain, sd = 2)
@@ -135,10 +135,10 @@ setMethod("sparsify", signature = "multiFunData",
 #' plot(plain, main = "Add error", ylim = range(veryNoisy@@X))
 #' plot(noisy, type = "p", pch = 20, add = TRUE)
 #' plot(veryNoisy, type = "p", pch = 4, add = TRUE)
-#' legend("topright", c("Plain", "Noisy", "Very Noisy"), lty=  c(1, NA, NA), pch = c(NA, 20 ,4))
+#' legend("topright", c("Plain", "Noisy", "Very Noisy"), lty = c(1, NA, NA), pch = c(NA, 20 ,4))
 #'
 #' # Multivariate functional data
-#' plain <- simMultiFunData(type = "split", argvals = list(seq(0,1, 0.01), seq(-.5,.5, 0.02)), M = 10,
+#' plain <- simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-.5,.5,0.02)), M = 10,
 #'                         eFunType = "Fourier", eValType = "linear", N = 1)$simData
 #' noisy <- addError(plain , sd = 0.5)
 #' veryNoisy <- addError(plain, sd = 2)
@@ -151,7 +151,7 @@ setMethod("sparsify", signature = "multiFunData",
 #' plot(plain[[2]], main = "Add error (multivariate)", ylim = range(veryNoisy[[2]]@@X))
 #' plot(noisy[[2]], type = "p", pch = 20, add = TRUE)
 #' plot(veryNoisy[[2]], type = "p", pch = 4, add = TRUE)
-#' legend("topright", c("Plain", "Noisy", "Very Noisy"), lty=  c(1, NA, NA), pch = c(NA, 20 ,4))
+#' legend("topright", c("Plain", "Noisy", "Very Noisy"), lty = c(1, NA, NA), pch = c(NA, 20 ,4))
 #'
 #' par(oldPar)
 setGeneric("addError", function(funDataObject, sd) {standardGeneric("addError")})
@@ -364,7 +364,7 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
 }
 
 
-#' Generate eigenvalues
+#' Generate a sequence of simulated eigenvalues
 #'
 #' This function generates \eqn{M} decreasing eigenvalues.
 #'

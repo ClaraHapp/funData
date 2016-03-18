@@ -306,7 +306,7 @@ setAs("funData", "multiFunData",
  
 #' Coerce a funData object to class multiFunData
 #' 
-#' Coerce a \code{funData} object to class \code{multiFunData}.
+#' Coerce a \code{funData} object to class \code{multiFunData} with one element.
 #' 
 #' @param object The \code{funData} object that is to be converted to a
 #'   \code{multiFunData} object of length 1.
@@ -441,9 +441,9 @@ setMethod("irregFunData", signature = c(argvals = "list", X = "list"),
 #' Coerce an irregFunData object to class funData
 #' 
 #' @seealso \linkS4class{funData}, \link{as.funData}
-#' 
+#'   
 #' @name irregFunData-setAs
-#' 
+#'   
 #' @keywords internal
 setAs("irregFunData", "funData", 
       def = function(from){      
@@ -461,7 +461,9 @@ setAs("irregFunData", "funData",
 
 #' Coerce an irregFunData object to class funData
 #' 
-#' Coerce an \code{irregFunData} object to class \code{funData}.
+#' This function coerces an object of class \code{irregFunData} to a
+#' \code{funData} object with missing values, which is defined on the union of
+#' all observation points.
 #' 
 #' @param object The \code{irregFunData} object that is to be converted to a
 #'   \code{funData} object with missing values.

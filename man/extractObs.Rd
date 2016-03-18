@@ -14,7 +14,7 @@ extractObs(object, obs = 1:nObs(object), argvals = getArgvals(object))
 extract (default: all obervations).}
 
 \item{argvals}{The part of the domain to be extracted (default: the whole domain
-  object@argvals). Must be a list or a numeric vector (only for one-dimensional
+  \code{object@argvals}). Must be a list or a numeric vector (only for one-dimensional
   domains, see also the definition of \linkS4class{funData},
   \linkS4class{multiFunData}).}
 }

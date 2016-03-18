@@ -14,7 +14,7 @@
 \alias{Arith,numeric,irregFunData-method}
 \alias{Arith,numeric,multiFunData-method}
 \alias{Arith.funData}
-\title{Arithmetics of functional data objects}
+\title{Arithmetics for functional data objects}
 \usage{
 \S4method{Arith}{funData,funData}(e1, e2)
 

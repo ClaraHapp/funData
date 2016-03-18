@@ -15,7 +15,7 @@ as.multiFunData(object)
   \code{multiFunData} object of length 1.}
 }
 \description{
-Coerce a \code{funData} object to class \code{multiFunData}.
+Coerce a \code{funData} object to class \code{multiFunData} with one element.
 }
 \seealso{
 \linkS4class{funData}, \linkS4class{multiFunData}
