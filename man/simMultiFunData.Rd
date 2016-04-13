@@ -31,7 +31,7 @@ ignore when generating the univariate orthonormal bases. Defaults to
 
 \item{eValType}{A character string, specifying the type of
 eigenvalues/variances used for the simulation of the multivariate functions
-based on the truncated Karhunen-Lo\`{e}ve representation. See
+based on the truncated Karhunen-Loeve representation. See
 \code{\link{eVal}} for details.}
 
 \item{N}{An integer, specifying the number of multivariate functions to be
@@ -48,20 +48,20 @@ based on the truncated Karhunen-Lo\`{e}ve representation. See
 \description{
 This function provides a unified simulation structure for multivariate
 functional data \eqn{f_1, \ldots, f_N} on one- or two-dimensional domains,
-based on a truncated multivariate Karhunen-Lo\`{e}ve representation:
+based on a truncated multivariate Karhunen-Loeve representation:
 \deqn{f_i(t) = \sum_{m = 1}^M \rho_{i,m} \psi_m(t).} The multivariate
 eigenfunctions (basis functions) \eqn{\psi_m}  are constructed from
 univariate orthonormal bases. There are two different concepts for the
 construction, that can be chosen by the parameter \code{type}: A split
 orthonormal basis (\code{split}, only one-dimensional domains) and weighted
 univariate orthonormal bases (\code{weighted}, one- and two-dimensional
-domains). The scores \eqn{\rho_{i,m}} in the Karhunen-Lo\`{e}ve
+domains). The scores \eqn{\rho_{i,m}} in the Karhunen-Loeve
 representation are simulated independently from a normal distribution with
 zero mean and decreasing variance. See Details.
 }
 \details{
 The parameter \code{type} defines how the eigenfunction basis for the
-multivariate Karhunen-Lo\`{e}ve representation is constructed: \itemize{
+multivariate Karhunen-Loeve representation is constructed: \itemize{
 \item \code{type = "split"}: The basis functions of an underlying 'big'
 orthonormal basis are split in \code{M} parts, translated and possibly
 reflected. This yields an orthornormal basis of multivariate functions with

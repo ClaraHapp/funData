@@ -22,7 +22,7 @@ generating the univariate orthonormal bases. Defaults to \code{NULL}. See
 
 \item{eValType}{A character string, specifying the type of
 eigenvalues/variances used for the generation of the simulated functions
-based on the truncated Karhunen-Lo\`{e}ve representation. See
+based on the truncated Karhunen-Loeve representation. See
 \code{\link{eVal}} for details.}
 
 \item{N}{An integer, specifying the number of multivariate functions to be
@@ -38,7 +38,7 @@ based on the truncated Karhunen-Lo\`{e}ve representation. See
 }
 \description{
 This functions simulates (univariate) functional data \eqn{f_1,\ldots, f_N} based on a truncated
-Karhunen-Lo\`{e}ve representation: \deqn{f_i(t) = \sum_{m = 1}^M \xi_{i,m}
+Karhunen-Loeve representation: \deqn{f_i(t) = \sum_{m = 1}^M \xi_{i,m}
 \phi_m(t).} The eigenfunctions (basis functions) \eqn{\phi_m(t)} are generated
 using \code{\link{eFun}}, the scores \eqn{\xi_{i,m}} are simulated
 independently from a normal distribution with zero mean and decreasing
