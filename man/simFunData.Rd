@@ -71,7 +71,7 @@ plot(test_noBoth$trueFuns, main = "Neither linear nor constant basis function")
 par(oldPar)
 }
 \seealso{
-\link[funData]{funData}, \code{\link{eFun}}, \code{\link{eVal}},
+\code{\link[funData]{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
   \code{\link{addError}}, \code{\link{sparsify}}.
 }
 

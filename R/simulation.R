@@ -426,7 +426,7 @@ eVal <- function(M, type)
 #'   the data.} \item{trueVals}{A vector of numerics, representing the true
 #'   eigenvalues used for simulating the data.}
 #'
-#' @seealso \link[funData]{funData}, \code{\link{eFun}}, \code{\link{eVal}},
+#' @seealso \code{\link[funData]{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
 #'   \code{\link{addError}}, \code{\link{sparsify}}.
 #'
 #' @export simFunData
