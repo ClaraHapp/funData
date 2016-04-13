@@ -359,7 +359,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   
   # plot the univariate functions
   for(i in dim)
-    plot(x[[i]], obs = obs, add = add, main = main[i], xlab= xlab[i], ylab = ylab[i], ...)
+    plot(x[[i]], obs = obs, main = main[i], xlab= xlab[i], ylab = ylab[i], ...)
   
   
   # if no par.plot specified: reset graphics parameters
