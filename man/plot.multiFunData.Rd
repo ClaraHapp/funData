@@ -20,7 +20,8 @@ plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
 all observations in \code{x}. For two-dimensional functions (images)
 \code{obs} must have length 1.}
 
-\item{dim}{The dimensions to plot. Defaults \code{length(x)}.}
+\item{dim}{The dimensions to plot. Defaults to \code{length(x)}, i.e. all
+functions in \code{x} are plotted.}
 
 \item{par.plot}{Graphic parameters to be passed to the plotting regions. The
 option \code{mfrow} is ignored. Defaults to \code{FALSE}. See
@@ -33,7 +34,7 @@ length as \code{dim} (different titles for each dimension) or length
 \item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
 x-axis and no title for the y-axis for all elements. Can be supplied as a
 vector of the same length as \code{x} (one x-/y-lab for each element) or a
-single strin that is applied for all elements. See
+single string that is applied for all elements. See
 \code{\link[graphics]{plot}} for details.}
 
 \item{...}{Additional arguments to \code{plot}.}
@@ -53,33 +54,32 @@ oldpar <- par(no.readonly = TRUE)
 argvals <- seq(0, 2*pi, 0.1)
 
 # One-dimensional elements
-object1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
-object2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
+f1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
+f2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
 
-multiObject <- multiFunData(object1, object2)
-plot(multiObject, main = c("1st element", "2nd element")) # different titles
-plot(multiObject, main = "Multivariate Functional Data") # one title for all
+m1 <- multiFunData(f1, f2)
+plot(m1, main = c("1st element", "2nd element")) # different titles
+plot(m1, main = "Multivariate Functional Data") # one title for all
 
 # Mixed-dimensional elements
 X <- array(0, dim = c(11, length(argvals), length(argvals)))
 X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-object2D <- funData(list(argvals, argvals), X)
+g <- funData(list(argvals, argvals), X)
 
-multiObject <- multiFunData(object1, object2D)
+m2 <- multiFunData(f1, g)
 # different titles and labels
-plot(multiObject, main = c("1st element", "2nd element"), obs = 1,
+plot(m2, main = c("1st element", "2nd element"), obs = 1,
      xlab = c("xlab1", "xlab2"),
      ylab = "one ylab for all")
 # one title for all
-plot(multiObject, main = "Multivariate Functional Data", obs = 1)
+plot(m2, main = "Multivariate Functional Data", obs = 1)
 
-\dontrun{plot(multiObject, main = c("1st element", "2nd element")) # must specify obs!}
-\dontrun{plot(multiObject, main = "Multivariate Functional Data") # must specify obs!}
+\dontrun{plot(m2, main = c("1st element", "2nd element")) # must specify obs!}
 
 par(oldpar)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData},
+\code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}},
   \code{\link{plot.funData}}
 }
 

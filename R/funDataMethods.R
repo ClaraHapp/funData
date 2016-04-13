@@ -276,7 +276,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' \code{dim}) via \code{mfrow} (\code{\link[graphics]{par}}) and the univariate
 #' elements are plotted using \code{plot}.
 #' 
-#' @section Warning: The function is currently implemented only for functional
+#' @section Warning: The function is currently implemented only for functional 
 #'   data with one- and two-dimensional domains.
 #'   
 #' @param x An object of class \code{multiFunData}.
@@ -284,7 +284,8 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param obs A vector of numerics giving the observations to plot. Defaults to 
 #'   all observations in \code{x}. For two-dimensional functions (images) 
 #'   \code{obs} must have length 1.
-#' @param dim The dimensions to plot. Defaults \code{length(x)}.
+#' @param dim The dimensions to plot. Defaults to \code{length(x)}, i.e. all
+#'   functions in \code{x} are plotted.
 #' @param par.plot Graphic parameters to be passed to the plotting regions. The 
 #'   option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
 #'   \code{\link[graphics]{par}} for details.
@@ -292,13 +293,13 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #'   length as \code{dim} (different titles for each dimension) or length 
 #'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
 #' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the 
-#'   x-axis and no title for the y-axis for all elements. Can be supplied as a
-#'   vector of the same length as \code{x} (one x-/y-lab for each element) or a
-#'   single strin that is applied for all elements. See
+#'   x-axis and no title for the y-axis for all elements. Can be supplied as a 
+#'   vector of the same length as \code{x} (one x-/y-lab for each element) or a 
+#'   single string that is applied for all elements. See 
 #'   \code{\link[graphics]{plot}} for details.
 #' @param ... Additional arguments to \code{plot}.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}, 
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}, 
 #'   \code{\link{plot.funData}}
 #'   
 #' @examples
@@ -306,28 +307,27 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' argvals <- seq(0, 2*pi, 0.1)
 #' 
 #' # One-dimensional elements
-#' object1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
-#' object2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
+#' f1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
+#' f2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
 #' 
-#' multiObject <- multiFunData(object1, object2)
-#' plot(multiObject, main = c("1st element", "2nd element")) # different titles
-#' plot(multiObject, main = "Multivariate Functional Data") # one title for all
+#' m1 <- multiFunData(f1, f2)
+#' plot(m1, main = c("1st element", "2nd element")) # different titles
+#' plot(m1, main = "Multivariate Functional Data") # one title for all
 #' 
 #' # Mixed-dimensional elements
 #' X <- array(0, dim = c(11, length(argvals), length(argvals)))
 #' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-#' object2D <- funData(list(argvals, argvals), X)
+#' g <- funData(list(argvals, argvals), X)
 #' 
-#' multiObject <- multiFunData(object1, object2D)
+#' m2 <- multiFunData(f1, g)
 #' # different titles and labels
-#' plot(multiObject, main = c("1st element", "2nd element"), obs = 1,
+#' plot(m2, main = c("1st element", "2nd element"), obs = 1,
 #'      xlab = c("xlab1", "xlab2"), 
 #'      ylab = "one ylab for all")
 #' # one title for all
-#' plot(multiObject, main = "Multivariate Functional Data", obs = 1) 
+#' plot(m2, main = "Multivariate Functional Data", obs = 1) 
 #' 
-#' \dontrun{plot(multiObject, main = c("1st element", "2nd element")) # must specify obs!}
-#' \dontrun{plot(multiObject, main = "Multivariate Functional Data") # must specify obs!}
+#' \dontrun{plot(m2, main = c("1st element", "2nd element")) # must specify obs!}
 #' 
 #' par(oldpar)
 plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
