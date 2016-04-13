@@ -38,9 +38,9 @@ based on the truncated Karhunen-Loeve representation. See
   generated.}
 }
 \value{
-\item{simData}{A \code{\link[funData]{multiFunData}} object with
+\item{simData}{A \code{\linkS4class{multiFunData}} object with
   \code{N} observations, representing the simulated multivariate functional
-  data.} \item{trueFuns}{A \code{\link[funData]{multiFunData}} object with
+  data.} \item{trueFuns}{A \code{\linkS4class{multiFunData}} object with
   \code{M} observations, representing the multivariate eigenfunction basis
   used for simulating the data.} \item{trueVals}{A vector of numerics,
   representing the eigenvalues used for simulating the data.}
@@ -109,7 +109,7 @@ containing two vectors of observation points, one for each direction
 is a vector of two integers, giving the number of basis functions for each
 direction (x- and y-direction). \item \code{eFunType[[j]]} is a vector of two
 character strings, giving the type of orthonormal basis functions for each
-direction (x- and y-direction, see \link{eFun} for possible options). The
+direction (x- and y-direction, see\code{\link{eFun}} for possible options). The
 corresponding basis functions are constructed as tensor products of
 orthonormal basis functions in each direction. \item \code{ignoreDeg[[j]]} is
 a list, containing two integer vectors that specify the degrees to ignore
@@ -155,7 +155,7 @@ C. Happ, S. Greven (2015): Multivariate Functional Principal
   Preprint on arXiv: \url{http://arxiv.org/abs/1509.02029}
 }
 \seealso{
-\code{\link[funData]{multiFunData}}, \code{\link{eFun}},
+\code{\linkS4class{multiFunData}}, \code{\link{eFun}},
   \code{\link{eVal}}, \code{\link{simFunData}}, \code{\link{addError}},
   \code{\link{sparsify}}.
 }

@@ -7,7 +7,7 @@
 Coerce an irregFunData object to class funData
 }
 \seealso{
-\linkS4class{funData}, \link{as.funData}
+\code{\linkS4class{funData}},\code{\link{as.funData}}
 }
 \keyword{internal}
 

@@ -115,7 +115,7 @@ plot(refData[[2]], col = "red", lwd = 2, add = TRUE)
 par(oldpar)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData},
-  \linkS4class{multiFunData}, \link{Arith.funData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+  \code{\linkS4class{multiFunData}},\code{\link{Arith.funData}}
 }
 

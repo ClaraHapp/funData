@@ -19,7 +19,7 @@ calculcated.}
 }
 \value{
 A univariate functional data object of class
-  \code{\link[funData]{funData}} containing the Fourier basis functions on
+  \code{\linkS4class{funData}} containing the Fourier basis functions on
   the given interval.
 }
 \description{
@@ -33,7 +33,7 @@ basis functions via the Gram-Schmidt method. This is implemented only if
 \code{argvalss} is a grid defining the unit interval \eqn{[0,1]}.
 }
 \seealso{
-\code{\link[funData]{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 }
 \keyword{internal}
 

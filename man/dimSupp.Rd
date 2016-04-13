@@ -37,6 +37,6 @@ multiObject <- multiFunData(object1, object2)
 dimSupp(multiObject)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData} \linkS4class{multiFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
 

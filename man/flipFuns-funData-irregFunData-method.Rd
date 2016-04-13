@@ -11,7 +11,7 @@
 Flip irregular functional data - funData as reference
 }
 \seealso{
-\link{flipFuns}
+\code{\link{flipFuns}}
 }
 \keyword{internal}
 

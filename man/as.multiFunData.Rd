@@ -18,6 +18,6 @@ as.multiFunData(object)
 Coerce a \code{funData} object to class \code{multiFunData} with one element.
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 }
 

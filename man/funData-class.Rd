@@ -54,7 +54,7 @@ the number of sampling points in dimension \eqn{1,\ldots, d}{1,\ldots, d}.
 Missing values in the observations are allowed and must be marked by
 \code{NA}. If missing values occur due to irregular observation points, the
 data can be stored alternatively as an object of class
-\linkS4class{irregFunData}.
+\code{\linkS4class{irregFunData}}.
 
 Generic functions for the \code{funData} class include a print method,
 \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}.
@@ -123,6 +123,6 @@ all.equal(g1,g2)
 g2
 }
 \seealso{
-\linkS4class{irregFunData}, \linkS4class{multiFunData}
+\code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
 

@@ -11,7 +11,7 @@
 Set argvals slot for funData objects
 }
 \seealso{
-\link{setArgvals}
+\code{\link{setArgvals}}
 }
 \keyword{internal}
 

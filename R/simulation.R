@@ -3,8 +3,8 @@
 #' Generate a sparse version of functional data objects
 #'
 #' This function generates an artificially sparsified version of a functional
-#' data object of class \link[funData]{funData} (univariate) or
-#' \link[funData]{multiFunData} (multivariate). The minimal and maximal number
+#' data object of class \code{\linkS4class{funData}} (univariate) or
+#' \code{\linkS4class{multiFunData}} (multivariate). The minimal and maximal number
 #' of observation points for all observations can be supplied by the user.
 #'
 #' The technique for artificially sparsifying the data is as described in Yao et
@@ -22,17 +22,17 @@
 #' This function is currently implemented for 1D data only.
 #'
 #' @param funDataObject A functional data object of class
-#'   \code{\link[funData]{funData}} or \link[funData]{multiFunData}.
+#'   \code{\linkS4class{funData}} or \code{\linkS4class{multiFunData}}.
 #' @param minObs,maxObs The minimal/maximal number of observation points. Must be a scalar for
-#'   univariate functional data (\code{\link[funData]{funData}} class) or a
+#'   univariate functional data (\code{\linkS4class{funData}} class) or a
 #'   vector of the same length as \code{funDataObject} for multivariate
-#'   functional data (\code{\link[funData]{multiFunData}} class), giving the
+#'   functional data (\code{\linkS4class{multiFunData}} class), giving the
 #'   minimal/maximal number of observations for each element. See Details.
 #'
 #' @return An object of the same class as \code{funDataObject}, which is a
 #'   sparse version of the original data.
 #'
-#' @seealso \code{\link[funData]{funData}}, \code{\link[funData]{multiFunData}},
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}},
 #'   \code{\link{simFunData}}, \code{\link{simMultiFunData}},
 #'   \code{\link{addError}}.
 #'
@@ -79,9 +79,9 @@ setGeneric("sparsify", function(funDataObject, minObs, maxObs) {standardGeneric(
 setMethod("sparsify", signature = "funData",
           function(funDataObject, minObs, maxObs){
             sparseData <- funDataObject
-
+            
             n <- length(sparseData@argvals[[1]]) # total number of observation points
-
+            
             for(i in 1:nObs(sparseData)) # for all observed functions
             {
               Ni <- sample(minObs:maxObs, 1) # number of observation points
@@ -103,22 +103,22 @@ setMethod("sparsify", signature = "multiFunData",
 #' Add Gaussian white noise to functional data objects
 #'
 #' This function generates an artificial noisy version of a functional data
-#' object of class \link[funData]{funData} (univariate) or
-#' \link[funData]{multiFunData} (multivariate) by adding iid. realizations of
+#' object of class \code{\linkS4class{funData}} (univariate) or
+#' \code{\linkS4class{multiFunData}} (multivariate) by adding iid. realizations of
 #' Gaussian random variables \eqn{\varepsilon \sim \mathcal{N}(0, \sigma^2)}{\eps ~ N(0, \sigma^2)} to
 #' the observations. The standard deviation \eqn{\sigma} can be supplied by the
 #' user.
 #'
 #' @param funDataObject A functional data object of class
-#'   \code{\link[funData]{funData}} or \link[funData]{multiFunData}.
+#'   \code{\linkS4class{funData}} or \code{\linkS4class{multiFunData}}.
 #' @param sd The standard deviation \eqn{\sigma} of the Gaussian white noise
 #'   that is added to the data. Defaults to 1. See Description.
 #'
 #' @return An object of the same class as \code{funDataObject}, which is a noisy
 #'   version of the original data.
 #'
-#' @seealso \code{\link[funData]{funData}},
-#'   \code{\link[funData]{multiFunData}}, \code{\link{simFunData}},
+#' @seealso \code{\linkS4class{funData}},
+#'   \code{\linkS4class{multiFunData}}, \code{\link{simFunData}},
 #'   \code{\link{simMultiFunData}}.
 #'
 #' @export addError
@@ -164,7 +164,7 @@ setGeneric("addError", function(funDataObject, sd) {standardGeneric("addError")}
 setMethod("addError", signature = "funData",
           function(funDataObject, sd){
             ME <- array(rnorm(prod(dim(funDataObject@X)), mean = 0, sd = sd),  dim(funDataObject@X))
-
+            
             return(funDataObject + funData(funDataObject@argvals, ME))
           })
 
@@ -187,31 +187,31 @@ setMethod("addError", signature = "multiFunData",
 #' @param M An integer, specifying the number (and hence the degree) of
 #'   polynomials that are calculcated.
 #'
-#' @return A univariate functional data object of class \code{\link[funData]{funData}}
+#' @return A univariate functional data object of class \code{\linkS4class{funData}}
 #'   containing the Legendre polynomials on the given interval.
 #'
-#' @seealso \code{\link[funData]{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 #'
 #' @keywords internal
 efPoly <- function(argvals, M)
 {
   Phi <- matrix(NA, ncol = length(argvals), nrow = M)
-
+  
   Phi[1, ] <- 1
   if(M == 1)
     return(funData(argvals, Phi))
-
+  
   Phi[2, ] <- (2*(argvals-min(argvals))/diff(range(argvals))-1)
-
+  
   if(M > 2)
   {
     for(m in 3:M) # for each function
       Phi[m, ] <- (2*m-3)/(m-1)*(2*(argvals-min(argvals))/diff(range(argvals))-1)*Phi[m-1, ]- (m-2)/(m-1)*Phi[m-2, ]
   }
-
+  
   for(m in 1:M) # normalize
     Phi[m, ] <- sqrt((2*m-1)/diff(range(argvals)))*Phi[m, ]
-
+  
   return(funData(argvals, Phi))
 }
 
@@ -235,21 +235,21 @@ efPoly <- function(argvals, M)
 #'   basis functions. Defaults to \code{FALSE}. See Details.
 #'
 #' @return A univariate functional data object of class
-#'   \code{\link[funData]{funData}} containing the Fourier basis functions on
+#'   \code{\linkS4class{funData}} containing the Fourier basis functions on
 #'   the given interval.
 #'
-#' @seealso \code{\link[funData]{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 #'
 #' @keywords internal
 efFourier <- function(argvals, M, linear=F)
 {
   Phi <- matrix(NA, nrow = M, ncol = length(argvals))
-
+  
   Phi[1,] <- sqrt(1/diff(range(argvals)))
-
+  
   if(M == 1)
     return(funData(argvals, Phi))
-
+  
   for(m in 2:M)
   {
     if(m%%2 == 0) # m even
@@ -257,18 +257,18 @@ efFourier <- function(argvals, M, linear=F)
     else # m odd
       Phi[m, ] <- sqrt(2/diff(range(argvals)))*sin((m%/%2)*(2*pi*(argvals-min(argvals))/diff(range(argvals))-pi))
   }
-
+  
   if(linear) # overwrite Phi[M, ], add linear function and orthonormalize (Gram-Schmidt)
   {
     if(!all.equal(range(argvals) , c(0,1)))
       stop("efFourier, option linear: not yet implemented for argvalss != [0,1]!")
-
+    
     # orthogonalize (exact function)
     Phi[M, ] <- argvals - 1/2  + rowSums(apply(matrix(1:((M-1)%/%2)), 1, function(k) (-1)^k/(pi*k)*sin(k*(2*pi*argvals-pi))))
     # normalize
     Phi[M, ] <-  Phi[M, ]/sqrt(1/3-1/4 -1/(2*pi^2)* sum( 1/(1:((M-1)%/%2))^2 ))
   }
-
+  
   return(funData(argvals, Phi))
 }
 
@@ -284,16 +284,16 @@ efFourier <- function(argvals, M, linear=F)
 #'   calculcated.
 #'
 #' @return A univariate functional data object of class
-#'   \code{\link[funData]{funData}} containing the eigenfunctions of the Wiener
+#'   \code{\linkS4class{funData}} containing the eigenfunctions of the Wiener
 #'   process on the given interval.
 #'
-#' @seealso \code{\link[funData]{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 #'
 #' @keywords internal
 efWiener <- function(argvals, M)
 {
   Phi <- sapply(1:M, function(m,t){sqrt(2/diff(range(t)))*sin( (pi/2) * (2*m - 1) * (t-min(t))/diff(range(t)))}, t=argvals)
-
+  
   return(funData(argvals, t(Phi)))
 }
 
@@ -328,10 +328,10 @@ efWiener <- function(argvals, M)
 #'   are calculated. See Details.
 #'
 #' @return A univariate functional data object of class
-#'   \code{\link[funData]{funData}} containing the basis functions on the given
+#'   \code{\linkS4class{funData}} containing the basis functions on the given
 #'   interval.
 #'
-#' @seealso \link[funData]{funData}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 #'
 #' @export eFun
 #'
@@ -354,7 +354,7 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
                 PolyHigh ={
                   if(is.null(ignoreDeg ))
                     stop("eFun, type = PolyHigh: specify ignoreDeg !")
-
+                  
                   extractObs(efPoly(argvals, M+length(ignoreDeg)), obs = -ignoreDeg)
                 },
                 Fourier = efFourier(argvals, M, linear = FALSE),
@@ -420,14 +420,14 @@ eVal <- function(M, type)
 #' @param N An integer, specifying the number of multivariate functions to be
 #'   generated.
 #'
-#' @return \item{simData}{A \code{\link[funData]{funData}} object with \code{N}
+#' @return \item{simData}{A \code{\linkS4class{funData}} object with \code{N}
 #'   observations, representing the simulated functional data.}
-#'   \item{trueFuns}{A \code{\link[funData]{funData}} object with \code{M}
+#'   \item{trueFuns}{A \code{\linkS4class{funData}} object with \code{M}
 #'   observations, representing the true eigenfunction basis used for simulating
 #'   the data.} \item{trueVals}{A vector of numerics, representing the true
 #'   eigenvalues used for simulating the data.}
 #'
-#' @seealso \code{\link[funData]{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
+#' @seealso \code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
 #'   \code{\link{addError}}, \code{\link{sparsify}}.
 #'
 #' @export simFunData
@@ -461,18 +461,18 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
   # generate eigenfunctions
   trueFuns <-  eFun(argvals, M, ignoreDeg = ignoreDeg, type = eFunType)
-
+  
   # generate eigenvalues and scores
   trueVals <- eVal(M, eValType)
   scores <- t(replicate(N, rnorm(M, sd = sqrt(eVal(M, eValType)))))
-
+  
   # truncated Karhunen-Loeve representation
   simData <- funData(argvals, scores %*% trueFuns@X)
-
+  
   return(list(simData = simData,
               trueFuns = trueFuns,
               trueVals = trueVals))
-
+  
 }
 
 
@@ -540,7 +540,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' is a vector of two integers, giving the number of basis functions for each 
 #' direction (x- and y-direction). \item \code{eFunType[[j]]} is a vector of two
 #' character strings, giving the type of orthonormal basis functions for each
-#' direction (x- and y-direction, see \link{eFun} for possible options). The
+#' direction (x- and y-direction, see\code{\link{eFun}} for possible options). The
 #' corresponding basis functions are constructed as tensor products of
 #' orthonormal basis functions in each direction. \item \code{ignoreDeg[[j]]} is
 #' a list, containing two integer vectors that specify the degrees to ignore
@@ -572,14 +572,14 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' @param N An integer, specifying the number of multivariate functions to be 
 #'   generated.
 #'   
-#' @return \item{simData}{A \code{\link[funData]{multiFunData}} object with 
+#' @return \item{simData}{A \code{\linkS4class{multiFunData}} object with 
 #'   \code{N} observations, representing the simulated multivariate functional 
-#'   data.} \item{trueFuns}{A \code{\link[funData]{multiFunData}} object with 
+#'   data.} \item{trueFuns}{A \code{\linkS4class{multiFunData}} object with 
 #'   \code{M} observations, representing the multivariate eigenfunction basis 
 #'   used for simulating the data.} \item{trueVals}{A vector of numerics, 
 #'   representing the eigenvalues used for simulating the data.}
 #'   
-#' @seealso \code{\link[funData]{multiFunData}}, \code{\link{eFun}}, 
+#' @seealso \code{\linkS4class{multiFunData}}, \code{\link{eFun}}, 
 #'   \code{\link{eVal}}, \code{\link{simFunData}}, \code{\link{addError}}, 
 #'   \code{\link{sparsify}}.
 #'   
@@ -624,28 +624,28 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
 {
   # generate eigenfunctions
   trueFuns <- switch(type,
-                split = simMultiSplit(argvals, M, eFunType, ignoreDeg, eValType, N),
-                weighted = simMultiWeight(argvals, M, eFunType, ignoreDeg, eValType, N),
-                stop("simMultiFunData: choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
-                )
-
+                     split = simMultiSplit(argvals, M, eFunType, ignoreDeg, eValType, N),
+                     weighted = simMultiWeight(argvals, M, eFunType, ignoreDeg, eValType, N),
+                     stop("simMultiFunData: choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
+  )
+  
   # number of eigenfunctions generated
   Mtotal <- nObs(trueFuns)
-
+  
   # number of elements in multivariate functional basis
   p <- length(trueFuns)
-
+  
   # generate eigenvalues and scores
   trueVals <- eVal(Mtotal, eValType)
   scores <- t(replicate(N, rnorm(Mtotal, sd = sqrt(eVal(Mtotal, eValType)))))
-
+  
   # generate individual observations
   simData  <- vector("list", p)
-
+  
   for(j in 1:p)
   {
     simData[[j]] <- funData(trueFuns[[j]]@argvals, array(0, dim = c(N, dim(trueFuns[[j]]@X)[-1])))
-
+    
     if(dimSupp(trueFuns[[j]]) == 1)
       simData[[j]]@X <- scores %*% trueFuns[[j]]@X
     else # dimSupp(trueFuns[[j]]) == 2
@@ -657,7 +657,7 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
       }
     }
   }
-
+  
   return(list(simData = multiFunData(simData),
               trueFuns = trueFuns,
               trueVals = trueVals))
@@ -672,36 +672,36 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   # consistency check
   if(any( c(length(M), length(eFunType), length(eValType)) != 1) )
     stop("simMultiSplit: argvals, M, eFunType, eValType must all be of length 1!")
-
+  
   # number of elements
   p <- length(argvals)
-
+  
   # "rearrange" argvalss
   x <- vector("list", length = length(argvals))
   splitVals <- rep(NA, length(argvals)+1)
-
+  
   x[[1]] <- unlist(argvals[[1]]) # convert to vector, if argvals[[1]] is a list
   splitVals[1:2] <- c(0, length(x[[1]]))
-
+  
   for(i in 2:p)
   {
     x[[i]] <- unlist(argvals[[i]]) # convert to vector, if argvals[[i]] is a list
     x[[i]] <- argvals[[i]] - min(argvals[[i]]) + max(x[[i-1]])
     splitVals[i+1] <- splitVals[i]+length(x[[i]])
   }
-
+  
   # generate "big" orthonormal system
   f <-  eFun(unlist(x), M, ignoreDeg = ignoreDeg, type = eFunType)
-
+  
   # sample sign randomly
   s <- sample(c(-1,1), p, 0.5)
-
+  
   # result object
   trueFuns  <- vector("list", p)
-
+  
   for(j in 1:p)
     trueFuns[[j]] <- funData(argvals[[j]],  s[j] * f@X[,(1+splitVals[j]):splitVals[j+1]])
-
+  
   return(multiFunData(trueFuns))
 }
 
@@ -716,13 +716,13 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
   p <- length(argvals)
-
+  
   # dimension for each component
   dimsSupp <- foreach::foreach(j = 1:p, .combine = "c")%do%{length(argvals[[j]])}
-
+  
   if(any(dimsSupp > 2))
     stop("Function simMultiWeight: method is not implemented for objects of dimension > 2!")
-
+  
   if(p > 1)
   {
     if(do.call(all.equal, lapply(M, prod)))
@@ -736,14 +736,14 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   {
     Mtotal <- prod(M[[1]])
   }
-
+  
   # mixing parameters
   alpha <- runif(p, 0.2, 0.8)
   weight <- sqrt(alpha/sum(alpha))
-
+  
   # generate basis
   basis <- vector("list", p)
-
+  
   for(j in 1:p)
   {
     if(dimsSupp[j] == 1) # one-dimensional
@@ -755,9 +755,9 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
       # image basis
       y1 <- eFun(argvals[[j]][[1]], M = M[[j]][1], ignoreDeg = ignoreDeg[[j]][[1]], type = eFunType[[j]][1])@X
       y2 <- eFun(argvals[[j]][[2]], M = M[[j]][2], ignoreDeg = ignoreDeg[[j]][[2]], type = eFunType[[j]][2])@X
-
+      
       basis[[j]] <- array(0, c(prod(M[[j]]), length(argvals[[j]][[1]]), length(argvals[[j]][[2]])))
-
+      
       for(l in 1:M[[j]][1])
       {
         for(k in 1:M[[j]][2])
@@ -765,11 +765,11 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
       }
     }
   }
-
+  
   trueFuns <- vector("list", p)
-
+  
   for(j in 1:p)
     trueFuns[[j]] <- funData(argvals[[j]], basis[[j]])
-
+  
   return(multiFunData(trueFuns))
 }

@@ -8,7 +8,7 @@ addError(funDataObject, sd)
 }
 \arguments{
 \item{funDataObject}{A functional data object of class
-\code{\link[funData]{funData}} or \link[funData]{multiFunData}.}
+\code{\linkS4class{funData}} or \code{\linkS4class{multiFunData}}.}
 
 \item{sd}{The standard deviation \eqn{\sigma} of the Gaussian white noise
   that is added to the data. Defaults to 1. See Description.}
@@ -19,8 +19,8 @@ An object of the same class as \code{funDataObject}, which is a noisy
 }
 \description{
 This function generates an artificial noisy version of a functional data
-object of class \link[funData]{funData} (univariate) or
-\link[funData]{multiFunData} (multivariate) by adding iid. realizations of
+object of class \code{\linkS4class{funData}} (univariate) or
+\code{\linkS4class{multiFunData}} (multivariate) by adding iid. realizations of
 Gaussian random variables \eqn{\varepsilon \sim \mathcal{N}(0, \sigma^2)}{\eps ~ N(0, \sigma^2)} to
 the observations. The standard deviation \eqn{\sigma} can be supplied by the
 user.
@@ -59,8 +59,8 @@ legend("topright", c("Plain", "Noisy", "Very Noisy"), lty = c(1, NA, NA), pch = 
 par(oldPar)
 }
 \seealso{
-\code{\link[funData]{funData}},
-  \code{\link[funData]{multiFunData}}, \code{\link{simFunData}},
+\code{\linkS4class{funData}},
+  \code{\linkS4class{multiFunData}}, \code{\link{simFunData}},
   \code{\link{simMultiFunData}}.
 }
 

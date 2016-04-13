@@ -21,7 +21,7 @@ sampling points in the domains. See Details.}
 Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
 }
 \seealso{
-\linkS4class{funData}
+\code{\linkS4class{funData}}
 }
 \keyword{internal}
 

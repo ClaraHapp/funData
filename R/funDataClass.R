@@ -25,7 +25,7 @@
 #' Missing values in the observations are allowed and must be marked by 
 #' \code{NA}. If missing values occur due to irregular observation points, the
 #' data can be stored alternatively as an object of class
-#' \linkS4class{irregFunData}.
+#' \code{\linkS4class{irregFunData}}.
 #' 
 #' Generic functions for the \code{funData} class include a print method, 
 #' \link[=plot.funData]{plotting} and \link[=Arith.funData]{basic arithmetics}. 
@@ -46,7 +46,7 @@
 #'   
 #' @aliases funData
 #'   
-#' @seealso \linkS4class{irregFunData}, \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 #'   
 #' @examples
 #' ### Creating a one-dimensional funData object with 2 observations
@@ -118,7 +118,7 @@ setValidity("funData", function(object){
 #'   \eqn{N}{N} individuals. Missing values can be included via \code{NA}. See
 #'   Details.
 #'   
-#' @seealso \linkS4class{funData}
+#' @seealso \code{\linkS4class{funData}}
 #'
 #' @name funData-constructor
 #' 
@@ -187,7 +187,7 @@ setMethod("funData", signature = c(argvals = "numeric", X = "array"),
 #' 
 #' @aliases multiFunData
 #' 
-#' @seealso \linkS4class{funData}
+#' @seealso \code{\linkS4class{funData}}
 #'   
 #' @examples
 #' ### Creating a multifunData object with 2 observations on the same domain
@@ -262,7 +262,7 @@ setValidity("multiFunData", function(object){
 
 #' Constructor for multivariate functional data objects
 #' 
-#' @seealso \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{multiFunData}}
 #' 
 #' @name multiFunData-constructor
 #' 
@@ -294,7 +294,7 @@ setMethod("multiFunData", signature = "ANY",
 
 #' Coerce a funData object to class multiFunData
 #' 
-#' @seealso \linkS4class{funData}, \link{as.multiFunData}
+#' @seealso \code{\linkS4class{funData}},\code{\link{as.multiFunData}}
 #' 
 #' @name funData-setAs
 #' 
@@ -303,7 +303,7 @@ setAs("funData", "multiFunData",
       def = function(from){ new("multiFunData", list(from))})
 
 
- 
+
 #' Coerce a funData object to class multiFunData
 #' 
 #' Coerce a \code{funData} object to class \code{multiFunData} with one element.
@@ -311,7 +311,7 @@ setAs("funData", "multiFunData",
 #' @param object The \code{funData} object that is to be converted to a
 #'   \code{multiFunData} object of length 1.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 #'   
 #' @export as.multiFunData
 setGeneric("as.multiFunData", function(object){standardGeneric("as.multiFunData")})
@@ -332,7 +332,7 @@ setMethod("as.multiFunData", signature = "funData",
 #' \mathcal{T} \to \mathrm{IR},}{X: \calT -> IR,} where each realization 
 #' \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset 
 #' \mathcal{T}}{T_i \subset \calT} of observation points. As for the 
-#' \linkS4class{funData} class, each object of the \code{irregFunData} class has
+#' \code{\linkS4class{funData}} class, each object of the \code{irregFunData} class has
 #' two slots; the \code{argvals} slot represents the observation points and the
 #' \code{X} slot represents the observed data. In contrast to the regularly
 #' sampled data, both slots are defined as lists of vectors, where each entry 
@@ -368,7 +368,7 @@ setMethod("as.multiFunData", signature = "funData",
 #'   
 #' @aliases irregFunData
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 #' 
 #' @examples
 #' # Construct an irregular functional data object
@@ -415,7 +415,7 @@ setValidity("irregFunData", function(object){
 
 #' Constructor for irregular functional data objects
 #' 
-#' @seealso \linkS4class{irregFunData}
+#' @seealso \code{\linkS4class{irregFunData}}
 #' 
 #' @name irregFunData-constructor
 #' 
@@ -440,15 +440,15 @@ setMethod("irregFunData", signature = c(argvals = "list", X = "list"),
 
 #' Coerce an irregFunData object to class funData
 #' 
-#' @seealso \linkS4class{funData}, \link{as.funData}
+#' @seealso \code{\linkS4class{funData}},\code{\link{as.funData}}
 #'   
 #' @name irregFunData-setAs
 #'   
 #' @keywords internal
 setAs("irregFunData", "funData", 
       def = function(from){      
-   #     if(dimSupp(from) > 1)
-   #      stop("as.funData is implemented only for irregular functional data on one-dimensional domains.")
+        #     if(dimSupp(from) > 1)
+        #      stop("as.funData is implemented only for irregular functional data on one-dimensional domains.")
         
         argvals <- sort(unique(unlist(from@argvals)))
         
@@ -468,7 +468,7 @@ setAs("irregFunData", "funData",
 #' @param object The \code{irregFunData} object that is to be converted to a
 #'   \code{funData} object with missing values.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}
 #'   
 #' @export as.funData
 setGeneric("as.funData", function(object){standardGeneric("as.funData")})

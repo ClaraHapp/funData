@@ -98,7 +98,7 @@ multiObject <- setArgvals(multiObject, list(5:1, 3:1))
 multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData},
-  \linkS4class{multiFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+  \code{\linkS4class{multiFunData}}
 }
 

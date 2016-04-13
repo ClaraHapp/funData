@@ -29,9 +29,9 @@ based on the truncated Karhunen-Loeve representation. See
   generated.}
 }
 \value{
-\item{simData}{A \code{\link[funData]{funData}} object with \code{N}
+\item{simData}{A \code{\linkS4class{funData}} object with \code{N}
   observations, representing the simulated functional data.}
-  \item{trueFuns}{A \code{\link[funData]{funData}} object with \code{M}
+  \item{trueFuns}{A \code{\linkS4class{funData}} object with \code{M}
   observations, representing the true eigenfunction basis used for simulating
   the data.} \item{trueVals}{A vector of numerics, representing the true
   eigenvalues used for simulating the data.}
@@ -71,7 +71,7 @@ plot(test_noBoth$trueFuns, main = "Neither linear nor constant basis function")
 par(oldPar)
 }
 \seealso{
-\code{\link[funData]{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
+\code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
   \code{\link{addError}}, \code{\link{sparsify}}.
 }
 

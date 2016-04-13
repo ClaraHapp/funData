@@ -15,7 +15,7 @@ eigenfunctions are computed.}
 }
 \value{
 A univariate functional data object of class
-  \code{\link[funData]{funData}} containing the eigenfunctions of the Wiener
+  \code{\linkS4class{funData}} containing the eigenfunctions of the Wiener
   process on the given interval.
 }
 \description{
@@ -23,7 +23,7 @@ This function calculates the first M (orthonormal) eigenfunctions of the
 Wiener process on an arbitrary interval.
 }
 \seealso{
-\code{\link[funData]{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 }
 \keyword{internal}
 

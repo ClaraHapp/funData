@@ -14,7 +14,7 @@ Legendre polynomials are computed.}
   polynomials that are calculcated.}
 }
 \value{
-A univariate functional data object of class \code{\link[funData]{funData}}
+A univariate functional data object of class \code{\linkS4class{funData}}
   containing the Legendre polynomials on the given interval.
 }
 \description{
@@ -22,7 +22,7 @@ This function iteratively calculates orthonormal Legendre polynomials of
 degree 0,...,M-1 on an arbitrary interval.
 }
 \seealso{
-\code{\link[funData]{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 }
 \keyword{internal}
 

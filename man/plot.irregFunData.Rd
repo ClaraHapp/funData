@@ -59,6 +59,6 @@ plot(object, main = "Irregular functional data")
 par(oldpar)
 }
 \seealso{
-\code{\link{plot.funData}}, \linkS4class{irregFunData}, \code{\link[graphics]{plot}},
+\code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, \code{\link[graphics]{plot}},
 }
 

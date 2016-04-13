@@ -11,7 +11,7 @@
 Get X slot for multiFunData objects
 }
 \seealso{
-\link{getX}
+\code{\link{getX}}
 }
 \keyword{internal}
 

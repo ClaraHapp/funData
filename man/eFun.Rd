@@ -21,7 +21,7 @@ for type \code{"PolyHigh"}. Defaults to \code{NULL}. See Details.}
 }
 \value{
 A univariate functional data object of class
-  \code{\link[funData]{funData}} containing the basis functions on the given
+  \code{\linkS4class{funData}} containing the basis functions on the given
   interval.
 }
 \description{
@@ -58,6 +58,6 @@ plot(eFun(argvals, M = 4, type = "Wiener"), main = "Wiener",  ylim = c(-3,3))
 par(oldPar)
 }
 \seealso{
-\link[funData]{funData}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 }
 

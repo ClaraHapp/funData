@@ -116,7 +116,7 @@ plot(i1^2 + i2^2, main = "Pythagoras")
 par(oldpar)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData},
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}},
   \link[methods]{Arith}
 }
 

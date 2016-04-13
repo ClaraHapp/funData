@@ -8,12 +8,12 @@ sparsify(funDataObject, minObs, maxObs)
 }
 \arguments{
 \item{funDataObject}{A functional data object of class
-\code{\link[funData]{funData}} or \link[funData]{multiFunData}.}
+\code{\linkS4class{funData}} or \code{\linkS4class{multiFunData}}.}
 
 \item{minObs,maxObs}{The minimal/maximal number of observation points. Must be a scalar for
-  univariate functional data (\code{\link[funData]{funData}} class) or a
+  univariate functional data (\code{\linkS4class{funData}} class) or a
   vector of the same length as \code{funDataObject} for multivariate
-  functional data (\code{\link[funData]{multiFunData}} class), giving the
+  functional data (\code{\linkS4class{multiFunData}} class), giving the
   minimal/maximal number of observations for each element. See Details.}
 }
 \value{
@@ -22,8 +22,8 @@ An object of the same class as \code{funDataObject}, which is a
 }
 \description{
 This function generates an artificially sparsified version of a functional
-data object of class \link[funData]{funData} (univariate) or
-\link[funData]{multiFunData} (multivariate). The minimal and maximal number
+data object of class \code{\linkS4class{funData}} (univariate) or
+\code{\linkS4class{multiFunData}} (multivariate). The minimal and maximal number
 of observation points for all observations can be supplied by the user.
 }
 \details{
@@ -77,7 +77,7 @@ Yao, F., H.-G. Mueller and J.-L. Wang (2005): Functional Data
   Association, 100 (470), 577--590.
 }
 \seealso{
-\code{\link[funData]{funData}}, \code{\link[funData]{multiFunData}},
+\code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}},
   \code{\link{simFunData}}, \code{\link{simMultiFunData}},
   \code{\link{addError}}.
 }

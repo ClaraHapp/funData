@@ -11,7 +11,7 @@ irregFunData(argvals, X)
 Constructor for irregular functional data objects
 }
 \seealso{
-\linkS4class{irregFunData}
+\code{\linkS4class{irregFunData}}
 }
 \keyword{internal}
 

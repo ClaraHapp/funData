@@ -110,7 +110,7 @@ plot(object2D, main = "2D functional data in topo.colors", obs = 1, col = topo.c
 par(oldpar)
 }
 \seealso{
-\linkS4class{funData}, \code{\link[graphics]{matplot}},
+\code{\linkS4class{funData}}, \code{\link[graphics]{matplot}},
   \code{\link[fields]{image.plot}}, \code{\link[graphics]{image}}
 }
 

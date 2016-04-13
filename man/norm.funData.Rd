@@ -10,7 +10,7 @@ norm.funData(object, squared, obs, method, weight)
 Calculate the norm for univariate functional data
 }
 \seealso{
-\link{norm}
+\code{\link{norm}}
 }
 \keyword{internal}
 

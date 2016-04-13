@@ -11,7 +11,7 @@
 Set argvals slot for irregular functional objects
 }
 \seealso{
-\link{setArgvals}
+\code{\link{setArgvals}}
 }
 \keyword{internal}
 

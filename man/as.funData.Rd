@@ -20,6 +20,6 @@ This function coerces an object of class \code{irregFunData} to a
 all observation points.
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}
 }
 

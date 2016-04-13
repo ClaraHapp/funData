@@ -29,7 +29,7 @@ Irregular functional data are realizations of a random process \deqn{X:
 \mathcal{T} \to \mathrm{IR},}{X: \calT -> IR,} where each realization
 \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset
 \mathcal{T}}{T_i \subset \calT} of observation points. As for the
-\linkS4class{funData} class, each object of the \code{irregFunData} class has
+\code{\linkS4class{funData}} class, each object of the \code{irregFunData} class has
 two slots; the \code{argvals} slot represents the observation points and the
 \code{X} slot represents the observed data. In contrast to the regularly
 sampled data, both slots are defined as lists of vectors, where each entry
@@ -94,6 +94,6 @@ i2
 plot(i2)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{multiFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 }
 

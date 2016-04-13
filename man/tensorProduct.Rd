@@ -48,6 +48,6 @@ tP2 <- tensorProduct(f1, f2, f3)
 dimSupp(tP2)
 }
 \seealso{
-\linkS4class{funData}
+\code{\linkS4class{funData}}
 }
 

@@ -83,7 +83,7 @@ setMethod("show", signature = "irregFunData",
 #'   \code{object} is multivariate (i.e. of class \code{multiFunData}), the
 #'   function returns a vector, giving the support dimension of each element.
 #'
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData} \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 #'
 #' @export dimSupp
 #'
@@ -172,7 +172,7 @@ setMethod("dimSupp", signature = "irregFunData",
 #'   \code{\link[fields]{image.plot}}/\code{\link[graphics]{image}}
 #'   (two-dimensional functions).
 #'
-#' @seealso \linkS4class{funData}, \code{\link[graphics]{matplot}},
+#' @seealso \code{\linkS4class{funData}}, \code{\link[graphics]{matplot}},
 #'   \code{\link[fields]{image.plot}}, \code{\link[graphics]{image}}
 #'
 #'
@@ -340,18 +340,18 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
     ylab <- rep(ylab, length(x))
   
   
-    # if no par.plot specified: get graphics parameters
-    if(is.null(par.plot))
-    {
-      oldPar <- par(no.readonly = TRUE)
-    }  else
-    {
-      par(par.plot)
-    }
-    
-    # split screen
-    par(mfrow = c(1,length(dim)))
-
+  # if no par.plot specified: get graphics parameters
+  if(is.null(par.plot))
+  {
+    oldPar <- par(no.readonly = TRUE)
+  }  else
+  {
+    par(par.plot)
+  }
+  
+  # split screen
+  par(mfrow = c(1,length(dim)))
+  
   
   if(!is.null(main) & (length(main) == 1))
     main <- rep(main, length(dim))
@@ -391,7 +391,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #'   one-dimensional functions). Defaults to \code{FALSE}.
 #' @param ... Additional arguments to \code{\link[graphics]{plot}}.
 #'   
-#' @seealso \code{\link{plot.funData}}, \linkS4class{irregFunData}, \code{\link[graphics]{plot}},    
+#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, \code{\link[graphics]{plot}},    
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
@@ -478,7 +478,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' @return An object of the same functional data class as \code{e1} or 
 #'   \code{e2}, respectively.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}, 
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}, 
 #'   \link[methods]{Arith}
 #'   
 #' @name Arith.funData
@@ -531,7 +531,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
             if(!all.equal(e1@argvals, e2@argvals))
               stop("Arithmetics: Functions must be defined on the same domain!")        
-                   
+            
             # different number of observations
             if(nObs(e1) != nObs(e2))
             {
@@ -700,7 +700,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
 #'
 #' @return The number of observations in \code{object}.
 #'
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 #'
 #' @export nObs
 #'
@@ -763,7 +763,7 @@ setMethod("nObs", signature = "irregFunData",
 #'   
 #' @return The number of observation points in \code{object}. See Details.
 #'   
-#' @seealso \linkS4class{irregFunData}, \code{\link{extractObs}}
+#' @seealso \code{\linkS4class{irregFunData}}, \code{\link{extractObs}}
 #'   
 #' @export nObsPoints
 #'   
@@ -824,13 +824,13 @@ setMethod("nObsPoints", signature = "irregFunData",
 #'   extract (default: all obervations).
 #' @param argvals The part of the domain to be extracted (default: the whole domain
 #'   \code{object}@@\code{argvals}). Must be a list or a numeric vector (only for one-dimensional
-#'   domains, see also the definition of \linkS4class{funData}, 
-#'   \linkS4class{multiFunData}).
+#'   domains, see also the definition of \code{\linkS4class{funData}}, 
+#'   \code{\linkS4class{multiFunData}}).
 #'   
 #' @return An object of class \code{funData}, \code{irregFunData} or \code{multiFunData} containing 
 #'   the desired observations.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 #'   
 #' @export extractObs
 #'   
@@ -888,18 +888,18 @@ setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
             
             if(dimSupp(object) == 1)
               return(funData(argvals, object@X[obs,
-                                            object@argvals[[1]] %in% argvals[[1]], drop = FALSE]))
+                                               object@argvals[[1]] %in% argvals[[1]], drop = FALSE]))
             
             if(dimSupp(object) == 2)
               return(funData(argvals, object@X[obs,
-                                            object@argvals[[1]] %in% argvals[[1]],
-                                            object@argvals[[2]] %in% argvals[[2]], drop = FALSE]))
+                                               object@argvals[[1]] %in% argvals[[1]],
+                                               object@argvals[[2]] %in% argvals[[2]], drop = FALSE]))
             
             if(dimSupp(object) == 3)
               return(funData(argvals, object@X[obs,
-                                            object@argvals[[1]] %in% argvals[[1]],
-                                            object@argvals[[2]] %in% argvals[[2]], 
-                                            object@argvals[[3]] %in% argvals[[3]], drop = FALSE]))
+                                               object@argvals[[1]] %in% argvals[[1]],
+                                               object@argvals[[2]] %in% argvals[[2]], 
+                                               object@argvals[[3]] %in% argvals[[3]], drop = FALSE]))
           })
 
 #' extractObs for multiFunData objects
@@ -990,7 +990,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #' @return A vector of numerics, containing the integral values for each 
 #'   observation.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 #'   
 #' @export integrate
 #'   
@@ -1057,7 +1057,7 @@ integrate3D <- function(f, argvals)
 
 #' Integrate method for funData objects
 #'
-#' @seealso \link{integrate} \linkS4class{funData}
+#' @seealso \code{\link{integrate}} \code{\linkS4class{funData}}
 #'
 #' @keywords internal
 setMethod("integrate", signature = "funData",
@@ -1079,7 +1079,7 @@ setMethod("integrate", signature = "funData",
 
 #' Integrate method for multiFunData objects
 #'
-#' @seealso \link{integrate} \linkS4class{multiFunData}
+#' @seealso \code{\link{integrate}} \code{\linkS4class{multiFunData}}
 #'
 #' @keywords internal
 setMethod("integrate", signature = "multiFunData",
@@ -1097,7 +1097,7 @@ setMethod("integrate", signature = "multiFunData",
 
 #' Integrate method for irregular functional data objects
 #'
-#' @seealso \link{integrate} \linkS4class{irregFunData}
+#' @seealso \code{\link{integrate}} \code{\linkS4class{irregFunData}}
 #'
 #' @keywords internal
 setMethod("integrate", signature = c(object = "irregFunData"),
@@ -1163,13 +1163,13 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' numeric vector, giving the indices of the observations, for which the norm is
 #' to be calculated. Defaults to all observations. \item \code{method}: A 
 #' character string, giving the integration method to be used. See 
-#' \link{integrate} for details. \item \code{weight}: An optional vector of
+#'\code{\link{integrate}} for details. \item \code{weight}: An optional vector of
 #' weights for the scalar product; particularly useful for multivariate
 #' functional data, where each entry can be weighted in the scalar product /
 #' norm. Defaults to 1 for each element. \item \code{fullDom}: Logical. If
-#' \code{object} is of class \linkS4class{irregFunData} and \code{fullDom =
+#' \code{object} is of class \code{\linkS4class{irregFunData}} and \code{fullDom =
 #' TRUE}, all functions are extrapolated to the same domain. Defaults to
-#' \code{FALSE}. See \link{integrate} for details. }
+#' \code{FALSE}. See\code{\link{integrate}} for details. }
 #' 
 #' @section Warning: The function is currently implemented only for functional 
 #'   data with one- and two-dimensional domains.
@@ -1180,8 +1180,8 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #'   
 #' @return A numeric vector representing the norm of each observation.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData},
-#'   \linkS4class{multiFunData}, \code{\link{integrate}}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
 #'   
 #' @export norm
 #'   
@@ -1204,7 +1204,7 @@ setGeneric("norm", function(object,...) {
 
 #' Calculate the norm for univariate functional data
 #'
-#' @seealso \link{norm}
+#' @seealso \code{\link{norm}}
 #'
 #' @keywords internal
 norm.funData <- function(object, squared, obs, method, weight)
@@ -1219,7 +1219,7 @@ norm.funData <- function(object, squared, obs, method, weight)
 
 #' Calculate the norm for univariate functional data
 #'
-#' @seealso \link{norm} \linkS4class{funData}
+#' @seealso \code{\link{norm}} \code{\linkS4class{funData}}
 #'
 #' @keywords internal
 setMethod("norm", signature = "funData",
@@ -1227,7 +1227,7 @@ setMethod("norm", signature = "funData",
 
 #' Calculate the norm for multivariate functional data
 #'
-#' @seealso \link{norm} \linkS4class{multiFunData}
+#' @seealso \code{\link{norm}} \code{\linkS4class{multiFunData}}
 #'
 #' @keywords internal
 setMethod("norm", signature = "multiFunData",
@@ -1251,7 +1251,7 @@ setMethod("norm", signature = "multiFunData",
 
 #' Calculate the norm for irregular functional data
 #'
-#' @seealso \link{norm}
+#' @seealso \code{\link{norm}}
 #'
 #' @keywords internal
 norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
@@ -1271,7 +1271,7 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 
 #' Calculate the norm for irregular functional data
 #'
-#' @seealso \link{norm} \linkS4class{irregFunData}
+#' @seealso \code{\link{norm}} \code{\linkS4class{irregFunData}}
 #'
 #' @keywords internal
 setMethod("norm", signature = "irregFunData",
@@ -1318,8 +1318,8 @@ setMethod("norm", signature = "irregFunData",
 #'   
 #' @return See Details.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, 
-#'   \linkS4class{multiFunData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
+#'   \code{\linkS4class{multiFunData}}
 #'   
 #' @export getArgvals
 #'   
@@ -1368,7 +1368,7 @@ setGeneric("getArgvals", function(object) {standardGeneric("getArgvals")})
 
 #' Get argvals slot for funData objects
 #'
-#' @seealso \link{getArgvals}
+#' @seealso \code{\link{getArgvals}}
 #'
 #' @keywords internal
 setMethod("getArgvals", signature = "funData",
@@ -1376,7 +1376,7 @@ setMethod("getArgvals", signature = "funData",
 
 #' Get argvals slot for multiFunData objects
 #'
-#' @seealso \link{getArgvals}
+#' @seealso \code{\link{getArgvals}}
 #'
 #' @keywords internal
 setMethod("getArgvals", signature = "multiFunData",
@@ -1384,7 +1384,7 @@ setMethod("getArgvals", signature = "multiFunData",
 
 #' Get argvals slot for irregular functional data objects
 #'
-#' @seealso \link{getArgvals}
+#' @seealso \code{\link{getArgvals}}
 #'
 #' @keywords internal
 setMethod("getArgvals", signature = "irregFunData",
@@ -1398,7 +1398,7 @@ setGeneric("getX", function(object) {standardGeneric("getX")})
 
 #' Get X slot for funData objects
 #'
-#' @seealso \link{getX}
+#' @seealso \code{\link{getX}}
 #'
 #' @keywords internal
 setMethod("getX", signature = "funData",
@@ -1406,7 +1406,7 @@ setMethod("getX", signature = "funData",
 
 #' Get X slot for multiFunData objects
 #'
-#' @seealso \link{getX}
+#' @seealso \code{\link{getX}}
 #'
 #' @keywords internal
 setMethod("getX", signature = "multiFunData",
@@ -1414,7 +1414,7 @@ setMethod("getX", signature = "multiFunData",
 
 #' Get X slot for irregular functional data objects
 #'
-#' @seealso \link{getX}
+#' @seealso \code{\link{getX}}
 #'
 #' @keywords internal
 setMethod("getX", signature = "irregFunData",
@@ -1429,7 +1429,7 @@ setGeneric("setArgvals", function(object, newArgvals) {standardGeneric("setArgva
 
 #' Set argvals slot for funData objects
 #'
-#' @seealso \link{setArgvals}
+#' @seealso \code{\link{setArgvals}}
 #'
 #' @keywords internal
 setMethod("setArgvals", signature = "funData",
@@ -1441,7 +1441,7 @@ setMethod("setArgvals", signature = "funData",
 
 #' Set argvals slot for multiFunData objects
 #'
-#' @seealso \link{setArgvals}
+#' @seealso \code{\link{setArgvals}}
 #'
 #' @keywords internal
 setMethod("setArgvals", signature = "multiFunData",
@@ -1454,7 +1454,7 @@ setMethod("setArgvals", signature = "multiFunData",
 
 #' Set argvals slot for irregular functional objects
 #'
-#' @seealso \link{setArgvals}
+#' @seealso \code{\link{setArgvals}}
 #'
 #' @keywords internal
 setMethod("setArgvals", signature = "irregFunData",
@@ -1478,7 +1478,7 @@ setGeneric("setX", function(object, newX) {standardGeneric("setX")})
 
 #' Set X slot for funData objects
 #'
-#' @seealso \link{setX}
+#' @seealso \code{\link{setX}}
 #'
 #' @keywords internal
 setMethod("setX", signature = "funData",
@@ -1490,7 +1490,7 @@ setMethod("setX", signature = "funData",
 
 #' Set X slot for multiFunData objects
 #'
-#' @seealso \link{setX}
+#' @seealso \code{\link{setX}}
 #'
 #' @keywords internal
 setMethod("setX", signature = "multiFunData",
@@ -1506,7 +1506,7 @@ setMethod("setX", signature = "multiFunData",
 
 #' Set X slot for irregular functional data objects
 #'
-#' @seealso \link{setX}
+#' @seealso \code{\link{setX}}
 #'
 #' @keywords internal
 setMethod("setX", signature = "irregFunData",
@@ -1567,8 +1567,8 @@ setMethod("setX", signature = "irregFunData",
 #' @return An object of the same class as \code{newData} with flipped 
 #'   observations.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData},
-#'   \linkS4class{multiFunData}, \link{Arith.funData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}},\code{\link{Arith.funData}}
 #'   
 #' @export flipFuns
 #'   
@@ -1639,7 +1639,7 @@ setGeneric("flipFuns", function(refObject, newObject, ...) {standardGeneric("fli
 
 #' Flip univariate functional data
 #'
-#' @seealso \link{flipFuns}
+#' @seealso \code{\link{flipFuns}}
 #'
 #' @keywords internal
 setMethod("flipFuns", signature = c("funData", "funData"),
@@ -1669,7 +1669,7 @@ setMethod("flipFuns", signature = c("funData", "funData"),
 
 #' Flip multivariate functional data
 #'
-#' @seealso \link{flipFuns}
+#' @seealso \code{\link{flipFuns}}
 #'
 #' @keywords internal
 setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
@@ -1698,7 +1698,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
 
 #' Flip irregular functional data - funData as reference
 #'
-#' @seealso \link{flipFuns}
+#' @seealso \code{\link{flipFuns}}
 #'
 #' @keywords internal
 setMethod("flipFuns", signature = c("funData", "irregFunData"),
@@ -1725,7 +1725,7 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
 
 #' Flip irregular functional data - irregFunData as reference
 #'
-#' @seealso \link{flipFuns}
+#' @seealso \code{\link{flipFuns}}
 #'
 #' @keywords internal
 setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
@@ -1771,8 +1771,8 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
 #'   that corresponds to the pointwise mean function of the functions in 
 #'   \code{object}.
 #'   
-#' @seealso \linkS4class{funData}, \linkS4class{irregFunData}, 
-#'   \linkS4class{multiFunData}, \link{Arith.funData}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
+#'   \code{\linkS4class{multiFunData}},\code{\link{Arith.funData}}
 #'   
 #' @export meanFunction
 #'   
@@ -1802,7 +1802,7 @@ setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("mea
 
 #' Mean for functional data
 #'
-#' @seealso \link{meanFunction}
+#' @seealso \code{\link{meanFunction}}
 #'
 #' @keywords internal
 setMethod("meanFunction", signature = c("funData", "ANY"),
@@ -1819,7 +1819,7 @@ setMethod("meanFunction", signature = c("funData", "ANY"),
 
 #' Mean for multivariate functional data
 #'
-#' @seealso \link{meanFunction}
+#' @seealso \code{\link{meanFunction}}
 #'
 #' @keywords internal
 setMethod("meanFunction", signature = c("multiFunData", "ANY"),
@@ -1830,7 +1830,7 @@ setMethod("meanFunction", signature = c("multiFunData", "ANY"),
 
 #' Mean for irregular functional data
 #'
-#' @seealso \link{meanFunction}
+#' @seealso \code{\link{meanFunction}}
 #'
 #' @keywords internal
 setMethod("meanFunction", signature = c("irregFunData", "ANY"),
@@ -1861,7 +1861,7 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
 #' @return An object of class as \code{funData} that corresponds to the tensor 
 #'   product of the input functions.
 #'   
-#' @seealso \linkS4class{funData}
+#' @seealso \code{\linkS4class{funData}}
 #'   
 #' @export tensorProduct
 #'   
@@ -1895,14 +1895,14 @@ setGeneric("tensorProduct", function(...) {standardGeneric("tensorProduct")})
 
 #' Tensor product for functional data
 #'
-#' @seealso \link{meanFunction}
+#' @seealso \code{\link{meanFunction}}
 #'
 #' @keywords internal
 setMethod("tensorProduct", signature = c("funData"),
           function(...){
-          
+            
             l <- list(...) # combine all arguments in a list
-          
+            
             if(length(l) != 2 & length(l) != 3)
               stop("tensorProduct currently accepts only 2 or 3 arguments.")
             
@@ -1925,4 +1925,4 @@ setMethod("tensorProduct", signature = c("funData"),
             resFun <- funData(argvals = lapply(l, function(f){f@argvals[[1]]}), X = res)
             
             return(resFun)
-})
+          })

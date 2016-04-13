@@ -11,7 +11,7 @@
 Set argvals slot for multiFunData objects
 }
 \seealso{
-\link{setArgvals}
+\code{\link{setArgvals}}
 }
 \keyword{internal}
 

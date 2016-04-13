@@ -11,7 +11,7 @@
 Mean for irregular functional data
 }
 \seealso{
-\link{meanFunction}
+\code{\link{meanFunction}}
 }
 \keyword{internal}
 

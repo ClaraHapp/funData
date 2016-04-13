@@ -11,7 +11,7 @@
 Integrate method for funData objects
 }
 \seealso{
-\link{integrate} \linkS4class{funData}
+\code{\link{integrate}} \code{\linkS4class{funData}}
 }
 \keyword{internal}
 

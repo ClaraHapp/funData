@@ -51,7 +51,7 @@ all.equal(meanFunction(i1), extractObs(i1, obs = 2))
 \dontrun{meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))) }
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData},
-  \linkS4class{multiFunData}, \link{Arith.funData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+  \code{\linkS4class{multiFunData}},\code{\link{Arith.funData}}
 }
 

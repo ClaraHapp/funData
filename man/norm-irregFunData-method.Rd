@@ -12,7 +12,7 @@
 Calculate the norm for irregular functional data
 }
 \seealso{
-\link{norm} \linkS4class{irregFunData}
+\code{\link{norm}} \code{\linkS4class{irregFunData}}
 }
 \keyword{internal}
 

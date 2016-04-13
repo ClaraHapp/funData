@@ -11,7 +11,7 @@
 Set X slot for irregular functional data objects
 }
 \seealso{
-\link{setX}
+\code{\link{setX}}
 }
 \keyword{internal}
 

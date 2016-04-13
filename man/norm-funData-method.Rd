@@ -12,7 +12,7 @@
 Calculate the norm for univariate functional data
 }
 \seealso{
-\link{norm} \linkS4class{funData}
+\code{\link{norm}} \code{\linkS4class{funData}}
 }
 \keyword{internal}
 

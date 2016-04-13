@@ -11,7 +11,7 @@
 Get argvals slot for funData objects
 }
 \seealso{
-\link{getArgvals}
+\code{\link{getArgvals}}
 }
 \keyword{internal}
 

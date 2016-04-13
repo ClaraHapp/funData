@@ -52,6 +52,6 @@ irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 nObsPoints(irregObject)
 }
 \seealso{
-\linkS4class{irregFunData}, \code{\link{extractObs}}
+\code{\linkS4class{irregFunData}}, \code{\link{extractObs}}
 }
 

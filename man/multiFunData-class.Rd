@@ -104,6 +104,6 @@ plot(m6, obs = 1, main = c("1st element (obs 1)", "2nd element (obs 1)"))
 plot(m6, obs = 6, main = c("1st element (obs 6)", "2nd element (obs 6)"))
 }
 \seealso{
-\linkS4class{funData}
+\code{\linkS4class{funData}}
 }
 

@@ -11,7 +11,7 @@
 Get argvals slot for irregular functional data objects
 }
 \seealso{
-\link{getArgvals}
+\code{\link{getArgvals}}
 }
 \keyword{internal}
 

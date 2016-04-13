@@ -10,7 +10,7 @@ norm.irregFunData(object, squared, obs, method, weight, fullDom)
 Calculate the norm for irregular functional data
 }
 \seealso{
-\link{norm}
+\code{\link{norm}}
 }
 \keyword{internal}
 

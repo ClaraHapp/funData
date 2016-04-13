@@ -11,7 +11,7 @@
 Flip multivariate functional data
 }
 \seealso{
-\link{flipFuns}
+\code{\link{flipFuns}}
 }
 \keyword{internal}
 

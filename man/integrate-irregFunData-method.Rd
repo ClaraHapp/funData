@@ -12,7 +12,7 @@
 Integrate method for irregular functional data objects
 }
 \seealso{
-\link{integrate} \linkS4class{irregFunData}
+\code{\link{integrate}} \code{\linkS4class{irregFunData}}
 }
 \keyword{internal}
 

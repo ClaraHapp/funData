@@ -11,7 +11,7 @@
 Get X slot for irregular functional data objects
 }
 \seealso{
-\link{getX}
+\code{\link{getX}}
 }
 \keyword{internal}
 

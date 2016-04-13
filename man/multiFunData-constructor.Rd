@@ -11,7 +11,7 @@ multiFunData(...)
 Constructor for multivariate functional data objects
 }
 \seealso{
-\linkS4class{multiFunData}
+\code{\linkS4class{multiFunData}}
 }
 \keyword{internal}
 

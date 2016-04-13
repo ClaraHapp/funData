@@ -29,6 +29,6 @@ multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 nObs(multiObject)
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
 

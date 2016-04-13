@@ -11,7 +11,7 @@
 Get argvals slot for multiFunData objects
 }
 \seealso{
-\link{getArgvals}
+\code{\link{getArgvals}}
 }
 \keyword{internal}
 

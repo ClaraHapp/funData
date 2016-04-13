@@ -14,9 +14,9 @@ extractObs(object, obs = 1:nObs(object), argvals = getArgvals(object))
 extract (default: all obervations).}
 
 \item{argvals}{The part of the domain to be extracted (default: the whole domain
-  \code{object@argvals}). Must be a list or a numeric vector (only for one-dimensional
-  domains, see also the definition of \linkS4class{funData},
-  \linkS4class{multiFunData}).}
+  \code{object}@\code{argvals}). Must be a list or a numeric vector (only for one-dimensional
+  domains, see also the definition of \code{\linkS4class{funData}},
+  \code{\linkS4class{multiFunData}}).}
 }
 \value{
 An object of class \code{funData}, \code{irregFunData} or \code{multiFunData} containing
@@ -60,6 +60,6 @@ extractObs(multiObject, obs = 2)
 extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
 }
 \seealso{
-\linkS4class{funData}, \linkS4class{irregFunData}, \linkS4class{multiFunData}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
 
