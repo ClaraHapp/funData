@@ -288,8 +288,6 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param par.plot Graphic parameters to be passed to the plotting regions. The 
 #'   option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
 #'   \code{\link[graphics]{par}} for details.
-#' @param add Logical. If \code{TRUE}, add to current plot (only for 
-#'   one-dimensional functions). Defaults to \code{FALSE}.
 #' @param main A string vector, giving the title of the plot. Can have the same 
 #'   length as \code{dim} (different titles for each dimension) or length 
 #'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
@@ -332,7 +330,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' \dontrun{plot(multiObject, main = "Multivariate Functional Data") # must specify obs!}
 #' 
 #' par(oldpar)
-plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, add = FALSE, main = NULL, 
+plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
                               xlab = "argvals", ylab=  "", ...){
   
   if(length(xlab) == 1)
@@ -341,8 +339,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   if(length(ylab) == 1)
     ylab <- rep(ylab, length(x))
   
-  if(add == FALSE)
-  {
+  
     # if no par.plot specified: get graphics parameters
     if(is.null(par.plot))
     {
@@ -354,8 +351,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
     
     # split screen
     par(mfrow = c(1,length(dim)))
-    
-  }
+
   
   if(!is.null(main) & (length(main) == 1))
     main <- rep(main, length(dim))
@@ -367,7 +363,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   
   
   # if no par.plot specified: reset graphics parameters
-  if(add == FALSE & is.null(par.plot))
+  if(is.null(par.plot))
     par(oldPar)
 }
 

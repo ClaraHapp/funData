@@ -7,8 +7,7 @@
 \title{Plotting multivariate functional data}
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
-  par.plot = NULL, add = FALSE, main = NULL, xlab = "argvals",
-  ylab = "", ...)
+  par.plot = NULL, main = NULL, xlab = "argvals", ylab = "", ...)
 
 \S4method{plot}{multiFunData,missing}(x, y, ...)
 }
@@ -26,9 +25,6 @@ all observations in \code{x}. For two-dimensional functions (images)
 \item{par.plot}{Graphic parameters to be passed to the plotting regions. The
 option \code{mfrow} is ignored. Defaults to \code{FALSE}. See
 \code{\link[graphics]{par}} for details.}
-
-\item{add}{Logical. If \code{TRUE}, add to current plot (only for
-one-dimensional functions). Defaults to \code{FALSE}.}
 
 \item{main}{A string vector, giving the title of the plot. Can have the same
 length as \code{dim} (different titles for each dimension) or length
