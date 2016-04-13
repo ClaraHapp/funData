@@ -10,17 +10,11 @@ sparsify(funDataObject, minObs, maxObs)
 \item{funDataObject}{A functional data object of class
 \code{\link[funData]{funData}} or \link[funData]{multiFunData}.}
 
-\item{minObs}{The minimal number of observation points. Must be a scalar for
-univariate functional data (\code{\link[funData]{funData}} class) or a
-vector of the same length as \code{funDataObject} for multivariate
-functional data (\code{\link[funData]{multiFunData}} class), giving the
-minimal number of observations for each element. See Details.}
-
-\item{maxObs}{The maximal number of observation points. Must be a scalar for
+\item{minObs,maxObs}{The minimal/maximal number of observation points. Must be a scalar for
   univariate functional data (\code{\link[funData]{funData}} class) or a
   vector of the same length as \code{funDataObject} for multivariate
   functional data (\code{\link[funData]{multiFunData}} class), giving the
-  minimal number of observations for each element. See Details.}
+  minimal/maximal number of observations for each element. See Details.}
 }
 \value{
 An object of the same class as \code{funDataObject}, which is a
@@ -37,15 +31,20 @@ The technique for artificially sparsifying the data is as described in Yao et
 al. (2005): For each element \eqn{x_i^{(j)}}{x_i^(j)} of an observed
 (multivariate) functional data object \eqn{x_i}, a random number
 \eqn{R_i^{(j)} \in \{\mathrm{minObs}, \ldots, \mathrm{maxObs}\}}{R_i^(j)
-in {minObs, \ldots, maxObs}} of observation points is generated. The points
+in {\code{minObs}, \ldots, \code{maxObs}}} of observation points is generated. The points
 are sampled uniformly from the full grid \eqn{\{t_{j,1} , \ldots , t_{j,
 S_j}\} \subset \mathcal{T}_j}{{t_{j,1} , \ldots , t_{j, S_j}} in \calT_j}, resulting in
 observations \deqn{ x_{i,r}^{(j)} = x_i^{(j)}(t_{j,r}), \quad r = 1
 ,\ldots,R_i^{(j)},~ j = 1, \ldots, p.}{ x_{i,r}^(j) = x_i^(j)(t_{j,r}), r = 1
 ,\ldots,R_i^(j), j = 1, \ldots, p.}
 }
+\section{Warning}{
+
+This function is currently implemented for 1D data only.
+}
 \examples{
 oldPar <- par(no.readonly = TRUE)
+par(mfrow = c(1,1))
 set.seed(1)
 
 # univariate functional data
@@ -73,7 +72,7 @@ legend("bottomright", c("Full", "Sparse"), lty=  c(1, NA), pch = c(NA, 20))
 par(oldPar)
 }
 \references{
-Yao, F., H.-G. Mueller and J.-L. Wang (2005) Functional Data
+Yao, F., H.-G. Mueller and J.-L. Wang (2005): Functional Data
   Analysis for Sparse Longitudinal Data. Journal of the American Statistical
   Association, 100 (470), 577--590.
 }
