@@ -15,12 +15,12 @@ An object of class as \code{funData} that corresponds to the tensor
   product of the input functions.
 }
 \description{
-This function calculates the tensor product function for objects of class
-\code{funData} defined on one-dimensional domains.
+This function calculates tensor product functions for up to three objects of
+class \code{funData} defined on one-dimensional domains.
 }
 \section{Warning}{
  The function is only implemented for up to three functions
-  f1, f2, f3 on one-dimensional domains.
+  on one-dimensional domains.
 }
 \examples{
 ### Tensor product of two functional data objects

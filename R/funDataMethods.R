@@ -1849,16 +1849,16 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
 
 #' Tensor product for univariate functions on one-dimensional domains
 #' 
-#' This function calculates the tensor product function for objects of class 
-#' \code{funData} defined on one-dimensional domains.
+#' This function calculates tensor product functions for up to three objects of
+#' class \code{funData} defined on one-dimensional domains.
 #' 
-#' @section Warning: The function is only implemented for up to three functions 
-#'   f1, f2, f3 on one-dimensional domains.
+#' @section Warning: The function is only implemented for up to three functions
+#'   on one-dimensional domains.
 #'   
 #' @param ... Two or three objects of class \code{funData}, that must be defined
 #'   on a one-dimensional domain, each.
 #'   
-#' @return An object of class as \code{funData} that corresponds to the tensor
+#' @return An object of class as \code{funData} that corresponds to the tensor 
 #'   product of the input functions.
 #'   
 #' @seealso \linkS4class{funData}
