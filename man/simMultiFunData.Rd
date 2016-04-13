@@ -21,7 +21,7 @@ multivariate functional data. See Details.}
 Details.}
 
 \item{eFunType}{A character string (\code{type = "split"})   or a list of
-character strings(\code{type = "weighted"}), specifying the type of
+character strings (\code{type = "weighted"}), specifying the type of
 univariate orthonormal basis functions to use. See Details.}
 
 \item{ignoreDeg}{A vector of integers (\code{type = "split"})   or a list of
@@ -48,32 +48,32 @@ based on the truncated Karhunen-Loeve representation. See
 \description{
 This function provides a unified simulation structure for multivariate
 functional data \eqn{f_1, \ldots, f_N} on one- or two-dimensional domains,
-based on a truncated multivariate Karhunen-Loeve representation:
-\deqn{f_i(t) = \sum_{m = 1}^M \rho_{i,m} \psi_m(t).} The multivariate
-eigenfunctions (basis functions) \eqn{\psi_m}  are constructed from
-univariate orthonormal bases. There are two different concepts for the
-construction, that can be chosen by the parameter \code{type}: A split
-orthonormal basis (\code{split}, only one-dimensional domains) and weighted
-univariate orthonormal bases (\code{weighted}, one- and two-dimensional
-domains). The scores \eqn{\rho_{i,m}} in the Karhunen-Loeve
-representation are simulated independently from a normal distribution with
-zero mean and decreasing variance. See Details.
+based on a truncated multivariate Karhunen-Loeve representation: \deqn{f_i(t)
+= \sum_{m = 1}^M \rho_{i,m} \psi_m(t).} The multivariate eigenfunctions
+(basis functions) \eqn{\psi_m}  are constructed from univariate orthonormal
+bases. There are two different concepts for the construction, that can be
+chosen by the parameter \code{type}: A split orthonormal basis (\code{split},
+only one-dimensional domains) and weighted univariate orthonormal bases
+(\code{weighted}, one- and two-dimensional domains). The scores
+\eqn{\rho_{i,m}} in the Karhunen-Loeve representation are simulated
+independently from a normal distribution with zero mean and decreasing
+variance. See Details.
 }
 \details{
 The parameter \code{type} defines how the eigenfunction basis for the
-multivariate Karhunen-Loeve representation is constructed: \itemize{
-\item \code{type = "split"}: The basis functions of an underlying 'big'
-orthonormal basis are split in \code{M} parts, translated and possibly
-reflected. This yields an orthornormal basis of multivariate functions with
-\code{M} elements. This option is implemented only for one-dimensional
-domains. \item \code{type = "weighted"} The multivariate eigenfunction basis
-consists of weighted univariate orthonormal bases.  This yields an
-orthornormal basis of multivariate functions with \code{M} elements. For data
-on two-dimensional domains (images), the univariate basis is constructed as a
-tensor product of univariate bases in each direction (x- and y-direction). }
+multivariate Karhunen-Loeve representation is constructed: \itemize{ \item
+\code{type = "split"}: The basis functions of an underlying 'big' orthonormal
+basis are split in \code{M} parts, translated and possibly reflected. This
+yields an orthornormal basis of multivariate functions with \code{M}
+elements. This option is implemented only for one-dimensional domains. \item
+\code{type = "weighted":} The multivariate eigenfunction basis consists of
+weighted univariate orthonormal bases.  This yields an orthornormal basis of
+multivariate functions with \code{M} elements. For data on two-dimensional
+domains (images), the univariate basis is constructed as a tensor product of
+univariate bases in each direction (x- and y-direction). }
 
 Depending on \code{type}, the other parameters have to be specified as
-follows: \subsection{Split 'big' orthonormal basis:}{ The parameters \code{M}
+follows: \subsection{Split 'big' orthonormal basis}{ The parameters \code{M}
 (integer), \code{eFunType} (character string) and \code{ignoreDeg} (integer
 vector or \code{NULL}) are passed to the function \code{\link{eFun}} to
 generate a univariate orthornormal basis on a 'big' interval. Subsequently,
@@ -81,9 +81,10 @@ the basis functions are split and translated, such that the \eqn{j}-th part
 of the split function is defined on the interval corresponding to
 \code{argvals[[j]]}. The elements of the multivariate basis functions are
 given by these split parts of the original basis functions multiplied by a
-random sign \eqn{\sigma_j \in \{-1,1\}}{\sigma_j in {-1,1}}.}
+random sign \eqn{\sigma_j \in \{-1,1\}, j = 1, \ldots, p}{\sigma_j in {-1,1},
+j = 1, \ldots, p}.}
 
-\subsection{Weighted orthonormal bases:}{ The parameters \code{argvals, M,
+\subsection{Weighted orthonormal bases}{ The parameters \code{argvals, M,
 eFunType} and \code{ignoreDeg} are all lists of a similar structure. They are
 passed element-wise to the function \code{\link{eFun}} to generate
 orthornormal basis functions for each element of the multivariate functional
@@ -103,19 +104,18 @@ functions. The default value is \code{NULL}. }
 
 If the \eqn{j}-th element of the simulated data should be defined on a
 two-dimensional domain, then \itemize{ \item \code{argvals[[j]]} is a list,
-containing two vector of observation points, one for each direction
+containing two vectors of observation points, one for each direction
 (observation points in x-direction and in y-direction). \item \code{M[[j]]}
 is a vector of two integers, giving the number of basis functions for each
-direction (observation points in x-direction and in y-direction). \item
-\code{eFunType[[j]]} is a vector of two character strings, giving the type of
-orthonormal basis functions for each direction (x- and y-direction, see
-\link{eFun} for possible options). The corresponding basis functions are
-constructed as tensor products of orthonormal basis functions in each
-direction. \item \code{ignoreDeg[[j]]} is a list, containing two integer
-vectors that specify the degrees to ignore when constructing the orthonormal
-basis functions in each direction. The default value is \code{NULL}. } The
-total number of basis functions (i.e. the product of \code{M[[j]]} for all
-\code{j}) must be equal!}
+direction (x- and y-direction). \item \code{eFunType[[j]]} is a vector of two
+character strings, giving the type of orthonormal basis functions for each
+direction (x- and y-direction, see \link{eFun} for possible options). The
+corresponding basis functions are constructed as tensor products of
+orthonormal basis functions in each direction. \item \code{ignoreDeg[[j]]} is
+a list, containing two integer vectors that specify the degrees to ignore
+when constructing the orthonormal basis functions in each direction. The
+default value is \code{NULL}. } The total number of basis functions (i.e. the
+product of \code{M[[j]]} for all \code{j}) must be equal!}
 }
 \examples{
 oldPar <- par(no.readonly = TRUE)
