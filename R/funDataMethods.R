@@ -1291,24 +1291,25 @@ setMethod("norm", signature = "irregFunData",
 #' \code{argvals} (for the x-values) and \code{X} (for the y-values for each 
 #' observation). Using the \code{getArgvals} and \code{getX} methods for the 
 #' classes \code{funData} and \code{irregFunData} is equivalent to accessing the
-#' slots directly via \code{object@@argvals} and \code{object@@X}. Analogously, the
-#' \code{setArgvals} and \code{setX} functions are equivalent to setting 
-#' \code{object@@argvals} to \code{newArgvals} or \code{object@@X} to \code{newX}, 
-#' respectively. The new values must hence have the same structure as the 
-#' original ones. As an exception, for an object of class \code{funData}  the
-#' number of new observations in \code{newX} may differ from the current. In
-#' this case, the function throws a warning. 
+#' slots directly via \code{object@@argvals} and \code{object@@X}. Analogously,
+#' the \code{setArgvals} and \code{setX} functions are equivalent to setting 
+#' \code{object@@argvals} to \code{newArgvals} or \code{object@@X} to
+#' \code{newX}, respectively. The new values must hence have the same structure
+#' as the original ones. As an exception, for an object of class \code{funData} 
+#' the number of new observations in \code{newX} may differ from the current
+#' (e.g. when adding new observations). In this case, the function throws a
+#' warning.
 #' 
 #' Objects of class \code{multiFunData} are lists of several \code{funData} 
-#' objects. The functions \code{getArgvals} and \code{getX} for \code{multiFunData}
-#' objects therefore return a list of the same length as \code{object}, where 
-#' each list element corresponds to the \code{argvals} or \code{X} slot of the 
-#' univariate element. The \code{setArgvals} and \code{getArgvals} functions for 
-#' \code{multiFunData} objects must be lists of the same length as 
-#' \code{object}, where each list element corresponds to the new \code{argvals} or 
-#' new \code{X} slot for the univariate elements.
+#' objects. The functions \code{getArgvals} and \code{getX} for
+#' \code{multiFunData} objects therefore return a list of the same length as
+#' \code{object}, where each list element corresponds to the \code{argvals} or
+#' \code{X} slot of the univariate element. The \code{setArgvals} and
+#' \code{getArgvals} functions for \code{multiFunData} objects must be lists of
+#' the same length as \code{object}, where each list element corresponds to the
+#' new \code{argvals} or new \code{X} slot for the univariate elements.
 #' 
-#' For all classes classes, the set functions do not change the object, unless 
+#' For all classes, the set functions do not change the object, unless 
 #' their result is assigned to \code{object} (see Examples).
 #' 
 #' @param object An object of class \code{funData}, \code{irregFunData} or 
