@@ -13,18 +13,37 @@ eVal(M, type)
   be calculated. See Details.}
 }
 \value{
-A vector containing the \eqn{M} decreasing eigenvalues.
+A vector containing the \code{M} decreasing eigenvalues.
 }
 \description{
 This function generates \eqn{M} decreasing eigenvalues.
 }
 \details{
 The function implements three types of eigenvalues: \itemize{\item
-\code{"linear"} The eigenvalues start at  \eqn{1} and decrease linearly
-towards \eqn{0}: \deqn{\nu_m = \frac{M+1 -m}{m}.}{\nu_m = (M+1-m)/m.} \item \code{"exponential"}
-The eigenvalues start at \eqn{1}  and decrease exponentially towards \eqn{0}:
-\deqn{\nu_m = \exp\left(-\frac{m-1}{2}\right).}{\nu_m = exp(-(m-1)/2).}\item \code{"wiener"} The eigenvalues
-correspond to the eigenvalueso of the Wiener process: \deqn{\nu_m =
-\frac{1}{(\pi/2 \cdot (2m-1))^2}.}{\nu_m = (pi/2 * (2m-1))^(-2)} }
+\code{"linear":} The eigenvalues start at  \eqn{1} and decrease linearly
+towards \eqn{0}: \deqn{\nu_m = \frac{M+1 -m}{m}.}{\nu_m = (M+1-m)/m.} \item
+\code{"exponential":} The eigenvalues start at \eqn{1}  and decrease
+exponentially towards \eqn{0}: \deqn{\nu_m =
+\exp\left(-\frac{m-1}{2}\right).}{\nu_m = exp(-(m-1)/2).}\item
+\code{"wiener":} The eigenvalues correspond to the eigenvalues of the Wiener
+process: \deqn{\nu_m = \frac{1}{(\pi/2 \cdot (2m-1))^2}.}{\nu_m = (pi/2 *
+(2m-1))^(-2)} }
+}
+\examples{
+oldpar <- par(no.readonly = TRUE)
+
+# simulate M = 10 eigenvalues
+M <- 10
+eLin <- eVal(M = M, type = "linear")
+eExp <- eVal(M = M, type = "exponential")
+eWien <- eVal(M = M, type = "wiener")
+
+par(mfrow = c(1,1))
+plot(1:M, eLin, pch = 20, xlab = "m", ylab = expression(nu[m]), ylim = c(0,1))
+points(1:M, eExp, pch = 20, col = 3)
+points(1:M, eWien, pch = 20, col = 4)
+legend("topright", legend = c("linear", "exponential", "wiener"), pch = 20, col = c(1,3,4))
+
+par(oldpar)
 }
 
