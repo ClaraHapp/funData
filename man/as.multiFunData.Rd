@@ -17,6 +17,18 @@ as.multiFunData(object)
 \description{
 Coerce a \code{funData} object to class \code{multiFunData} with one element.
 }
+\examples{
+# create funData object with 5 observations
+x <- seq(0,1,0.01)
+f1 <- funData(argvals = x, X = 1:5 \%o\% x)
+f1
+class(f1)
+
+# coerce to multiFunData object (of length 1)
+m1 <- as.multiFunData(f1)
+m1
+class(m1)
+}
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 }

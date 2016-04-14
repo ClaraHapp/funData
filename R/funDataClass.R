@@ -314,6 +314,18 @@ setAs("funData", "multiFunData",
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 #'   
 #' @export as.multiFunData
+#' 
+#' @examples
+#' # create funData object with 5 observations
+#' x <- seq(0,1,0.01)
+#' f1 <- funData(argvals = x, X = 1:5 %o% x)
+#' f1
+#' class(f1)
+#' 
+#' # coerce to multiFunData object (of length 1)
+#' m1 <- as.multiFunData(f1)
+#' m1
+#' class(m1)
 setGeneric("as.multiFunData", function(object){standardGeneric("as.multiFunData")})
 
 
