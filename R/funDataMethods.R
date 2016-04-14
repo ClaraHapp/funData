@@ -973,24 +973,26 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #' \code{multiFunData} object over their domain.
 #' 
 #' Further parameters passed to this function may include: \itemize{ \item 
-#' \code{method}: Character string. The integration rule to be used, passed to
-#' the internal function \code{.intWeights}. Defaults to 'trapezoidal'
-#' (alternative: 'midpoint'). \item \code{fullDom}: Logical. If \code{object} is
-#' of class \code{irregFunData}, setting fullDom = TRUE extrapolates all
-#' functions linearly to the full domain before calculating the integrals. Defaults to
-#' \code{FALSE}. For details on the extrapolation, see 
+#' \code{method}: Character string. The integration rule to be used, passed to 
+#' the internal function \code{.intWeights}. Defaults to \code{"trapezoidal"} 
+#' (alternative: \code{"midpoint"}). \item \code{fullDom}: Logical. If
+#' \code{object} is of class \code{irregFunData}, setting fullDom = \code{TRUE}
+#' extrapolates all functions linearly to the full domain before calculating the
+#' integrals. Defaults to \code{FALSE}. For details on the extrapolation, see 
 #' \code{\link{extrapolateIrreg}}.}
 #' 
 #' @section Warning: The function is currently implemented only for functional 
 #'   data with up to three-dimensional domains.
 #'   
-#' @param object An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.
+#' @param object An object of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData}.
 #' @param ... Further parameters (see Details).
 #'   
 #' @return A vector of numerics, containing the integral values for each 
 #'   observation.
 #'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}}
 #'   
 #' @export integrate
 #'   
