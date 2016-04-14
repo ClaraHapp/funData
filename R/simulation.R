@@ -261,7 +261,7 @@ efFourier <- function(argvals, M, linear=F)
   if(linear) # overwrite Phi[M, ], add linear function and orthonormalize (Gram-Schmidt)
   {
     if(!all.equal(range(argvals) , c(0,1)))
-      stop("efFourier, option linear: not yet implemented for argvalss != [0,1]!")
+      stop("efFourier, option linear: not yet implemented for argvals != [0,1]!")
     
     # orthogonalize (exact function)
     Phi[M, ] <- argvals - 1/2  + rowSums(apply(matrix(1:((M-1)%/%2)), 1, function(k) (-1)^k/(pi*k)*sin(k*(2*pi*argvals-pi))))
@@ -299,47 +299,49 @@ efWiener <- function(argvals, M)
 
 
 #' Generate orthonormal eigenfunctions
-#'
-#' This function calculates \eqn{M} (orthonormal) basis functions on a given
-#' interval, that can be interpreted as the first \eqn{M} eigenfunctions of an
+#' 
+#' This function calculates \eqn{M} (orthonormal) basis functions on a given 
+#' interval, that can be interpreted as the first \eqn{M} eigenfunctions of an 
 #' appropriate data generating process of functional data.
-#'
-#' The function implements three families of orthonormal basis functions plus
-#' variations of them. The parameter \code{type}, that specifies the functions
-#' to be calculated, can have the following values: \itemize{\item \code{"Poly"}:
-#' Calculate orthonormal Legendre polynomials of degree 0,...,M-1. \item
-#' \code{"PolyHigh"}: Calculate \eqn{M} orthonormal Legendre Polynomials of
-#' higher degree. The vector of indices \code{ignoreDeg} specifies the functions
-#' to be ignored. If \code{ignoreDeg} is not specified, the function returns an
-#' error. \item \code{"Fourier"}: Calculate the first \eqn{M} Fourier basis functions.
-#' \item \code{"FourierLin"}: Calculate the first \eqn{M-1} Fourier basis functions
-#' plus the linear function, orthonormalized to the previous funcitons via
-#' Gram-Schmidts method. This type is currently implemented for functions on the
-#' unit interval \eqn{[0,1]} only. \item \code{"Wiener"}: Calculate the first \eqn{M}
-#' orthonormal eigenfunctions of the Wiener process. }
-#'
-#' @param argvals A vector of numerics, defining a (fine) grid on the interval for which the
-#'   basis functions are computed.
-#' @param M An integer, specifying the number of functions that are
-#'   calculated.
-#' @param ignoreDeg A vector of numerics, specifying the degrees to be ignored
+#' 
+#' The function implements three families of orthonormal basis functions plus 
+#' variations of them. The parameter \code{type}, that specifies the functions 
+#' to be calculated, can have the following values: \itemize{\item
+#' \code{"Poly"}: Calculate orthonormal Legendre polynomials of degree
+#' 0,...,M-1. \item \code{"PolyHigh"}: Calculate \eqn{M} orthonormal Legendre
+#' Polynomials of higher degree. The vector of indices \code{ignoreDeg}
+#' specifies the functions to be ignored. If \code{ignoreDeg} is not specified,
+#' the function returns an error. \item \code{"Fourier"}: Calculate the first
+#' \eqn{M} Fourier basis functions. \item \code{"FourierLin"}: Calculate the
+#' first \eqn{M-1} Fourier basis functions plus the linear function,
+#' orthonormalized to the previous funcitons via Gram-Schmidts method. This type
+#' is currently implemented for functions on the unit interval \eqn{[0,1]} only.
+#' If the function is called with other \code{argvals}, an error is thrown.
+#' \item \code{"Wiener"}: Calculate the first \eqn{M} orthonormal eigenfunctions
+#' of the Wiener process. }
+#' 
+#' @param argvals A vector of numerics, defining a (fine) grid on the interval
+#'   for which the basis functions are computed.
+#' @param M An integer, specifying the number of functions that are calculated.
+#' @param ignoreDeg A vector of numerics, specifying the degrees to be ignored 
 #'   for type \code{"PolyHigh"}. Defaults to \code{NULL}. See Details.
-#' @param type A character string, specifying the type of functions that
-#'   are calculated. See Details.
-#'
-#' @return A univariate functional data object of class
-#'   \code{\linkS4class{funData}} containing the basis functions on the given
+#' @param type A character string, specifying the type of functions that are
+#'   calculated. See Details.
+#'   
+#' @return A univariate functional data object of class 
+#'   \code{\linkS4class{funData}} containing the basis functions on the given 
 #'   interval.
-#'
-#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
-#'
+#'   
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}},
+#'   \code{\link{simMultiFunData}}.
+#'   
 #' @export eFun
-#'
+#'   
 #'  @examples
 #' oldPar <- par(no.readonly = TRUE)
-#'
+#' 
 #' argvals <- seq(0,1,0.01)
-#'
+#' 
 #' par(mfrow = c(3,2))
 #' plot(eFun(argvals, M = 4, type = "Poly"), main = "Poly", ylim = c(-3,3))
 #' plot(eFun(argvals, M = 4, ignoreDeg = 1:2, type = "PolyHigh"), main = "PolyHigh",  ylim = c(-3,3))

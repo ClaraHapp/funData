@@ -7,17 +7,16 @@
 eFun(argvals, M, ignoreDeg = NULL, type)
 }
 \arguments{
-\item{argvals}{A vector of numerics, defining a (fine) grid on the interval for which the
-basis functions are computed.}
+\item{argvals}{A vector of numerics, defining a (fine) grid on the interval
+for which the basis functions are computed.}
 
-\item{M}{An integer, specifying the number of functions that are
-calculated.}
+\item{M}{An integer, specifying the number of functions that are calculated.}
 
 \item{ignoreDeg}{A vector of numerics, specifying the degrees to be ignored
 for type \code{"PolyHigh"}. Defaults to \code{NULL}. See Details.}
 
-\item{type}{A character string, specifying the type of functions that
-  are calculated. See Details.}
+\item{type}{A character string, specifying the type of functions that are
+  calculated. See Details.}
 }
 \value{
 A univariate functional data object of class
@@ -32,17 +31,19 @@ appropriate data generating process of functional data.
 \details{
 The function implements three families of orthonormal basis functions plus
 variations of them. The parameter \code{type}, that specifies the functions
-to be calculated, can have the following values: \itemize{\item \code{"Poly"}:
-Calculate orthonormal Legendre polynomials of degree 0,...,M-1. \item
-\code{"PolyHigh"}: Calculate \eqn{M} orthonormal Legendre Polynomials of
-higher degree. The vector of indices \code{ignoreDeg} specifies the functions
-to be ignored. If \code{ignoreDeg} is not specified, the function returns an
-error. \item \code{"Fourier"}: Calculate the first \eqn{M} Fourier basis functions.
-\item \code{"FourierLin"}: Calculate the first \eqn{M-1} Fourier basis functions
-plus the linear function, orthonormalized to the previous funcitons via
-Gram-Schmidts method. This type is currently implemented for functions on the
-unit interval \eqn{[0,1]} only. \item \code{"Wiener"}: Calculate the first \eqn{M}
-orthonormal eigenfunctions of the Wiener process. }
+to be calculated, can have the following values: \itemize{\item
+\code{"Poly"}: Calculate orthonormal Legendre polynomials of degree
+0,...,M-1. \item \code{"PolyHigh"}: Calculate \eqn{M} orthonormal Legendre
+Polynomials of higher degree. The vector of indices \code{ignoreDeg}
+specifies the functions to be ignored. If \code{ignoreDeg} is not specified,
+the function returns an error. \item \code{"Fourier"}: Calculate the first
+\eqn{M} Fourier basis functions. \item \code{"FourierLin"}: Calculate the
+first \eqn{M-1} Fourier basis functions plus the linear function,
+orthonormalized to the previous funcitons via Gram-Schmidts method. This type
+is currently implemented for functions on the unit interval \eqn{[0,1]} only.
+If the function is called with other \code{argvals}, an error is thrown.
+\item \code{"Wiener"}: Calculate the first \eqn{M} orthonormal eigenfunctions
+of the Wiener process. }
 }
 \examples{
 oldPar <- par(no.readonly = TRUE)
@@ -58,6 +59,7 @@ plot(eFun(argvals, M = 4, type = "Wiener"), main = "Wiener",  ylim = c(-3,3))
 par(oldPar)
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}},
+  \code{\link{simMultiFunData}}.
 }
 
