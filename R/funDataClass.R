@@ -8,21 +8,23 @@
 #' \mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional 
 #' domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid 
 #' \eqn{T \subset \mathcal{T}}{T subset of \calT}, which is represented in the 
-#' \code{argvals} slot of a \code{funData} object. All observations are assumed to 
-#' be sampled over the same grid \eqn{T}{T}, but can contain missing values (see
-#' below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{argvals} can be 
-#' supplied either as a numeric vector, containing the x-values or as a list, 
-#' containing such a vector. If \eqn{\mathcal{T}}{\calT} is higher-dimensional, 
-#' \code{argvals} must always be supplied as a list, containing numeric vectors of 
-#' the x-values in dimensions \eqn{1,\ldots,d}{1,\ldots,d}.
+#' \code{argvals} slot of a \code{funData} object. All observations are assumed 
+#' to be sampled over the same grid \eqn{T}{T}, but can contain missing values 
+#' (see below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{argvals} 
+#' can be supplied either as a numeric vector, containing the x-values or as a 
+#' list, containing such a vector. If \eqn{\mathcal{T}}{\calT} is 
+#' higher-dimensional, \code{argvals} must always be supplied as a list, 
+#' containing numeric vectors of the x-values in dimensions 
+#' \eqn{1,\ldots,d}{1,\ldots,d}.
 #' 
 #' The observed values are represented in the \code{X} slot of a \code{funData} 
-#' object, which is an array of dimension  \eqn{N \times M_1}{N x M_1} (for 
+#' object, which is an array of dimension  \eqn{N \times M}{N x M} (for 
 #' one-dimensional domains, or \eqn{N \times M_1 \times \ldots \times M_d}{N x 
 #' M_1 x \ldots x M_d} for higher-dimensional domains). Here \eqn{N}{N} equals 
-#' the number of observations and \eqn{M_1, \ldots, M_d}{M_1, \ldots, M_d} are 
-#' the number of sampling points in dimension \eqn{1,\ldots, d}{1,\ldots, d}. 
-#' Missing values in the observations are allowed and must be marked by 
+#' the number of observations and \eqn{M}{M} denotes the number of sampling 
+#' points (for higher dimensional domains \eqn{M_i}{M_i} denotes the number of
+#' sampling points in dimension \eqn{i, i= 1,\ldots, d}{i, i = 1,\ldots, d}).
+#' Missing values in the observations are allowed and must be marked by
 #' \code{NA}. If missing values occur due to irregular observation points, the
 #' data can be stored alternatively as an object of class
 #' \code{\linkS4class{irregFunData}}.
@@ -33,10 +35,10 @@
 #' \code{\link{nObs}}: Informations about the support dimensions and the number 
 #' of observations, \item \code{\link{getArgvals}}, \code{\link{extractObs}}: 
 #' Getting/Setting slot values (instead of accessing them directly via 
-#' \code{funData@@argvals, funData@@X}) and extracting single observations or data 
-#' on a subset of the domain, \item \code{\link{integrate}}, \code{\link{norm}}:
-#' Integrate all observations over their domain or calculating the 
-#' \eqn{L^2}{L^2} norm.}
+#' \code{funData@@argvals, funData@@X}) and extracting single observations or 
+#' data on a subset of the domain, \item \code{\link{integrate}}, 
+#' \code{\link{norm}}: Integrate all observations over their domain or 
+#' calculating the \eqn{L^2}{L^2} norm.}
 #' 
 #' A \code{funData} object can be coerced to a \code{multiFunData} object using 
 #' \code{as.multiFunData(funDataObject).}
