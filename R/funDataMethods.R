@@ -1552,6 +1552,7 @@ setMethod("setX", signature = "irregFunData",
 #' f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is 
 #' flipped, i.e. multiplied by -1.
 #' 
+#' @section Warning:
 #' The function is currently implemented only for functional data with one- and 
 #' two-dimensional domains.
 #' 
