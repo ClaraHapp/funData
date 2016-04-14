@@ -29,20 +29,21 @@ Irregular functional data are realizations of a random process \deqn{X:
 \mathcal{T} \to \mathrm{IR},}{X: \calT -> IR,} where each realization
 \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset
 \mathcal{T}}{T_i \subset \calT} of observation points. As for the
-\code{\linkS4class{funData}} class, each object of the \code{irregFunData} class has
-two slots; the \code{argvals} slot represents the observation points and the
-\code{X} slot represents the observed data. In contrast to the regularly
-sampled data, both slots are defined as lists of vectors, where each entry
-corresponds to one function: \itemize{\item \code{argvals[[i]]} contains the
-vector of observation points \eqn{T_i} for the i-th function, \item
-\code{X[[i]]} contains the corresponding observed data \eqn{X_i(t_{i,j})}.}
+\code{\linkS4class{funData}} class, each object of the \code{irregFunData}
+class has two slots; the \code{argvals} slot represents the observation
+points and the \code{X} slot represents the observed data. In contrast to the
+regularly sampled data, both slots are defined as lists of vectors, where
+each entry corresponds to one observed function: \itemize{\item
+\code{argvals[[i]]} contains the vector of observation points \eqn{T_i} for
+the i-th function, \item \code{X[[i]]} contains the corresponding observed
+data \eqn{X_i(t_{ij}), t_{ij} \in T_i}.}
 
 Generic functions for the \code{irregFunData} class include a print method,
 \link[=plot.irregFunData]{plotting} and \link[=Arith.funData]{basic
 arithmetics}. Further methods for \code{irregFunData}: \itemize{ \item
 \code{\link{dimSupp}}, \code{\link{nObs}}: Informations about the support
 dimensions and the number of observations, \item \code{\link{getArgvals}},
-\code{\link{extractObs}}: Getting/Setting slot values (instead of accessing
+\code{\link{extractObs}}: Getting/setting slot values (instead of accessing
 them directly via \code{irregObject@argvals, irregObject@X}) and extracting
 single observations or data on a subset of the domain, \item
 \code{\link{integrate}}, \code{\link{norm}}: Integrate all observations over
