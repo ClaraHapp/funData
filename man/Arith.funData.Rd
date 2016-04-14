@@ -91,7 +91,7 @@ plot(object1 + object2, main = "Sum")
 plot(object1 - object2, main = "Difference")
 
 # Mixed
-plot(4*object1 + 5,  main = "4*Object1 + 5") # Note y-axis!
+plot(4 * object1 + 5,  main = "4 * Object1 + 5") # Note y-axis!
 plot(object1^2 + object2^2, main = "Pythagoras")
 
 ### Irregular
@@ -111,7 +111,7 @@ plot(i1 + i2, main = "Sum")
 plot(i1 - object2, main = "Difference")
 
 # Mixed
-plot(4*i1 + 5,  main = "4*i1 + 5") # Note y-axis!
+plot(4 * i1 + 5,  main = "4 * i1 + 5") # Note y-axis!
 plot(i1^2 + i2^2, main = "Pythagoras")
 par(oldpar)
 }

@@ -52,7 +52,7 @@ oldpar <- par(no.readonly = TRUE)
 argvals <- seq(0,2*pi,0.01)
 ind <- replicate(5, sort(sample(1:length(argvals), sample(5:10,1))))
 object <- irregFunData(argvals = lapply(ind, function(i){argvals[i]}),
-                  X = lapply(ind, function(i){sample(1:10, 1)/10*argvals[i]^2}))
+                  X = lapply(ind, function(i){sample(1:10,1) / 10 * argvals[i]^2}))
 
 plot(object, main = "Irregular functional data")
 

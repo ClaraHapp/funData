@@ -81,7 +81,7 @@ plot(object, main = "One-dimensional functional data")
 # Two-dimensional
 X <- array(0, dim = c(2, length(argvals), length(argvals)))
 X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi)*cos(2*y*pi)})
+X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi) * cos(2*y*pi)})
 object2D <- funData(list(argvals, argvals), X)
 
 plot(object2D, main = "Two-dimensional functional data (obs 1)", obs = 1)

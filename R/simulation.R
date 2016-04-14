@@ -54,7 +54,7 @@
 #'
 #' plot(full, main = "Sparsify")
 #' plot(sparse, type = "p", pch = 20, add = TRUE)
-#' legend("topright", c("Full", "Sparse"), lty=  c(1, NA), pch = c(NA, 20))
+#' legend("topright", c("Full", "Sparse"), lty = c(1, NA), pch = c(NA, 20))
 #'
 #' # Multivariate
 #' full <- simMultiFunData(type = "split", argvals = list(seq(0,1, 0.01), seq(-.5,.5, 0.02)),
@@ -65,9 +65,9 @@
 #' plot(full[[1]], main = "Sparsify (multivariate)", sub = "minObs = 4, maxObs = 10")
 #' plot(sparse[[1]], type = "p", pch = 20, add = TRUE)
 #'
-#' plot(full[[2]], main = "Sparsify (multivariate)", sub= "minObs = 30, maxObs = 40")
+#' plot(full[[2]], main = "Sparsify (multivariate)", sub = "minObs = 30, maxObs = 40")
 #' plot(sparse[[2]], type = "p", pch = 20, add = TRUE)
-#' legend("bottomright", c("Full", "Sparse"), lty=  c(1, NA), pch = c(NA, 20))
+#' legend("bottomright", c("Full", "Sparse"), lty = c(1, NA), pch = c(NA, 20))
 #'
 #' par(oldPar)
 setGeneric("sparsify", function(funDataObject, minObs, maxObs) {standardGeneric("sparsify")})
@@ -200,16 +200,16 @@ efPoly <- function(argvals, M)
   if(M == 1)
     return(funData(argvals, Phi))
   
-  Phi[2, ] <- (2*(argvals-min(argvals))/diff(range(argvals))-1)
+  Phi[2, ] <- (2 * (argvals - min(argvals)) / diff(range(argvals)) - 1)
   
   if(M > 2)
   {
     for(m in 3:M) # for each function
-      Phi[m, ] <- (2*m-3)/(m-1)*(2*(argvals-min(argvals))/diff(range(argvals))-1)*Phi[m-1, ]- (m-2)/(m-1)*Phi[m-2, ]
+      Phi[m, ] <- (2*m-3) / (m-1) * (2 * (argvals - min(argvals)) / diff(range(argvals)) - 1) * Phi[m-1, ]- (m-2) / (m-1) * Phi[m-2, ]
   }
   
   for(m in 1:M) # normalize
-    Phi[m, ] <- sqrt((2*m-1)/diff(range(argvals)))*Phi[m, ]
+    Phi[m, ] <- sqrt((2*m-1) / diff(range(argvals))) * Phi[m, ]
   
   return(funData(argvals, Phi))
 }
@@ -240,21 +240,21 @@ efPoly <- function(argvals, M)
 #' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 #'
 #' @keywords internal
-efFourier <- function(argvals, M, linear=F)
+efFourier <- function(argvals, M, linear = FALSE)
 {
   Phi <- matrix(NA, nrow = M, ncol = length(argvals))
   
-  Phi[1,] <- sqrt(1/diff(range(argvals)))
+  Phi[1,] <- sqrt(1 / diff(range(argvals)))
   
   if(M == 1)
     return(funData(argvals, Phi))
   
   for(m in 2:M)
   {
-    if(m%%2 == 0) # m even
-      Phi[m, ] <- sqrt(2/diff(range(argvals)))*cos((m%/%2)*(2*pi*(argvals-min(argvals))/diff(range(argvals))-pi))
+    if(m %% 2 == 0) # m even
+      Phi[m, ] <- sqrt(2 / diff(range(argvals))) * cos((m %/% 2) * (2*pi * (argvals - min(argvals)) / diff(range(argvals)) - pi))
     else # m odd
-      Phi[m, ] <- sqrt(2/diff(range(argvals)))*sin((m%/%2)*(2*pi*(argvals-min(argvals))/diff(range(argvals))-pi))
+      Phi[m, ] <- sqrt(2 / diff(range(argvals))) * sin((m %/% 2) * (2*pi * (argvals - min(argvals)) / diff(range(argvals)) - pi))
   }
   
   if(linear) # overwrite Phi[M, ], add linear function and orthonormalize (Gram-Schmidt)
@@ -263,9 +263,9 @@ efFourier <- function(argvals, M, linear=F)
       stop("efFourier, option linear: not yet implemented for argvals != [0,1]!")
     
     # orthogonalize (exact function)
-    Phi[M, ] <- argvals - 1/2  + rowSums(apply(matrix(1:((M-1)%/%2)), 1, function(k) (-1)^k/(pi*k)*sin(k*(2*pi*argvals-pi))))
+    Phi[M, ] <- argvals - 1/2  + rowSums(apply(matrix(1:((M-1) %/% 2)), 1, function(k) (-1)^k / (pi*k) * sin(k * (2*pi*argvals - pi))))
     # normalize
-    Phi[M, ] <-  Phi[M, ]/sqrt(1/3-1/4 -1/(2*pi^2)* sum( 1/(1:((M-1)%/%2))^2 ))
+    Phi[M, ] <-  Phi[M, ] / sqrt(1/3 - 1/4 - 1 / (2*pi^2)* sum( 1 / (1:((M-1) %/% 2 ))^2 ))
   }
   
   return(funData(argvals, Phi))
@@ -291,7 +291,7 @@ efFourier <- function(argvals, M, linear=F)
 #' @keywords internal
 efWiener <- function(argvals, M)
 {
-  Phi <- sapply(1:M, function(m,t){sqrt(2/diff(range(t)))*sin( (pi/2) * (2*m - 1) * (t-min(t))/diff(range(t)))}, t=argvals)
+  Phi <- sapply(1:M, function(m,t){sqrt(2 / diff(range(t))) * sin( (pi/2) * (2*m - 1) * (t - min(t)) / diff(range(t)))}, t = argvals)
   
   return(funData(argvals, t(Phi)))
 }
@@ -352,11 +352,11 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
 {
   ret <- switch(type,
                 Poly = efPoly(argvals, M),
-                PolyHigh ={
+                PolyHigh = {
                   if(is.null(ignoreDeg ))
                     stop("eFun, type = PolyHigh: specify ignoreDeg !")
                   
-                  extractObs(efPoly(argvals, M+length(ignoreDeg)), obs = -ignoreDeg)
+                  extractObs(efPoly(argvals, M + length(ignoreDeg)), obs = -ignoreDeg)
                 },
                 Fourier = efFourier(argvals, M, linear = FALSE),
                 FourierLin = efFourier(argvals, M, linear = TRUE),
@@ -372,7 +372,7 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
 #' 
 #' The function implements three types of eigenvalues: \itemize{\item 
 #' \code{"linear":} The eigenvalues start at  \eqn{1} and decrease linearly 
-#' towards \eqn{0}: \deqn{\nu_m = \frac{M+1 -m}{m}.}{\nu_m = (M+1-m)/m.} \item
+#' towards \eqn{0}: \deqn{\nu_m = \frac{M+1-m}{m}.}{\nu_m = (M+1-m)/m.} \item
 #' \code{"exponential":} The eigenvalues start at \eqn{1}  and decrease
 #' exponentially towards \eqn{0}: \deqn{\nu_m =
 #' \exp\left(-\frac{m-1}{2}\right).}{\nu_m = exp(-(m-1)/2).}\item
@@ -407,9 +407,9 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
 eVal <- function(M, type)
 {
   ret <- switch(type,
-                linear = ((M+1)-(1:M))/M,
-                exponential = exp(-(0:(M-1))/2),
-                wiener = 1/(pi/2 * (2*(1:M)-1))^2,
+                linear = ((M+1) - (1:M)) / M,
+                exponential = exp(-(0:(M-1)) / 2),
+                wiener = 1/(pi/2 * (2 * (1:M) - 1))^2,
                 stop("eVal: choose either linear, exponential or wiener"))
   return(ret)
 }
@@ -698,7 +698,7 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   
   # "rearrange" argvalss
   x <- vector("list", length = length(argvals))
-  splitVals <- rep(NA, length(argvals)+1)
+  splitVals <- rep(NA, length(argvals) + 1)
   
   x[[1]] <- unlist(argvals[[1]]) # convert to vector, if argvals[[1]] is a list
   splitVals[1:2] <- c(0, length(x[[1]]))
@@ -720,7 +720,7 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   trueFuns  <- vector("list", p)
   
   for(j in 1:p)
-    trueFuns[[j]] <- funData(argvals[[j]],  s[j] * f@X[,(1+splitVals[j]):splitVals[j+1]])
+    trueFuns[[j]] <- funData(argvals[[j]],  s[j] * f@X[,(1 + splitVals[j]):splitVals[j+1]])
   
   return(multiFunData(trueFuns))
 }
@@ -759,7 +759,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   
   # mixing parameters
   alpha <- runif(p, 0.2, 0.8)
-  weight <- sqrt(alpha/sum(alpha))
+  weight <- sqrt(alpha / sum(alpha))
   
   # generate basis
   basis <- vector("list", p)
@@ -768,7 +768,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   {
     if(dimsSupp[j] == 1) # one-dimensional
     {
-      basis[[j]] <- weight[j]*eFun(argvals[[j]][[1]], M = M[[j]], ignoreDeg = ignoreDeg[[j]], type = eFunType[[j]])@X
+      basis[[j]] <- weight[j] * eFun(argvals[[j]][[1]], M = M[[j]], ignoreDeg = ignoreDeg[[j]], type = eFunType[[j]])@X
     }
     else # dimsSupp[j] == 2, i.e. two-dimensional
     {
@@ -781,7 +781,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
       for(l in 1:M[[j]][1])
       {
         for(k in 1:M[[j]][2])
-          basis[[j]][(l-1)*M[[j]][2]+k,,] <- weight[j]*y1[l,] %o% y2[k,]
+          basis[[j]][(l-1) * M[[j]][2] + k,,] <- weight[j] * y1[l,] %o% y2[k,]
       }
     }
   }

@@ -76,7 +76,7 @@ newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations 
 \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
 
 ### Univariate (irregular)
-irregObject <- irregFunData(argvals = list(1:5, 2:4), X=  list(2:6, 3:5))
+irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 irregObject
 
 # get-methods

@@ -21,7 +21,7 @@ This function generates \eqn{M} decreasing eigenvalues.
 \details{
 The function implements three types of eigenvalues: \itemize{\item
 \code{"linear":} The eigenvalues start at  \eqn{1} and decrease linearly
-towards \eqn{0}: \deqn{\nu_m = \frac{M+1 -m}{m}.}{\nu_m = (M+1-m)/m.} \item
+towards \eqn{0}: \deqn{\nu_m = \frac{M+1-m}{m}.}{\nu_m = (M+1-m)/m.} \item
 \code{"exponential":} The eigenvalues start at \eqn{1}  and decrease
 exponentially towards \eqn{0}: \deqn{\nu_m =
 \exp\left(-\frac{m-1}{2}\right).}{\nu_m = exp(-(m-1)/2).}\item

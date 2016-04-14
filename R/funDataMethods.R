@@ -187,7 +187,7 @@ setMethod("dimSupp", signature = "irregFunData",
 #' # Two-dimensional
 #' X <- array(0, dim = c(2, length(argvals), length(argvals)))
 #' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
-#' X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi)*cos(2*y*pi)})
+#' X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi) * cos(2*y*pi)})
 #' object2D <- funData(list(argvals, argvals), X)
 #' 
 #' plot(object2D, main = "Two-dimensional functional data (obs 1)", obs = 1)
@@ -214,7 +214,7 @@ setMethod("dimSupp", signature = "irregFunData",
 
 #' par(oldpar)
 plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
-                         col =NULL, xlab = "argvals", ylab = "", legend = TRUE,
+                         col = NULL, xlab = "argvals", ylab = "", legend = TRUE,
                          plotNA = FALSE, add = FALSE, ...)
 {
   if(dimSupp(x) > 2)
@@ -329,7 +329,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' 
 #' par(oldpar)
 plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
-                              xlab = "argvals", ylab=  "", ...){
+                              xlab = "argvals", ylab = "", ...){
   
   if(length(xlab) == 1)
     xlab <- rep(xlab, length(x))
@@ -357,7 +357,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   
   # plot the univariate functions
   for(i in dim)
-    plot(x[[i]], obs = obs, main = main[i], xlab= xlab[i], ylab = ylab[i], ...)
+    plot(x[[i]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], ...)
   
   
   # if no par.plot specified: reset graphics parameters
@@ -399,13 +399,13 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' argvals <- seq(0,2*pi,0.01)
 #' ind <- replicate(5, sort(sample(1:length(argvals), sample(5:10,1))))
 #' object <- irregFunData(argvals = lapply(ind, function(i){argvals[i]}),
-#'                   X = lapply(ind, function(i){sample(1:10, 1)/10*argvals[i]^2}))
+#'                   X = lapply(ind, function(i){sample(1:10,1) / 10 * argvals[i]^2}))
 #' 
 #' plot(object, main = "Irregular functional data")
 #' 
 #' par(oldpar)
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
-                              col =rainbow(nObs(x)), xlab = "argvals", ylab = "",
+                              col = rainbow(nObs(x)), xlab = "argvals", ylab = "",
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               add = FALSE, ...)
 {
@@ -414,7 +414,7 @@ plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
   
   if(add == FALSE) # plot new window
   {
-    plot(x = NULL, y = NULL, type = "n", xlim = xlim, ylim = ylim,  xlab= xlab, ylab = ylab, ...)
+    plot(x = NULL, y = NULL, type = "n", xlim = xlim, ylim = ylim,  xlab = xlab, ylab = ylab, ...)
   }
   
   for(i in obs)
@@ -498,7 +498,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' plot(object1 - object2, main = "Difference")
 #' 
 #' # Mixed
-#' plot(4*object1 + 5,  main = "4*Object1 + 5") # Note y-axis!
+#' plot(4 * object1 + 5,  main = "4 * Object1 + 5") # Note y-axis!
 #' plot(object1^2 + object2^2, main = "Pythagoras")
 #' 
 #' ### Irregular
@@ -518,7 +518,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' plot(i1 - object2, main = "Difference")
 #' 
 #' # Mixed
-#' plot(4*i1 + 5,  main = "4*i1 + 5") # Note y-axis!
+#' plot(4 * i1 + 5,  main = "4 * i1 + 5") # Note y-axis!
 #' plot(i1^2 + i2^2, main = "Pythagoras")
 #' par(oldpar)
 NULL
@@ -855,7 +855,7 @@ setMethod("nObsPoints", signature = "irregFunData",
 #' multiObject <- multiFunData(object1, object2)
 #' extractObs(multiObject, obs = 2)
 #' extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
-setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals= getArgvals(object)) {
+setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals = getArgvals(object)) {
   standardGeneric("extractObs")
 })
 
@@ -1035,7 +1035,7 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
   ret <- switch(method,
                 midpoint = c(0,diff(argvals)),
                 trapezoidal = {D <- length(argvals)
-                               1/2*c(argvals[2] - argvals[1], argvals[3:D] -argvals[1:(D-2)], argvals[D] - argvals[D-1])},
+                               1/2 * c(argvals[2] - argvals[1], argvals[3:D] -argvals[1:(D-2)], argvals[D] - argvals[D-1])},
                 stop("function intWeights: choose either midpoint or trapezoidal quadrature rule"))
   
   return(ret)
@@ -1141,13 +1141,13 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
   if(n == 1)
     y <- rep(x,3)
   else
-    y <- c(y[1] + (y[2] - y[1])/(x[2] - x[1])*(xrange[1] - x[1]),
+    y <- c(y[1] + (y[2] - y[1]) / (x[2] - x[1]) * (xrange[1] - x[1]),
            y,
-           y[n-1] + (y[n] - y[n-1])/(x[n] - x[n-1])*(xrange[2] - x[n-1]))
+           y[n-1] + (y[n] - y[n-1]) / (x[n] - x[n-1]) * (xrange[2] - x[n-1]))
   
   x <- c(xrange[1], x, xrange[2])
   
-  return(list(x=x, y=y))
+  return(list(x = x, y = y))
 }
 
 
@@ -1220,7 +1220,7 @@ setGeneric("norm", function(object,...) {
 #' @keywords internal
 norm.funData <- function(object, squared, obs, method, weight)
 {
-  res <- weight*integrate(extractObs(object, obs)^2, method = method)
+  res <- weight * integrate(extractObs(object, obs)^2, method = method)
   
   if(!squared)
     res <- sqrt(res)
@@ -1234,7 +1234,9 @@ norm.funData <- function(object, squared, obs, method, weight)
 #'
 #' @keywords internal
 setMethod("norm", signature = "funData",
-          function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal", weight = 1){norm.funData(object,squared, obs, method, weight)})
+          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1){
+            norm.funData(object, squared, obs, method, weight)
+            })
 
 #' Calculate the norm for multivariate functional data
 #'
@@ -1242,7 +1244,7 @@ setMethod("norm", signature = "funData",
 #'
 #' @keywords internal
 setMethod("norm", signature = "multiFunData",
-          function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal", weight = rep(1, length(object)))
+          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = rep(1, length(object)))
           {
             # univariate functions must be squared in any case!
             uniNorms <- mapply(norm, object = object, weight = weight, 
@@ -1272,7 +1274,7 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
   if(fullDom == TRUE) # extrapolate first
     object <- extrapolateIrreg(object)
   
-  res <- weight*integrate(object^2, method = method, fullDom = FALSE)
+  res <- weight * integrate(object^2, method = method, fullDom = FALSE)
   
   if(!squared)
     res <- sqrt(res)
@@ -1286,7 +1288,7 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 #'
 #' @keywords internal
 setMethod("norm", signature = "irregFunData",
-          function(object, squared = TRUE, obs= 1:nObs(object), method = "trapezoidal", weight = 1, fullDom = FALSE){
+          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1, fullDom = FALSE){
             norm.irregFunData(object, squared, obs, method, weight, fullDom)
           })
 
@@ -1355,7 +1357,7 @@ setMethod("norm", signature = "irregFunData",
 #' \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
 #' 
 #' ### Univariate (irregular)
-#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X=  list(2:6, 3:5))
+#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' irregObject
 #' 
 #' # get-methods
@@ -1458,7 +1460,7 @@ setMethod("setArgvals", signature = "funData",
 #' @keywords internal
 setMethod("setArgvals", signature = "multiFunData",
           function(object, newArgvals){
-            if(length(object)!=length(newArgvals))
+            if(length(object) != length(newArgvals))
               stop("setArgvals: multiFunData object and newArgvals must have the same length")
             multiFunData(mapply(setArgvals, object, newArgvals))
           })
@@ -1507,7 +1509,7 @@ setMethod("setX", signature = "funData",
 #' @keywords internal
 setMethod("setX", signature = "multiFunData",
           function(object, newX){
-            if(length(object)!=length(newX))
+            if(length(object) != length(newX))
               stop("setX: multiFunData object and newX must have the same length")
             
             if(diff(range(sapply(newX, function(x){dim(x)[1]}))) != 0)
@@ -1560,8 +1562,8 @@ setMethod("setX", signature = "irregFunData",
 #' Technically, the function compares the distance between \code{newObject} and 
 #' \code{refObject} \deqn{|||f_\mathrm{new} - f_\mathrm{ref}|||}{||| f_{new} - 
 #' f_{ref}|||} and the distance between  \code{newObject} and 
-#' \code{-1*refObject} \deqn{|||f_\mathrm{new} + f_\mathrm{ref}|||.}{||| f_{new} + 
-#' f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is 
+#' \code{-1 * refObject} \deqn{|||f_\mathrm{new} + f_\mathrm{ref}|||.}{||| f_{new} + 
+#' f_{ref}|||.} If \code{newObject} is closer to \code{-1 * refObject}, it is 
 #' flipped, i.e. multiplied by -1.
 #' 
 #' @section Warning:
@@ -1674,7 +1676,7 @@ setMethod("flipFuns", signature = c("funData", "funData"),
             sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
             
             # flip functions
-            newObject@X <- sig*newObject@X
+            newObject@X <- sig * newObject@X
             
             return(newObject)
           })
@@ -1687,7 +1689,7 @@ setMethod("flipFuns", signature = c("funData", "funData"),
 #' @keywords internal
 setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
           function(refObject, newObject){
-            if(length(refObject)!=length(newObject))
+            if(length(refObject) != length(newObject))
               stop("flipFuns: multiFunData objects must have the same length")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
@@ -1703,7 +1705,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
             
             for(j in 1:length(newObject))
-              newObject[[j]]@X <- sig*newObject[[j]]@X
+              newObject[[j]]@X <- sig * newObject[[j]]@X
             
             return(newObject)
           })

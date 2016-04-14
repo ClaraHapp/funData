@@ -4,7 +4,7 @@
 \alias{efFourier}
 \title{Calculate the first M Fourier basis functions}
 \usage{
-efFourier(argvals, M, linear = F)
+efFourier(argvals, M, linear = FALSE)
 }
 \arguments{
 \item{argvals}{A vector, defining a (fine) grid on the interval for which the

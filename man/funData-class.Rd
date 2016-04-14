@@ -52,7 +52,7 @@ one-dimensional domains, or \eqn{N \times M_1 \times \ldots \times M_d}{N x
 M_1 x \ldots x M_d} for higher-dimensional domains). Here \eqn{N}{N} equals
 the number of observations and \eqn{M}{M} denotes the number of sampling
 points (for higher dimensional domains \eqn{M_i}{M_i} denotes the number of
-sampling points in dimension \eqn{i, i= 1,\ldots, d}{i, i = 1,\ldots, d}).
+sampling points in dimension \eqn{i, i = 1,\ldots, d}{i, i = 1,\ldots, d}).
 Missing values in the observations are allowed and must be marked by
 \code{NA}. If missing values occur due to irregular observation points, the
 data can be stored alternatively as an object of class

@@ -45,8 +45,8 @@ function allows to flip (i.e. multiply by \eqn{-1}{-1}) all observations in
 Technically, the function compares the distance between \code{newObject} and
 \code{refObject} \deqn{|||f_\mathrm{new} - f_\mathrm{ref}|||}{||| f_{new} -
 f_{ref}|||} and the distance between  \code{newObject} and
-\code{-1*refObject} \deqn{|||f_\mathrm{new} + f_\mathrm{ref}|||.}{||| f_{new} +
-f_{ref}|||.} If \code{newObject} is closer to \code{-1*refObject}, it is
+\code{-1 * refObject} \deqn{|||f_\mathrm{new} + f_\mathrm{ref}|||.}{||| f_{new} +
+f_{ref}|||.} If \code{newObject} is closer to \code{-1 * refObject}, it is
 flipped, i.e. multiplied by -1.
 }
 \section{Warning}{
