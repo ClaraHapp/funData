@@ -1159,30 +1159,40 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' This function calculates the norm for each observation of a \code{funData}, 
 #' \code{irregFunData} or \code{multiFunData} object.
 #' 
+#' For \code{funData} objects, the standard \eqn{L^2} norm is calculated: 
+#' \deqn{||f|| = \left( \int_{\calT} f(t)^2 dt \right)^{1/2}.}{||f|| = (\int
+#' f(t)^2 dt)^{1/2}.} For \code{irregFunData} objects, each observed function is
+#' integrated only on the observed grid points (unless \code{fullDom = TRUE}).
+#' 
+#' The (weighted) norm of a multivariate functional data object \eqn{f = (f_1 ,
+#' \ldots, f_p)}{f = (f_1 , \ldots, f_p)} is defined as \deqn{||| f ||| :=
+#' \left(\sum_{j=1}^p w_j || f_j ||^2 \right) ^{1/2}.}{||| f ||| := ( \sum w_j
+#' || f_j ||^2 )^{1/2}.}
+#' 
 #' Further parameters passed to this function may include: \itemize{ \item 
 #' \code{squared}: Logical. If \code{TRUE} (default), the function calculates 
 #' the squared norm, otherwise the result is not squared. \item \code{obs}: A 
 #' numeric vector, giving the indices of the observations, for which the norm is
 #' to be calculated. Defaults to all observations. \item \code{method}: A 
 #' character string, giving the integration method to be used. See 
-#'\code{\link{integrate}} for details. \item \code{weight}: An optional vector of
-#' weights for the scalar product; particularly useful for multivariate
-#' functional data, where each entry can be weighted in the scalar product /
-#' norm. Defaults to 1 for each element. \item \code{fullDom}: Logical. If
-#' \code{object} is of class \code{\linkS4class{irregFunData}} and \code{fullDom =
-#' TRUE}, all functions are extrapolated to the same domain. Defaults to
-#' \code{FALSE}. See\code{\link{integrate}} for details. }
+#' \code{\link{integrate}} for details. \item \code{weight}: An optional vector
+#' of weights for the scalar product; particularly useful for multivariate 
+#' functional data, where each entry can be weighted in the scalar product / 
+#' norm. Defaults to \code{1} for each element. \item \code{fullDom}: Logical.
+#' If \code{object} is of class \code{\linkS4class{irregFunData}} and
+#' \code{fullDom = TRUE}, all functions are extrapolated to the same domain.
+#' Defaults to \code{FALSE}. See \code{\link{integrate}} for details. }
 #' 
 #' @section Warning: The function is currently implemented only for functional 
 #'   data with one- and two-dimensional domains.
 #'   
-#' @param object An object of class \code{funData}, \code{irregFunData} or
+#' @param object An object of class \code{funData}, \code{irregFunData} or 
 #'   \code{multiFunData}.
 #' @param ... Further parameters (see Details).
 #'   
 #' @return A numeric vector representing the norm of each observation.
 #'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
 #'   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
 #'   
 #' @export norm
