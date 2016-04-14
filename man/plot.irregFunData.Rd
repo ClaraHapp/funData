@@ -20,18 +20,18 @@ plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
 \item{obs}{A vector of numerics giving the observations to plot. Defaults to
 all observations in \code{x}.}
 
-\item{type}{The type of plot. Defaults to "b" (line and point plot). See
-\code{\link[graphics]{plot}} for details.}
+\item{type}{The type of plot. Defaults to \code{"b"} (line and point plot).
+See \code{\link[graphics]{plot}} for details.}
 
-\item{pch}{The point type. Defaults to 20 (solid small circles). See
+\item{pch}{The point type. Defaults to \code{20} (solid small circles). See
 \code{\link[graphics]{par}} for details.}
 
 \item{col}{The color of the functions. Defaults to the
 \code{\link[grDevices]{rainbow}} palette.}
 
-\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
-x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for
-details.}
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"}
+for the x-axis and no title for the y-axis. See
+\code{\link[graphics]{plot}} for details.}
 
 \item{xlim,ylim}{The limits for x- and y-axis. Defaults to the total range of
 the data that is to plot. See \code{\link[graphics]{plot}} for details.}
@@ -59,6 +59,7 @@ plot(object, main = "Irregular functional data")
 par(oldpar)
 }
 \seealso{
-\code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, \code{\link[graphics]{plot}},
+\code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
+  \code{\link[graphics]{plot}},
 }
 

@@ -31,7 +31,7 @@ option \code{mfrow} is ignored. Defaults to \code{FALSE}. See
 length as \code{dim} (different titles for each dimension) or length
 \code{1} (one title for all dimensions). Defaults to \code{NULL}.}
 
-\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} for the
 x-axis and no title for the y-axis for all elements. Can be supplied as a
 vector of the same length as \code{x} (one x-/y-lab for each element) or a
 single string that is applied for all elements. See

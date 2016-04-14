@@ -11,7 +11,7 @@ addError(funDataObject, sd)
 \code{\linkS4class{funData}} or \code{\linkS4class{multiFunData}}.}
 
 \item{sd}{The standard deviation \eqn{\sigma} of the Gaussian white noise
-  that is added to the data. Defaults to 1. See Description.}
+  that is added to the data. Defaults to \code{1}. See Description.}
 }
 \value{
 An object of the same class as \code{funDataObject}, which is a noisy
@@ -20,10 +20,10 @@ An object of the same class as \code{funDataObject}, which is a noisy
 \description{
 This function generates an artificial noisy version of a functional data
 object of class \code{\linkS4class{funData}} (univariate) or
-\code{\linkS4class{multiFunData}} (multivariate) by adding iid. realizations of
-Gaussian random variables \eqn{\varepsilon \sim \mathcal{N}(0, \sigma^2)}{\eps ~ N(0, \sigma^2)} to
-the observations. The standard deviation \eqn{\sigma} can be supplied by the
-user.
+\code{\linkS4class{multiFunData}} (multivariate) by adding iid. realizations
+of Gaussian random variables \eqn{\varepsilon \sim \mathcal{N}(0,
+\sigma^2)}{\eps ~ N(0, \sigma^2)} to the observations. The standard deviation
+\eqn{\sigma} can be supplied by the user.
 }
 \examples{
 oldPar <- par(no.readonly = TRUE)
@@ -59,8 +59,7 @@ legend("topright", c("Plain", "Noisy", "Very Noisy"), lty = c(1, NA, NA), pch = 
 par(oldPar)
 }
 \seealso{
-\code{\linkS4class{funData}},
-  \code{\linkS4class{multiFunData}}, \code{\link{simFunData}},
-  \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}},
+  \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 }
 

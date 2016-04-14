@@ -21,13 +21,13 @@ plot.funData(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 all observations in \code{x}. For two-dimensional functions (images)
 \code{obs} must have length 1.}
 
-\item{type}{The type of plot. Defaults to "l" (line plot). See
+\item{type}{The type of plot. Defaults to \code{"l"} (line plot). See
 \code{\link[graphics]{plot}} for details.}
 
-\item{lty}{The line type. Defaults to 1 (solid line). See
+\item{lty}{The line type. Defaults to \code{1} (solid line). See
 \code{\link[graphics]{par}} for details.}
 
-\item{lwd}{The line width. Defaults to 1. See \code{\link[graphics]{par}} for
+\item{lwd}{The line width. Defaults to \code{1}. See \code{\link[graphics]{par}} for
 details.}
 
 \item{col}{The color of the functions. If not supplied (\code{NULL}, default
@@ -36,7 +36,7 @@ value), one-dimensional functions are plotted in the
 plotted using \code{\link[fields]{tim.colors}} from package
 \code{\link[fields]{fields-package}}.}
 
-\item{xlab,ylab}{The titles for x- and y-axis. Defaults to "argvals" for the
+\item{xlab,ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} for the
 x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for
 details.}
 

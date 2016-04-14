@@ -146,18 +146,18 @@ setMethod("dimSupp", signature = "irregFunData",
 #' @param obs A vector of numerics giving the observations to plot. Defaults to 
 #'   all observations in \code{x}. For two-dimensional functions (images) 
 #'   \code{obs} must have length 1.
-#' @param type The type of plot. Defaults to "l" (line plot). See 
+#' @param type The type of plot. Defaults to \code{"l"} (line plot). See 
 #'   \code{\link[graphics]{plot}} for details.
-#' @param lty The line type. Defaults to 1 (solid line). See 
+#' @param lty The line type. Defaults to \code{1} (solid line). See 
 #'   \code{\link[graphics]{par}} for details.
-#' @param lwd The line width. Defaults to 1. See \code{\link[graphics]{par}} for
+#' @param lwd The line width. Defaults to \code{1}. See \code{\link[graphics]{par}} for
 #'   details.
 #' @param col The color of the functions. If not supplied (\code{NULL}, default 
 #'   value), one-dimensional functions are plotted in the 
 #'   \code{\link[grDevices]{rainbow}} palette and two-dimensional functions are 
 #'   plotted using \code{\link[fields]{tim.colors}} from package 
 #'   \code{\link[fields]{fields-package}}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the 
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the 
 #'   x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for 
 #'   details.
 #' @param legend Logical. If \code{TRUE}, a color legend is plotted for 
@@ -290,7 +290,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param main A string vector, giving the title of the plot. Can have the same 
 #'   length as \code{dim} (different titles for each dimension) or length 
 #'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the 
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the 
 #'   x-axis and no title for the y-axis for all elements. Can be supplied as a 
 #'   vector of the same length as \code{x} (one x-/y-lab for each element) or a 
 #'   single string that is applied for all elements. See 
@@ -374,22 +374,23 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' @param y Missing.
 #' @param obs A vector of numerics giving the observations to plot. Defaults to 
 #'   all observations in \code{x}.
-#' @param type The type of plot. Defaults to "b" (line and point plot). See 
-#'   \code{\link[graphics]{plot}} for details.
-#' @param pch The point type. Defaults to 20 (solid small circles). See 
+#' @param type The type of plot. Defaults to \code{"b"} (line and point plot).
+#'   See \code{\link[graphics]{plot}} for details.
+#' @param pch The point type. Defaults to \code{20} (solid small circles). See 
 #'   \code{\link[graphics]{par}} for details.
 #' @param col The color of the functions. Defaults to the 
 #'   \code{\link[grDevices]{rainbow}} palette.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to "argvals" for the 
-#'   x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for 
-#'   details.
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"}
+#'   for the x-axis and no title for the y-axis. See
+#'   \code{\link[graphics]{plot}} for details.
 #' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of
 #'   the data that is to plot. See \code{\link[graphics]{plot}} for details.
 #' @param add Logical. If \code{TRUE}, add to current plot (only for 
 #'   one-dimensional functions). Defaults to \code{FALSE}.
 #' @param ... Additional arguments to \code{\link[graphics]{plot}}.
 #'   
-#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, \code{\link[graphics]{plot}},    
+#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\link[graphics]{plot}},
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
