@@ -21,7 +21,7 @@ f1@argvals
 f1@X
 }
 \seealso{
-\code{\linkS4class{funData}},\code{\link{as.funData}}
+\code{\linkS4class{funData}}, \code{\link{as.funData}}
 }
 \keyword{internal}
 

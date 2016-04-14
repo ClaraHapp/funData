@@ -11,7 +11,7 @@
 Integrate method for multiFunData objects
 }
 \seealso{
-\code{\link{integrate}} \code{\linkS4class{multiFunData}}
+\code{\link{integrate}}, \code{\linkS4class{multiFunData}}
 }
 \keyword{internal}
 

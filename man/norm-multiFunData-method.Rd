@@ -12,7 +12,7 @@
 Calculate the norm for multivariate functional data
 }
 \seealso{
-\code{\link{norm}} \code{\linkS4class{multiFunData}}
+\code{\link{norm}}, \code{\linkS4class{multiFunData}}
 }
 \keyword{internal}
 

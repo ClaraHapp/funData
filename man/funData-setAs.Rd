@@ -7,7 +7,7 @@
 Coerce a funData object to class multiFunData
 }
 \seealso{
-\code{\linkS4class{funData}},\code{\link{as.multiFunData}}
+\code{\linkS4class{funData}}, \code{\link{as.multiFunData}}
 }
 \keyword{internal}
 

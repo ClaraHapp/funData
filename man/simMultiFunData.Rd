@@ -109,8 +109,8 @@ containing two vectors of observation points, one for each direction
 is a vector of two integers, giving the number of basis functions for each
 direction (x- and y-direction). \item \code{eFunType[[j]]} is a vector of two
 character strings, giving the type of orthonormal basis functions for each
-direction (x- and y-direction, see\code{\link{eFun}} for possible options). The
-corresponding basis functions are constructed as tensor products of
+direction (x- and y-direction, see \code{\link{eFun}} for possible options).
+The corresponding basis functions are constructed as tensor products of
 orthonormal basis functions in each direction. \item \code{ignoreDeg[[j]]} is
 a list, containing two integer vectors that specify the degrees to ignore
 when constructing the orthonormal basis functions in each direction. The

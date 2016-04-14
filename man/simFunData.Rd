@@ -72,6 +72,6 @@ par(oldPar)
 }
 \seealso{
 \code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
-  \code{\link{addError}}, \code{\link{sparsify}}.
+  \code{\link{addError}}, \code{\link{sparsify}}
 }
 

@@ -296,7 +296,7 @@ setMethod("multiFunData", signature = "ANY",
 
 #' Coerce a funData object to class multiFunData
 #' 
-#' @seealso \code{\linkS4class{funData}},\code{\link{as.multiFunData}}
+#' @seealso \code{\linkS4class{funData}}, \code{\link{as.multiFunData}}
 #' 
 #' @name funData-setAs
 #' 
@@ -455,7 +455,7 @@ setMethod("irregFunData", signature = c(argvals = "list", X = "list"),
 
 #' Coerce an irregFunData object to class funData
 #' 
-#' @seealso \code{\linkS4class{funData}},\code{\link{as.funData}}
+#' @seealso \code{\linkS4class{funData}}, \code{\link{as.funData}}
 #'   
 #' @name irregFunData-setAs
 #'   

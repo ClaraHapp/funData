@@ -50,9 +50,8 @@ for one-dimensional functions). Defaults to \code{FALSE}. See Details.}
 one-dimensional functions). Defaults to \code{FALSE}.}
 
 \item{...}{Additional arguments to \code{\link[graphics]{matplot} }
-  (one-dimensional functions) or
-  \code{\link[fields]{image.plot}}/\code{\link[graphics]{image}}
-  (two-dimensional functions).}
+  (one-dimensional functions) or \code{\link[fields]{image.plot}}/
+  \code{\link[graphics]{image}} (two-dimensional functions).}
 }
 \description{
 This function plots observations of univariate functional data on their
@@ -66,9 +65,8 @@ option relies on the \code{\link[zoo]{na.approx}} function in package
 functions only.
 }
 \section{Warning}{
-
-The function is currently implemented only for functional data with one- and
-two-dimensional domains.
+ The function is currently implemented only for functional
+  data with one- and two-dimensional domains.
 }
 \examples{
 oldpar <- par(no.readonly = TRUE)

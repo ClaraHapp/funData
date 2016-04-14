@@ -60,6 +60,6 @@ par(oldPar)
 }
 \seealso{
 \code{\linkS4class{funData}}, \code{\link{simFunData}},
-  \code{\link{simMultiFunData}}.
+  \code{\link{simMultiFunData}}
 }
 

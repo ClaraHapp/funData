@@ -52,6 +52,6 @@ all.equal(meanFunction(i1), extractObs(i1, obs = 2))
 }
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
-  \code{\linkS4class{multiFunData}},\code{\link{Arith.funData}}
+  \code{\linkS4class{multiFunData}}, \code{\link{Arith.funData}}
 }
 

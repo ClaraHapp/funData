@@ -33,7 +33,7 @@ basis functions via the Gram-Schmidt method. This is implemented only if
 \code{argvalss} is a grid defining the unit interval \eqn{[0,1]}.
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 }
 \keyword{internal}
 

@@ -22,7 +22,7 @@ This function iteratively calculates orthonormal Legendre polynomials of
 degree 0,...,M-1 on an arbitrary interval.
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 }
 \keyword{internal}
 

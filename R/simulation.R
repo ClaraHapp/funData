@@ -190,7 +190,7 @@ setMethod("addError", signature = "multiFunData",
 #' @return A univariate functional data object of class \code{\linkS4class{funData}}
 #'   containing the Legendre polynomials on the given interval.
 #'
-#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 #'
 #' @keywords internal
 efPoly <- function(argvals, M)
@@ -238,7 +238,7 @@ efPoly <- function(argvals, M)
 #'   \code{\linkS4class{funData}} containing the Fourier basis functions on
 #'   the given interval.
 #'
-#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 #'
 #' @keywords internal
 efFourier <- function(argvals, M, linear=F)
@@ -287,7 +287,7 @@ efFourier <- function(argvals, M, linear=F)
 #'   \code{\linkS4class{funData}} containing the eigenfunctions of the Wiener
 #'   process on the given interval.
 #'
-#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+#' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 #'
 #' @keywords internal
 efWiener <- function(argvals, M)
@@ -333,7 +333,7 @@ efWiener <- function(argvals, M)
 #'   interval.
 #'   
 #' @seealso \code{\linkS4class{funData}}, \code{\link{simFunData}},
-#'   \code{\link{simMultiFunData}}.
+#'   \code{\link{simMultiFunData}}
 #'   
 #' @export eFun
 #'   
@@ -449,7 +449,7 @@ eVal <- function(M, type)
 #'   eigenvalues used for simulating the data.}
 #'
 #' @seealso \code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
-#'   \code{\link{addError}}, \code{\link{sparsify}}.
+#'   \code{\link{addError}}, \code{\link{sparsify}}
 #'
 #' @export simFunData
 #'
@@ -502,26 +502,26 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' This function provides a unified simulation structure for multivariate 
 #' functional data \eqn{f_1, \ldots, f_N} on one- or two-dimensional domains, 
 #' based on a truncated multivariate Karhunen-Loeve representation: \deqn{f_i(t)
-#' = \sum_{m = 1}^M \rho_{i,m} \psi_m(t).} The multivariate eigenfunctions
-#' (basis functions) \eqn{\psi_m}  are constructed from univariate orthonormal
-#' bases. There are two different concepts for the construction, that can be
+#' = \sum_{m = 1}^M \rho_{i,m} \psi_m(t).} The multivariate eigenfunctions 
+#' (basis functions) \eqn{\psi_m}  are constructed from univariate orthonormal 
+#' bases. There are two different concepts for the construction, that can be 
 #' chosen by the parameter \code{type}: A split orthonormal basis (\code{split},
-#' only one-dimensional domains) and weighted univariate orthonormal bases
-#' (\code{weighted}, one- and two-dimensional domains). The scores
-#' \eqn{\rho_{i,m}} in the Karhunen-Loeve representation are simulated
-#' independently from a normal distribution with zero mean and decreasing
+#' only one-dimensional domains) and weighted univariate orthonormal bases 
+#' (\code{weighted}, one- and two-dimensional domains). The scores 
+#' \eqn{\rho_{i,m}} in the Karhunen-Loeve representation are simulated 
+#' independently from a normal distribution with zero mean and decreasing 
 #' variance. See Details.
 #' 
 #' The parameter \code{type} defines how the eigenfunction basis for the 
-#' multivariate Karhunen-Loeve representation is constructed: \itemize{ \item
+#' multivariate Karhunen-Loeve representation is constructed: \itemize{ \item 
 #' \code{type = "split"}: The basis functions of an underlying 'big' orthonormal
-#' basis are split in \code{M} parts, translated and possibly reflected. This
-#' yields an orthornormal basis of multivariate functions with \code{M}
-#' elements. This option is implemented only for one-dimensional domains. \item
-#' \code{type = "weighted":} The multivariate eigenfunction basis consists of
-#' weighted univariate orthonormal bases.  This yields an orthornormal basis of
-#' multivariate functions with \code{M} elements. For data on two-dimensional
-#' domains (images), the univariate basis is constructed as a tensor product of
+#' basis are split in \code{M} parts, translated and possibly reflected. This 
+#' yields an orthornormal basis of multivariate functions with \code{M} 
+#' elements. This option is implemented only for one-dimensional domains. \item 
+#' \code{type = "weighted":} The multivariate eigenfunction basis consists of 
+#' weighted univariate orthonormal bases.  This yields an orthornormal basis of 
+#' multivariate functions with \code{M} elements. For data on two-dimensional 
+#' domains (images), the univariate basis is constructed as a tensor product of 
 #' univariate bases in each direction (x- and y-direction). }
 #' 
 #' Depending on \code{type}, the other parameters have to be specified as 
@@ -560,12 +560,12 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' (observation points in x-direction and in y-direction). \item \code{M[[j]]} 
 #' is a vector of two integers, giving the number of basis functions for each 
 #' direction (x- and y-direction). \item \code{eFunType[[j]]} is a vector of two
-#' character strings, giving the type of orthonormal basis functions for each
-#' direction (x- and y-direction, see\code{\link{eFun}} for possible options). The
-#' corresponding basis functions are constructed as tensor products of
+#' character strings, giving the type of orthonormal basis functions for each 
+#' direction (x- and y-direction, see \code{\link{eFun}} for possible options).
+#' The corresponding basis functions are constructed as tensor products of 
 #' orthonormal basis functions in each direction. \item \code{ignoreDeg[[j]]} is
-#' a list, containing two integer vectors that specify the degrees to ignore
-#' when constructing the orthonormal basis functions in each direction. The
+#' a list, containing two integer vectors that specify the degrees to ignore 
+#' when constructing the orthonormal basis functions in each direction. The 
 #' default value is \code{NULL}. } The total number of basis functions (i.e. the
 #' product of \code{M[[j]]} for all \code{j}) must be equal!}
 #' 

@@ -23,7 +23,7 @@ This function calculates the first M (orthonormal) eigenfunctions of the
 Wiener process on an arbitrary interval.
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
+\code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 }
 \keyword{internal}
 
