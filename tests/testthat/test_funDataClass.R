@@ -57,3 +57,14 @@ test_that("irregfunData class constructor", {
                "Different numbers of observation points in argvals and X")
 })
 
+test_that("coerce methods", {
+  x <- seq(0,1,0.01)
+  f <- funData(argvals = x, X = 1:5 %o% x)
+  i1 <- irregFunData(argvals = list(1:5, 3:6), X = list(2:6, 4:7))
+  f1 <- as.funData(i1)
+ 
+  expect_equal(f, as.multiFunData(f)[[1]])
+  expect_equal(unique(unlist(i1@argvals)), f1@argvals[[1]])
+  expect_equal(i1@X, apply(f1@X, 1, na.omit), check.attributes = FALSE)
+})
+
