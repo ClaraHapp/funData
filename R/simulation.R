@@ -663,20 +663,7 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
   simData  <- vector("list", p)
   
   for(j in 1:p)
-  {
-    simData[[j]] <- funData(trueFuns[[j]]@argvals, array(0, dim = c(N, dim(trueFuns[[j]]@X)[-1])))
-    
-    if(dimSupp(trueFuns[[j]]) == 1)
-      simData[[j]]@X <- scores %*% trueFuns[[j]]@X
-    else # dimSupp(trueFuns[[j]]) == 2
-    {
-      for(i in 1:N)
-      {
-        for(m in 1:Mtotal)
-          simData[[j]]@X[i,,] <- simData[[j]]@X[i,,] + scores[i,m]* trueFuns[[j]]@X[m,,]
-      }
-    }
-  }
+     simData[[j]] <- funData(trueFuns[[j]]@argvals, apply(trueFuns[[j]]@X, -1, function(v){scores %*% v}))
   
   return(list(simData = multiFunData(simData),
               trueFuns = trueFuns,
