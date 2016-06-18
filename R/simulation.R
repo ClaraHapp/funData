@@ -663,7 +663,14 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
   simData  <- vector("list", p)
   
   for(j in 1:p)
-     simData[[j]] <- funData(trueFuns[[j]]@argvals, apply(trueFuns[[j]]@X, -1, function(v){scores %*% v}))
+  {
+    X <- apply(trueFuns[[j]]@X, -1, function(v){scores %*% v})
+    
+    if(N == 1)
+      dim(X) <- c(1, nObsPoints(trueFuns[[j]]))
+    
+    simData[[j]] <- funData(trueFuns[[j]]@argvals, X)
+  } 
   
   return(list(simData = multiFunData(simData),
               trueFuns = trueFuns,
