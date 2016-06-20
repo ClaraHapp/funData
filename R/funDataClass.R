@@ -1,3 +1,6 @@
+#' @import methods
+NULL
+
 #' A class for (univariate) functional data
 #' 
 #' The \code{funData} class represents functional data on \eqn{d}{d}-dimensional
