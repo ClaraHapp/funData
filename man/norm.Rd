@@ -21,7 +21,7 @@ This function calculates the norm for each observation of a \code{funData},
 }
 \details{
 For \code{funData} objects, the standard \eqn{L^2} norm is calculated:
-\deqn{||f|| = \left( \int_{\calT} f(t)^2 dt \right)^{1/2}.}{||f|| = (\int
+\deqn{||f|| = \left( \int_{\mathcal{T}} f(t)^2 dt \right)^{1/2}.}{||f|| = (\int
 f(t)^2 dt)^{1/2}.} For \code{irregFunData} objects, each observed function is
 integrated only on the observed grid points (unless \code{fullDom = TRUE}).
 
