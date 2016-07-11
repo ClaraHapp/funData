@@ -274,7 +274,7 @@ test_that("set/get", {
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (X)
   # multivariate FD object
   expect_error(setArgvals(m, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'setArgvals: multiFunData object and newArgvals must have the same length') # wrong length (argvals, multiFunData)
-  expect_error(setX(m, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'setX: multiFunData object and newX must have the same length\n') # wrong length (X, multiFunData)
+  expect_error(setX(m, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'setX: multiFunData object and newX must have the same length') # wrong length (X, multiFunData)
   expect_error(setX(m, list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))), 'setX: newX object must have the same number of observations in all elements!') # different number of observations
   expect_warning(setX(m, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'setX: Number of observations has changed') # warning: more observations
   # irreg FD object
