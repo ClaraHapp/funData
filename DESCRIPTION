@@ -1,6 +1,6 @@
 Package: funData
 Type: Package
-Title: An S4 class for functional data
+Title: An S4 Class for Functional Data
 Version: 0.1
 Date: 2015-06-10
 Authors@R: person("Clara", "Happ", email = "clara.happ@stat.uni-muenchen.de",
