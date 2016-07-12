@@ -1,36 +1,8 @@
 # library(funData)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-plot.argvalss <- function(x, y, type = "p", pch = 20,
-                       col =rainbow(nObs(x)), xlab = "argvals", ylab = "",
+plot.argvals <- function(x, y, type = "p", pch = 20,
+                       col = grDevices::rainbow(nObs(x)), xlab = "argvals", ylab = "",
                        add = FALSE, xlim = range(x@argvals), ylim = c(1,nObs(x)), ...)
 {
   

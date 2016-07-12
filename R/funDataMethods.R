@@ -173,6 +173,7 @@ setMethod("dimSupp", signature = "irregFunData",
 #' @seealso \code{\linkS4class{funData}}, \code{\link[graphics]{matplot}}, 
 #'   \code{\link[fields]{image.plot}}, \code{\link[graphics]{image}}
 #'   
+#' @importFrom grDevices rainbow
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
@@ -224,7 +225,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
   {
     # set default color
     if(is.null(col))
-      col <-  rainbow(length(obs))
+      col <-  grDevices::rainbow(length(obs))
     
     if(plotNA) # interpolate NA values
     {
@@ -390,7 +391,9 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' @param ... Additional arguments to \code{\link[graphics]{plot}}.
 #'   
 #' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
-#'   \code{\link[graphics]{plot}},
+#'   \code{\link[graphics]{plot}}
+#'   
+#'  @importFrom grDevices rainbow
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
@@ -405,7 +408,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' 
 #' par(oldpar)
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
-                              col = rainbow(nObs(x)), xlab = "argvals", ylab = "",
+                              col = grDevices::rainbow(nObs(x)), xlab = "argvals", ylab = "",
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               add = FALSE, ...)
 {

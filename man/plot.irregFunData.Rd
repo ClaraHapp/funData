@@ -7,7 +7,7 @@
 \title{Plotting irregular functional data}
 \usage{
 plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
-  col = rainbow(nObs(x)), xlab = "argvals", ylab = "",
+  col = grDevices::rainbow(nObs(x)), xlab = "argvals", ylab = "",
   xlim = range(x@argvals[obs]), ylim = range(x@X[obs]), add = FALSE, ...)
 
 \S4method{plot}{irregFunData,missing}(x, y, ...)
@@ -60,6 +60,6 @@ par(oldpar)
 }
 \seealso{
 \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
-  \code{\link[graphics]{plot}},
+  \code{\link[graphics]{plot}}
 }
 
