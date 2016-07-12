@@ -1,5 +1,9 @@
 ### generic functions ###
 
+# general setting for all examples using plot functions
+#' @importFrom graphics par
+NULL
+
 #### show ####
 
 #' A print method for univariate functional data
@@ -174,6 +178,7 @@ setMethod("dimSupp", signature = "irregFunData",
 #'   \code{\link[fields]{image.plot}}, \code{\link[graphics]{image}}
 #'   
 #' @importFrom grDevices rainbow
+#' @importFrom graphics matplot image
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
@@ -232,7 +237,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
       # require zoo
       if (requireNamespace("zoo", quietly = TRUE))
       {
-        matplot(x = x@argvals[[1]], y = zoo::na.approx(t(x@X[obs,, drop = FALSE])), type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, ...)
+        graphics::matplot(x = x@argvals[[1]], y = zoo::na.approx(t(x@X[obs,, drop = FALSE])), type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, ...)
         
         add = TRUE # add the standard plot
       }
@@ -240,7 +245,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
         warning("Package zoo needed for interpolating missing values in plot for funData. Ignoring plotNA = TRUE.")
     }
     
-    matplot(x = x@argvals[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
+    graphics::matplot(x = x@argvals[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
   }
   if(dimSupp(x) == 2)
   {
@@ -260,7 +265,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
     }
     else
     {
-      image(x = x@argvals[[1]], y = x@argvals[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
+      graphics::image(x = x@argvals[[1]], y = x@argvals[[2]], z = x@X[obs, ,], lty = lty, xlab = xlab, ylab = ylab, col = col, ...)
     }
     
     
@@ -394,6 +399,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #'   \code{\link[graphics]{plot}}
 #'   
 #'  @importFrom grDevices rainbow
+#' @importFrom graphics points
 #'   
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
@@ -421,7 +427,7 @@ plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
   }
   
   for(i in obs)
-    points(x = x@argvals[[i]], y = x@X[[i]], type = type, pch = pch, col = col[i], ...)
+    graphics::points(x = x@argvals[[i]], y = x@X[[i]], type = type, pch = pch, col = col[i], ...)
   
 }
 

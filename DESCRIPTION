@@ -10,5 +10,5 @@ Maintainer: Clara Happ <clara.happ@stat.uni-muenchen.de>
 Description: S4 classes for univariate and multivariate functional data with utility functions.
 License: GPL-2
 Depends: methods
-Imports: abind, fields, foreach, grDevices
+Imports: abind, fields, foreach, graphics, grDevices
 Suggests: zoo, testthat

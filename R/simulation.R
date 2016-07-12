@@ -386,6 +386,8 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
 #'   
 #' @return A vector containing the \code{M} decreasing eigenvalues.
 #'   
+#' @importFrom graphics points
+#' 
 #' @export eVal
 #'   
 #' @examples
