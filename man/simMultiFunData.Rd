@@ -64,10 +64,10 @@ The parameter \code{type} defines how the eigenfunction basis for the
 multivariate Karhunen-Loeve representation is constructed: \itemize{ \item
 \code{type = "split"}: The basis functions of an underlying 'big' orthonormal
 basis are split in \code{M} parts, translated and possibly reflected. This
-yields an orthornormal basis of multivariate functions with \code{M}
+yields an orthonormal basis of multivariate functions with \code{M}
 elements. This option is implemented only for one-dimensional domains. \item
 \code{type = "weighted":} The multivariate eigenfunction basis consists of
-weighted univariate orthonormal bases.  This yields an orthornormal basis of
+weighted univariate orthonormal bases.  This yields an orthonormal basis of
 multivariate functions with \code{M} elements. For data on two-dimensional
 domains (images), the univariate basis is constructed as a tensor product of
 univariate bases in each direction (x- and y-direction). }
@@ -76,7 +76,7 @@ Depending on \code{type}, the other parameters have to be specified as
 follows: \subsection{Split 'big' orthonormal basis}{ The parameters \code{M}
 (integer), \code{eFunType} (character string) and \code{ignoreDeg} (integer
 vector or \code{NULL}) are passed to the function \code{\link{eFun}} to
-generate a univariate orthornormal basis on a 'big' interval. Subsequently,
+generate a univariate orthonormal basis on a 'big' interval. Subsequently,
 the basis functions are split and translated, such that the \eqn{j}-th part
 of the split function is defined on the interval corresponding to
 \code{argvals[[j]]}. The elements of the multivariate basis functions are
@@ -87,7 +87,7 @@ j = 1, \ldots, p}.}
 \subsection{Weighted orthonormal bases}{ The parameters \code{argvals, M,
 eFunType} and \code{ignoreDeg} are all lists of a similar structure. They are
 passed element-wise to the function \code{\link{eFun}} to generate
-orthornormal basis functions for each element of the multivariate functional
+orthonormal basis functions for each element of the multivariate functional
 data to be simulated. In case of bivariate elements (images), the
 corresponding basis functions are constructed as tensor products of
 orthonormal basis functions in each direction (x- and y-direction).

@@ -159,10 +159,12 @@ setGeneric("addError", function(funDataObject, sd) {standardGeneric("addError")}
 
 #'  Add gaussian white noise to functional data
 #'
+#' @importFrom stats rnorm
+#'
 #' @keywords internal
 setMethod("addError", signature = "funData",
           function(funDataObject, sd){
-            ME <- array(rnorm(prod(dim(funDataObject@X)), mean = 0, sd = sd),  dim(funDataObject@X))
+            ME <- array(stats::rnorm(prod(dim(funDataObject@X)), mean = 0, sd = sd),  dim(funDataObject@X))
             
             return(funDataObject + funData(funDataObject@argvals, ME))
           })
@@ -452,6 +454,8 @@ eVal <- function(M, type)
 #' @seealso \code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
 #'   \code{\link{addError}}, \code{\link{sparsify}}
 #'
+#' @importFrom stats rnorm
+#'
 #' @export simFunData
 #'
 #' @examples
@@ -486,7 +490,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   
   # generate eigenvalues and scores
   trueVals <- eVal(M, eValType)
-  scores <- t(replicate(N, rnorm(M, sd = sqrt(eVal(M, eValType)))))
+  scores <- t(replicate(N, stats::rnorm(M, sd = sqrt(eVal(M, eValType)))))
   
   # truncated Karhunen-Loeve representation
   simData <- funData(argvals, scores %*% trueFuns@X)
@@ -517,10 +521,10 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' multivariate Karhunen-Loeve representation is constructed: \itemize{ \item 
 #' \code{type = "split"}: The basis functions of an underlying 'big' orthonormal
 #' basis are split in \code{M} parts, translated and possibly reflected. This 
-#' yields an orthornormal basis of multivariate functions with \code{M} 
+#' yields an orthonormal basis of multivariate functions with \code{M} 
 #' elements. This option is implemented only for one-dimensional domains. \item 
 #' \code{type = "weighted":} The multivariate eigenfunction basis consists of 
-#' weighted univariate orthonormal bases.  This yields an orthornormal basis of 
+#' weighted univariate orthonormal bases.  This yields an orthonormal basis of 
 #' multivariate functions with \code{M} elements. For data on two-dimensional 
 #' domains (images), the univariate basis is constructed as a tensor product of 
 #' univariate bases in each direction (x- and y-direction). }
@@ -529,7 +533,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' follows: \subsection{Split 'big' orthonormal basis}{ The parameters \code{M} 
 #' (integer), \code{eFunType} (character string) and \code{ignoreDeg} (integer 
 #' vector or \code{NULL}) are passed to the function \code{\link{eFun}} to 
-#' generate a univariate orthornormal basis on a 'big' interval. Subsequently, 
+#' generate a univariate orthonormal basis on a 'big' interval. Subsequently, 
 #' the basis functions are split and translated, such that the \eqn{j}-th part 
 #' of the split function is defined on the interval corresponding to 
 #' \code{argvals[[j]]}. The elements of the multivariate basis functions are 
@@ -540,7 +544,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' \subsection{Weighted orthonormal bases}{ The parameters \code{argvals, M, 
 #' eFunType} and \code{ignoreDeg} are all lists of a similar structure. They are
 #' passed element-wise to the function \code{\link{eFun}} to generate 
-#' orthornormal basis functions for each element of the multivariate functional 
+#' orthonormal basis functions for each element of the multivariate functional 
 #' data to be simulated. In case of bivariate elements (images), the 
 #' corresponding basis functions are constructed as tensor products of 
 #' orthonormal basis functions in each direction (x- and y-direction).
@@ -609,6 +613,8 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #'   Component Analysis for Data Observed on Different (Dimensional) Domains. 
 #'   Preprint on arXiv: \url{http://arxiv.org/abs/1509.02029}
 #'   
+#' @importFrom stats rnorm
+#'   
 #' @export simMultiFunData
 #'   
 #' @examples
@@ -659,7 +665,7 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
   
   # generate eigenvalues and scores
   trueVals <- eVal(Mtotal, eValType)
-  scores <- t(replicate(N, rnorm(Mtotal, sd = sqrt(eVal(Mtotal, eValType)))))
+  scores <- t(replicate(N, stats::rnorm(Mtotal, sd = sqrt(eVal(Mtotal, eValType)))))
   
   # generate individual observations
   simData  <- vector("list", p)
@@ -727,6 +733,7 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' Simulate multivariate eigenfunctions based on weighted orthonormal bases
 #' 
 #' @importFrom foreach "%do%"
+#' @importFrom stats runif
 #'
 #' @keywords internal
 simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
@@ -754,7 +761,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   }
   
   # mixing parameters
-  alpha <- runif(p, 0.2, 0.8)
+  alpha <- stats::runif(p, 0.2, 0.8)
   weight <- sqrt(alpha / sum(alpha))
   
   # generate basis

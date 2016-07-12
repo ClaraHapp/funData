@@ -193,6 +193,8 @@ setMethod("funData", signature = c(argvals = "numeric", X = "array"),
 #' @aliases multiFunData
 #' 
 #' @seealso \code{\linkS4class{funData}}
+#' 
+#' @importFrom stats rnorm
 #'   
 #' @examples
 #' ### Creating a multifunData object with 2 observations on the same domain
