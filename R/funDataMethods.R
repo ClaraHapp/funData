@@ -607,21 +607,24 @@ setMethod("Arith", signature = signature(e1 = "numeric", e2 = "multiFunData"),
 #' @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "numeric"),
           function(e1, e2) {
-            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
-            irregFunData(argvals = e1@argvals, X = lapply(e1@X, function(x){f(x,e2)}))
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
+            irregFunData(argvals = e1@argvals, X = lapply(e1@X, function(x){do.call(f, list(x,e2))}))
           })
 
 #' @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "numeric", e2 = "irregFunData"),
           function(e1, e2) {
-            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in lapply)
-            irregFunData(argvals = e2@argvals, X = lapply(e2@X, function(x){f(e1,x)}))
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
+            irregFunData(argvals = e2@argvals, X = lapply(e2@X, function(x){do.call(f, list(e1,x))}))
           })
 
 #' @rdname Arith.funData
 setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
           function(e1,e2){
-            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in mapply)
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
             
             if(nObs(e1) != nObs(e2))
             {
@@ -631,7 +634,8 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                   stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
                 
                 res <- irregFunData(argvals = e2@argvals, 
-                                    X = sapply(1:nObs(e2), function(i){f(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]])}))
+                                    X = sapply(1:nObs(e2), function(i){
+                                      do.call(f, list(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]]))}))
               }
               else
               {
@@ -641,7 +645,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                     stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
                   
                   res <- irregFunData(argvals = e1@argvals,
-                                      X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])])}))
+                                      X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}))
                 }
                 else
                   stop("Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
@@ -652,7 +656,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
               if(!isTRUE(all.equal(e1@argvals, e2@argvals)))
                 stop("Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
               
-              res <- irregFunData(argvals = e1@argvals, X = mapply(function(x,y){f(x,y)}, e1@X, e2@X) )
+              res <- irregFunData(argvals = e1@argvals, X = mapply(function(x,y){do.call(f, list(x,y))}, e1@X, e2@X) )
             }
             
             return(res)
@@ -675,8 +679,9 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
               else
                 stop("funData object must have either one observation or the same number of observations as the irregFunData object")
             }
-            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
-            irregFunData(argvals = e1@argvals, X = sapply(1:nObs(e1), function(i){f(e1@X[[i]], e2@X[i,e2@argvals[[1]] %in% e1@argvals[[i]]])}, simplify = FALSE))
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
+            irregFunData(argvals = e1@argvals, X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[i,e2@argvals[[1]] %in% e1@argvals[[i]]]))}, simplify = FALSE))
           })
 
 #' @rdname Arith.funData
@@ -696,8 +701,9 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
               else
                 stop("funData object must have either one observation or the same number of observations as the irregFunData object")
             }
-            f <- function(x,y){methods::callGeneric(x,y)} # helper function (callGeneric not applicable in sapply)
-            irregFunData(argvals = e2@argvals, X = sapply(1:nObs(e2), function(i){f(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]])}, simplify = FALSE))
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
+            irregFunData(argvals = e2@argvals, X = sapply(1:nObs(e2), function(i){do.call(f, list(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]]))}, simplify = FALSE))
           })
 
 #### nObs ####
