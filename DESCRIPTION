@@ -7,8 +7,19 @@ Authors@R: person("Clara", "Happ", email = "clara.happ@stat.uni-muenchen.de",
                   role = c("aut", "cre"))
 Author: Clara Happ [aut, cre]
 Maintainer: Clara Happ <clara.happ@stat.uni-muenchen.de>
-Description: S4 classes for univariate and multivariate functional data with utility functions.
+Description: S4 classes for univariate and multivariate functional data with
+    utility functions.
 License: GPL-2
-Depends: methods
-Imports: abind, fields, foreach, graphics, grDevices, stats
-Suggests: zoo, testthat
+Depends:
+    methods
+Imports:
+    abind,
+    fields,
+    foreach,
+    graphics,
+    grDevices,
+    stats
+Suggests:
+    zoo,
+    testthat
+RoxygenNote: 5.0.1
