@@ -312,3 +312,85 @@ setMethod("plot", signature =  signature(x = "multiFunData", y = "missing"),
 #' @exportMethod plot
 setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
           function(x,y,...){plot.irregFunData(x,y,...)})
+
+
+#### ggplot ####
+
+ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE)
+{
+  if(dimSupp(data) > 2)
+    stop("ggplot is implemented only for functional data with one- or two-dimensional domain")
+  
+  if(dimSupp(data) == 1)
+  {
+    if(plotNA) # interpolate NA values
+        data <- approxNA(data)
+
+    meltData <- reshape2::melt(data@X, varnames = c("obsInd", "obsPointX"))
+    meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
+    
+    p <- ggplot2::ggplot(data = subset(meltData, obsInd %in% obs), aes(x = argvals, y = value, group = obsInd)) +
+      geom_line() + 
+      ylab("") 
+  }
+  
+  if(dimSupp(data) == 2)
+  {
+    if(length(obs) > 1)
+      stop("plot: specify one observation for plotting")
+    
+    meltData <- reshape2::melt(data@X, varnames = c("obsInd", "obsPointX", "obsPointY"))
+    meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
+    meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
+    
+    p <- ggplot2::ggplot(data = subset(meltData, obsInd == obs), aes(x = argvalsX, y = argvalsY)) + 
+      geom_raster(aes(fill = value)) + 
+      xlab("") + ylab("") + labs(fill = "")
+  }
+  
+  return(p)
+}
+
+
+ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE)
+{
+  p <- sapply(data[dim], ggplot.funData, obs = obs, simplify = FALSE)
+  
+  if(plotGrid)
+    gridExtra::grid.arrange(grobs = p, nrow = 1)
+  else
+    return(p)
+}
+
+
+ggplot.irregFunData <- function(data, obs = 1:nObs(data))
+{
+  meltData <- reshape2::melt(object@X)
+  names(meltData)[2] <- "obsInd"
+  meltData$argvals <- unlist(object@argvals)
+  
+  p <- ggplot2::ggplot(data = subset(meltData, obsInd %in% obs), aes(x = argvals, y = value, group = obsInd)) +
+    geom_line() + 
+    ylab("") 
+  
+  return(p)
+}
+
+
+#' @rdname ggplot.funData
+#'
+#' @exportMethod ggplot
+setMethod("ggplot", signature = signature(data = "funData"),
+          function(data,...){ggplot.funData(data,...)})
+
+#' @rdname ggplot.multiFunData
+#'
+#' @exportMethod ggplot
+setMethod("ggplot", signature = signature(data = "multiFunData"),
+          function(data,...){ggplot.multiFunData(data,...)})
+
+#' @rdname ggplot.irregFunData
+#'
+#' @exportMethod ggplot
+setMethod("ggplot", signature = signature(data = "irregFunData"),
+          function(data,...){ggplot.irregFunData(data,...)})
