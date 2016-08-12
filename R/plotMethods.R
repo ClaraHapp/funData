@@ -11,9 +11,9 @@
 #' functions can be interpolated using the option \code{plotNA = TRUE}. This 
 #' option relies on the \code{\link[zoo]{na.approx}} function in package 
 #' \code{\link[zoo]{zoo}} and is currently implemented for one-dimensional 
-#' functions only.
+#' functions only in the function \code{\link{approxNA}}.
 #' 
-#' @section Warning: The function is currently implemented only for functional
+#' @section Warning: The function is currently implemented only for functional 
 #'   data with one- and two-dimensional domains.
 #'   
 #' @param x An object of class \code{funData}.
@@ -25,24 +25,25 @@
 #'   \code{\link[graphics]{plot}} for details.
 #' @param lty The line type. Defaults to \code{1} (solid line). See 
 #'   \code{\link[graphics]{par}} for details.
-#' @param lwd The line width. Defaults to \code{1}. See \code{\link[graphics]{par}} for
-#'   details.
+#' @param lwd The line width. Defaults to \code{1}. See
+#'   \code{\link[graphics]{par}} for details.
 #' @param col The color of the functions. If not supplied (\code{NULL}, default 
 #'   value), one-dimensional functions are plotted in the 
 #'   \code{\link[grDevices]{rainbow}} palette and two-dimensional functions are 
 #'   plotted using \code{\link[fields]{tim.colors}} from package 
 #'   \code{\link[fields]{fields-package}}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the 
-#'   x-axis and no title for the y-axis. See \code{\link[graphics]{plot}} for 
-#'   details.
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"}
+#'   for the x-axis and no title for the y-axis. See
+#'   \code{\link[graphics]{plot}} for details.
 #' @param legend Logical. If \code{TRUE}, a color legend is plotted for 
 #'   two-dimensional functions (images). Defaults to \code{TRUE}.
-#' @param plotNA Logical. If \code{TRUE}, missing values are interpolated (only 
-#'   for one-dimensional functions). Defaults to \code{FALSE}. See Details.
+#' @param plotNA Logical. If \code{TRUE}, missing values are interpolated using
+#'   the \link{approxNA} function (only for one-dimensional functions). Defaults
+#'   to \code{FALSE}.
 #' @param add Logical. If \code{TRUE}, add to current plot (only for 
 #'   one-dimensional functions). Defaults to \code{FALSE}.
 #' @param ... Additional arguments to \code{\link[graphics]{matplot} } 
-#'   (one-dimensional functions) or \code{\link[fields]{image.plot}}/
+#'   (one-dimensional functions) or \code{\link[fields]{image.plot}}/ 
 #'   \code{\link[graphics]{image}} (two-dimensional functions).
 #'   
 #' @seealso \code{\linkS4class{funData}}, \code{\link[graphics]{matplot}}, 
