@@ -132,6 +132,55 @@ setMethod("dimSupp", signature = "irregFunData",
           function(object){length(dim(as.array(object@argvals[[1]])))})
 
 
+#### ApproxNA ####
+
+#' Approximate missing values for funData objects
+#' 
+#' This function approximates missing values for \code{funData} objects based on
+#' the \link[zoo]{na.approx} interpolation method from the package \pkg{zoo}.
+#' 
+#' @section Warning: This function requires the package \pkg{zoo} to be 
+#'   installed, otherwise it will throw a warning.
+#'   
+#' @param object An object of  class \code{funData} with missing values (coded 
+#'   by \code{NA}).
+#'   
+#' @return A \code{funData} object where missing values have been imputed.
+#'   
+#' @export approxNA
+#'   
+#' @examples
+#' # Simulate some data
+#' f <- simFunData(N = 10, M = 8, eVal = "linear", eFun = "Poly", argvals = seq(0, 1, 0.01))$simData
+#' 
+#' # Sparsify, i.e. generate artificial missings in the data
+#' fSparse <- sparsify(f, minObs = 10, maxObs = 50)
+#' 
+#' # plot
+#' oldpar <- par(no.readonly = TRUE)
+#' par(mfrow = c(1,3))
+#' plot(f, main = "Original Data") 
+#' plot(fSparse, main = "Sparse Data")
+#' plot(approxNA(fSparse), main = "Reconstructed Data")
+#' # faster with plot(fSparse, plotNA = TRUE, main = "Reconstructed Data")
+#' 
+#' par(oldpar)
+setGeneric("approxNA", function(object) {standardGeneric("approxNA")})
+
+#' approxNA for funData objects
+#'
+#' @keywords internal
+setMethod("approxNA", signature = "funData",
+          function(object){
+            # require zoo
+            if (requireNamespace("zoo", quietly = TRUE))
+            {
+              return(funData(object@argvals, t(zoo::na.approx(t(object@X)))))
+            }
+            else
+              warning("Package zoo needed for interpolating missing values in plot for funData. Ignoring plotNA = TRUE.")
+          })
+
 #### Arith ####
 
 #' Arithmetics for functional data objects
@@ -933,7 +982,7 @@ norm.funData <- function(object, squared, obs, method, weight)
 setMethod("norm", signature = "funData",
           function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1){
             norm.funData(object, squared, obs, method, weight)
-            })
+          })
 
 #' Calculate the norm for multivariate functional data
 #'

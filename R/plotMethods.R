@@ -105,15 +105,8 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
     
     if(plotNA) # interpolate NA values
     {
-      # require zoo
-      if (requireNamespace("zoo", quietly = TRUE))
-      {
-        graphics::matplot(x = x@argvals[[1]], y = zoo::na.approx(t(x@X[obs,, drop = FALSE])), type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, ...)
-        
-        add = TRUE # add the standard plot
-      }
-      else
-        warning("Package zoo needed for interpolating missing values in plot for funData. Ignoring plotNA = TRUE.")
+        plot(approxNA(x), obs = obs, type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
+        add = TRUE
     }
     
     graphics::matplot(x = x@argvals[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
