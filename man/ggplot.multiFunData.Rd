@@ -9,7 +9,7 @@
 ggplot.multiFunData(data, obs = 1:nObs(data), dim = 1:length(data),
   plotGrid = FALSE)
 
-\S4method{ggplot}{multiFunData}(data = NULL, ...)
+\S4method{ggplot}{multiFunData}(data, ...)
 }
 \arguments{
 \item{data}{A \code{multiFunData} object that is to be plotted.}

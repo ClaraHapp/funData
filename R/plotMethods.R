@@ -349,9 +349,6 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' @seealso \code{\linkS4class{funData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.funData}}
 #'   
-#' @importFrom ggplot2 ggplot
-#' @importFrom reshape2 melt
-#'   
 #' @examples
 #' # One-dimensional
 #' argvals <- seq(0,2*pi,0.01)
@@ -381,7 +378,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' g1 <- ggplot(objectMissing) # the default
 #' g2 <- ggplot(objectMissing, plotNA = TRUE) # requires zoo
 #' 
-#' grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
+#' gridExtra::grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
 #' }
 #' 
 #' # Customizing plots (see ggplot2 documentation for more details)
@@ -399,6 +396,12 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 {
   if(dimSupp(data) > 2)
     stop("ggplot is implemented only for functional data with one- or two-dimensional domain")
+  
+  if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
+  {
+    warning("Please install the ggplot2 and reshape2 packages to use the ggplot function for funDataObjects.")
+    return()
+  } 
   
   if(dimSupp(data) == 1)
   {
@@ -462,8 +465,6 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 #' @seealso \code{\linkS4class{multiFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.multiFunData}}
 #' 
-#' @importFrom gridExtra grid.arrange
-#' 
 #' @examples
 #' 
 #' # One-dimensional elements
@@ -499,6 +500,12 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
   
   if(plotGrid)
   {
+    if(!requireNamespace("gridExtra", quietly = TRUE))
+    {
+      warning("Please install the gridExtra package to use the ggplot function for multiFunDataObjects with plotGrid = TRUE.")
+      return()
+    } 
+    
     gridExtra::grid.arrange(grobs = p, nrow = 1)
     invisible(p)
   }
@@ -525,9 +532,6 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 #' @seealso \code{\linkS4class{irregFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.irregFunData}}
 #'   
-#' @importFrom ggplot2 ggplot
-#' @importFrom reshape2 melt
-#'   
 #' @examples
 #' # Generate data
 #' argvals <- seq(0,2*pi,0.01)
@@ -547,6 +551,12 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 #'  xlab("The x-Axis") + ylab("The y-Axis")
 ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
 {
+  if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
+  {
+    warning("Please install the ggplot2 and reshape2 packages to use the ggplot function for funDataObjects.")
+    return()
+  } 
+  
   meltData <- reshape2::melt(object@X[obs])
   names(meltData)[2] <- "obsInd"
   meltData$argvals <- unlist(object@argvals[obs])
@@ -558,6 +568,7 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
   return(p)
 }
 
+setGeneric("ggplot", function(data,...) {standardGeneric("ggplot")})
 
 #' @rdname ggplot.funData
 #'

@@ -8,7 +8,7 @@
 \usage{
 ggplot.funData(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 
-\S4method{ggplot}{funData}(data = NULL, ...)
+\S4method{ggplot}{funData}(data, ...)
 }
 \arguments{
 \item{data}{A \code{funData} object on a one- or two-dimensional domain.}
@@ -73,7 +73,7 @@ objectMissing <- funData(1:5, rbind(c(1, NA, 5, 4, 3), c(10, 9, NA, NA, 6)))
 g1 <- ggplot(objectMissing) # the default
 g2 <- ggplot(objectMissing, plotNA = TRUE) # requires zoo
 
-grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
+gridExtra::grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
 }
 
 # Customizing plots (see ggplot2 documentation for more details)

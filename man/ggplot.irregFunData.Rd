@@ -8,7 +8,7 @@
 \usage{
 ggplot.irregFunData(data, obs = 1:nObs(data), ...)
 
-\S4method{ggplot}{irregFunData}(data = NULL, ...)
+\S4method{ggplot}{irregFunData}(data, ...)
 }
 \arguments{
 \item{data}{A \code{irregFunData} object.}

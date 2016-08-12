@@ -20,6 +20,9 @@ Imports:
     grDevices,
     stats
 Suggests:
+    ggplot2,
+    gridExtra,
+    reshape2,
     zoo,
     testthat
 RoxygenNote: 5.0.1
