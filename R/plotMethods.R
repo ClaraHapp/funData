@@ -353,7 +353,6 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' @importFrom reshape2 melt
 #'   
 #' @examples
-#' 
 #' # One-dimensional
 #' argvals <- seq(0,2*pi,0.01)
 #' object <- funData(argvals,
@@ -432,12 +431,74 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 }
 
 
+#' Visualize multivariate functional data objects using ggplot
+#' 
+#' This function allows to plot \code{multiFunData} objects based on the 
+#' \pkg{ggplot2} package. The function applies the \code{\link{ggplot.funData}} 
+#' function to each element and returns either a combined plot with all elements
+#' plotted in one row or a list containing the different subplots as 
+#' \code{\link[ggplot2]{ggplot}} objects. The individual objects can be 
+#' customized using all functionalities of the \pkg{ggplot2} package.
+#' 
+#' @section Warning: Currently, the function does no accept parameters for 
+#'   \code{\link[ggplot2]{geom_line}} (element with one-dimensional domain) or 
+#'   \code{\link[ggplot2]{grom_raster}} (element with two-dimensional domain) as
+#'   in the univariate case.
+#'   
+#' @param data A \code{multiFunData} object that is to be plotted.
+#' @param obs A vector of numerics giving the observations to plot. Defaults to 
+#'   all observations in \code{data}. For two-dimensional functions (images) 
+#'   \code{obs} must have length 1.
+#' @param dim The dimensions to plot. Defaults to \code{length(data)}, i.e. all 
+#'   functions in \code{data} are plotted.
+#' @param plotGrid Logical. If \code{TRUE}, the data is plotted using
+#'   \code{\link[gridExtra]{arrangeGrid}} and the list of
+#'   \code{\link[ggplot2]{ggplot}} objects is returned invisibly. If
+#'   \code{FALSE}, only the list of objects is returned. Defaults to
+#'   \code{FALSE}.
+#'   
+#' @return A list of \code{\link[ggplot2]{ggplot}} objects that are also printed directly as a grid if \code{plotGrid = TRUE}.
+#' 
+#' @importFrom gridExtra grid.arrange
+#' 
+#' @examples
+#' 
+#' # One-dimensional elements
+#' f1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
+#' f2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
+#' 
+#' m1 <- multiFunData(f1, f2)
+#' 
+#' g <- ggplot(m1) # default
+#' g[[1]] # plot first element
+#' g[[2]] # plot second element
+#' gridExtra::grid.arrange(grobs = g, nrow = 1)
+#' 
+#' ggplot(m1, plotGrid = TRUE) # the same directly with plotGrid = TRUE
+#' 
+#' # Mixed-dimensional elements
+#' X <- array(0, dim = c(11, length(argvals), length(argvals)))
+#' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
+#' f2 <- funData(list(argvals, argvals), X)
+#' 
+#' m2 <- multiFunData(f1, f2)
+#' 
+#' ggplot(m2, obs = 1, plotGrid = TRUE)
+#' 
+#' # Customizing plots (see ggplot2 documentation for more details)
+#' g2 <- ggplot(m2, obs = 1)
+#' g2[[1]] <- g2[[1]] + ggtitle("First element") + theme_bw()
+#' g2[[2]] <- g2[[2]] + ggtitle("Second element") + scale_fill_gradient(high = "green", low = "blue")
+#' gridExtra::grid.arrange(grobs = g2, nrow = 1)
 ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE)
 {
   p <- sapply(data[dim], ggplot.funData, obs = obs, simplify = FALSE)
   
   if(plotGrid)
+  {
     gridExtra::grid.arrange(grobs = p, nrow = 1)
+    invisible(p)
+  }
   else
     return(p)
 }
