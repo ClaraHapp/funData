@@ -317,7 +317,86 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 
 #### ggplot ####
 
-ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE)
+#' Visualize functional data objects using ggplot
+#' 
+#' This function allows to plot \code{funData} objects based on the 
+#' \pkg{ggplot2} package. The function provides a wrapper that rearranges the 
+#' data in a \code{funData} object on a one- or two-dimensional domain and 
+#' provides a basic \code{\link[ggplot2]{ggplot}} object, which can be 
+#' customized using all functionalities of the \pkg{ggplot2} package.
+#' 
+#' If some observations contain missing values (coded via \code{NA}), the 
+#' functions can be interpolated using the option \code{plotNA = TRUE}. This 
+#' option relies on the \code{\link[zoo]{na.approx}} function in package 
+#' \code{\link[zoo]{zoo}} and is currently implemented for one-dimensional 
+#' functions only in the function \code{\link{approxNA}}.
+#' 
+#' @param data A \code{funData} object on a one- or two-dimensional domain.
+#' @param obs A vector of numerics giving the observations to plot. Defaults to 
+#'   all observations in \code{data}. For two-dimensional functions (images) 
+#'   \code{obs} must have length 1.
+#' @param plotNA Logical. If \code{TRUE}, missing values are interpolated using 
+#'   the \code{\link{approxNA}} function (only for one-dimensional functions). 
+#'   Defaults to \code{FALSE}. See Details.
+#' @param ... Further parameters passed to \code{\link[ggplot2]{geom_line}} (for
+#'   one dimensional domains, e.g. \code{alpha, color, fill, linetype, size}) or
+#'   to \code{\link[ggplot2]{geom_raster}} (for two-dimensional domains, e.g.
+#'   \code{hjust, vjust, interpolate}).
+#'   
+#' @return A \code{\link[ggplot2]{ggplot}} object that can be customized  using 
+#'   all functionalities of the \pkg{ggplot2} package.
+#'   
+#' @seealso \code{\linkS4class{funData}}, \code{\link[ggplot2]{ggplot}}, 
+#'   \code{\link{plot.funData}}
+#'   
+#' @importFrom ggplot2 ggplot
+#' @importFrom reshape2 melt
+#'   
+#' @examples
+#' 
+#' # One-dimensional
+#' argvals <- seq(0,2*pi,0.01)
+#' object <- funData(argvals,
+#'                    outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
+#' 
+#' g <- ggplot(object) # returns ggplot object
+#' g # plot the object
+#' 
+#' # Two-dimensional
+#' X <- array(0, dim = c(2, length(argvals), length(argvals)))
+#' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
+#' X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi) * cos(2*y*pi)})
+#' object2D <- funData(list(argvals, argvals), X)
+#' 
+#' ggplot(object2D, obs = 1)
+#' ggplot(object2D, obs = 2)
+#' \dontrun{plot(object2D)} # must specify obs!
+#' 
+#' ### More examples ###
+#' par(mfrow = c(1,1))
+#' 
+#' # using plotNA
+#' if(requireNamespace("zoo", quietly = TRUE) & requireNamespace("gridExtra", quietly = TRUE))
+#' {
+#' objectMissing <- funData(1:5, rbind(c(1, NA, 5, 4, 3), c(10, 9, NA, NA, 6)))
+#' g1 <- ggplot(objectMissing) # the default
+#' g2 <- ggplot(objectMissing, plotNA = TRUE) # requires zoo
+#' 
+#' grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
+#' }
+#' 
+#' # Customizing plots (see ggplot2 documentation for more details)
+#' # parameters passed to geom_line are passed via the ... argument
+#' gFancy <- ggplot(object, color = "red", linetype = 2) # parameters for geom_line are directly passed via ...
+#' gFancy
+#' 
+#' # new layers can be added directly to the ggplot object
+#' gFancy + theme_bw() # add new layers to the ggplot object
+#' gFancy + ggtitle("Fancy Plot with Title and Axis Legends") + xlab("The x-Axis") + ylab("The y-Axis")
+#' 
+#' ggplot(object2D, obs = 1) + scale_fill_gradient(high = "green", low = "blue", name = "Legend here") +
+#'  ggtitle("Customized 2D plot") + theme_minimal()
+ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 {
   if(dimSupp(data) > 2)
     stop("ggplot is implemented only for functional data with one- or two-dimensional domain")
@@ -327,11 +406,11 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE)
     if(plotNA) # interpolate NA values
         data <- approxNA(data)
 
-    meltData <- reshape2::melt(data@X, varnames = c("obsInd", "obsPointX"))
+    meltData <- reshape2::melt(data@X[obs, , drop = FALSE], varnames = c("obsInd", "obsPointX"))
     meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
     
-    p <- ggplot2::ggplot(data = subset(meltData, obsInd %in% obs), aes(x = argvals, y = value, group = obsInd)) +
-      geom_line() + 
+    p <- ggplot2::ggplot(data = meltData, aes(x = argvals, y = value, group = obsInd)) +
+      geom_line(...) + 
       ylab("") 
   }
   
@@ -340,12 +419,12 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE)
     if(length(obs) > 1)
       stop("plot: specify one observation for plotting")
     
-    meltData <- reshape2::melt(data@X, varnames = c("obsInd", "obsPointX", "obsPointY"))
+    meltData <- reshape2::melt(data@X[obs, , , drop = FALSE], varnames = c("obsInd", "obsPointX", "obsPointY"))
     meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
     meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
     
-    p <- ggplot2::ggplot(data = subset(meltData, obsInd == obs), aes(x = argvalsX, y = argvalsY)) + 
-      geom_raster(aes(fill = value)) + 
+    p <- ggplot2::ggplot(meltData, aes(x = argvalsX, y = argvalsY)) + 
+      geom_raster(aes(fill = value), ...) + 
       xlab("") + ylab("") + labs(fill = "")
   }
   
@@ -366,11 +445,11 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 
 ggplot.irregFunData <- function(data, obs = 1:nObs(data))
 {
-  meltData <- reshape2::melt(object@X)
+  meltData <- reshape2::melt(object@X[obs])
   names(meltData)[2] <- "obsInd"
-  meltData$argvals <- unlist(object@argvals)
+  meltData$argvals <- unlist(object@argvals[obs])
   
-  p <- ggplot2::ggplot(data = subset(meltData, obsInd %in% obs), aes(x = argvals, y = value, group = obsInd)) +
+  p <- ggplot2::ggplot(meltData, aes(x = argvals, y = value, group = obsInd)) +
     geom_line() + 
     ylab("") 
   
