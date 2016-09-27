@@ -279,7 +279,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' 
 #' par(oldpar)
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
-                              col = grDevices::rainbow(nObs(x)), xlab = "argvals", ylab = "",
+                              col = grDevices::rainbow(length(obs)), xlab = "argvals", ylab = "",
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               add = FALSE, ...)
 {
