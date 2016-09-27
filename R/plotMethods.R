@@ -350,6 +350,9 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #'   \code{\link{plot.funData}}
 #'   
 #' @examples
+#' # Load ggplot2 package
+#' require(ggplot2)
+#' 
 #' # One-dimensional
 #' argvals <- seq(0,2*pi,0.01)
 #' object <- funData(argvals,
@@ -372,7 +375,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' par(mfrow = c(1,1))
 #' 
 #' # using plotNA
-#' if(requireNamespace("zoo", quietly = TRUE) & requireNamespace("gridExtra", quietly = TRUE))
+#' if(requireNamespace("zoo", quietly = TRUE) & requireNamespace("gridExtra", quietly = TRUE) & requireNamespace("ggplot", quietly = TRUE))
 #' {
 #' objectMissing <- funData(1:5, rbind(c(1, NA, 5, 4, 3), c(10, 9, NA, NA, 6)))
 #' g1 <- ggplot(objectMissing) # the default
@@ -411,9 +414,9 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData <- reshape2::melt(data@X[obs, , drop = FALSE], varnames = c("obsInd", "obsPointX"))
     meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
     
-    p <- ggplot2::ggplot(data = meltData, aes(x = argvals, y = value, group = obsInd)) +
-      geom_line(...) + 
-      ylab("") 
+    p <- ggplot2::ggplot(data = meltData, ggplot2::aes(x = argvals, y = value, group = obsInd)) +
+      ggplot2::geom_line(...) + 
+      ggplot2::ylab("") 
   }
   
   if(dimSupp(data) == 2)
@@ -425,9 +428,9 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
     meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
     
-    p <- ggplot2::ggplot(meltData, aes(x = argvalsX, y = argvalsY)) + 
-      geom_raster(aes(fill = value), ...) + 
-      xlab("") + ylab("") + labs(fill = "")
+    p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvalsX, y = argvalsY)) + 
+      ggplot2::geom_raster(ggplot2::aes(fill = value), ...) + 
+      ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::labs(fill = "")
   }
   
   return(p)
@@ -445,7 +448,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 #' 
 #' @section Warning: Currently, the function does no accept parameters for 
 #'   \code{\link[ggplot2]{geom_line}} (element with one-dimensional domain) or 
-#'   \code{\link[ggplot2]{grom_raster}} (element with two-dimensional domain) as
+#'   \code{\link[ggplot2]{geom_raster}} (element with two-dimensional domain) as
 #'   in the univariate case.
 #'   
 #' @param data A \code{multiFunData} object that is to be plotted.
@@ -466,6 +469,8 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 #'   \code{\link{plot.multiFunData}}
 #' 
 #' @examples
+#' # Load ggplot2 package
+#' require(ggplot2)
 #' 
 #' # One-dimensional elements
 #' f1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
@@ -533,6 +538,9 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 #'   \code{\link{plot.irregFunData}}
 #'   
 #' @examples
+#' # Load ggplot2 package
+#' require(ggplot2)
+#' 
 #' # Generate data
 #' argvals <- seq(0,2*pi,0.01)
 #' ind <- replicate(5, sort(sample(1:length(argvals), sample(5:10,1))))
@@ -561,9 +569,9 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
   names(meltData)[2] <- "obsInd"
   meltData$argvals <- unlist(object@argvals[obs])
   
-  p <- ggplot2::ggplot(meltData, aes(x = argvals, y = value, group = obsInd)) +
-    geom_line(...) + 
-    ylab("") 
+  p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvals, y = value, group = obsInd)) +
+    ggplot2::geom_line(...) + 
+    ggplot2::ylab("") 
   
   return(p)
 }
