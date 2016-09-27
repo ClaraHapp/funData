@@ -283,16 +283,16 @@ plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               add = FALSE, ...)
 {
-  if(length(col) < nObs(x))
-    col <- rep(col, nObs(x))
+  if(length(col) < length(obs))
+    col <- rep(col,length(obs))
   
   if(add == FALSE) # plot new window
   {
     plot(x = NULL, y = NULL, type = "n", xlim = xlim, ylim = ylim,  xlab = xlab, ylab = ylab, ...)
   }
   
-  for(i in obs)
-    graphics::points(x = x@argvals[[i]], y = x@X[[i]], type = type, pch = pch, col = col[i], ...)
+  for(i in 1:length(obs))
+    graphics::points(x = x@argvals[[obs[i]]], y = x@X[[obs[i]]], type = type, pch = pch, col = col[i], ...)
   
 }
 
