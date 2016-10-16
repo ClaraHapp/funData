@@ -350,8 +350,8 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #'   \code{\link{plot.funData}}
 #'   
 #' @examples
-#' # Load ggplot2 package
-#' require(ggplot2)
+#' # Install package ggplot2 before running the examples
+#' \dontshow{requireNamespace("ggplot2", quietly = TRUE)}
 #' 
 #' # One-dimensional
 #' argvals <- seq(0,2*pi,0.01)
@@ -374,27 +374,28 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' ### More examples ###
 #' par(mfrow = c(1,1))
 #' 
-#' # using plotNA
-#' if(requireNamespace("zoo", quietly = TRUE) & requireNamespace("gridExtra", quietly = TRUE) & requireNamespace("ggplot", quietly = TRUE))
-#' {
+#' # using plotNA (needs packages zoo and gridExtra)
+#' \dontshow{requireNamespace("zoo", quietly = TRUE)}
+#' \dontshow{requireNamespace("gridExtra", quietly = TRUE)}
 #' objectMissing <- funData(1:5, rbind(c(1, NA, 5, 4, 3), c(10, 9, NA, NA, 6)))
 #' g1 <- ggplot(objectMissing) # the default
 #' g2 <- ggplot(objectMissing, plotNA = TRUE) # requires zoo
 #' 
-#' gridExtra::grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
-#' }
+#' gridExtra::grid.arrange(g1 + ggplot2::ggtitle("plotNA = FALSE (default)"),
+#'                         g2 + ggplot2::ggtitle("plotNA = TRUE")) # requires gridExtra
 #' 
 #' # Customizing plots (see ggplot2 documentation for more details)
 #' # parameters passed to geom_line are passed via the ... argument
-#' gFancy <- ggplot(object, color = "red", linetype = 2) # parameters for geom_line are directly passed via ...
+#' gFancy <- ggplot(object, color = "red", linetype = 2) 
 #' gFancy
 #' 
 #' # new layers can be added directly to the ggplot object
-#' gFancy + theme_bw() # add new layers to the ggplot object
-#' gFancy + ggtitle("Fancy Plot with Title and Axis Legends") + xlab("The x-Axis") + ylab("The y-Axis")
+#' gFancy + ggplot2::theme_bw() # add new layers to the ggplot object
+#' gFancy + ggplot2::ggtitle("Fancy Plot with Title and Axis Legends") + 
+#'          ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
 #' 
-#' ggplot(object2D, obs = 1) + scale_fill_gradient(high = "green", low = "blue", name = "Legend here") +
-#'  ggtitle("Customized 2D plot") + theme_minimal()
+#' ggplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
+#'           ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
 ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 {
   if(dimSupp(data) > 2)
@@ -414,7 +415,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData <- reshape2::melt(data@X[obs, , drop = FALSE], varnames = c("obsInd", "obsPointX"))
     meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
     
-    p <- ggplot2::ggplot(data = meltData, ggplot2::aes(x = argvals, y = value, group = obsInd)) +
+    p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
       ggplot2::geom_line(...) + 
       ggplot2::ylab("") 
   }
@@ -428,8 +429,8 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
     meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
     
-    p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvalsX, y = argvalsY)) + 
-      ggplot2::geom_raster(ggplot2::aes(fill = value), ...) + 
+    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvalsX", y = "argvalsY")) + 
+      ggplot2::geom_raster(ggplot2::aes_string(fill = "value"), ...) + 
       ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::labs(fill = "")
   }
   
@@ -439,40 +440,39 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 
 #' Visualize multivariate functional data objects using ggplot
 #' 
-#' This function allows to plot \code{multiFunData} objects based on the 
-#' \pkg{ggplot2} package. The function applies the \code{\link{ggplot.funData}} 
-#' function to each element and returns either a combined plot with all elements
-#' plotted in one row or a list containing the different subplots as 
-#' \code{\link[ggplot2]{ggplot}} objects. The individual objects can be 
-#' customized using all functionalities of the \pkg{ggplot2} package.
+#' This function allows to plot \code{multiFunData} objects based on the \pkg{ggplot2} package. The 
+#' function applies the \code{\link{ggplot.funData}} function to each element and returns either a 
+#' combined plot with all elements plotted in one row or a list containing the different subplots as
+#' \code{\link[ggplot2]{ggplot}} objects. The individual objects can be customized using all 
+#' functionalities of the \pkg{ggplot2} package.
 #' 
-#' @section Warning: Currently, the function does no accept parameters for 
-#'   \code{\link[ggplot2]{geom_line}} (element with one-dimensional domain) or 
-#'   \code{\link[ggplot2]{geom_raster}} (element with two-dimensional domain) as
-#'   in the univariate case.
+#' @section Warning: Currently, the function does not accept different parameters for the univariate
+#'   elements.
 #'   
 #' @param data A \code{multiFunData} object that is to be plotted.
-#' @param obs A vector of numerics giving the observations to plot. Defaults to 
-#'   all observations in \code{data}. For two-dimensional functions (images) 
-#'   \code{obs} must have length 1.
-#' @param dim The dimensions to plot. Defaults to \code{length(data)}, i.e. all 
-#'   functions in \code{data} are plotted.
-#' @param plotGrid Logical. If \code{TRUE}, the data is plotted using
-#'   \code{\link[gridExtra]{arrangeGrid}} and the list of
-#'   \code{\link[ggplot2]{ggplot}} objects is returned invisibly. If
-#'   \code{FALSE}, only the list of objects is returned. Defaults to
+#' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in 
+#'   \code{data}. For two-dimensional functions (images) \code{obs} must have length 1.
+#' @param dim The dimensions to plot. Defaults to \code{length(data)}, i.e. all functions in 
+#'   \code{data} are plotted.
+#' @param plotGrid Logical. If \code{TRUE}, the data is plotted using 
+#'   \code{\link[gridExtra]{grid.arrange}} and the list of \code{\link[ggplot2]{ggplot}} objects is 
+#'   returned invisibly. If \code{FALSE}, only the list of objects is returned. Defaults to 
 #'   \code{FALSE}.
+#' @param ... Further parameters passed to the univariate \code{\link{ggplot}} functions for 
+#'   \code{funData} objects.
 #'   
-#' @return A list of \code{\link[ggplot2]{ggplot}} objects that are also printed directly as a grid if \code{plotGrid = TRUE}.
-#' 
+#' @return A list of \code{\link[ggplot2]{ggplot}} objects that are also printed directly as a grid 
+#'   if \code{plotGrid = TRUE}.
+#'   
 #' @seealso \code{\linkS4class{multiFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.multiFunData}}
-#' 
+#'   
 #' @examples
-#' # Load ggplot2 package
-#' require(ggplot2)
+#' # Install packages ggplot2 and gridExtra before running the examples
+#' \dontshow{requireNamespace("ggplot2", quietly = TRUE); requireNamespace("gridExtra", quietly = TRUE)}
 #' 
 #' # One-dimensional elements
+#' argvals <- seq(0, 2*pi, 0.01)
 #' f1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
 #' f2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
 #' 
@@ -481,7 +481,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 #' g <- ggplot(m1) # default
 #' g[[1]] # plot first element
 #' g[[2]] # plot second element
-#' gridExtra::grid.arrange(grobs = g, nrow = 1)
+#' gridExtra::grid.arrange(grobs = g, nrow = 1) # requires gridExtra package
 #' 
 #' ggplot(m1, plotGrid = TRUE) # the same directly with plotGrid = TRUE
 #' 
@@ -496,12 +496,13 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 #' 
 #' # Customizing plots (see ggplot2 documentation for more details)
 #' g2 <- ggplot(m2, obs = 1)
-#' g2[[1]] <- g2[[1]] + ggtitle("First element") + theme_bw()
-#' g2[[2]] <- g2[[2]] + ggtitle("Second element") + scale_fill_gradient(high = "green", low = "blue")
-#' gridExtra::grid.arrange(grobs = g2, nrow = 1)
-ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE)
+#' g2[[1]] <- g2[[1]] + ggplot2::ggtitle("First element") + ggplot2::theme_bw()
+#' g2[[2]] <- g2[[2]] + ggplot2::ggtitle("Second element") + 
+#'                      ggplot2::scale_fill_gradient(high = "green", low = "blue")
+#' gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
+ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE, ...)
 {
-  p <- sapply(data[dim], ggplot.funData, obs = obs, simplify = FALSE)
+  p <- sapply(data[dim], ggplot.funData, obs = obs, ...,  simplify = FALSE)
   
   if(plotGrid)
   {
@@ -519,27 +520,27 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 }
 
 #' Visualize irregular functional data objects using ggplot
-#'  
+#' 
 #' This function allows to plot \code{irregFunData} objects on their domain based on the 
-#' \pkg{ggplot2} package. The function provides a wrapper that rearranges the 
-#' data in a \code{irregFunData} object returns a basic \code{\link[ggplot2]{ggplot}} object, which can be 
+#' \pkg{ggplot2} package. The function provides a wrapper that rearranges the data in a
+#' \code{irregFunData} object returns a basic \code{\link[ggplot2]{ggplot}} object, which can be 
 #' customized using all functionalities of the \pkg{ggplot2} package.
 #' 
 #' @param data A \code{irregFunData} object.
-#' @param obs A vector of numerics giving the observations to plot. Defaults to 
-#'   all observations in \code{data}. For two-dimensional functions (images) 
-#'   \code{obs} must have length 1.
-#' @param ... Further parameters passed to \code{\link[ggplot2]{geom_line}}, e.g. \code{alpha, color, fill, linetype, size}).
+#' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in
+#'   \code{data}. For two-dimensional functions (images) \code{obs} must have length 1.
+#' @param ... Further parameters passed to \code{\link[ggplot2]{geom_line}}, e.g. \code{alpha,
+#'   color, fill, linetype, size}).
 #'   
-#' @return A \code{\link[ggplot2]{ggplot}} object that can be customized using 
-#'   all functionalities of the \pkg{ggplot2} package.
+#' @return A \code{\link[ggplot2]{ggplot}} object that can be customized using all functionalities
+#'   of the \pkg{ggplot2} package.
 #'   
 #' @seealso \code{\linkS4class{irregFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.irregFunData}}
 #'   
 #' @examples
-#' # Load ggplot2 package
-#' require(ggplot2)
+#' # Install packages ggplot2 and gridExtra before running the examples
+#' \dontshow{requireNamespace("ggplot2", quietly = TRUE)}
 #' 
 #' # Generate data
 #' argvals <- seq(0,2*pi,0.01)
@@ -553,10 +554,10 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 #'  # Parameters passed to geom_line are passed via the ... argument
 #' ggplot(object, color = "red", linetype = 3)
 #' 
-#' # New layers can be added directly to the ggplot object
+#' # New layers can be added directly to the ggplot object using functions from the ggplot2 package
 #' g <- ggplot(object)
-#' g + theme_bw() + ggtitle("Plot with minimal theme and axis labels") +
-#'  xlab("The x-Axis") + ylab("The y-Axis")
+#' g + ggplot2::theme_bw() + ggplot2::ggtitle("Plot with minimal theme and axis labels") +
+#'     ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
 ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
@@ -565,17 +566,31 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
     return()
   } 
   
-  meltData <- reshape2::melt(object@X[obs])
+  meltData <- reshape2::melt(data@X[obs])
   names(meltData)[2] <- "obsInd"
-  meltData$argvals <- unlist(object@argvals[obs])
+  meltData$argvals <- unlist(data@argvals[obs])
   
-  p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvals, y = value, group = obsInd)) +
+  p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
     ggplot2::geom_line(...) + 
     ggplot2::ylab("") 
   
   return(p)
 }
 
+#' ggplot Graphics for Functional Data Objects
+#' 
+#' The \code{funData} allows to plot \code{funData}, \code{multiFunData} and \code{irregFunData} 
+#' objects via the \pkg{ggplot2} package. For Details, see the help pages of the class-specific plot
+#' functions (see below).
+#' 
+#' @param data A \code{funData}, \code{multiFunData} or \code{irregFunData} object.
+#' @param ... Further parameters passed to the class-specific methods.
+#'   
+#' @return A \code{\link[ggplot2]{ggplot} object}
+#'   
+#' @seealso \code{\link{ggplot.funData}} for \code{funData} objects,
+#'   \code{\link{ggplot.multiFunData}} for \code{multiFunData} objects and
+#'   \code{\link{ggplot.irregFunData}} for \code{irregFunData} objects.
 setGeneric("ggplot", function(data,...) {standardGeneric("ggplot")})
 
 #' @rdname ggplot.funData
