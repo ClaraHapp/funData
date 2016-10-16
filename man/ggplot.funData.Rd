@@ -45,8 +45,8 @@ option relies on the \code{\link[zoo]{na.approx}} function in package
 functions only in the function \code{\link{approxNA}}.
 }
 \examples{
-# Load ggplot2 package
-require(ggplot2)
+# Install package ggplot2 before running the examples
+\dontshow{requireNamespace("ggplot2", quietly = TRUE)}
 
 # One-dimensional
 argvals <- seq(0,2*pi,0.01)
@@ -69,27 +69,28 @@ ggplot(object2D, obs = 2)
 ### More examples ###
 par(mfrow = c(1,1))
 
-# using plotNA
-if(requireNamespace("zoo", quietly = TRUE) & requireNamespace("gridExtra", quietly = TRUE) & requireNamespace("ggplot", quietly = TRUE))
-{
+# using plotNA (needs packages zoo and gridExtra)
+\dontshow{requireNamespace("zoo", quietly = TRUE)}
+\dontshow{requireNamespace("gridExtra", quietly = TRUE)}
 objectMissing <- funData(1:5, rbind(c(1, NA, 5, 4, 3), c(10, 9, NA, NA, 6)))
 g1 <- ggplot(objectMissing) # the default
 g2 <- ggplot(objectMissing, plotNA = TRUE) # requires zoo
 
-gridExtra::grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"), g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
-}
+gridExtra::grid.arrange(g1 + ggplot2::ggtitle("plotNA = FALSE (default)"),
+                        g2 + ggplot2::ggtitle("plotNA = TRUE")) # requires gridExtra
 
 # Customizing plots (see ggplot2 documentation for more details)
 # parameters passed to geom_line are passed via the ... argument
-gFancy <- ggplot(object, color = "red", linetype = 2) # parameters for geom_line are directly passed via ...
+gFancy <- ggplot(object, color = "red", linetype = 2) 
 gFancy
 
 # new layers can be added directly to the ggplot object
-gFancy + theme_bw() # add new layers to the ggplot object
-gFancy + ggtitle("Fancy Plot with Title and Axis Legends") + xlab("The x-Axis") + ylab("The y-Axis")
+gFancy + ggplot2::theme_bw() # add new layers to the ggplot object
+gFancy + ggplot2::ggtitle("Fancy Plot with Title and Axis Legends") + 
+         ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
 
-ggplot(object2D, obs = 1) + scale_fill_gradient(high = "green", low = "blue", name = "Legend here") +
- ggtitle("Customized 2D plot") + theme_minimal()
+ggplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
+          ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
 }
 \seealso{
 \code{\linkS4class{funData}}, \code{\link[ggplot2]{ggplot}}, 

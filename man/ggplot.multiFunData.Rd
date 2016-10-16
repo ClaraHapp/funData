@@ -7,48 +7,48 @@
 \title{Visualize multivariate functional data objects using ggplot}
 \usage{
 ggplot.multiFunData(data, obs = 1:nObs(data), dim = 1:length(data),
-  plotGrid = FALSE)
+  plotGrid = FALSE, ...)
 
 \S4method{ggplot}{multiFunData}(data, ...)
 }
 \arguments{
 \item{data}{A \code{multiFunData} object that is to be plotted.}
 
-\item{obs}{A vector of numerics giving the observations to plot. Defaults to 
-all observations in \code{data}. For two-dimensional functions (images) 
-\code{obs} must have length 1.}
+\item{obs}{A vector of numerics giving the observations to plot. Defaults to all observations in 
+\code{data}. For two-dimensional functions (images) \code{obs} must have length 1.}
 
-\item{dim}{The dimensions to plot. Defaults to \code{length(data)}, i.e. all 
-functions in \code{data} are plotted.}
+\item{dim}{The dimensions to plot. Defaults to \code{length(data)}, i.e. all functions in 
+\code{data} are plotted.}
 
-\item{plotGrid}{Logical. If \code{TRUE}, the data is plotted using
-\code{\link[gridExtra]{arrangeGrid}} and the list of
-\code{\link[ggplot2]{ggplot}} objects is returned invisibly. If
-\code{FALSE}, only the list of objects is returned. Defaults to
+\item{plotGrid}{Logical. If \code{TRUE}, the data is plotted using 
+\code{\link[gridExtra]{grid.arrange}} and the list of \code{\link[ggplot2]{ggplot}} objects is 
+returned invisibly. If \code{FALSE}, only the list of objects is returned. Defaults to 
 \code{FALSE}.}
+
+\item{...}{Further parameters passed to the univariate \code{\link{ggplot}} functions for 
+\code{funData} objects.}
 }
 \value{
-A list of \code{\link[ggplot2]{ggplot}} objects that are also printed directly as a grid if \code{plotGrid = TRUE}.
+A list of \code{\link[ggplot2]{ggplot}} objects that are also printed directly as a grid 
+  if \code{plotGrid = TRUE}.
 }
 \description{
-This function allows to plot \code{multiFunData} objects based on the 
-\pkg{ggplot2} package. The function applies the \code{\link{ggplot.funData}} 
-function to each element and returns either a combined plot with all elements
-plotted in one row or a list containing the different subplots as 
-\code{\link[ggplot2]{ggplot}} objects. The individual objects can be 
-customized using all functionalities of the \pkg{ggplot2} package.
+This function allows to plot \code{multiFunData} objects based on the \pkg{ggplot2} package. The 
+function applies the \code{\link{ggplot.funData}} function to each element and returns either a 
+combined plot with all elements plotted in one row or a list containing the different subplots as
+\code{\link[ggplot2]{ggplot}} objects. The individual objects can be customized using all 
+functionalities of the \pkg{ggplot2} package.
 }
 \section{Warning}{
- Currently, the function does no accept parameters for 
-  \code{\link[ggplot2]{geom_line}} (element with one-dimensional domain) or 
-  \code{\link[ggplot2]{geom_raster}} (element with two-dimensional domain) as
-  in the univariate case.
+ Currently, the function does not accept different parameters for the univariate
+  elements.
 }
 \examples{
-# Load ggplot2 package
-require(ggplot2)
+# Install packages ggplot2 and gridExtra before running the examples
+\dontshow{requireNamespace("ggplot2", quietly = TRUE); requireNamespace("gridExtra", quietly = TRUE)}
 
 # One-dimensional elements
+argvals <- seq(0, 2*pi, 0.01)
 f1 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
 f2 <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), cos(argvals)))
 
@@ -57,7 +57,7 @@ m1 <- multiFunData(f1, f2)
 g <- ggplot(m1) # default
 g[[1]] # plot first element
 g[[2]] # plot second element
-gridExtra::grid.arrange(grobs = g, nrow = 1)
+gridExtra::grid.arrange(grobs = g, nrow = 1) # requires gridExtra package
 
 ggplot(m1, plotGrid = TRUE) # the same directly with plotGrid = TRUE
 
@@ -72,9 +72,10 @@ ggplot(m2, obs = 1, plotGrid = TRUE)
 
 # Customizing plots (see ggplot2 documentation for more details)
 g2 <- ggplot(m2, obs = 1)
-g2[[1]] <- g2[[1]] + ggtitle("First element") + theme_bw()
-g2[[2]] <- g2[[2]] + ggtitle("Second element") + scale_fill_gradient(high = "green", low = "blue")
-gridExtra::grid.arrange(grobs = g2, nrow = 1)
+g2[[1]] <- g2[[1]] + ggplot2::ggtitle("First element") + ggplot2::theme_bw()
+g2[[2]] <- g2[[2]] + ggplot2::ggtitle("Second element") + 
+                     ggplot2::scale_fill_gradient(high = "green", low = "blue")
+gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
 }
 \seealso{
 \code{\linkS4class{multiFunData}}, \code{\link[ggplot2]{ggplot}}, 
