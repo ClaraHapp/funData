@@ -485,16 +485,46 @@ eVal <- function(M, type)
 #' par(oldPar)
 simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
-  # generate eigenvalues and scores
+  ### transform argvals to list, if necessary
+  if(!is.list(argvals))
+    argvals <- list(argvals)
+
+  ### check consistency of input data
+  p <- length(argvals)
+  
+  if(length(M) != p)
+  { 
+    if(length(M) == 1)
+    {
+      warning("Simulation of tensor product data. The value of M will be used for all dimensions.")
+      M <- rep(M, p)
+    }  
+    else
+      stop("M must have the same length as argvals or 1.")
+  }
+  
+  if(length(eFunType) != p)
+  { 
+    if(length(eFunType) == 1)
+    {
+      warning("Simulation of tensor product data. The value of eFunType will be used for all dimensions.")
+      eFunType <- rep(eFunType, p)
+    }  
+    else
+      stop("eFunType must have the same length as argvals or 1.")
+  }
+  
+  ### generate eigenvalues and scores
   trueVals <- eVal(prod(M), eValType)
   scores <- t(replicate(N, stats::rnorm(prod(M), sd = sqrt(trueVals))))
   
-  if(length(M) == 1)
+  ### calculate eigenfunctions
+  if(p == 1) # one-dimensional domain
   {
-    trueFuns <- eFun(argvals = argvals, M = M, ignoreDeg = ignoreDeg, type = eFunType)
+    trueFuns <- eFun(argvals = argvals[[1]], M = M, ignoreDeg = ignoreDeg, type = eFunType)
     resX <- scores %*% trueFuns@X
   }  
-  else
+  else # tensor product of marginal eigenfunctions
   {
     if(is.null(ignoreDeg))
       ignoreDeg <- vector("list", length(M))
@@ -507,7 +537,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
     dim(resX) <- c(N, sapply(argvals, length))
   } 
     
-  # truncated Karhunen-Loeve representation
+  ### truncated Karhunen-Loeve representation
   simData <- funData(argvals, resX)
   
   return(list(simData = simData,
