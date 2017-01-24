@@ -1,5 +1,38 @@
 context("Test simulation methods")
 
+test_that("simFunData",{
+  # check errors
+  expect_error(simFunData(argvals = 1:10, M = c(10,20), eFunType = "Fourier", eValType = "linear", N = 4),
+               "M must have the same length as argvals or 1.")
+  expect_error(simFunData(argvals = 1:10, M = 4, eFunType = c("Fourier", "Poly"), eValType = "linear", N = 4),
+               "eFunType must have the same length as argvals or 1.")
+  
+  # check warnings
+  expect_warning(simFunData(argvals = list(seq(0,1,0.01), seq(-pi/2, pi/2, 0.02)), M = 5, eFunType = c("Poly","Fourier"), eValType = "linear", N = 4),
+                 "Simulation of tensor product data. The value of M will be used for all dimensions.")
+  expect_warning(simFunData(argvals = list(seq(0,1,0.01), seq(-pi/2, pi/2, 0.02)), M = c(5,8), eFunType = "Fourier", eValType = "linear", N = 4),
+                 "Simulation of tensor product data. The value of eFunType will be used for all dimensions.")
+  
+  # check functionality:
+  
+  # one-dimensional domains
+  set.seed(1)
+  f <- simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = 4)
+  expect_equal(nObs(f$trueFuns), 10)
+  expect_equal(norm(f$trueFuns)[1], 1)
+  expect_equal(nObs(f$simData), 4)
+  expect_equal(norm(f$simData)[1], 3.49879378)
+  
+  # tensor product eigenfunctions
+  set.seed(2)
+  f2 <- simFunData(argvals = list(seq(0,1,0.01), seq(-pi/2, pi/2, 0.02)), M = c(5,8), eFunType = c("Poly","Fourier"), eValType = "linear", N = 4)
+
+  expect_equal(nObs(f2$trueFuns), 40)
+  expect_equal(norm(f2$trueFuns)[1], 1)
+  expect_equal(nObs(f2$simData), 4)
+  expect_equal(norm(f2$simData)[1], 25.4940667)
+})
+
 test_that("simMultiFunData", {
   # check errors
   expect_error(simMultiFunData(type = "test", argvals = list(1:10, 1:20), M = 5, eFunType = "Poly", eValType = "linear", N = 7),
