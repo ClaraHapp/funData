@@ -337,8 +337,8 @@ efWiener <- function(argvals, M)
 #'   \code{\link{simMultiFunData}}
 #'   
 #' @export eFun
-#'   
-#'  @examples
+#'    
+#' @examples
 #' oldPar <- par(no.readonly = TRUE)
 #' 
 #' argvals <- seq(0,1,0.01)
