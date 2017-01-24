@@ -7,42 +7,38 @@
 simFunData(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 }
 \arguments{
-\item{argvals}{A numeric vector, containing the observation points (a fine grid
-on a real interval) of the functional data that is to be simulated.}
+\item{argvals}{A numeric vector, containing the observation points (a fine grid on a real
+interval) of the functional data that is to be simulated or a list of the marginal observation points.}
 
-\item{M}{An integer, giving the number of unvariate basis functions to use.
-See Details.}
+\item{M}{An integer, giving the number of unvariate basis functions to use. For higher-dimensional data, \code{M} is a vector with the marginal number of eigenfunctions. See Details.}
 
-\item{eFunType}{A character string specifying the type of univariate
-orthonormal basis functions to use. See \code{\link{eFun}} for details.}
+\item{eFunType}{A character string specifying the type of univariate orthonormal basis functions
+to use. For data on higher-dimensional domains, \code{eFunType} can be a vector, specifying the marginal type of eigenfunctions to use in the tensor product. See \code{\link{eFun}} for details.}
 
-\item{ignoreDeg}{A vector of integers, specifying the degrees to ignore when
-generating the univariate orthonormal bases. Defaults to \code{NULL}. See
-\code{\link{eFun}} for details.}
+\item{ignoreDeg}{A vector of integers, specifying the degrees to ignore when generating the
+univariate orthonormal bases. Defaults to \code{NULL}. For higher-dimensional data, \code{ignoreDeg} can be supplied as list with vectors for each marginal. See \code{\link{eFun}} for details.}
 
-\item{eValType}{A character string, specifying the type of
-eigenvalues/variances used for the generation of the simulated functions
-based on the truncated Karhunen-Loeve representation. See
+\item{eValType}{A character string, specifying the type of eigenvalues/variances used for the
+generation of the simulated functions based on the truncated Karhunen-Loeve representation. See
 \code{\link{eVal}} for details.}
 
-\item{N}{An integer, specifying the number of multivariate functions to be
-generated.}
+\item{N}{An integer, specifying the number of multivariate functions to be generated.}
 }
 \value{
-\item{simData}{A \code{\linkS4class{funData}} object with \code{N}
-  observations, representing the simulated functional data.}
-  \item{trueFuns}{A \code{\linkS4class{funData}} object with \code{M}
-  observations, representing the true eigenfunction basis used for simulating
-  the data.} \item{trueVals}{A vector of numerics, representing the true
-  eigenvalues used for simulating the data.}
+\item{simData}{A \code{\linkS4class{funData}} object with \code{N} observations,
+  representing the simulated functional data.} \item{trueFuns}{A \code{\linkS4class{funData}}
+  object with \code{M} observations, representing the true eigenfunction basis used for
+  simulating the data.} \item{trueVals}{A vector of numerics, representing the true eigenvalues
+  used for simulating the data.}
 }
 \description{
-This functions simulates (univariate) functional data \eqn{f_1,\ldots, f_N} based on a truncated
-Karhunen-Loeve representation: \deqn{f_i(t) = \sum_{m = 1}^M \xi_{i,m}
-\phi_m(t).} The eigenfunctions (basis functions) \eqn{\phi_m(t)} are generated
-using \code{\link{eFun}}, the scores \eqn{\xi_{i,m}} are simulated
-independently from a normal distribution with zero mean and decreasing
-variance based on the \code{\link{eVal}} function.
+This functions simulates (univariate) functional data \eqn{f_1,\ldots, f_N} based on a truncated 
+Karhunen-Loeve representation: \deqn{f_i(t) = \sum_{m = 1}^M \xi_{i,m} \phi_m(t).} on one- or
+higher-dimensional domains. The eigenfunctions (basis functions) \eqn{\phi_m(t)} are generated 
+using \code{\link{eFun}}, the scores \eqn{\xi_{i,m}} are simulated independently from a normal
+distribution with zero mean and decreasing variance based on the \code{\link{eVal}} function. For
+higher-dimensional domains, the eigenfunctions are constructed as tensors of marginal orthonormal
+function systems.
 }
 \examples{
 oldPar <- par(no.readonly = TRUE)
@@ -68,10 +64,16 @@ plot(test_noConst$trueFuns, main = "No constant basis function")
 plot(test_noLinear$trueFuns, main = "No linear basis function")
 plot(test_noBoth$trueFuns, main = "Neither linear nor constant basis function")
 
+# Higher-dimensional domains
+simImages <- simFunData(argvals = list(seq(0,1,0.01), seq(-pi/2, pi/2, 0.02)), 
+             M = c(5,4), eFunType = c("Wiener","Fourier"), eValType = "linear", N = 4)
+for(i in 1:4) 
+   plot(simImages$simData, obs = i, main = paste("Observation", i))
+               
 par(oldPar)
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}},
+\code{\linkS4class{funData}}, \code{\link{eFun}}, \code{\link{eVal}}, 
   \code{\link{addError}}, \code{\link{sparsify}}
 }
 
