@@ -1625,10 +1625,10 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
 #'   
 #' @examples 
 #' # For two integers
-#' expand.int(2,5) # first column varies slowest
+#' funData:::expand.int(2,5) # first column varies slowest
 #' 
 #' # For three integers
-#' expand.int(2,3,4)
+#' funData:::expand.int(2,3,4)
 expand.int <- function(...)
 {
   dots <- list(...)

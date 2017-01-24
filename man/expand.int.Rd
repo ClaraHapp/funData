@@ -22,10 +22,10 @@ to \eqn{n_K}) varies fastest. Internally, this function depends on \code{\link{e
 }
 \examples{
 # For two integers
-expand.int(2,5) # first column varies slowest
+funData:::expand.int(2,5) # first column varies slowest
 
 # For three integers
-expand.int(2,3,4)
+funData:::expand.int(2,3,4)
 }
 \keyword{internal}
 
