@@ -748,7 +748,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   
   if(p > 1)
   {
-    if(do.call(all.equal, lapply(M, prod)))
+    if(isTRUE(do.call(all.equal, lapply(M, prod))))
     {
       Mtotal <- prod(M[[1]])
     }
@@ -770,29 +770,11 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   for(j in 1:p)
   {
     if(dimsSupp[j] == 1) # one-dimensional
-    {
-      basis[[j]] <- weight[j] * eFun(argvals[[j]][[1]], M = M[[j]], ignoreDeg = ignoreDeg[[j]], type = eFunType[[j]])@X
-    }
+      basis[[j]] <- weight[j] * eFun(argvals[[j]][[1]], M = M[[j]], ignoreDeg = ignoreDeg[[j]], type = eFunType[[j]])
     else # dimsSupp[j] == 2, i.e. two-dimensional
-    {
-      # image basis
-      y1 <- eFun(argvals[[j]][[1]], M = M[[j]][1], ignoreDeg = ignoreDeg[[j]][[1]], type = eFunType[[j]][1])@X
-      y2 <- eFun(argvals[[j]][[2]], M = M[[j]][2], ignoreDeg = ignoreDeg[[j]][[2]], type = eFunType[[j]][2])@X
-      
-      basis[[j]] <- array(0, c(prod(M[[j]]), length(argvals[[j]][[1]]), length(argvals[[j]][[2]])))
-      
-      for(l in 1:M[[j]][1])
-      {
-        for(k in 1:M[[j]][2])
-          basis[[j]][(l-1) * M[[j]][2] + k,,] <- weight[j] * y1[l,] %o% y2[k,]
-      }
-    }
+      basis[[j]]  <- weight[j] * tensorProduct(eFun(argvals[[j]][[1]], M = M[[j]][1], ignoreDeg = ignoreDeg[[j]][[1]], type = eFunType[[j]][1]),
+                                               eFun(argvals[[j]][[2]], M = M[[j]][2], ignoreDeg = ignoreDeg[[j]][[2]], type = eFunType[[j]][2]))
   }
   
-  trueFuns <- vector("list", p)
-  
-  for(j in 1:p)
-    trueFuns[[j]] <- funData(argvals[[j]], basis[[j]])
-  
-  return(multiFunData(trueFuns))
+  return(multiFunData(basis))
 }
