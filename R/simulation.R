@@ -485,20 +485,34 @@ eVal <- function(M, type)
 #' par(oldPar)
 simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
-  # generate eigenfunctions
-  trueFuns <-  eFun(argvals, M, ignoreDeg = ignoreDeg, type = eFunType)
-  
   # generate eigenvalues and scores
-  trueVals <- eVal(M, eValType)
-  scores <- t(replicate(N, stats::rnorm(M, sd = sqrt(eVal(M, eValType)))))
+  trueVals <- eVal(prod(M), eValType)
+  scores <- t(replicate(N, stats::rnorm(prod(M), sd = sqrt(trueVals))))
   
+  if(length(M) == 1)
+  {
+    trueFuns <- eFun(argvals = argvals, M = M, ignoreDeg = ignoreDeg, type = eFunType)
+    resX <- scores %*% trueFuns@X
+  }  
+  else
+  {
+    if(is.null(ignoreDeg))
+      ignoreDeg <- vector("list", length(M))
+    
+    trueFuns <- do.call(tensorProduct, mapply(eFun, argvals = argvals, M = M, ignoreDeg = ignoreDeg, type = eFunType))
+    
+    tmp <- trueFuns@X
+    dim(tmp) <- c(prod(M), prod(sapply(argvals, length)))
+    resX <- scores %*% tmp
+    dim(resX) <- c(N, sapply(argvals, length))
+  } 
+    
   # truncated Karhunen-Loeve representation
-  simData <- funData(argvals, scores %*% trueFuns@X)
+  simData <- funData(argvals, resX)
   
   return(list(simData = simData,
               trueFuns = trueFuns,
               trueVals = trueVals))
-  
 }
 
 
