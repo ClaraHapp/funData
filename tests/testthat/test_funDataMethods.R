@@ -368,6 +368,11 @@ test_that("meanFunction",{
   expect_equal(meanFunction(i1), extractObs(i1, 2))
  })
 
+test_that("expand.int",{
+  expect_null(expand.int())
+  expect_equal(expand.int(2,5), data.frame(Var1 = rep(1:2, each = 5), Var2 = rep(1:5, times = 2)))
+}
+          )
 
 test_that("tensorProduct",{
   x <- seq(0, 2*pi, 0.1)
@@ -386,8 +391,8 @@ test_that("tensorProduct",{
  expect_equal(dimSupp(TP1), 2)
  expect_equal(TP1@argvals, list(f1@argvals[[1]], f2@argvals[[1]]))
  expect_equal(nObs(TP1), nObs(f1)*nObs(f2))
- expect_equal(mean(TP1@X[1,-1,]/TP1@X[2,-1,]), 0.88235294)
- expect_equal(sum(var(TP1@X[1,-1,]/TP1@X[2,-1,])), 0)
+ expect_equal(mean(TP1@X[1,-1,]/TP1@X[7,-1,]), 0.88235294) # what was 2nd before now is 7th
+ expect_equal(sum(var(TP1@X[1,-1,]/TP1@X[7,-1,])), 0)
  
  # tensor product of three functions
  TP2 <- tensorProduct(f1, f2, f1)
