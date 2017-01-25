@@ -1608,6 +1608,43 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
 
 #### tensorProduct ####
 
+#' Function to expand integers to a grid of indices
+#' 
+#' This function takes an arbitrary number \eqn{K} of integer values \eqn{n_1,\ldots, n_K} and 
+#' creates a data frame with all combinations from \code{1:}\eqn{n_k}, where the first column 
+#' (taking values from 1 to \eqn{n_1}) varies slowest and the last column (())taking values from 1 
+#' to \eqn{n_K}) varies fastest. Internally, this function depends on \code{\link{expand.grid}}
+#' 
+#' @param ... An arbitrary number of integer values.
+#'   
+#' @return A dataframe with the same number of columns as integers supplied and containing all 
+#'   combinations of indices from 1 to the given integers. If no number is supplied, the function
+#'   returns \code{NULL}.
+#'   
+#' @keywords internal
+#'   
+#' @examples 
+#' # For two integers
+#' funData:::expand.int(2,5) # first column varies slowest
+#' 
+#' # For three integers
+#' funData:::expand.int(2,3,4)
+expand.int <- function(...)
+{
+  dots <- list(...)
+  p <- length(dots)
+  
+  if(p == 0)
+    return(NULL)
+  else
+  {
+    res <- expand.grid(lapply(dots[p:1], function(x){1:x}))[,p:1]
+    names(res) <- rev(names(res))
+  }  
+  
+    return(res)
+}
+
 #' Tensor product for univariate functions on one-dimensional domains
 #' 
 #' This function calculates tensor product functions for up to three objects of
@@ -1670,7 +1707,8 @@ setMethod("tensorProduct", signature = c("funData"),
             if(any(sapply(l, dimSupp) != 1))
               stop("tensorProduct is defined only for funData objects on one-dimensional domains!")
             
-            g <- expand.grid(lapply(l, function(f){1:nObs(f)}))
+            # expand grid of indices: first varies slowest, last varies fastest
+            g <- do.call(expand.int, lapply(l, nObs))
             
             if(length(l) == 2)
             {
