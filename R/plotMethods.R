@@ -140,32 +140,33 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 
 #' Plotting multivariate functional data
 #' 
-#' This function plots observations of multivariate functional data on their 
-#' domain. The graphic device is split in a number of subplots (specified by 
-#' \code{dim}) via \code{mfrow} (\code{\link[graphics]{par}}) and the univariate
-#' elements are plotted using \code{plot}.
+#' This function plots observations of multivariate functional data on their domain. The graphic
+#' device is split in a number of subplots (specified by \code{dim}) via \code{mfrow}
+#' (\code{\link[graphics]{par}}) and the univariate elements are plotted using \code{plot}.
 #' 
-#' @section Warning: The function is currently implemented only for functional 
-#'   data with one- and two-dimensional domains.
+#' @section Warning: The function is currently implemented only for functional data with one- and
+#'   two-dimensional domains.
 #'   
 #' @param x An object of class \code{multiFunData}.
 #' @param y Missing.
-#' @param obs A vector of numerics giving the observations to plot. Defaults to 
-#'   all observations in \code{x}. For two-dimensional functions (images) 
-#'   \code{obs} must have length 1.
-#' @param dim The dimensions to plot. Defaults to \code{length(x)}, i.e. all
-#'   functions in \code{x} are plotted.
-#' @param par.plot Graphic parameters to be passed to the plotting regions. The 
-#'   option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
-#'   \code{\link[graphics]{par}} for details.
-#' @param main A string vector, giving the title of the plot. Can have the same 
-#'   length as \code{dim} (different titles for each dimension) or length 
-#'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the 
-#'   x-axis and no title for the y-axis for all elements. Can be supplied as a 
-#'   vector of the same length as \code{x} (one x-/y-lab for each element) or a 
-#'   single string that is applied for all elements. See 
-#'   \code{\link[graphics]{plot}} for details.
+#' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in
+#'   \code{x}. For two-dimensional functions (images) \code{obs} must have length 1.
+#' @param dim The dimensions to plot. Defaults to \code{length(x)}, i.e. all functions in \code{x}
+#'   are plotted.
+#' @param par.plot Graphic parameters to be passed to the plotting regions. The option \code{mfrow}
+#'   is ignored. Defaults to \code{FALSE}. See \code{\link[graphics]{par}} for details.
+#' @param main A string vector, giving the title of the plot. Can have the same length as \code{dim}
+#'   (different titles for each dimension) or length \code{1} (one title for all dimensions).
+#'   Defaults to \code{NULL}.
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the x-axis and no
+#'   title for the y-axis for all elements. Can be supplied as a vector of the same length as
+#'   \code{x} (one x-/y-lab for each element) or a single string that is applied for all elements.
+#'   See \code{\link[graphics]{plot}} for details.
+#' @param log A character string, specifying the axis that is to be logarithmic. Can be \code{""} 
+#'   (non-logarithmic axis), \code{"x", "y", "xy"} or \code{"yx"}. Defaults to \code{""} for all
+#'   plots. Can be supplied as a vector of the same length as \code{x} (one log-specification for
+#'   each element) or a single string that is applied for all elements. See 
+#'   \code{\link[graphics]{plot.default}} for details.
 #' @param ... Additional arguments to \code{plot}.
 #'   
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}, 
@@ -200,13 +201,16 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' 
 #' par(oldpar)
 plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
-                              xlab = "argvals", ylab = "", ...){
+                              xlab = "argvals", ylab = "", log = "", ...){
   
   if(length(xlab) == 1)
     xlab <- rep(xlab, length(x))
   
   if(length(ylab) == 1)
     ylab <- rep(ylab, length(x))
+  
+  if(length(log) == 1)
+    log <- rep(log, length(x))
   
   
   # if no par.plot specified: get graphics parameters
@@ -228,7 +232,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   
   # plot the univariate functions
   for(i in dim)
-    plot(x[[i]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], ...)
+    plot(x[[i]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], log = log[i], ...)
   
   
   # if no par.plot specified: reset graphics parameters
