@@ -420,6 +420,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 
     meltData <- reshape2::melt(data@X[obs, , drop = FALSE], varnames = c("obsInd", "obsPointX"))
     meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
+    meltData$obsInd <- as.factor(meltData$obsInd)
     
     p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
       ggplot2::geom_line(...) + 
@@ -434,6 +435,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData <- reshape2::melt(data@X[obs, , , drop = FALSE], varnames = c("obsInd", "obsPointX", "obsPointY"))
     meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
     meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
+    meltData$obsInd <- as.factor(meltData$obsInd)
     
     p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvalsX", y = "argvalsY")) + 
       ggplot2::geom_raster(ggplot2::aes_string(fill = "value"), ...) + 
@@ -575,6 +577,7 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
   meltData <- reshape2::melt(data@X[obs])
   names(meltData)[2] <- "obsInd"
   meltData$argvals <- unlist(data@argvals[obs])
+  meltData$obsInd <- as.factor(meltData$obsInd)
   
   p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
     ggplot2::geom_line(...) + 
