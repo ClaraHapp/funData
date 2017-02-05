@@ -238,32 +238,33 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 
 #' Plotting irregular functional data
 #' 
-#' This function plots observations of irregular functional data on their 
-#' domain.
+#' This function plots observations of irregular functional data on their domain.
 #' 
 #' @param x An object of class \code{irregFunData}.
 #' @param y Missing.
-#' @param obs A vector of numerics giving the observations to plot. Defaults to 
-#'   all observations in \code{x}.
-#' @param type The type of plot. Defaults to \code{"b"} (line and point plot).
-#'   See \code{\link[graphics]{plot}} for details.
+#' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in 
+#'   \code{x}.
+#' @param type The type of plot. Defaults to \code{"b"} (line and point plot). See 
+#'   \code{\link[graphics]{plot}} for details.
 #' @param pch The point type. Defaults to \code{20} (solid small circles). See 
 #'   \code{\link[graphics]{par}} for details.
-#' @param col The color of the functions. Defaults to the 
-#'   \code{\link[grDevices]{rainbow}} palette.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"}
-#'   for the x-axis and no title for the y-axis. See
-#'   \code{\link[graphics]{plot}} for details.
-#' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of
-#'   the data that is to plot. See \code{\link[graphics]{plot}} for details.
-#' @param add Logical. If \code{TRUE}, add to current plot (only for 
-#'   one-dimensional functions). Defaults to \code{FALSE}.
+#' @param col The color of the functions. Defaults to the \code{\link[grDevices]{rainbow}} palette.
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the x-axis and no
+#'   title for the y-axis. See \code{\link[graphics]{plot}} for details.
+#' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of the data that is to
+#'   plot. See \code{\link[graphics]{plot}} for details.
+#' @param log A character string, specifying the axis that is to be logarithmic. Can be \code{""} 
+#'   (non-logarithmic axis, the default), \code{"x", "y", "xy"} or \code{"yx"}. See 
+#'   \code{\link[graphics]{plot.default}} for details. This parameter is ignored, if \code{add =
+#'   TRUE}.
+#' @param add Logical. If \code{TRUE}, add to current plot (only for one-dimensional functions). 
+#'   Defaults to \code{FALSE}.
 #' @param ... Additional arguments to \code{\link[graphics]{plot}}.
 #'   
-#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
+#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, 
 #'   \code{\link[graphics]{plot}}
 #'   
-#'  @importFrom grDevices rainbow
+#' @importFrom grDevices rainbow
 #' @importFrom graphics points
 #'   
 #' @examples
@@ -281,14 +282,19 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
                               col = grDevices::rainbow(length(obs)), xlab = "argvals", ylab = "",
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
-                              add = FALSE, ...)
+                              log = "", add = FALSE, ...)
 {
   if(length(col) < length(obs))
     col <- rep(col,length(obs))
   
   if(add == FALSE) # plot new window
   {
-    plot(x = NULL, y = NULL, type = "n", xlim = xlim, ylim = ylim,  xlab = xlab, ylab = ylab, ...)
+    plot(x = xlim, y = ylim, type = "n", xlim = xlim, ylim = ylim,  xlab = xlab, ylab = ylab, log = log,...)
+  }
+  else # check if a log-parameter is passed, that does not match the current plot and give a warning
+  {
+    if((grepl(pattern = "y", x = log) != par()$ylog) | (grepl(pattern = "x", x = log) != par()$xlog))
+      warning("Parameter 'log' cannot be reset when 'add = TRUE'.")
   }
   
   for(i in 1:length(obs))
