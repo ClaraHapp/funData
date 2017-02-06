@@ -3,6 +3,7 @@
 export(addError)
 export(approxNA)
 export(as.funData)
+export(as.irregFunData)
 export(as.multiFunData)
 export(dimSupp)
 export(eFun)
