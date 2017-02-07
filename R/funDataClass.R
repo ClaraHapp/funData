@@ -520,7 +520,7 @@ setMethod("as.funData", signature = "irregFunData",
 #' @keywords internal
 #' 
 #' @examples
-#' # create funData object with 2 observations
+#' # create funData object with 5 observations
 #' f <- simFunData(N = 5, M = 7, eValType = "linear",
 #'                 eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
 #' 
