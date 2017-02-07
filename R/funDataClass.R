@@ -535,8 +535,9 @@ setAs("funData", "irregFunData",
              if(dimSupp(from) > 1)
                 stop("The funData object must be defined on a one-dimensional domain.")
         
-        return(irregFunData(argvals = apply(from@X, 1, function(x, argvals){argvals[!is.na(x)]}, argvals = from@argvals[[1]]), 
-                       X = apply(from@X, 1, function(x){x[!is.na(x)]})
+        # simple apply does not work if data is in fact dense...
+        return(irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
+                       X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X)
                        ))
 })
 
