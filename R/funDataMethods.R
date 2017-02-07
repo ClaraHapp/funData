@@ -435,6 +435,77 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             irregFunData(argvals = e2@argvals, X = sapply(1:nObs(e2), function(i){do.call(f, list(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]]))}, simplify = FALSE))
           })
 
+
+
+#' Mathematical operations for functional data objects
+#' 
+#' These functions allow to apply mathematical operations (such as \eqn{exp(),
+#' log(), sin(), cos()} or \eqn{abs()} to functional data objects based on
+#' \code{\link[methods]{Math}}.  The operations are made pointwise for each
+#' observation.
+#'   
+#' @param x An nbject of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData}.
+#'   
+#' @return An object of the same functional data class as \code{x}.
+#'   
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}}, \link[methods]{Math}
+#'   
+#' @name Math.funData
+#'   
+#' @examples
+#' oldpar <- par(no.readonly = TRUE)
+#' par(mfrow = c(1,2))
+#' 
+#' # simulate a funData object on 0..1 with 10 observations
+#' argvals <- seq(0, 1, 0.01)
+#' f <- simFunData(argvals = argvals, N = 10, 
+#'                 M = 5, eFunType = "Fourier", eValType = "linear")$simData
+#' 
+#' ### FunData
+#' plot(f, main = "Original data")
+#' plot(abs(f), main = "Absolute values")
+#' 
+#' ### Irregular
+#' # create an irrgFunData object by sparsifying f
+#' i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
+#' 
+#' plot(i, main = "Sparse data")
+#' plot(cumsum(i), main = "'cumsum' of sparse data")
+#' 
+#' ### Multivariate
+#' m <- multiFunData(f, -1*f)
+#' plot(m, main = "Multivariate Data")
+#' plot(exp(m), main = "Exponential")
+#' 
+#' par(oldpar)
+NULL
+#' @rdname Math.funData
+setMethod("Math", signature = c(x = "funData"),
+          function(x){
+            funData(x@argvals, methods::callGeneric(x@X))
+          })
+
+#' @rdname Math.funData
+setMethod("Math", signature = c(x = "multiFunData"),
+          function(x){
+            m <- vector("list", length(x))
+            for( i in 1:length(x))
+              m[[i]] <- methods::callGeneric(x[[i]])
+            multiFunData(m)
+          })
+          
+#' @rdname Math.funData
+setMethod("Math", signature = c(x = "irregFunData"),
+          function(x){
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
+            
+            irregFunData(argvals = x@argvals, X = lapply(x@X, f))
+          })
+
+
 #### nObs ####
 
 #' Get the number of observations
