@@ -181,6 +181,31 @@ test_that("Arith", {
   expect_equal(i1/i1, 1 + i1*0)   
 })
 
+
+test_that("Math", {
+  set.seed(1)
+  
+  argvals <- seq(0,1, 0.01)
+  
+  # funData
+  f <- simFunData(argvals = argvals, N = 10, M = 5, eFunType = "Fourier", eValType = "linear")$simData
+
+  expect_equal(exp(f), funData(argvals, exp(f@X)))
+  expect_equal(sin(f)^2 + cos(f)^2, 0*f+1) # combination of Arith and math
+  
+  # irregFunData
+  i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
+  
+  expect_equal(exp(i), irregFunData(i@argvals, lapply(i@X,exp)))
+  expect_equal(sin(i)^2 + cos(i)^2, 0*i+1) # combination of Arith and math
+  
+  # multiFunData
+  m <- multiFunData(f, -1*f)
+  
+  expect_equal(exp(m), multiFunData(exp(f), exp(-1*f)))
+  expect_equal(sin(m)^2 + cos(m)^2, 0*m+1) # combination of Arith and math
+})
+
 test_that("norm", {
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   m1 <- multiFunData(f1,f1)
@@ -205,6 +230,39 @@ test_that("norm", {
   expect_equal(norm(i1, fullDom = TRUE), c(2/5, 1/80 + 2*13/96), tolerance = 1e-1) # result calculated explicitly
   expect_equal(norm(i1, weight = 2), 2*norm(i1)) # weight (makes little sense for univariate funData objects...)
 })
+
+
+test_that("scalarProduct", {
+  set.seed(1)
+  f <- simFunData(N = 5, M = 7, eValType = "linear",
+                  eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
+  g <- simFunData(N = 5, M = 4, eValType = "linear",
+                  eFunType = "Poly", argvals = seq(0,1,0.01))$simData
+  m <- multiFunData(f,g)
+  i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
+  
+  # Check errors
+  expect_error(scalarProduct(m, as.multiFunData(f)),
+               "multiFunData objects must have the same number of elements.")
+  
+  expect_error(scalarProduct(m, m, weight = c(-1,1)),
+               "Weights must be non-negative.")
+  
+  expect_error(scalarProduct(m, m, weight = c(0,0)),
+               "At least one weighting factor must be different from 0.")
+  
+  # Check functionality:
+  # univariate FD objects
+  s <- scalarProduct(f,g)
+  expect_equal(length(s), nObs(f))
+  expect_equal(s[1], 0.68327608)
+  expect_equal(scalarProduct(f,f), norm(f, squared = TRUE))
+  # multivariate FD object
+  expect_equal(scalarProduct(m,m), norm(m, squared = TRUE))
+  expect_equal(scalarProduct(m,m, weight = c(1,2)), norm(m, squared = TRUE, weight = c(1,2))) # with weights
+  # irreg FD object  
+  expect_equal(scalarProduct(i,i), norm(i, squared = TRUE))
+  })
 
 test_that("integrate", {
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
