@@ -5,7 +5,8 @@
 \alias{scalarProduct,multiFunData,multiFunData-method}
 \title{Scalar product for multivariate functional data}
 \usage{
-\S4method{scalarProduct}{multiFunData,multiFunData}(object1, object2, ...)
+\S4method{scalarProduct}{multiFunData,multiFunData}(object1, object2,
+  weight = rep(1, length(object1)), ...)
 }
 \description{
 Scalar product for multivariate functional data

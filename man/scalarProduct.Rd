@@ -7,11 +7,13 @@
 scalarProduct(object1, object2, ...)
 }
 \arguments{
-\item{object1,}{object2 Two objects of class\code{\link{funData}},
+\item{object1,object2}{Two objects of class\code{\link{funData}},
 \code{\link{irregFunData}} or \code{\link{multiFunData}}, for that the
 scalar product is to be calculated.}
 
-\item{...}{Additional parameters passed to \code{\link{integrate}}}
+\item{...}{Additional parameters passed to \code{\link{integrate}}. For
+  \code{\linkS4class{multiFunData}} objects, one can also pass a
+  \code{weight} argument. See Details.}
 }
 \value{
 A vector of length \code{nObs(object1)} (or \code{nObs(object2)}, if
@@ -20,9 +22,9 @@ A vector of length \code{nObs(object1)} (or \code{nObs(object2)}, if
 }
 \description{
 This function calculates the scalar product between two objects of the class
-\code{\link{funData}}, \code{\link{irregFunData}} and
-\code{\link{multiFunData}}. For univariate functions \eqn{f,g} on a domain
-\eqn{\mathcal{T}}{\calT}, the scalar product is defined as
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}} and
+\code{\linkS4class{multiFunData}}. For univariate functions \eqn{f,g} on a
+domain \eqn{\mathcal{T}}{\calT}, the scalar product is defined as
 \deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_\calT f(t) g(t) dt} and
 for multivariate functions \eqn{f,g} on domains \eqn{\mathcal{T}_1, \ldots,
 \mathcal{T}_p}{\calT_1,\ldots,\calT_p}, it is defined as \deqn{\sum_{j = 1}^p
@@ -34,6 +36,13 @@ observations or one object may have only one observation (for which the
 scalar product is calculated with all observations of the other object)).
 Objects of the classes \code{\link{funData}} and \code{\link{irregFunData}}
 can be combined, see \code{\link{integrate}} for details.
+}
+\details{
+For \code{\linkS4class{multiFunData}} one cann pass optional vector
+\code{weight} for calculating a weighted scalar product. This vector must
+have the same number of elements as the \code{\link{multiFunData}} objects
+and have to be non-negative with at least one weight that is different from
+0. Defaults to \code{1} for each element. See also \code{\link{norm}}.
 }
 \examples{
 # create two funData objectw with 5 observations on [0,1]
@@ -58,8 +67,11 @@ all.equal(scalarProduct(i,i), norm(i, squared = TRUE))
 
 # Scalar product between funData and irregFunData objects
 scalarProduct(i,f)
+
+# Weighted scalar product for multiFunData objects
+scalarProduct(m,m, weight = c(1,2))
 }
 \seealso{
-\code{\linkS4class{integrate}}, \code{\linkS4class{norm}},
+\code{\link{integrate}}, \code{\link{norm}},
 }
 

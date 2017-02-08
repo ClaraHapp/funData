@@ -1114,9 +1114,9 @@ setMethod("norm", signature = "irregFunData",
 #' Calculate the scalar product for functional data objects
 #' 
 #' This function calculates the scalar product between two objects of the class 
-#' \code{\link{funData}}, \code{\link{irregFunData}} and 
-#' \code{\link{multiFunData}}. For univariate functions \eqn{f,g} on a domain 
-#' \eqn{\mathcal{T}}{\calT}, the scalar product is defined as 
+#' \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}} and 
+#' \code{\linkS4class{multiFunData}}. For univariate functions \eqn{f,g} on a
+#' domain \eqn{\mathcal{T}}{\calT}, the scalar product is defined as 
 #' \deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_\calT f(t) g(t) dt} and 
 #' for multivariate functions \eqn{f,g} on domains \eqn{\mathcal{T}_1, \ldots, 
 #' \mathcal{T}_p}{\calT_1,\ldots,\calT_p}, it is defined as \deqn{\sum_{j = 1}^p
@@ -1129,16 +1129,24 @@ setMethod("norm", signature = "irregFunData",
 #' Objects of the classes \code{\link{funData}} and \code{\link{irregFunData}} 
 #' can be combined, see \code{\link{integrate}} for details.
 #' 
-#' @param object1, object2 Two objects of class\code{\link{funData}}, 
+#' For \code{\linkS4class{multiFunData}} one cann pass optional vector
+#' \code{weight} for calculating a weighted scalar product. This vector must
+#' have the same number of elements as the \code{\link{multiFunData}} objects
+#' and have to be non-negative with at least one weight that is different from
+#' 0. Defaults to \code{1} for each element. See also \code{\link{norm}}.
+#' 
+#' @param object1,object2 Two objects of class\code{\link{funData}}, 
 #'   \code{\link{irregFunData}} or \code{\link{multiFunData}}, for that the 
 #'   scalar product is to be calculated.
-#' @param ... Additional parameters passed to \code{\link{integrate}}
+#' @param ... Additional parameters passed to \code{\link{integrate}}. For
+#'   \code{\linkS4class{multiFunData}} objects, one can also pass a
+#'   \code{weight} argument. See Details.
 #'   
-#' @return A vector of length \code{nObs(object1)} (or \code{nObs(object2)}, if
-#'   \code{object1} has only one observation), containing the pairwise scalar
+#' @return A vector of length \code{nObs(object1)} (or \code{nObs(object2)}, if 
+#'   \code{object1} has only one observation), containing the pairwise scalar 
 #'   product for each observation.
 #'   
-#' @seealso \code{\linkS4class{integrate}}, \code{\linkS4class{norm}}, 
+#' @seealso \code{\link{integrate}}, \code{\link{norm}},
 #'   
 #' @export scalarProduct
 #'   
@@ -1165,6 +1173,9 @@ setMethod("norm", signature = "irregFunData",
 #' 
 #' # Scalar product between funData and irregFunData objects
 #' scalarProduct(i,f)
+#' 
+#' # Weighted scalar product for multiFunData objects
+#' scalarProduct(m,m, weight = c(1,2))
 setGeneric("scalarProduct", function(object1, object2, ...) {standardGeneric("scalarProduct")})
 
 #' Generic method for scalar products, based on integrate
@@ -1186,7 +1197,25 @@ setMethod("scalarProduct", signature = c("funData", "funData"),
 #'
 #' @keywords internal
 setMethod("scalarProduct", signature = c("multiFunData", "multiFunData"),
-         .scalarProduct)
+          function(object1, object2, weight = rep(1, length(object1)),...)
+          {
+            if(length(object1) != length(object2))
+              stop("multiFunData objects must have the same number of elements.")
+            
+            if(length(weight) != length(object1))
+              stop("Weight vector must have the same number of elements as the multiFunData objects.")
+            
+            if(any(weight < 0))
+              stop("Weights must be non-negative.")
+            
+            if(all(weight == 0))
+              stop("At least one weighting factor must be different from 0.")
+            
+            if(length(object1) == 1)
+              return(.scalarProduct(object1,object2,...)*weight)
+            # else: more than one element
+            return(as.numeric(mapply(funData:::.scalarProduct, object1, object2, MoreArgs = list(...), SIMPLIFY = "array") %*% weight))
+          })
 
 #' Scalar product for irregular functional data
 #'
