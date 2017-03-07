@@ -355,6 +355,9 @@ test_that("set/get", {
   # irreg FD object
   expect_equal(getArgvals(setArgvals(i1, list(0:4,0:2))), list(0:4, 0:2))
   expect_equal(getX(setX(i1, list(0:4,0:2))), list(0:4, 0:2))
+  
+  # check multivariate functions with one element
+  expect_equal(getArgvals(f1), getArgvals(as.multiFunData(f1))[[1]])
 })
 
 test_that("flipFun", {

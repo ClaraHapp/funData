@@ -1343,7 +1343,7 @@ setMethod("getArgvals", signature = "funData",
 #'
 #' @keywords internal
 setMethod("getArgvals", signature = "multiFunData",
-          function(object){sapply(object, getArgvals)})
+          function(object){lapply(object, getArgvals)})
 
 #' Get argvals slot for irregular functional data objects
 #'
