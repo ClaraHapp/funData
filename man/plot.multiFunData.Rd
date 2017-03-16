@@ -8,7 +8,7 @@
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
   par.plot = NULL, main = NULL, xlab = "argvals", ylab = "", log = "",
-  ...)
+  ylim = NULL, ...)
 
 \S4method{plot}{multiFunData,missing}(x, y, ...)
 }
@@ -17,40 +17,51 @@ plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
 
 \item{y}{Missing.}
 
-\item{obs}{A vector of numerics giving the observations to plot. Defaults to all observations in
-\code{x}. For two-dimensional functions (images) \code{obs} must have length 1.}
+\item{obs}{A vector of numerics giving the observations to plot. Defaults to 
+all observations in \code{x}. For two-dimensional functions (images) 
+\code{obs} must have length 1.}
 
-\item{dim}{The dimensions to plot. Defaults to \code{length(x)}, i.e. all functions in \code{x}
-are plotted.}
+\item{dim}{The dimensions to plot. Defaults to \code{length(x)}, i.e. all 
+functions in \code{x} are plotted.}
 
-\item{par.plot}{Graphic parameters to be passed to the plotting regions. The option \code{mfrow}
-is ignored. Defaults to \code{FALSE}. See \code{\link[graphics]{par}} for details.}
+\item{par.plot}{Graphic parameters to be passed to the plotting regions. The 
+option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
+\code{\link[graphics]{par}} for details.}
 
-\item{main}{A string vector, giving the title of the plot. Can have the same length as \code{dim}
-(different titles for each dimension) or length \code{1} (one title for all dimensions).
-Defaults to \code{NULL}.}
+\item{main}{A string vector, giving the title of the plot. Can have the same 
+length as \code{dim} (different titles for each dimension) or length 
+\code{1} (one title for all dimensions). Defaults to \code{NULL}.}
 
-\item{xlab, ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} for the x-axis and no
-title for the y-axis for all elements. Can be supplied as a vector of the same length as
-\code{x} (one x-/y-lab for each element) or a single string that is applied for all elements.
-See \code{\link[graphics]{plot}} for details.}
+\item{xlab, ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} 
+for the x-axis and no title for the y-axis for all elements. Can be 
+supplied as a vector of the same length as \code{dim} (one x-/y-lab for each 
+element) or a single string that is applied for all elements. See 
+\code{\link[graphics]{plot}} for details.}
 
-\item{log}{A character string, specifying the axis that is to be logarithmic. Can be \code{""} 
-(non-logarithmic axis), \code{"x", "y", "xy"} or \code{"yx"}. Defaults to \code{""} for all
-plots. Can be supplied as a vector of the same length as \code{x} (one log-specification for
-each element) or a single string that is applied for all elements. See 
+\item{log}{A character string, specifying the axis that is to be logarithmic.
+Can be \code{""} (non-logarithmic axis), \code{"x", "y", "xy"} or 
+\code{"yx"}. Defaults to \code{""} for all plots. Can be supplied as a 
+vector of the same length as \code{dim} (one log-specification for each 
+element) or a single string that is applied for all elements. See 
 \code{\link[graphics]{plot.default}} for details.}
+
+\item{ylim}{Specifies the limits of the y-Axis. Can be either \code{NULL} 
+(the default, limits are chosen automatically), a vector of length 2 
+(giving the minimum and maximum range for all elements at the same time) or
+a list of the same length as \code{dim} (specifying the limits for each
+element separately).}
 
 \item{...}{Additional arguments to \code{plot}.}
 }
 \description{
-This function plots observations of multivariate functional data on their domain. The graphic
-device is split in a number of subplots (specified by \code{dim}) via \code{mfrow}
-(\code{\link[graphics]{par}}) and the univariate elements are plotted using \code{plot}.
+This function plots observations of multivariate functional data on their 
+domain. The graphic device is split in a number of subplots (specified by 
+\code{dim}) via \code{mfrow} (\code{\link[graphics]{par}}) and the univariate
+elements are plotted using \code{plot}.
 }
 \section{Warning}{
- The function is currently implemented only for functional data with one- and
-  two-dimensional domains.
+ The function is currently implemented only for functional 
+  data with one- and two-dimensional domains.
 }
 \examples{
 oldpar <- par(no.readonly = TRUE)
