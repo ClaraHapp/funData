@@ -11,8 +11,8 @@ r:
   
 matrix:
   exclude:
-   - os: osx
+    - os: osx
       r: devel
   
 after_success:
-  - 'covr::codecov()'
+  - Rscript -e 'covr::codecov()'
