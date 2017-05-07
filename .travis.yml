@@ -10,6 +10,9 @@ r:
   - devel
   
 matrix:
-  allow_failures:
-    - os: osx
+  exclude:
+   - os: osx
       r: devel
+  
+after_success:
+  - 'covr::codecov()'
