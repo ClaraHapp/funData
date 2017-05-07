@@ -8,3 +8,8 @@ os:
 r:
   - release
   - devel
+  
+matrix:
+  allow_failures:
+    - os: osx
+      r: devel
