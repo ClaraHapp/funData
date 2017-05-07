@@ -20,6 +20,7 @@ Imports:
     grDevices,
     stats
 Suggests:
+    covr,
     ggplot2,
     gridExtra,
     reshape2,
