@@ -8,7 +8,8 @@
 \usage{
 plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
   col = grDevices::rainbow(length(obs)), xlab = "argvals", ylab = "",
-  xlim = range(x@argvals[obs]), ylim = range(x@X[obs]), add = FALSE, ...)
+  xlim = range(x@argvals[obs]), ylim = range(x@X[obs]), log = "",
+  add = FALSE, ...)
 
 \S4method{plot}{irregFunData,missing}(x, y, ...)
 }
@@ -17,33 +18,35 @@ plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
 
 \item{y}{Missing.}
 
-\item{obs}{A vector of numerics giving the observations to plot. Defaults to 
-all observations in \code{x}.}
+\item{obs}{A vector of numerics giving the observations to plot. Defaults to all observations in 
+\code{x}.}
 
-\item{type}{The type of plot. Defaults to \code{"b"} (line and point plot).
-See \code{\link[graphics]{plot}} for details.}
+\item{type}{The type of plot. Defaults to \code{"b"} (line and point plot). See 
+\code{\link[graphics]{plot}} for details.}
 
 \item{pch}{The point type. Defaults to \code{20} (solid small circles). See 
 \code{\link[graphics]{par}} for details.}
 
-\item{col}{The color of the functions. Defaults to the 
-\code{\link[grDevices]{rainbow}} palette.}
+\item{col}{The color of the functions. Defaults to the \code{\link[grDevices]{rainbow}} palette.}
 
-\item{xlab, ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"}
-for the x-axis and no title for the y-axis. See
-\code{\link[graphics]{plot}} for details.}
+\item{xlab, ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} for the x-axis and no
+title for the y-axis. See \code{\link[graphics]{plot}} for details.}
 
-\item{xlim, ylim}{The limits for x- and y-axis. Defaults to the total range of
-the data that is to plot. See \code{\link[graphics]{plot}} for details.}
+\item{xlim, ylim}{The limits for x- and y-axis. Defaults to the total range of the data that is to
+plot. See \code{\link[graphics]{plot}} for details.}
 
-\item{add}{Logical. If \code{TRUE}, add to current plot (only for 
-one-dimensional functions). Defaults to \code{FALSE}.}
+\item{log}{A character string, specifying the axis that is to be logarithmic. Can be \code{""} 
+(non-logarithmic axis, the default), \code{"x", "y", "xy"} or \code{"yx"}. See 
+\code{\link[graphics]{plot.default}} for details. This parameter is ignored, if \code{add =
+TRUE}.}
+
+\item{add}{Logical. If \code{TRUE}, add to current plot (only for one-dimensional functions). 
+Defaults to \code{FALSE}.}
 
 \item{...}{Additional arguments to \code{\link[graphics]{plot}}.}
 }
 \description{
-This function plots observations of irregular functional data on their 
-domain.
+This function plots observations of irregular functional data on their domain.
 }
 \examples{
 oldpar <- par(no.readonly = TRUE)
@@ -59,9 +62,7 @@ plot(object, main = "Irregular functional data")
 par(oldpar)
 }
 \seealso{
-\code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
+\code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\link[graphics]{plot}}
-  
- @importFrom grDevices rainbow
 }
 

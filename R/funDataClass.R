@@ -510,3 +510,50 @@ setGeneric("as.funData", function(object){standardGeneric("as.funData")})
 #' @rdname as.funData
 setMethod("as.funData", signature = "irregFunData", 
           function(object){as(object, "funData")})
+
+#' Coerce a funData object to class irregFunData
+#' 
+#' @seealso \code{\linkS4class{funData}}, \code{\link{as.irregFunData}}
+#'   
+#' @name funData-setAs
+#'   
+#' @keywords internal
+#' 
+#' @examples
+#' # create funData object with 5 observations
+#' f <- simFunData(N = 5, M = 7, eValType = "linear",
+#'                 eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
+#' 
+#' # sparsify artificially
+#' fSparse <- sparsify(f, minObs = 4, maxObs = 10)
+#'
+#' # coerce to irregFunData object
+#' i <- as.irregFunData(fSparse)
+#' i
+setAs("funData", "irregFunData", 
+      def = function(from){      
+             if(dimSupp(from) > 1)
+                stop("The funData object must be defined on a one-dimensional domain.")
+        
+        # simple apply does not work if data is in fact dense...
+        return(irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
+                       X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X)
+                       ))
+})
+
+#' Coerce a funData object to class irregFunData
+#' 
+#' This function coerces an object of class \code{funData} to a
+#' \code{irregFunData} object.
+#' 
+#' @param object The \code{funData} object that is to be converted to a
+#'   \code{irregFunData} object.
+#'   
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}
+#'   
+#' @export as.irregFunData
+setGeneric("as.irregFunData", function(object){standardGeneric("as.irregFunData")})
+
+#' @rdname as.irregFunData
+setMethod("as.irregFunData", signature = "funData", 
+          function(object){as(object, "irregFunData")})

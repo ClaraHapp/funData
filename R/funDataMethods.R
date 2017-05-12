@@ -435,6 +435,77 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             irregFunData(argvals = e2@argvals, X = sapply(1:nObs(e2), function(i){do.call(f, list(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]]))}, simplify = FALSE))
           })
 
+
+
+#' Mathematical operations for functional data objects
+#' 
+#' These functions allow to apply mathematical operations (such as \eqn{exp(),
+#' log(), sin(), cos()} or \eqn{abs()} to functional data objects based on
+#' \code{\link[methods]{Math}}.  The operations are made pointwise for each
+#' observation.
+#'   
+#' @param x An nbject of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData}.
+#'   
+#' @return An object of the same functional data class as \code{x}.
+#'   
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}}, \link[methods]{Math}
+#'   
+#' @name Math.funData
+#'   
+#' @examples
+#' oldpar <- par(no.readonly = TRUE)
+#' par(mfrow = c(1,2))
+#' 
+#' # simulate a funData object on 0..1 with 10 observations
+#' argvals <- seq(0, 1, 0.01)
+#' f <- simFunData(argvals = argvals, N = 10, 
+#'                 M = 5, eFunType = "Fourier", eValType = "linear")$simData
+#' 
+#' ### FunData
+#' plot(f, main = "Original data")
+#' plot(abs(f), main = "Absolute values")
+#' 
+#' ### Irregular
+#' # create an irrgFunData object by sparsifying f
+#' i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
+#' 
+#' plot(i, main = "Sparse data")
+#' plot(cumsum(i), main = "'cumsum' of sparse data")
+#' 
+#' ### Multivariate
+#' m <- multiFunData(f, -1*f)
+#' plot(m, main = "Multivariate Data")
+#' plot(exp(m), main = "Exponential")
+#' 
+#' par(oldpar)
+NULL
+#' @rdname Math.funData
+setMethod("Math", signature = c(x = "funData"),
+          function(x){
+            funData(x@argvals, methods::callGeneric(x@X))
+          })
+
+#' @rdname Math.funData
+setMethod("Math", signature = c(x = "multiFunData"),
+          function(x){
+            m <- vector("list", length(x))
+            for( i in 1:length(x))
+              m[[i]] <- methods::callGeneric(x[[i]])
+            multiFunData(m)
+          })
+          
+#' @rdname Math.funData
+setMethod("Math", signature = c(x = "irregFunData"),
+          function(x){
+            generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
+            f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
+            
+            irregFunData(argvals = x@argvals, X = lapply(x@X, f))
+          })
+
+
 #### nObs ####
 
 #' Get the number of observations
@@ -1038,6 +1109,138 @@ setMethod("norm", signature = "irregFunData",
             norm.irregFunData(object, squared, obs, method, weight, fullDom)
           })
 
+#### Scalar product ####
+
+#' Calculate the scalar product for functional data objects
+#' 
+#' This function calculates the scalar product between two objects of the class 
+#' \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}} and 
+#' \code{\linkS4class{multiFunData}}. For univariate functions \eqn{f,g} on a
+#' domain \eqn{\mathcal{T}}{\calT}, the scalar product is defined as 
+#' \deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_\calT f(t) g(t) dt} and 
+#' for multivariate functions \eqn{f,g} on domains \eqn{\mathcal{T}_1, \ldots, 
+#' \mathcal{T}_p}{\calT_1,\ldots,\calT_p}, it is defined as \deqn{\sum_{j = 1}^p
+#' \int_{\mathcal{T}_j} f^{(j)}(t) g^{(j)}(t) \mathrm{d}t.}{\sum_{j = 1}^p 
+#' \int_\calT_j f^{(j)}(t) g^{(j)}(t) dt.} As seen in the formula, the objects 
+#' must be defined on the same domain. The scalar product is calculated pairwise
+#' for all observations, thus the objects must also have the same number of 
+#' observations or one object may have only one observation (for which the 
+#' scalar product is calculated with all observations of the other object)). 
+#' Objects of the classes \code{\link{funData}} and \code{\link{irregFunData}} 
+#' can be combined, see \code{\link{integrate}} for details.
+#' 
+#' For \code{\linkS4class{multiFunData}} one cann pass optional vector
+#' \code{weight} for calculating a weighted scalar product. This vector must
+#' have the same number of elements as the \code{\link{multiFunData}} objects
+#' and have to be non-negative with at least one weight that is different from
+#' 0. Defaults to \code{1} for each element. See also \code{\link{norm}}.
+#' 
+#' @param object1,object2 Two objects of class\code{\link{funData}}, 
+#'   \code{\link{irregFunData}} or \code{\link{multiFunData}}, for that the 
+#'   scalar product is to be calculated.
+#' @param ... Additional parameters passed to \code{\link{integrate}}. For
+#'   \code{\linkS4class{multiFunData}} objects, one can also pass a
+#'   \code{weight} argument. See Details.
+#'   
+#' @return A vector of length \code{nObs(object1)} (or \code{nObs(object2)}, if 
+#'   \code{object1} has only one observation), containing the pairwise scalar 
+#'   product for each observation.
+#'   
+#' @seealso \code{\link{integrate}}, \code{\link{norm}},
+#'   
+#' @export scalarProduct
+#'   
+#' @examples 
+#' # create two funData objectw with 5 observations on [0,1]
+#' f <- simFunData(N = 5, M = 7, eValType = "linear",
+#'                 eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
+#' g <- simFunData(N = 5, M = 4, eValType = "linear",
+#'                 eFunType = "Poly", argvals = seq(0,1,0.01))$simData
+#'                 
+#' # calculate the scalar product
+#' scalarProduct(f,g)
+#' 
+#' # the scalar product of an object with itself equals the squared norm
+#' all.equal(scalarProduct(f,f), norm(f, squared = TRUE))
+#' 
+#' # This works of course also for multiFunData objects...
+#' m <- multiFunData(f,g)
+#' all.equal(scalarProduct(m,m), norm(m, squared = TRUE))
+#' 
+#' # ...and for irregFunData objects
+#' i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
+#' all.equal(scalarProduct(i,i), norm(i, squared = TRUE))
+#' 
+#' # Scalar product between funData and irregFunData objects
+#' scalarProduct(i,f)
+#' 
+#' # Weighted scalar product for multiFunData objects
+#' scalarProduct(m,m, weight = c(1,2))
+setGeneric("scalarProduct", function(object1, object2, ...) {standardGeneric("scalarProduct")})
+
+#' Generic method for scalar products, based on integrate
+.scalarProduct <-  function(object1, object2, ...){
+  return(integrate(object1 * object2, ...))
+}
+
+#' Scalar product for functional data
+#'
+#' @seealso \code{\link{integrate}}, \code{\link{norm}}.
+#'
+#' @keywords internal
+setMethod("scalarProduct", signature = c("funData", "funData"),
+         .scalarProduct)
+
+#' Scalar product for multivariate functional data
+#'
+#' @seealso \code{\link{integrate}}, \code{\link{norm}}.
+#'
+#' @keywords internal
+setMethod("scalarProduct", signature = c("multiFunData", "multiFunData"),
+          function(object1, object2, weight = rep(1, length(object1)),...)
+          {
+            if(length(object1) != length(object2))
+              stop("multiFunData objects must have the same number of elements.")
+            
+            if(length(weight) != length(object1))
+              stop("Weight vector must have the same number of elements as the multiFunData objects.")
+            
+            if(any(weight < 0))
+              stop("Weights must be non-negative.")
+            
+            if(all(weight == 0))
+              stop("At least one weighting factor must be different from 0.")
+            
+            if(length(object1) == 1)
+              return(.scalarProduct(object1,object2,...)*weight)
+            # else: more than one element
+            return(as.numeric(mapply(funData:::.scalarProduct, object1, object2, MoreArgs = list(...), SIMPLIFY = "array") %*% weight))
+          })
+
+#' Scalar product for irregular functional data
+#'
+#' @seealso \code{\link{integrate}}, \code{\link{norm}}.
+#'
+#' @keywords internal
+setMethod("scalarProduct", signature = c("irregFunData", "irregFunData"),
+          .scalarProduct)
+
+#' Scalar product for irregular and functional data
+#'
+#' @seealso \code{\link{integrate}}, \code{\link{norm}}.
+#'
+#' @keywords internal
+setMethod("scalarProduct", signature = c("funData", "irregFunData"),
+          .scalarProduct)
+
+#' Scalar product for irregular and functional data
+#'
+#' @seealso \code{\link{integrate}}, \code{\link{norm}}.
+#'
+#' @keywords internal
+setMethod("scalarProduct", signature = c("irregFunData", "funData"),
+          .scalarProduct)
+
 
 #### get/set ####
 
@@ -1140,7 +1343,7 @@ setMethod("getArgvals", signature = "funData",
 #'
 #' @keywords internal
 setMethod("getArgvals", signature = "multiFunData",
-          function(object){sapply(object, getArgvals)})
+          function(object){lapply(object, getArgvals)})
 
 #' Get argvals slot for irregular functional data objects
 #'

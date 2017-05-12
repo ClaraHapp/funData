@@ -153,7 +153,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param obs A vector of numerics giving the observations to plot. Defaults to 
 #'   all observations in \code{x}. For two-dimensional functions (images) 
 #'   \code{obs} must have length 1.
-#' @param dim The dimensions to plot. Defaults to \code{length(x)}, i.e. all
+#' @param dim The dimensions to plot. Defaults to \code{length(x)}, i.e. all 
 #'   functions in \code{x} are plotted.
 #' @param par.plot Graphic parameters to be passed to the plotting regions. The 
 #'   option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
@@ -161,11 +161,22 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param main A string vector, giving the title of the plot. Can have the same 
 #'   length as \code{dim} (different titles for each dimension) or length 
 #'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the 
-#'   x-axis and no title for the y-axis for all elements. Can be supplied as a 
-#'   vector of the same length as \code{x} (one x-/y-lab for each element) or a 
-#'   single string that is applied for all elements. See 
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} 
+#'   for the x-axis and no title for the y-axis for all elements. Can be 
+#'   supplied as a vector of the same length as \code{dim} (one x-/y-lab for each 
+#'   element) or a single string that is applied for all elements. See 
 #'   \code{\link[graphics]{plot}} for details.
+#' @param log A character string, specifying the axis that is to be logarithmic.
+#'   Can be \code{""} (non-logarithmic axis), \code{"x", "y", "xy"} or 
+#'   \code{"yx"}. Defaults to \code{""} for all plots. Can be supplied as a 
+#'   vector of the same length as \code{dim} (one log-specification for each 
+#'   element) or a single string that is applied for all elements. See 
+#'   \code{\link[graphics]{plot.default}} for details.
+#' @param ylim Specifies the limits of the y-Axis. Can be either \code{NULL} 
+#'   (the default, limits are chosen automatically), a vector of length 2 
+#'   (giving the minimum and maximum range for all elements at the same time) or
+#'   a list of the same length as \code{dim} (specifying the limits for each
+#'   element separately).
 #' @param ... Additional arguments to \code{plot}.
 #'   
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}, 
@@ -200,14 +211,30 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' 
 #' par(oldpar)
 plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
-                              xlab = "argvals", ylab = "", ...){
+                              xlab = "argvals", ylab = "", log = "", ylim = NULL, ...){
   
   if(length(xlab) == 1)
-    xlab <- rep(xlab, length(x))
+    xlab <- rep(xlab, length(dim))
   
   if(length(ylab) == 1)
-    ylab <- rep(ylab, length(x))
+    ylab <- rep(ylab, length(dim))
   
+  if(length(log) == 1)
+    log <- rep(log, length(dim))
+  
+  if(!is.null(ylim)) # if ylim is not set by default...
+  {
+    if(!(is.list(ylim) & length(ylim) == length(dim))) # it can either be a list with separate values for each element
+    {
+      if(is.vector(ylim) & length(ylim) == 2) # or a vector with values to be used for all elements
+        ylim <- rep(list(ylim), length(dim))
+      else
+        stop("The ylim argument must be either a vector (used for all elements) or a list with values for each element.")
+    }  
+  }
+ 
+  if(!is.null(main) & (length(main) == 1))
+    main <- rep(main, length(dim))
   
   # if no par.plot specified: get graphics parameters
   if(is.null(par.plot))
@@ -221,15 +248,9 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   # split screen
   par(mfrow = c(1,length(dim)))
   
-  
-  if(!is.null(main) & (length(main) == 1))
-    main <- rep(main, length(dim))
-  
-  
-  # plot the univariate functions
-  for(i in dim)
-    plot(x[[i]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], ...)
-  
+    # plot the univariate functions
+  for(i in 1:length(dim))
+    plot(x[[dim[i]]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], log = log[i], ylim = ylim[[i]], ...)
   
   # if no par.plot specified: reset graphics parameters
   if(is.null(par.plot))
@@ -238,32 +259,33 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 
 #' Plotting irregular functional data
 #' 
-#' This function plots observations of irregular functional data on their 
-#' domain.
+#' This function plots observations of irregular functional data on their domain.
 #' 
 #' @param x An object of class \code{irregFunData}.
 #' @param y Missing.
-#' @param obs A vector of numerics giving the observations to plot. Defaults to 
-#'   all observations in \code{x}.
-#' @param type The type of plot. Defaults to \code{"b"} (line and point plot).
-#'   See \code{\link[graphics]{plot}} for details.
+#' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in 
+#'   \code{x}.
+#' @param type The type of plot. Defaults to \code{"b"} (line and point plot). See 
+#'   \code{\link[graphics]{plot}} for details.
 #' @param pch The point type. Defaults to \code{20} (solid small circles). See 
 #'   \code{\link[graphics]{par}} for details.
-#' @param col The color of the functions. Defaults to the 
-#'   \code{\link[grDevices]{rainbow}} palette.
-#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"}
-#'   for the x-axis and no title for the y-axis. See
-#'   \code{\link[graphics]{plot}} for details.
-#' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of
-#'   the data that is to plot. See \code{\link[graphics]{plot}} for details.
-#' @param add Logical. If \code{TRUE}, add to current plot (only for 
-#'   one-dimensional functions). Defaults to \code{FALSE}.
+#' @param col The color of the functions. Defaults to the \code{\link[grDevices]{rainbow}} palette.
+#' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} for the x-axis and no
+#'   title for the y-axis. See \code{\link[graphics]{plot}} for details.
+#' @param xlim,ylim The limits for x- and y-axis. Defaults to the total range of the data that is to
+#'   plot. See \code{\link[graphics]{plot}} for details.
+#' @param log A character string, specifying the axis that is to be logarithmic. Can be \code{""} 
+#'   (non-logarithmic axis, the default), \code{"x", "y", "xy"} or \code{"yx"}. See 
+#'   \code{\link[graphics]{plot.default}} for details. This parameter is ignored, if \code{add =
+#'   TRUE}.
+#' @param add Logical. If \code{TRUE}, add to current plot (only for one-dimensional functions). 
+#'   Defaults to \code{FALSE}.
 #' @param ... Additional arguments to \code{\link[graphics]{plot}}.
 #'   
-#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}},
+#' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, 
 #'   \code{\link[graphics]{plot}}
 #'   
-#'  @importFrom grDevices rainbow
+#' @importFrom grDevices rainbow
 #' @importFrom graphics points
 #'   
 #' @examples
@@ -281,14 +303,19 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
                               col = grDevices::rainbow(length(obs)), xlab = "argvals", ylab = "",
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
-                              add = FALSE, ...)
+                              log = "", add = FALSE, ...)
 {
   if(length(col) < length(obs))
     col <- rep(col,length(obs))
   
   if(add == FALSE) # plot new window
   {
-    plot(x = NULL, y = NULL, type = "n", xlim = xlim, ylim = ylim,  xlab = xlab, ylab = ylab, ...)
+    plot(x = xlim, y = ylim, type = "n", xlim = xlim, ylim = ylim,  xlab = xlab, ylab = ylab, log = log,...)
+  }
+  else # check if a log-parameter is passed, that does not match the current plot and give a warning
+  {
+    if((grepl(pattern = "y", x = log) != par()$ylog) | (grepl(pattern = "x", x = log) != par()$xlog))
+      warning("Parameter 'log' cannot be reset when 'add = TRUE'.")
   }
   
   for(i in 1:length(obs))
@@ -414,6 +441,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 
     meltData <- reshape2::melt(data@X[obs, , drop = FALSE], varnames = c("obsInd", "obsPointX"))
     meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
+    meltData$obsInd <- as.factor(meltData$obsInd)
     
     p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
       ggplot2::geom_line(...) + 
@@ -428,6 +456,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData <- reshape2::melt(data@X[obs, , , drop = FALSE], varnames = c("obsInd", "obsPointX", "obsPointY"))
     meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
     meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
+    meltData$obsInd <- as.factor(meltData$obsInd)
     
     p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvalsX", y = "argvalsY")) + 
       ggplot2::geom_raster(ggplot2::aes_string(fill = "value"), ...) + 
@@ -569,6 +598,7 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
   meltData <- reshape2::melt(data@X[obs])
   names(meltData)[2] <- "obsInd"
   meltData$argvals <- unlist(data@argvals[obs])
+  meltData$obsInd <- as.factor(meltData$obsInd)
   
   p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
     ggplot2::geom_line(...) + 
