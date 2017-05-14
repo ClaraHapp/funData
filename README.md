@@ -1,4 +1,9 @@
 # funData
+
+[![Travis-CI Build Status](https://travis-ci.org/ClaraHapp/funData.svg?branch=master)](https://travis-ci.org/ClaraHapp/funData) 
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/funData)](http://cran.r-project.org/package=funData)
+
+
 `funData` is an `R`-package that allows users to easily handle functional data. The data is stored in an object-oriented manner using S4 classes and methods.
 
 ## Highlights ##
