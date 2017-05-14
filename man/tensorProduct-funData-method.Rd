@@ -11,7 +11,7 @@
 Tensor product for functional data
 }
 \seealso{
-\code{\link{meanFunction}}
+\code{\link{tensorProduct}}
 }
 \keyword{internal}
 

@@ -1896,7 +1896,7 @@ setGeneric("tensorProduct", function(...) {standardGeneric("tensorProduct")})
 
 #' Tensor product for functional data
 #'
-#' @seealso \code{\link{meanFunction}}
+#' @seealso \code{\link{tensorProduct}}
 #'
 #' @keywords internal
 setMethod("tensorProduct", signature = c("funData"),
