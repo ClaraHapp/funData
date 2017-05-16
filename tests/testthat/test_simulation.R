@@ -1,6 +1,6 @@
 context("Test simulation methods")
 
-test_that("eFuns"{
+test_that("eFuns", {
   argvals <- seq(0,1,0.01)
   
   # check special cases for M = 1
@@ -15,6 +15,9 @@ test_that("eFuns"{
   expect_equal(norm(efFourier(M = 4, argvals = argvals, linear = TRUE)), 
                c(1, 1, 1, 1.0015304))
   
+  expect_error(eFun(argvals = argvals, M = 2, type = "PolyHigh"), "eFun, type = PolyHigh: specify ignoreDeg !", fixed = TRUE)
+  expect_equal(eFun(argvals = argvals, M = 2, ignoreDeg = 1:2, type = "PolyHigh"),
+               extractObs(eFun(argvals = argvals, M = 4, type = "Poly"), obs = 3:4))
 })
 
 test_that("simFunData",{
