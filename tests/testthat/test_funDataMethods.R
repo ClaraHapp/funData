@@ -56,6 +56,7 @@ test_that("nObsPoints", {
 test_that("extractObs", {
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120, c(4, 5, 6)))
+  f3 <- funData(argvals = list(1:5, 1:6, 1:4), X = array(1:480, c(4, 5, 6, 4)))
   m1 <- multiFunData(list(f1, f2))
   i1 <- irregFunData(argvals = list(1:5, 1:3), X = list(2:6, 2:4))
   
@@ -90,6 +91,9 @@ test_that("extractObs", {
   # univariate FDobject (two-dim)
   expect_equal(extractObs(f2, obs = 2),  funData(argvals = list(1:5, 1:6), X = array(1:120, c(4, 5, 6))[2, , , drop = FALSE]))
   expect_equal(extractObs(f2, argvals = list(1:3, 4:6)), funData(argvals = list(1:3, 4:6), X = array(1:120, c(4, 5, 6))[, 1:3, 4:6]))
+  # univariate FDobject (three-dim)
+  expect_equal(extractObs(f3, obs = 4),  funData(argvals = f3@argvals, X = f3@X[4, , , , drop = FALSE]))
+  expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), funData(argvals = list(1:3, 4:6, 2:4), X = f3@X[, 1:3, 4:6, 2:4]))
   # multivariate FD object
   expect_equal(extractObs(m1, obs = 2), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 2)))  
   # irreg FD object
