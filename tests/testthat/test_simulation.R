@@ -1,5 +1,22 @@
 context("Test simulation methods")
 
+test_that("eFuns"{
+  argvals <- seq(0,1,0.01)
+  
+  # check special cases for M = 1
+  expect_equal(efPoly(M = 1, argvals = argvals), 
+               extractObs(efPoly(M = 4, argvals = argvals), obs = 1))
+  expect_equal(efFourier(M = 1, argvals = argvals), 
+               extractObs(efFourier(M = 4, argvals = argvals), obs = 1))
+  
+  # linear version of Fourier
+  expect_error(efFourier(M = 2, argvals = argvals + 1, linear = TRUE),
+               "efFourier, option linear: not yet implemented for argvals != [0,1]!", fixed = TRUE)
+  expect_equal(norm(efFourier(M = 4, argvals = argvals, linear = TRUE)), 
+               c(1, 1, 1, 1.0015304))
+  
+})
+
 test_that("simFunData",{
   # check errors
   expect_error(simFunData(argvals = 1:10, M = c(10,20), eFunType = "Fourier", eValType = "linear", N = 4),

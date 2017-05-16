@@ -272,7 +272,7 @@ efFourier <- function(argvals, M, linear = FALSE)
   
   if(linear) # overwrite Phi[M, ], add linear function and orthonormalize (Gram-Schmidt)
   {
-    if(!all.equal(range(argvals) , c(0,1)))
+    if(any(range(argvals) != c(0,1)))
       stop("efFourier, option linear: not yet implemented for argvals != [0,1]!")
     
     # orthogonalize (exact function)
