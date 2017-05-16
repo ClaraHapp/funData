@@ -76,3 +76,30 @@ all.equal(nObs(weighted$simData), 7)
 all.equal(norm(weighted$simData)[1], 5.98032046)
 })
 
+test_that("sparsify",{
+  # univariate functional data
+  set.seed(1)
+  f <- simFunData(argvals = seq(0,1, 0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = 2)$simData
+  
+  # check errors:
+  expect_error(sparsify(f, minObs = -1, maxObs = 5), "Sparsification: 'minObs' must be a positive integer!")
+  expect_error(sparsify(f, minObs = 1, maxObs = nObsPoints(f)+1), "Sparsification: 'maxObs' must not exceed the maximal number of observations")
+  expect_error(sparsify(f, minObs = 5, maxObs = 2), "Sparsification: 'minObs' must be smaller or equal to 'maxObs'.")
+  
+  # check functionality:
+  set.seed(2)
+  s <- as.irregFunData(sparsify(f, minObs = 2, maxObs = 4))
+  expect_equal(nObs(s), 2)
+  expect_equal(nObsPoints(s), c(2,2))
+  expect_equal(getArgvals(s), list(c(0.57, 0.70), c(0.94, 0.95)))
+  expect_equal(getX(s), list(c(1.1767821, -2.7691465), c(-2.4019547, -2.3261600)))
+  
+  # multivariate functional data
+  m <- multiFunData(funData(argvals = 1:4, X = rbind(1:4, 2:5)), funData(argvals = 1:5, X = rbind(1:5, 2:6)))
+  set.seed(3)
+  s <- sparsify(m, minObs = c(1, 5), maxObs = c(2, 5))
+  expect_equal(as.irregFunData(s[[1]])@argvals, list(4, 2))
+  expect_equal(as.irregFunData(s[[1]])@X, list(4, 3))
+  expect_equal(s[[2]], m[[2]]) # actually, no sparsification here...
+})
+

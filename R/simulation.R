@@ -78,14 +78,25 @@ setGeneric("sparsify", function(funDataObject, minObs, maxObs) {standardGeneric(
 #' @keywords internal
 setMethod("sparsify", signature = "funData",
           function(funDataObject, minObs, maxObs){
+            if(maxObs > nObsPoints(funDataObject))
+              stop("Sparsification: 'maxObs' must not exceed the maximal number of observations")
+
+            if(minObs < 1)
+              stop("Sparsification: 'minObs' must be a positive integer!")
+            
+            if(maxObs < minObs)
+              stop("Sparsification: 'minObs' must be smaller or equal to 'maxObs'.")
+            
             sparseData <- funDataObject
-            
-            n <- length(sparseData@argvals[[1]]) # total number of observation points
-            
+
             for(i in 1:nObs(sparseData)) # for all observed functions
             {
-              Ni <- sample(minObs:maxObs, 1) # number of observation points
-              notNA <- sample(n, Ni) # sample observation points
+              if(minObs == maxObs)
+                Ni <- minObs
+              else
+                Ni <- sample(minObs:maxObs, 1) # number of observation points
+              
+              notNA <- sample(nObsPoints(funDataObject), Ni) # sample observation points
               sparseData@X[i, -notNA] <- NA  # set all other values to NA
             }
             return(sparseData)})
