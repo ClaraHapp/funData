@@ -103,3 +103,23 @@ test_that("sparsify",{
   expect_equal(s[[2]], m[[2]]) # actually, no sparsification here...
 })
 
+test_that("addError",{
+  # univariate functional data
+  set.seed(1)
+  f <- simFunData(argvals = seq(0,1, 0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = 2)$simData
+  
+  # check functionality:
+  set.seed(2)
+  e1 <- addError(f, sd = 0.5)
+  expect_equal(nObs(e1), 2)
+  expect_equal(nObsPoints(e1), nObsPoints(f))
+  expect_equal(norm(e1), c(3.6424288, 7.7852419))
+  
+  # multivariate functional data
+  m <- multiFunData(funData(argvals = 1:4, X = rbind(1:4, 2:5)), funData(argvals = 1:5, X = rbind(1:5, 2:6)))
+  set.seed(3)
+  e2 <- addError(m, sd = c(0.5, 5))
+  expect_equal(nObs(e2), nObs(m))
+  expect_equal(nObsPoints(e2), nObsPoints(m))
+  expect_equal(norm(e2), c(61.411285, 124.458903)) 
+})
