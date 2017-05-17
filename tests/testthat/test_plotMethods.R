@@ -14,6 +14,7 @@ test_that("plots", {
   # 1D
   object1D <- funData(argvals, outer(seq(0.75, 1.25, length.out = 11), sin(argvals)))
   expect_null(plot(object1D, main = "One-dimensional functional data"))
+  expect_null(plot(object1D, plotNA = TRUE))
   
   # 2D
   X <- array(0, dim = c(2, length(argvals), length(argvals)))
@@ -34,7 +35,7 @@ test_that("plots", {
   # check functionality
   expect_null(plot(m, xlab = "x", ylab = "y", main = "title", obs = 1))
   expect_null(plot(m, xlab = c("x1", "x2"), ylab = c("y1", "y2"),
-                   main = c("title1", "title2"), obs = 2))
+                   main = c("title1", "title2"), obs = 2, par.plot = list(cex = 5)))
   expect_null(plot(multiFunData(object1D, exp(object1D)), log = c("","y"), ylim = list(c(-2,2), c(0.1,4))))
   expect_null(plot(multiFunData(object1D + 2, exp(object1D)), log = "y", ylim = c(0.2,5)))
   
