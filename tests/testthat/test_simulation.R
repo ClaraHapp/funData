@@ -46,7 +46,7 @@ test_that("simFunData",{
   # tensor product eigenfunctions
   set.seed(2)
   f2 <- simFunData(argvals = list(seq(0,1,0.01), seq(-pi/2, pi/2, 0.02)), M = c(5,8), eFunType = c("Poly","Fourier"), eValType = "linear", N = 4)
-
+  
   expect_equal(nObs(f2$trueFuns), 40)
   expect_equal(norm(f2$trueFuns)[1], 1)
   expect_equal(nObs(f2$simData), 4)
@@ -63,37 +63,54 @@ test_that("simMultiFunData", {
                "Function simMultiWeight: method is not implemented for objects of dimension > 2!")
   expect_error(funData:::simMultiWeight(argvals = list(list(1:25), list(1:5,1:4)), M = list(8,c(4,5)), eFunType = list("Fourier"), eValType = "linear"),
                "Function simMultiWeight: basis dimensions must be equal!")
-
+  
   # check split version
-set.seed(1)
-set.seed(1)
-split <- simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
-                         M = 5, eFunType = "Poly", eValType = "linear", N = 7)
-all.equal(nObs(split$trueFuns), 5)
-all.equal(norm(split$trueFuns)[1], 1)
-all.equal(nObs(split$simData), 7)
-all.equal(norm(split$simData)[1], 2.29714788)
-
-# check weighted version for 1D data
-set.seed(2)
-weighted1D <- simMultiFunData(type = "weighted",
-                              argvals = list(list(seq(0,1,0.01)), list(seq(-0.5,0.5,0.02))),
-                              M = c(5,5), eFunType = c("Poly", "Fourier"), eValType = "linear", N = 7)
-all.equal(nObs(weighted1D$trueFuns), 5)
-all.equal(norm(weighted1D$trueFuns)[1], 1)
-all.equal(nObs(weighted1D$simData), 7)
-all.equal(norm(weighted1D$simData)[1], 2.82413497)
-
-# check weighted version for 1D and 2D data
-set.seed(3)
-weighted <- simMultiFunData(type = "weighted",
-                            argvals = list(list(seq(0,1,0.01), seq(0,10,0.1)), list(seq(-0.5,0.5,0.01))),
-                            M = list(c(5,4), 20), eFunType = list(c("Poly", "Fourier"), "Wiener"),
-                            eValType = "linear", N = 7)
-all.equal(nObs(weighted$trueFuns), 20)
-all.equal(norm(weighted$trueFuns)[1], 1)
-all.equal(nObs(weighted$simData), 7)
-all.equal(norm(weighted$simData)[1], 5.98032046)
+  set.seed(1)
+  split <- simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                           M = 5, eFunType = "Poly", eValType = "linear", N = 7)
+  all.equal(nObs(split$trueFuns), 5)
+  all.equal(norm(split$trueFuns)[1], 1)
+  all.equal(nObs(split$simData), 7)
+  all.equal(norm(split$simData)[1], 2.29714788)
+  
+  # check weighted version for 1D data
+  set.seed(2)
+  weighted1D <- simMultiFunData(type = "weighted",
+                                argvals = list(list(seq(0,1,0.01)), list(seq(-0.5,0.5,0.02))),
+                                M = c(5,5), eFunType = c("Poly", "Fourier"), eValType = "linear", N = 7)
+  all.equal(nObs(weighted1D$trueFuns), 5)
+  all.equal(norm(weighted1D$trueFuns)[1], 1)
+  all.equal(nObs(weighted1D$simData), 7)
+  all.equal(norm(weighted1D$simData)[1], 2.82413497)
+  
+  # check weighted version for 1D and 2D data
+  set.seed(3)
+  weighted <- simMultiFunData(type = "weighted",
+                              argvals = list(list(seq(0,1,0.01), seq(0,10,0.1)), list(seq(-0.5,0.5,0.01))),
+                              M = list(c(5,4), 20), eFunType = list(c("Poly", "Fourier"), "Wiener"),
+                              eValType = "linear", N = 7)
+  all.equal(nObs(weighted$trueFuns), 20)
+  all.equal(norm(weighted$trueFuns)[1], 1)
+  all.equal(nObs(weighted$simData), 7)
+  all.equal(norm(weighted$simData)[1], 5.98032046)
+  
+  # check special case for N = 1
+  set.seed(4)
+  split1 <- simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                           M = 5, eFunType = "Poly", eValType = "linear", N = 1)
+  all.equal(nObs(split1$trueFuns), 5)
+  all.equal(norm(split1$trueFuns)[1], 1)
+  all.equal(nObs(split1$simData), 1)
+  all.equal(norm(split1$simData), 2.3134751)
+  
+  set.seed(5)
+  weighted1 <- simMultiFunData(type = "weighted", argvals = list(list(seq(0,1,0.01))),
+                            M = c(5), eFunType = c("Poly"), eValType = "exponential", N = 1)
+  all.equal(nObs(weighted1$trueFuns), 5)
+  all.equal(norm(weighted1$trueFuns)[1], 1)
+  all.equal(nObs(weighted1$simData), 1)
+  all.equal(norm(weighted1$simData), 0.90397833)
+  
 })
 
 test_that("sparsify",{
