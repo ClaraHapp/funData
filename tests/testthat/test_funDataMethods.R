@@ -1,5 +1,12 @@
 context("Test funData methods")
 
+test_that("print",{
+  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
+  expect_output(print(f1), file = "tests/outputs/funData.out")
+  expect_output(print(multiFunData(f1)), file = "tests/outputs/multiFunData.out")
+  expect_output(print(as.irregFunData(f1)), file = "tests/outputs/irregFunData.out")
+})
+
 test_that("dimSupp", {
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   f2 <- funData(argvals = list(1:5, 6:10), X = array(100, c(4, 5, 5)))
@@ -468,4 +475,12 @@ test_that("tensorProduct",{
  expect_equal(sum(var(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1])), 0)
  })
 
-
+test_that("approxNA",{
+  x <- seq(0, 2*pi, 0.1)
+  f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), x)) # linear functions
+  
+  set.seed(1)
+  expect_equal(integrate(f1 - as.irregFunData(approxNA(sparsify(f1, minObs = 5, maxObs = 8)))),
+               rep(0, nObs(f1)))
+  
+})
