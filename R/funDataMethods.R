@@ -175,7 +175,7 @@ setMethod("approxNA", signature = "funData",
             # require zoo
             if (requireNamespace("zoo", quietly = TRUE))
             {
-              return(funData(object@argvals, t(zoo::na.approx(t(object@X)))))
+              return(funData(object@argvals, t(zoo::na.approx(t(object@X), na.rm = FALSE))))
             }
             else
               warning("Package zoo needed for interpolating missing values in plot for funData. Ignoring plotNA = TRUE.")
