@@ -6,28 +6,37 @@
 \alias{ggplot.irregFunData}
 \title{Visualize irregular functional data objects using ggplot}
 \usage{
-ggplot.irregFunData(data, obs = 1:nObs(data), ...)
+ggplot.irregFunData(data, obs = 1:nObs(data), geom = "line", add = FALSE,
+  ...)
 
 \S4method{ggplot}{irregFunData}(data, ...)
 }
 \arguments{
 \item{data}{A \code{irregFunData} object.}
 
-\item{obs}{A vector of numerics giving the observations to plot. Defaults to all observations in
-\code{data}. For two-dimensional functions (images) \code{obs} must have length 1.}
+\item{obs}{A vector of numerics giving the observations to plot. Defaults to
+all observations in \code{data}. For two-dimensional functions (images)
+\code{obs} must have length 1.}
 
-\item{...}{Further parameters passed to \code{\link[ggplot2]{geom_line}}, e.g. \code{alpha,
-color, fill, linetype, size}).}
+\item{geom}{A character string describing the geometric object to use.
+Defaults to \code{"line"}. See \pkg{ggplot2} for details.}
+
+\item{add}{Logical. If \code{TRUE}, add to current plot (only for 
+one-dimensional functions). Defaults to \code{FALSE}.}
+
+\item{...}{Further parameters passed to \code{\link[ggplot2]{stat_identity}},
+e.g. \code{alpha, color, fill, linetype, size}).}
 }
 \value{
-A \code{\link[ggplot2]{ggplot}} object that can be customized using all functionalities
-  of the \pkg{ggplot2} package.
+A \code{\link[ggplot2]{ggplot}} object that can be customized using
+  all functionalities of the \pkg{ggplot2} package.
 }
 \description{
-This function allows to plot \code{irregFunData} objects on their domain based on the 
-\pkg{ggplot2} package. The function provides a wrapper that rearranges the data in a
-\code{irregFunData} object returns a basic \code{\link[ggplot2]{ggplot}} object, which can be 
-customized using all functionalities of the \pkg{ggplot2} package.
+This function allows to plot \code{irregFunData} objects on their domain
+based on the \pkg{ggplot2} package. The function provides a wrapper that
+rearranges the data in a \code{irregFunData} object returns a basic
+\code{\link[ggplot2]{ggplot}} object, which can be customized using all
+functionalities of the \pkg{ggplot2} package.
 }
 \examples{
 # Install packages ggplot2 and gridExtra before running the examples
@@ -44,6 +53,9 @@ ggplot(object)
 
  # Parameters passed to geom_line are passed via the ... argument
 ggplot(object, color = "red", linetype = 3)
+
+# Plot the data and add green dots for the 2nd function
+ggplot(object) + ggplot(object, obs = 2, geom = "point", color = "green", add = T)
 
 # New layers can be added directly to the ggplot object using functions from the ggplot2 package
 g <- ggplot(object)

@@ -6,7 +6,8 @@
 \alias{ggplot.funData}
 \title{Visualize functional data objects using ggplot}
 \usage{
-ggplot.funData(data, obs = 1:nObs(data), plotNA = FALSE, ...)
+ggplot.funData(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE,
+  add = FALSE, ...)
 
 \S4method{ggplot}{funData}(data, ...)
 }
@@ -17,9 +18,15 @@ ggplot.funData(data, obs = 1:nObs(data), plotNA = FALSE, ...)
 all observations in \code{data}. For two-dimensional functions (images) 
 \code{obs} must have length 1.}
 
+\item{geom}{A character string describing the geometric object to use.
+Defaults to \code{"line"}. See \pkg{ggplot2} for details.}
+
 \item{plotNA}{Logical. If \code{TRUE}, missing values are interpolated using 
 the \code{\link{approxNA}} function (only for one-dimensional functions). 
 Defaults to \code{FALSE}. See Details.}
+
+\item{add}{Logical. If \code{TRUE}, add to current plot (only for 
+one-dimensional functions). Defaults to \code{FALSE}.}
 
 \item{...}{Further parameters passed to \code{\link[ggplot2]{geom_line}} (for
 one dimensional domains, e.g. \code{alpha, color, fill, linetype, size}) or
@@ -55,6 +62,9 @@ object <- funData(argvals,
 
 g <- ggplot(object) # returns ggplot object
 g # plot the object
+
+# add the mean function in red
+g + ggplot(meanFunction(object), add = TRUE, col = 2)
 
 # Two-dimensional
 X <- array(0, dim = c(2, length(argvals), length(argvals)))

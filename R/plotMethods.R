@@ -118,7 +118,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
       stop("plot: specify one observation for plotting")
     
     if(add == TRUE)
-      stop("plot: add = TRUE not implemented for images")
+      stop("Option add = TRUE not implemented for images")
     
     # set default color
     if(is.null(col))
@@ -364,9 +364,13 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' @param obs A vector of numerics giving the observations to plot. Defaults to 
 #'   all observations in \code{data}. For two-dimensional functions (images) 
 #'   \code{obs} must have length 1.
+#' @param geom A character string describing the geometric object to use.
+#'   Defaults to \code{"line"}. See \pkg{ggplot2} for details.
 #' @param plotNA Logical. If \code{TRUE}, missing values are interpolated using 
 #'   the \code{\link{approxNA}} function (only for one-dimensional functions). 
 #'   Defaults to \code{FALSE}. See Details.
+#' @param add Logical. If \code{TRUE}, add to current plot (only for 
+#'   one-dimensional functions). Defaults to \code{FALSE}.
 #' @param ... Further parameters passed to \code{\link[ggplot2]{geom_line}} (for
 #'   one dimensional domains, e.g. \code{alpha, color, fill, linetype, size}) or
 #'   to \code{\link[ggplot2]{geom_raster}} (for two-dimensional domains, e.g.
@@ -389,6 +393,9 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' 
 #' g <- ggplot(object) # returns ggplot object
 #' g # plot the object
+#' 
+#' # add the mean function in red
+#' g + ggplot(meanFunction(object), add = TRUE, col = 2)
 #' 
 #' # Two-dimensional
 #' X <- array(0, dim = c(2, length(argvals), length(argvals)))
@@ -425,7 +432,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' 
 #' ggplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
 #'           ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
-ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
+ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE, add = FALSE, ...)
 {
   if(dimSupp(data) > 2)
     stop("ggplot is implemented only for functional data with one- or two-dimensional domain")
@@ -445,8 +452,12 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
     meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
     meltData$obsInd <- as.factor(meltData$obsInd)
     
-    p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
-      ggplot2::geom_line(...) + 
+    if(add == TRUE)
+      p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd"),
+                             geom = geom, ...)
+    else
+      p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
+      ggplot2::stat_identity(geom = geom, ...) + 
       ggplot2::ylab("") 
   }
   
@@ -454,6 +465,9 @@ ggplot.funData <- function(data, obs = 1:nObs(data), plotNA = FALSE, ...)
   {
     if(length(obs) > 1)
       stop("plot: specify one observation for plotting")
+    
+    if(add == TRUE)
+      stop("Option add = TRUE not implemented for images")
     
     meltData <- reshape2::melt(data@X[obs, , , drop = FALSE], varnames = c("obsInd", "obsPointX", "obsPointY"))
     meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
@@ -552,19 +566,25 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 
 #' Visualize irregular functional data objects using ggplot
 #' 
-#' This function allows to plot \code{irregFunData} objects on their domain based on the 
-#' \pkg{ggplot2} package. The function provides a wrapper that rearranges the data in a
-#' \code{irregFunData} object returns a basic \code{\link[ggplot2]{ggplot}} object, which can be 
-#' customized using all functionalities of the \pkg{ggplot2} package.
+#' This function allows to plot \code{irregFunData} objects on their domain
+#' based on the \pkg{ggplot2} package. The function provides a wrapper that
+#' rearranges the data in a \code{irregFunData} object returns a basic
+#' \code{\link[ggplot2]{ggplot}} object, which can be customized using all
+#' functionalities of the \pkg{ggplot2} package.
 #' 
 #' @param data A \code{irregFunData} object.
-#' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in
-#'   \code{data}. For two-dimensional functions (images) \code{obs} must have length 1.
-#' @param ... Further parameters passed to \code{\link[ggplot2]{geom_line}}, e.g. \code{alpha,
-#'   color, fill, linetype, size}).
+#' @param obs A vector of numerics giving the observations to plot. Defaults to
+#'   all observations in \code{data}. For two-dimensional functions (images)
+#'   \code{obs} must have length 1.
+#' @param geom A character string describing the geometric object to use.
+#'   Defaults to \code{"line"}. See \pkg{ggplot2} for details.
+#' @param add Logical. If \code{TRUE}, add to current plot (only for 
+#'   one-dimensional functions). Defaults to \code{FALSE}.
+#' @param ... Further parameters passed to \code{\link[ggplot2]{stat_identity}},
+#'   e.g. \code{alpha, color, fill, linetype, size}).
 #'   
-#' @return A \code{\link[ggplot2]{ggplot}} object that can be customized using all functionalities
-#'   of the \pkg{ggplot2} package.
+#' @return A \code{\link[ggplot2]{ggplot}} object that can be customized using
+#'   all functionalities of the \pkg{ggplot2} package.
 #'   
 #' @seealso \code{\linkS4class{irregFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.irregFunData}}
@@ -585,11 +605,14 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 #'  # Parameters passed to geom_line are passed via the ... argument
 #' ggplot(object, color = "red", linetype = 3)
 #' 
+#' # Plot the data and add green dots for the 2nd function
+#' ggplot(object) + ggplot(object, obs = 2, geom = "point", color = "green", add = T)
+#' 
 #' # New layers can be added directly to the ggplot object using functions from the ggplot2 package
 #' g <- ggplot(object)
 #' g + ggplot2::theme_bw() + ggplot2::ggtitle("Plot with minimal theme and axis labels") +
 #'     ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
-ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
+ggplot.irregFunData <- function(data, obs = 1:nObs(data), geom = "line", add = FALSE, ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
   {
@@ -602,8 +625,12 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), ...)
   meltData$argvals <- unlist(data@argvals[obs])
   meltData$obsInd <- as.factor(meltData$obsInd)
   
+  if(add == TRUE)
+    p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd"),
+                           geom = geom, ...)
+  else
   p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
-    ggplot2::geom_line(...) + 
+    ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
   
   return(p)
