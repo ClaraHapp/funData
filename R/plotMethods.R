@@ -606,7 +606,7 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
 #' ggplot(object, color = "red", linetype = 3)
 #' 
 #' # Plot the data and add green dots for the 2nd function
-#' ggplot(object) + ggplot(object, obs = 2, geom = "point", color = "green", add = T)
+#' ggplot(object) + ggplot(object, obs = 2, geom = "point", color = "green", add = TRUE)
 #' 
 #' # New layers can be added directly to the ggplot object using functions from the ggplot2 package
 #' g <- ggplot(object)
