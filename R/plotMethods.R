@@ -254,8 +254,9 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   # if no par.plot specified: reset graphics parameters
   if(is.null(par.plot))
     par(oldPar)
-  
-  return(NULL)
+
+  # return invisibly
+  invisible()
 }
 
 #' Plotting irregular functional data
