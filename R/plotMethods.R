@@ -140,13 +140,12 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 
 #' Plotting multivariate functional data
 #' 
-#' This function plots observations of multivariate functional data on their 
-#' domain. The graphic device is split in a number of subplots (specified by 
-#' \code{dim}) via \code{mfrow} (\code{\link[graphics]{par}}) and the univariate
-#' elements are plotted using \code{plot}.
+#' This function plots observations of multivariate functional data on their domain. The graphic
+#' device is split in a number of subplots (specified by \code{dim}) via \code{mfrow}
+#' (\code{\link[graphics]{par}}) and the univariate elements are plotted using \code{plot}.
 #' 
-#' @section Warning: The function is currently implemented only for functional 
-#'   data with one- and two-dimensional domains.
+#' @section Warning: The function is currently implemented only for functional data with one- and
+#'   two-dimensional domains.
 #'   
 #' @param x An object of class \code{multiFunData}.
 #' @param y Missing.
@@ -235,7 +234,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
  
   if(!is.null(main) & (length(main) == 1))
     main <- rep(main, length(dim))
-  
+
   # if no par.plot specified: get graphics parameters
   if(is.null(par.plot))
   {
