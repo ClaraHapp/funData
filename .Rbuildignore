@@ -3,6 +3,6 @@
 
 # Travis
 .travis.yml
-
 # License file
 LICENSE
+^appveyor\.yml$
