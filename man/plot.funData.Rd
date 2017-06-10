@@ -89,6 +89,7 @@ plot(object2D, main = "Two-dimensional functional data (obs 1)", obs = 1)
 plot(object2D, main = "Two-dimensional functional data (obs 2)", obs = 2)
 \dontrun{plot(object2D, main = "Two-dimensional functional data")} # must specify obs!
 
+\donttest{
 ### More examples ###
 par(mfrow = c(1,1))
 
@@ -107,6 +108,7 @@ plot(object, main = "1D functional data in heat.colors", col = heat.colors(nObs(
 
 plot(object2D, main = "2D functional data in topo.colors", obs = 1, col = topo.colors(64))
 par(oldpar)
+}
 }
 \seealso{
 \code{\linkS4class{funData}}, \code{\link[graphics]{matplot}}, 

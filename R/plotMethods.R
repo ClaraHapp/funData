@@ -72,6 +72,7 @@
 #' plot(object2D, main = "Two-dimensional functional data (obs 2)", obs = 2)
 #' \dontrun{plot(object2D, main = "Two-dimensional functional data")} # must specify obs!
 #' 
+#' \donttest{
 #' ### More examples ###
 #' par(mfrow = c(1,1))
 #' 
@@ -91,6 +92,7 @@
 #' plot(object2D, main = "2D functional data in topo.colors", obs = 1, col = topo.colors(64))
 
 #' par(oldpar)
+#' }
 plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
                          col = NULL, xlab = "argvals", ylab = "", legend = TRUE,
                          plotNA = FALSE, add = FALSE, ...)
