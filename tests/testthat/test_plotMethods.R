@@ -1,5 +1,7 @@
 context("Test plot methods")
 
+pdf(file=NULL) 
+
 test_that("plots", {
   # check errors
   expect_error(plot(funData(argvals = list(1:5,2:6,3:7), X = array(10*5*5*5, dim = c(10,5,5,5)))),
@@ -78,3 +80,5 @@ test_that("ggplots", {
   # irreg
   expect_s3_class(ggplot(as.irregFunData(object1D)), "ggplot")
 })
+
+dev.off()
