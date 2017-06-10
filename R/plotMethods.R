@@ -533,6 +533,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
 #' 
 #' ggplot(m1, plotGrid = TRUE) # the same directly with plotGrid = TRUE
 #' 
+#' \donttest{
 #' # Mixed-dimensional elements
 #' X <- array(0, dim = c(11, length(argvals), length(argvals)))
 #' X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
@@ -548,6 +549,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
 #' g2[[2]] <- g2[[2]] + ggplot2::ggtitle("Second element") + 
 #'                      ggplot2::scale_fill_gradient(high = "green", low = "blue")
 #' gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
+#' }
 ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE, ...)
 {
   p <- sapply(data[dim], ggplot.funData, obs = obs, ...,  simplify = FALSE)

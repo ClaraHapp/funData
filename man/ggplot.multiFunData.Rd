@@ -61,6 +61,7 @@ gridExtra::grid.arrange(grobs = g, nrow = 1) # requires gridExtra package
 
 ggplot(m1, plotGrid = TRUE) # the same directly with plotGrid = TRUE
 
+\donttest{
 # Mixed-dimensional elements
 X <- array(0, dim = c(11, length(argvals), length(argvals)))
 X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
@@ -76,6 +77,7 @@ g2[[1]] <- g2[[1]] + ggplot2::ggtitle("First element") + ggplot2::theme_bw()
 g2[[2]] <- g2[[2]] + ggplot2::ggtitle("Second element") + 
                      ggplot2::scale_fill_gradient(high = "green", low = "blue")
 gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
+}
 }
 \seealso{
 \code{\linkS4class{multiFunData}}, \code{\link[ggplot2]{ggplot}}, 

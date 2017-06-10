@@ -72,8 +72,9 @@ X[1,,] <- outer(argvals, argvals, function(x,y){sin((x-pi)^2 + (y-pi)^2)})
 X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi) * cos(2*y*pi)})
 object2D <- funData(list(argvals, argvals), X)
 
+\donttest{
 ggplot(object2D, obs = 1)
-ggplot(object2D, obs = 2)
+ggplot(object2D, obs = 2)}
 \dontrun{plot(object2D)} # must specify obs!
 
 ### More examples ###
