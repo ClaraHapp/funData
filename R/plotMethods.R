@@ -408,6 +408,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' \dontrun{plot(object2D)} # must specify obs!
 #' 
 #' ### More examples ###
+#' \donttest{
 #' par(mfrow = c(1,1))
 #' 
 #' # using plotNA (needs packages zoo and gridExtra)
@@ -432,6 +433,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' 
 #' ggplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
 #'           ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
+#' }
 ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE, add = FALSE, ...)
 {
   if(dimSupp(data) > 2)

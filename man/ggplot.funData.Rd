@@ -77,6 +77,7 @@ ggplot(object2D, obs = 2)
 \dontrun{plot(object2D)} # must specify obs!
 
 ### More examples ###
+\donttest{
 par(mfrow = c(1,1))
 
 # using plotNA (needs packages zoo and gridExtra)
@@ -101,6 +102,7 @@ gFancy + ggplot2::ggtitle("Fancy Plot with Title and Axis Legends") +
 
 ggplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
           ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
+}
 }
 \seealso{
 \code{\linkS4class{funData}}, \code{\link[ggplot2]{ggplot}}, 
