@@ -15,7 +15,7 @@
 
 * Univariate and multivariate data
 * Regularly and irregularly sampled data
-* Data with one- and two- (images) and even higher-dimensional domains
+* Data with one-, two- (images) and even higher-dimensional domains
 
 Important functionalities include: 
 
