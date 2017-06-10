@@ -403,8 +403,9 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' X[2,,] <- outer(argvals, argvals, function(x,y){sin(2*x*pi) * cos(2*y*pi)})
 #' object2D <- funData(list(argvals, argvals), X)
 #' 
+#' \donttest{
 #' ggplot(object2D, obs = 1)
-#' ggplot(object2D, obs = 2)
+#' ggplot(object2D, obs = 2)}
 #' \dontrun{plot(object2D)} # must specify obs!
 #' 
 #' ### More examples ###
