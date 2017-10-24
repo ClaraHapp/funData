@@ -92,23 +92,14 @@ setClass("funData", representation = representation(argvals = "list", X = "array
 
 # Validity checks for funData objects
 setValidity("funData", function(object){
-  if(!is(object@argvals, "list"))
-  {
-    return("argvals objects must be supplied as lists of numerics")
-  } else {
     if(!all(sapply(object@argvals, is.numeric, simplify = TRUE)))
       return("all argvals elements must be numeric")
-  }
-  if(!is(object@X, "array"))
-  {
-    return("X elements must be supplied as arrays")
-  } else {
+  
     if(length(object@argvals) != length(dim(object@X)[-1]))
       return("argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md")
     
     if(!all(dim(object@X)[-1] == sapply(object@argvals, length, simplify = TRUE)))
       return("argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md")
-  }
   
   return(TRUE)
 })
@@ -254,10 +245,7 @@ setClass("multiFunData", representation = "list")
 
 # Validity check for multiFunData objects
 setValidity("multiFunData", function(object){
-  if(!is.list(object))
-    return("Objects to multiFunData must be supplied as a list!")
-  
-  if(!all(sapply(object, is, "funData", simplify = TRUE)))
+ if(!all(sapply(object, is, "funData", simplify = TRUE)))
     return("elements of multiFunData must be of class funData!")
   
   if(diff(range(sapply(object,nObs)))!= 0)
@@ -411,14 +399,8 @@ setClass("irregFunData", representation = representation(argvals = "list", X = "
 
 # Validity checks for irregfunData objects
 setValidity("irregFunData", function(object){
-  if(!is(object@argvals, "list"))
-    return("argvals objects must be supplied as list (of numerics)")
-  
   if(any(sapply(object@argvals, function(l){!is.numeric(l)})))
     return("argvals must be supplied as list of numerics")
-  
-  if(!is(object@X, "list"))
-    return("X elements must be supplied as list (of numerics)")
   
   if(any(sapply(object@X, function(l){!is.numeric(l)})))
     return("X must be supplied as list of numerics")
