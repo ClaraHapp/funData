@@ -825,7 +825,8 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' integrate(multiObject)
-setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
+setGeneric("integrate", function(object, ...) {standardGeneric("integrate")},
+           useAsDefault = function(object, ...) stats::integrate(f = object, ...))
 
 # integration weights (internal functions)
 
