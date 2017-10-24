@@ -3,8 +3,11 @@
 \name{norm}
 \alias{norm}
 \title{Calculate the norm of functional data}
+\usage{
+norm(object, ...)
+}
 \arguments{
-\item{x}{An object of class \code{funData}, \code{irregFunData} or
+\item{object}{An object of class \code{funData}, \code{irregFunData} or
 \code{multiFunData}.}
 
 \item{...}{Further parameters (see Details).}
