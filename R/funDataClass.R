@@ -70,8 +70,9 @@ NULL
 #' # A more realistic object
 #' argvals <- seq(0,2*pi,0.01)
 #' object <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
-#' # Display gives basic information
+#' # Display / summary give basic information
 #' object 
+#' summary(object)
 #' # Use the plot function to get an impression of the data
 #' plot(object) 
 #' 
@@ -87,6 +88,8 @@ NULL
 #' all.equal(g1,g2)
 #' # Display funData object in the console
 #' g2 
+#' # Summarize information
+#' summary(g2)
 setClass("funData", representation = representation(argvals = "list", X = "array"))
 
 
@@ -204,6 +207,8 @@ setMethod("funData", signature = c(argvals = "numeric", X = "array"),
 #' all.equal(m1,m3)
 #' # Display multiFunData object in the console
 #' m3
+#' # Summarize
+#' summary(m3)
 #' 
 #' ### Creating a multifunData object with 2 observations on different domains (both 1D)
 #' # A new element
@@ -236,6 +241,8 @@ setMethod("funData", signature = c(argvals = "numeric", X = "array"),
 #' m6 <- multiFunData(f1,f2)
 #' # Display multiFunData object in the console for basic information
 #' m6
+#' # Summarize
+#' summary(m6)
 #' # Use the plot function to get an impression of the data
 #' \dontrun{plot(m6)} # m6 has 2D element, must specify one observation for plotting
 #' plot(m6, obs = 1, main = c("1st element (obs 1)", "2nd element (obs 1)"))
@@ -383,6 +390,8 @@ setMethod("as.multiFunData", signature = "funData",
 #' i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' # Display in the console
 #' i1
+#' # Summarize
+#' summary(i1)
 #' 
 #' # A more realistic object
 #' argvals <- seq(0,2*pi, 0.01)
@@ -390,8 +399,9 @@ setMethod("as.multiFunData", signature = "funData",
 #' argvalsIrreg <- lapply(ind, function(i){argvals[i]})
 #' i2 <- irregFunData(argvals = argvalsIrreg, X = mapply(function(x, a){a * sin(x)},
 #'              x = argvalsIrreg, a = seq(0.75, 1.25, by = 0.05)))
-#' # Display gives basic information
+#' # Display/summary gives basic information
 #' i2
+#' summary(i2)
 #' # Use the plot function to get an impression of the data
 #' plot(i2) 
 setClass("irregFunData", representation = representation(argvals = "list", X = "list"))

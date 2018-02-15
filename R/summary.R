@@ -1,6 +1,13 @@
 ### Summary methods for functional data classes ###
 
-setMethod("summary", signature= "funData",
+#' @describeIn funData A \code{summary} method for \code{funData} objects.
+#'
+#' @param object A \code{funData} object.
+#'
+#' @docType methods
+#'
+#' @exportMethod summary
+setMethod("summary", signature = "funData",
           function(object, ...)
           {
             argvalsSummary <- do.call("rbind", lapply(object@argvals, summary, ...))
@@ -15,7 +22,15 @@ setMethod("summary", signature= "funData",
             return(res)
           })
 
-setMethod("summary", signature= "multiFunData",
+
+#' @describeIn multiFunData A \code{summary} method for \code{multiFunData} objects.
+#'
+#' @param object A \code{multiFunData} object.
+#'
+#' @docType methods
+#'
+#' @exportMethod summary
+setMethod("summary", signature = "multiFunData",
           function(object, ...)
           {
             res <- lapply(object, summary, ...)
@@ -24,7 +39,15 @@ setMethod("summary", signature= "multiFunData",
             return(res)
           })
 
-setMethod("summary", signature= "irregFunData",
+
+#' @describeIn irregFunData A \code{summary} method for \code{irregFunData} objects.
+#'
+#' @param object A \code{irregFunData} object.
+#'
+#' @docType methods
+#'
+#' @exportMethod summary
+setMethod("summary", signature = "irregFunData",
           function(object, ...)
           {
             argvalsSummary <- do.call("cbind", lapply(object@argvals, summary))
@@ -40,6 +63,7 @@ setMethod("summary", signature= "irregFunData",
           })
 
 
+#' @keywords internal
 print.summary.funData <- function(x, ...)
 {
   if(class(x) != "summary.funData")
@@ -55,6 +79,8 @@ print.summary.funData <- function(x, ...)
   invisible(x)
 }
 
+
+#' @keywords internal
 print.summary.multiFunData <- function(x, ...)
 {
   if(class(x) != "summary.multiFunData")
@@ -67,6 +93,8 @@ print.summary.multiFunData <- function(x, ...)
   invisible(x)
 }
 
+
+#' @keywords internal
 print.summary.irregFunData <- function(x, ...)
 {
   if(class(x) != "summary.irregFunData")
