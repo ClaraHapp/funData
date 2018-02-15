@@ -9,6 +9,16 @@ test_that("print",{
 
 test_that("summary",{
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
+  
+  # check errors
+  expect_error(funData:::print.summary.funData(summary(multiFunData(f1))), 
+               "Argument is not of class 'summary.funData'.")
+  expect_error(funData:::print.summary.multiFunData(summary(f1)), 
+               "Argument is not of class 'summary.multiFunData'.")
+  expect_error(funData:::print.summary.irregFunData(summary(f1)), 
+               "Argument is not of class 'summary.irregFunData'.")
+  
+  # check functionality
   expect_known_output(print(summary(f1)), file = "outputs/summary_funData.out")
   expect_known_output(print(summary(multiFunData(f1))), file = "outputs/summary_multiFunData.out")
   expect_known_output(print(summary(as.irregFunData(f1))), file = "outputs/summary_irregFunData.out")

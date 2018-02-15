@@ -60,7 +60,7 @@ setMethod("summary", signature = "irregFunData",
 #' @keywords internal
 print.summary.funData <- function(x, ...)
 {
-  if(class(x) != "summary.funData")
+  if(!inherits(x, "summary.funData"))
     stop("Argument is not of class 'summary.funData'.")
   
   cat("Argument values (@argvals):\n")
@@ -77,7 +77,7 @@ print.summary.funData <- function(x, ...)
 #' @keywords internal
 print.summary.multiFunData <- function(x, ...)
 {
-  if(class(x) != "summary.multiFunData")
+  if(!inherits(x, "summary.multiFunData"))
     stop("Argument is not of class 'summary.multiFunData'.")
   
   sapply(1:length(x), function(i){
@@ -91,7 +91,7 @@ print.summary.multiFunData <- function(x, ...)
 #' @keywords internal
 print.summary.irregFunData <- function(x, ...)
 {
-  if(class(x) != "summary.irregFunData")
+  if(!inherits(x, "summary.irregFunData"))
     stop("Argument is not of class 'summary.irregFunData'.")
   
   cat("Argument values (@argvals):\n")
@@ -99,7 +99,7 @@ print.summary.irregFunData <- function(x, ...)
   
   cat("\nObserved functions (@X):\n")
   print(x$X)
-  
+
   cat("\n")
   invisible(x)
 }
