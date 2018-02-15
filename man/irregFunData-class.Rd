@@ -21,6 +21,8 @@
 \item{X}{A list of numerics, corresponding to the observed functions \eqn{X_i} (see Details).}
 
 \item{object}{An \code{irregFunData} object.}
+
+\item{...}{Other parameters passed to \code{summary}.}
 }
 \description{
 The \code{irregFunData} class represents functional data that is sampled 

@@ -29,6 +29,8 @@ M_d} for higher-dimensional domains), giving the observed values for
 Details.}
 
 \item{object}{A \code{funData} object.}
+
+\item{...}{Other parameters passed to \code{summary}.}
 }
 \description{
 The \code{funData} class represents functional data on \eqn{d}{d}-dimensional
