@@ -2,9 +2,9 @@
 % Please edit documentation in R/funDataClass.R, R/funDataMethods.R
 \docType{class}
 \name{irregFunData-class}
+\alias{irregFunData-class}
 \alias{irregFunData}
 \alias{irregFunData,list,list-method}
-\alias{irregFunData-class}
 \alias{show,irregFunData-method}
 \title{A class for irregularly sampled functional data}
 \usage{
@@ -63,6 +63,7 @@ objects.
 \item \code{show}: Print basic information about the \code{irregFunData} object
 in the console. The default console output for \code{irregFunData} objects.
 }}
+
 \section{Slots}{
 
 \describe{
@@ -72,11 +73,13 @@ for each realization \eqn{X_i} of \eqn{X}.}
 \item{\code{X}}{A list of numerics, representing the values of each observation 
 \eqn{X_i} of \eqn{X} on the corresponding observation points \eqn{T_i}.}
 }}
+
 \section{Warning}{
  Currently, the class is implemented only for functional 
   data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{\calT
   \subset IR}.
 }
+
 \examples{
 # Construct an irregular functional data object
 i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
@@ -97,4 +100,3 @@ plot(i2)
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 }
-

@@ -31,4 +31,3 @@ nObs(multiObject)
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
-

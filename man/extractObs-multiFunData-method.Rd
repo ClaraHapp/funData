@@ -12,4 +12,3 @@
 extractObs for multiFunData objects
 }
 \keyword{internal}
-

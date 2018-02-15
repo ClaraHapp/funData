@@ -14,4 +14,3 @@ Set X slot for multiFunData objects
 \code{\link{setX}}
 }
 \keyword{internal}
-

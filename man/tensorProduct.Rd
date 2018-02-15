@@ -22,6 +22,7 @@ class \code{funData} defined on one-dimensional domains.
  The function is only implemented for up to three functions
   on one-dimensional domains.
 }
+
 \examples{
 
 ### Tensor product of two functional data objects
@@ -51,4 +52,3 @@ dimSupp(tP2)
 \seealso{
 \code{\linkS4class{funData}}
 }
-

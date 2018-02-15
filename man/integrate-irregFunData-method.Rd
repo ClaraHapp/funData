@@ -15,4 +15,3 @@ Integrate method for irregular functional data objects
 \code{\link{integrate}}, \code{\linkS4class{irregFunData}}
 }
 \keyword{internal}
-

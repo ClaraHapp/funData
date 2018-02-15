@@ -46,4 +46,3 @@ legend("topright", legend = c("linear", "exponential", "wiener"), pch = 20, col 
 
 par(oldpar)
 }
-

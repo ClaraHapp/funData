@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{plot.multiFunData}
-\alias{plot,multiFunData,missing-method}
 \alias{plot.multiFunData}
+\alias{plot,multiFunData,missing-method}
 \title{Plotting multivariate functional data}
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
@@ -62,6 +62,7 @@ device is split in a number of subplots (specified by \code{dim}) via \code{mfro
  The function is currently implemented only for functional data with one- and
   two-dimensional domains.
 }
+
 \examples{
 oldpar <- par(no.readonly = TRUE)
 argvals <- seq(0, 2*pi, 0.1)
@@ -95,4 +96,3 @@ par(oldpar)
 \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}, 
   \code{\link{plot.funData}}
 }
-

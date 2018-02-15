@@ -12,4 +12,3 @@
 extractObs for irregular functional data
 }
 \keyword{internal}
-

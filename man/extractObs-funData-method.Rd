@@ -12,4 +12,3 @@
 extractObs for funData objects
 }
 \keyword{internal}
-

@@ -14,4 +14,3 @@ Set argvals slot for funData objects
 \code{\link{setArgvals}}
 }
 \keyword{internal}
-

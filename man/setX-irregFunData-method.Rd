@@ -14,4 +14,3 @@ Set X slot for irregular functional data objects
 \code{\link{setX}}
 }
 \keyword{internal}
-

@@ -2,18 +2,18 @@
 % Please edit documentation in R/funDataMethods.R
 \docType{methods}
 \name{Arith.funData}
+\alias{Arith.funData}
 \alias{Arith,funData,funData-method}
-\alias{Arith,funData,irregFunData-method}
 \alias{Arith,funData,numeric-method}
-\alias{Arith,irregFunData,funData-method}
-\alias{Arith,irregFunData,irregFunData-method}
-\alias{Arith,irregFunData,numeric-method}
+\alias{Arith,numeric,funData-method}
 \alias{Arith,multiFunData,multiFunData-method}
 \alias{Arith,multiFunData,numeric-method}
-\alias{Arith,numeric,funData-method}
-\alias{Arith,numeric,irregFunData-method}
 \alias{Arith,numeric,multiFunData-method}
-\alias{Arith.funData}
+\alias{Arith,irregFunData,numeric-method}
+\alias{Arith,numeric,irregFunData-method}
+\alias{Arith,irregFunData,irregFunData-method}
+\alias{Arith,irregFunData,funData-method}
+\alias{Arith,funData,irregFunData-method}
 \title{Arithmetics for functional data objects}
 \usage{
 \S4method{Arith}{funData,funData}(e1, e2)
@@ -75,6 +75,7 @@ object.}
   \code{funData}, \code{irregFunData} or \code{multiFunData} and \code{e2} is
   numeric. The reverse is not true.
 }
+
 \examples{
 oldpar <- par(no.readonly = TRUE)
 par(mfrow = c(3,2), mar = rep(2.1,4))
@@ -119,4 +120,3 @@ par(oldpar)
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}, 
   \link[methods]{Arith}
 }
-

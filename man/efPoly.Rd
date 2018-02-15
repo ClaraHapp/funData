@@ -25,4 +25,3 @@ degree 0,...,M-1 on an arbitrary interval.
 \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 }
 \keyword{internal}
-

@@ -2,9 +2,9 @@
 % Please edit documentation in R/funDataClass.R
 \docType{class}
 \name{multiFunData-class}
+\alias{multiFunData-class}
 \alias{multiFunData}
 \alias{multiFunData,ANY-method}
-\alias{multiFunData-class}
 \title{A class for multivariate functional data}
 \usage{
 \S4method{multiFunData}{ANY}(...)
@@ -49,6 +49,7 @@ one element using \code{as.multiFunData(funDataObject).}
 \item \code{multiFunData}: Constructor for multivariate functional data
 objects.
 }}
+
 \examples{
 ### Creating a multifunData object with 2 observations on the same domain
 # Univariate elements
@@ -106,4 +107,3 @@ plot(m6, obs = 6, main = c("1st element (obs 6)", "2nd element (obs 6)"))
 \seealso{
 \code{\linkS4class{funData}}
 }
-

@@ -14,4 +14,3 @@ Mean for functional data
 \code{\link{meanFunction}}
 }
 \keyword{internal}
-

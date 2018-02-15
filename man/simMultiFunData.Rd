@@ -159,4 +159,3 @@ C. Happ, S. Greven (2015): Multivariate Functional Principal
   \code{\link{eVal}}, \code{\link{simFunData}}, \code{\link{addError}}, 
   \code{\link{sparsify}}.
 }
-

@@ -11,4 +11,3 @@
 Add gaussian white noise to functional data
 }
 \keyword{internal}
-

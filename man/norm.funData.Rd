@@ -13,4 +13,3 @@ Calculate the norm for univariate functional data
 \code{\link{norm}}
 }
 \keyword{internal}
-

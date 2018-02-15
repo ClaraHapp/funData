@@ -11,4 +11,3 @@
 nObsPoints for funData objects
 }
 \keyword{internal}
-

@@ -11,4 +11,3 @@
 sparsify for multivariate functional data
 }
 \keyword{internal}
-

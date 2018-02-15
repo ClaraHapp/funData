@@ -14,4 +14,3 @@ This function prints basic information about a \code{funData} object. This is
 the standard console output for \code{funData} objects.
 }
 \keyword{internal}
-

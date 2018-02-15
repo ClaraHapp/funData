@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{ggplot.irregFunData}
-\alias{ggplot,irregFunData-method}
 \alias{ggplot.irregFunData}
+\alias{ggplot,irregFunData-method}
 \title{Visualize irregular functional data objects using ggplot}
 \usage{
 ggplot.irregFunData(data, obs = 1:nObs(data), geom = "line", add = FALSE,
@@ -66,4 +66,3 @@ g + ggplot2::theme_bw() + ggplot2::ggtitle("Plot with minimal theme and axis lab
 \code{\linkS4class{irregFunData}}, \code{\link[ggplot2]{ggplot}}, 
   \code{\link{plot.irregFunData}}
 }
-

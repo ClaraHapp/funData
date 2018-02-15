@@ -14,4 +14,3 @@ Constructor for irregular functional data objects
 \code{\linkS4class{irregFunData}}
 }
 \keyword{internal}
-

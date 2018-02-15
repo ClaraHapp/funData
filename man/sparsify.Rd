@@ -42,6 +42,7 @@ observations \deqn{ x_{i,r}^{(j)} = x_i^{(j)}(t_{j,r}), \quad r = 1
 
 This function is currently implemented for 1D data only.
 }
+
 \examples{
 oldPar <- par(no.readonly = TRUE)
 par(mfrow = c(1,1))
@@ -81,4 +82,3 @@ Yao, F., H.-G. Mueller and J.-L. Wang (2005): Functional Data
   \code{\link{simFunData}}, \code{\link{simMultiFunData}},
   \code{\link{addError}}.
 }
-

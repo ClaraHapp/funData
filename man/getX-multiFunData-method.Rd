@@ -14,4 +14,3 @@ Get X slot for multiFunData objects
 \code{\link{getX}}
 }
 \keyword{internal}
-

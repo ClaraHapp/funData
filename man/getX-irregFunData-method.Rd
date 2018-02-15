@@ -14,4 +14,3 @@ Get X slot for irregular functional data objects
 \code{\link{getX}}
 }
 \keyword{internal}
-

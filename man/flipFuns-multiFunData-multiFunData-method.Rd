@@ -14,4 +14,3 @@ Flip multivariate functional data
 \code{\link{flipFuns}}
 }
 \keyword{internal}
-

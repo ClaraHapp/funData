@@ -14,4 +14,3 @@ Flip univariate functional data
 \code{\link{flipFuns}}
 }
 \keyword{internal}
-

@@ -14,4 +14,3 @@ Get argvals slot for irregular functional data objects
 \code{\link{getArgvals}}
 }
 \keyword{internal}
-

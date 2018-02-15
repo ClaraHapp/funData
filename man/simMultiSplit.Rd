@@ -10,4 +10,3 @@ simMultiSplit(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 Simulate multivariate eigenfunctions based on a split 'big' ONB
 }
 \keyword{internal}
-

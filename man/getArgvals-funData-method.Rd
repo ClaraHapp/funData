@@ -14,4 +14,3 @@ Get argvals slot for funData objects
 \code{\link{getArgvals}}
 }
 \keyword{internal}
-

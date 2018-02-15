@@ -11,4 +11,3 @@
 nObs for multiFunData objects
 }
 \keyword{internal}
-

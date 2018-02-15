@@ -54,6 +54,7 @@ flipped, i.e. multiplied by -1.
 The function is currently implemented only for functional data with one- and 
 two-dimensional domains.
 }
+
 \examples{
 
 ### Univariate
@@ -121,4 +122,3 @@ par(oldpar)
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
   \code{\linkS4class{multiFunData}}, \code{\link{Arith.funData}}
 }
-

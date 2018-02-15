@@ -11,4 +11,3 @@
 dimSupp for multiFunData objects
 }
 \keyword{internal}
-

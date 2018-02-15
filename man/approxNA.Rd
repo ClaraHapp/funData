@@ -21,6 +21,7 @@ the \link[zoo]{na.approx} interpolation method from the package \pkg{zoo}.
  This function requires the package \pkg{zoo} to be 
   installed, otherwise it will throw a warning.
 }
+
 \examples{
 # Simulate some data
 f <- simFunData(N = 10, M = 8, eVal = "linear", eFun = "Poly", argvals = seq(0, 1, 0.01))$simData
@@ -38,4 +39,3 @@ plot(approxNA(fSparse), main = "Reconstructed Data")
 
 par(oldpar)
 }
-

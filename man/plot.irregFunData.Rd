@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{plot.irregFunData}
-\alias{plot,irregFunData,missing-method}
 \alias{plot.irregFunData}
+\alias{plot,irregFunData,missing-method}
 \title{Plotting irregular functional data}
 \usage{
 plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
@@ -65,4 +65,3 @@ par(oldpar)
 \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\link[graphics]{plot}}
 }
-

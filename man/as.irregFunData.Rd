@@ -21,4 +21,3 @@ This function coerces an object of class \code{funData} to a
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}
 }
-

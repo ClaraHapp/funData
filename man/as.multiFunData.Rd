@@ -32,4 +32,3 @@ class(m1)
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}
 }
-

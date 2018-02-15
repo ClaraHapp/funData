@@ -34,6 +34,7 @@ integrals. Defaults to \code{FALSE}. For details on the extrapolation, see
  The function is currently implemented only for functional 
   data with up to three-dimensional domains.
 }
+
 \examples{
 # Univariate
 object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
@@ -52,4 +53,3 @@ integrate(multiObject)
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
   \code{\linkS4class{multiFunData}}
 }
-

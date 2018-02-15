@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{ggplot.multiFunData}
-\alias{ggplot,multiFunData-method}
 \alias{ggplot.multiFunData}
+\alias{ggplot,multiFunData-method}
 \title{Visualize multivariate functional data objects using ggplot}
 \usage{
 ggplot.multiFunData(data, obs = 1:nObs(data), dim = 1:length(data),
@@ -43,6 +43,7 @@ functionalities of the \pkg{ggplot2} package.
  Currently, the function does not accept different parameters for the univariate
   elements.
 }
+
 \examples{
 # Install packages ggplot2 and gridExtra before running the examples
 \dontshow{requireNamespace("ggplot2", quietly = TRUE); requireNamespace("gridExtra", quietly = TRUE)}
@@ -83,4 +84,3 @@ gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
 \code{\linkS4class{multiFunData}}, \code{\link[ggplot2]{ggplot}}, 
   \code{\link{plot.multiFunData}}
 }
-

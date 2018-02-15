@@ -11,4 +11,3 @@
 nObs for funData objects
 }
 \keyword{internal}
-

@@ -2,10 +2,10 @@
 % Please edit documentation in R/funDataClass.R, R/funDataMethods.R
 \docType{class}
 \name{funData-class}
+\alias{funData-class}
 \alias{funData}
 \alias{funData,list,array-method}
 \alias{funData,numeric,array-method}
-\alias{funData-class}
 \alias{show,funData-method}
 \title{A class for (univariate) functional data}
 \usage{
@@ -82,6 +82,7 @@ given as vector of numerics (only valid for one-dimensional domains).
 \item \code{show}: Print basic information about the \code{funData} object
 in the console. The default console output for \code{funData} objects.
 }}
+
 \section{Slots}{
 
 \describe{
@@ -89,6 +90,7 @@ in the console. The default console output for \code{funData} objects.
 
 \item{\code{X}}{The functional data samples. See Details.}
 }}
+
 \examples{
 ### Creating a one-dimensional funData object with 2 observations
 # Basic
@@ -127,4 +129,3 @@ g2
 \seealso{
 \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
-

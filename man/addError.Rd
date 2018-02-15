@@ -62,4 +62,3 @@ par(oldPar)
 \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}},
   \code{\link{simFunData}}, \code{\link{simMultiFunData}}.
 }
-
