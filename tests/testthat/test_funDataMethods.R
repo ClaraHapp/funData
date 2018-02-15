@@ -2,16 +2,16 @@ context("Test funData methods")
 
 test_that("print",{
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  expect_output(print(f1), file = "tests/outputs/funData.out")
-  expect_output(print(multiFunData(f1)), file = "tests/outputs/multiFunData.out")
-  expect_output(print(as.irregFunData(f1)), file = "tests/outputs/irregFunData.out")
+  expect_known_output(print(f1), file = "outputs/print_funData.out")
+  expect_known_output(print(multiFunData(f1)), file = "outputs/print_multiFunData.out")
+  expect_known_output(print(as.irregFunData(f1)), file = "outputs/print_irregFunData.out")
 })
 
 test_that("summary",{
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  expect_known_output(print(summary(f1)), file = "tests/testthat/outputs/summary_funData.out")
-  expect_known_output(print(summary(multiFunData(f1))), file = "tests/testthat/outputs/summary_multiFunData.out")
-  expect_known_output(print(summary(as.irregFunData(f1))), file = "tests/testthatoutputs/summary_irregFunData.out")
+  expect_known_output(print(summary(f1)), file = "outputs/summary_funData.out")
+  expect_known_output(print(summary(multiFunData(f1))), file = "outputs/summary_multiFunData.out")
+  expect_known_output(print(summary(as.irregFunData(f1))), file = "outputs/summary_irregFunData.out")
 })
 
 test_that("dimSupp", {
