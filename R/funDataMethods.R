@@ -1012,7 +1012,8 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
 #'   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
 #'   
-#' @export norm
+#' @name norm
+#' @exportMethod norm
 #'   
 #' @examples
 #' # Univariate
@@ -1028,8 +1029,7 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' norm(multiObject)
 #' norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to the first element
-setGeneric("norm", function(object, ...) {standardGeneric("norm")},
-           useAsDefault = function(object, ...) base::norm(x = object, ...))
+NULL
 
 #' Calculate the norm for univariate functional data
 #'
@@ -1051,9 +1051,9 @@ norm.funData <- function(object, squared, obs, method, weight)
 #' @seealso \code{\link{norm}}, \code{\linkS4class{funData}}
 #'
 #' @keywords internal
-setMethod("norm", signature = "funData",
-          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1){
-            norm.funData(object, squared, obs, method, weight)
+setMethod("norm", signature = signature(x = "funData", type = "missing"),
+          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1){
+            norm.funData(object = x, squared, obs, method, weight)
           })
 
 #' Calculate the norm for multivariate functional data
@@ -1061,11 +1061,11 @@ setMethod("norm", signature = "funData",
 #' @seealso \code{\link{norm}}, \code{\linkS4class{multiFunData}}
 #'
 #' @keywords internal
-setMethod("norm", signature = "multiFunData",
-          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = rep(1, length(object)))
+setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
+          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = rep(1, length(x)))
           {
             # univariate functions must be squared in any case!
-            uniNorms <- mapply(norm, object = object, weight = weight, 
+            uniNorms <- mapply(norm, x, weight = weight, 
                                MoreArgs = list(squared = TRUE, obs = obs, method = method), SIMPLIFY = "array")
             
             # handle one observation separate, as rowSums does not work in that case...
@@ -1105,9 +1105,9 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 #' @seealso \code{\link{norm}}, \code{\linkS4class{irregFunData}}
 #'
 #' @keywords internal
-setMethod("norm", signature = "irregFunData",
-          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1, fullDom = FALSE){
-            norm.irregFunData(object, squared, obs, method, weight, fullDom)
+setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
+          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1, fullDom = FALSE){
+            norm.irregFunData(object = x, squared, obs, method, weight, fullDom)
           })
 
 #### Scalar product ####
