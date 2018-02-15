@@ -7,6 +7,13 @@ test_that("print",{
   expect_output(print(as.irregFunData(f1)), file = "tests/outputs/irregFunData.out")
 })
 
+test_that("summary",{
+  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
+  expect_known_output(print(summary(f1)), file = "tests/testthat/outputs/summary_funData.out")
+  expect_known_output(print(summary(multiFunData(f1))), file = "tests/testthat/outputs/summary_multiFunData.out")
+  expect_known_output(print(summary(as.irregFunData(f1))), file = "tests/testthatoutputs/summary_irregFunData.out")
+})
+
 test_that("dimSupp", {
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   f2 <- funData(argvals = list(1:5, 6:10), X = array(100, c(4, 5, 5)))
