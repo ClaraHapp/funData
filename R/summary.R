@@ -15,6 +15,15 @@ setMethod("summary", signature= "funData",
             return(res)
           })
 
+setMethod("summary", signature= "multiFunData",
+          function(object, ...)
+          {
+            res <- lapply(object, summary, ...)
+            class(res) <- "summary.multiFunData"
+            
+            return(res)
+          })
+
 
 print.summary.funData <- function(x, ...)
 {
@@ -24,8 +33,22 @@ print.summary.funData <- function(x, ...)
   cat("Argument values (@argvals):\n")
   print(x$argvals)
   
-  cat("\nObserved functions (@X):")
+  cat("\nObserved functions (@X):\n")
   print(x$X)
+  
+  cat("\n")
+  invisible(x)
+}
+
+print.summary.multiFunData <- function(x, ...)
+{
+  if(class(x) != "summary.multiFunData")
+    stop("Argument is not of class 'summary.multiFunData'.")
+  
+  sapply(1:length(x), function(i){
+    cat("--- Element", i, " ---\n")
+    print.summary.funData(x[[i]])})
   
   invisible(x)
 }
+
