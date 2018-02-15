@@ -2,8 +2,6 @@
 
 #' @describeIn funData A \code{summary} method for \code{funData} objects.
 #'
-#' @param object A \code{funData} object.
-#'
 #' @docType methods
 #'
 #' @exportMethod summary
@@ -25,8 +23,6 @@ setMethod("summary", signature = "funData",
 
 #' @describeIn multiFunData A \code{summary} method for \code{multiFunData} objects.
 #'
-#' @param object A \code{multiFunData} object.
-#'
 #' @docType methods
 #'
 #' @exportMethod summary
@@ -41,8 +37,6 @@ setMethod("summary", signature = "multiFunData",
 
 
 #' @describeIn irregFunData A \code{summary} method for \code{irregFunData} objects.
-#'
-#' @param object A \code{irregFunData} object.
 #'
 #' @docType methods
 #'

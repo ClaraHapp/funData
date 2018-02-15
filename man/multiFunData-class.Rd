@@ -15,8 +15,6 @@
 \arguments{
 \item{...}{A list of funData objects or several funData objects passed as one
 argument, each. See Details.}
-
-\item{object}{A \code{multiFunData} object.}
 }
 \description{
 The \code{multiFunData} class represents multivariate functional data on 
