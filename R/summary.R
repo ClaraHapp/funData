@@ -24,6 +24,21 @@ setMethod("summary", signature= "multiFunData",
             return(res)
           })
 
+setMethod("summary", signature= "irregFunData",
+          function(object, ...)
+          {
+            argvalsSummary <- do.call("cbind", lapply(object@argvals, summary))
+            colnames(argvalsSummary) <- paste("Obs", 1:nObs(object))
+            
+            XSummary <- do.call("cbind", lapply(object@X, summary))
+            colnames(XSummary) <- paste("Obs", 1:nObs(object))
+            
+            res <- list(argvals = argvalsSummary, X = XSummary)
+            class(res) <- c("summary.irregFunData")
+            
+            return(res)
+          })
+
 
 print.summary.funData <- function(x, ...)
 {
@@ -52,3 +67,17 @@ print.summary.multiFunData <- function(x, ...)
   invisible(x)
 }
 
+print.summary.irregFunData <- function(x, ...)
+{
+  if(class(x) != "summary.irregFunData")
+    stop("Argument is not of class 'summary.irregFunData'.")
+  
+  cat("Argument values (@argvals):\n")
+  print(x$argvals)
+  
+  cat("\nObserved functions (@X):\n")
+  print(x$X)
+  
+  cat("\n")
+  invisible(x)
+}
