@@ -37,8 +37,6 @@
 \item{value}{The names to be given to the \code{irregFunData} curves.}
 
 \item{...}{Other parameters passed to \code{summary}.}
-
-\item{x}{The \code{irregFunData} object.}
 }
 \description{
 The \code{irregFunData} class represents functional data that is sampled 

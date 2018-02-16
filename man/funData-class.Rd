@@ -45,8 +45,6 @@ Details.}
 \item{value}{The names to be given to the \code{funData} curves.}
 
 \item{...}{Other parameters passed to \code{summary}.}
-
-\item{x}{The \code{funData} object.}
 }
 \description{
 The \code{funData} class represents functional data on \eqn{d}{d}-dimensional

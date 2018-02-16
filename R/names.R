@@ -17,7 +17,7 @@ setMethod("names", signature = "funData",
 
 #' @describeIn funData Set the names of the \code{funData} object.
 #' 
-#' @param x The \code{funData} object.
+#' @inheritParams names
 #' @param value The names to be given to the \code{funData} curves.
 #' 
 #' @docType methods
@@ -51,7 +51,7 @@ setMethod("names", signature = "irregFunData",
 
 #' @describeIn irregFunData Set the names of the \code{irregFunData} object.
 #' 
-#' @param x The \code{irregFunData} object.
+#' @inheritParams names
 #' @param value The names to be given to the \code{irregFunData} curves.
 #' 
 #' @docType methods
