@@ -36,12 +36,9 @@ setMethod("str", signature = "funData",
 setMethod("str", signature = "multiFunData",
           function(object, ...)
           {
-            if (!is(object, "multiFunData")) 
-              stop("str.multiFunData() called with non-multiFunData object.")
-            
             cat("MultiFunData object with", length(object), "elements:\n")
             
-            lapply(object, str.funData, ...)
+            lapply(object, str, ...)
             
             invisible()
           })
