@@ -7,6 +7,14 @@ test_that("print",{
   expect_known_output(print(as.irregFunData(f1)), file = "outputs/print_irregFunData.out")
 })
 
+test_that("str",{
+  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
+  expect_known_output(str(f1), file = "outputs/str_funData.out")
+  expect_known_output(str(multiFunData(f1)), file = "outputs/str_multiFunData.out")
+  expect_known_output(str(as.irregFunData(f1)), file = "outputs/str_irregFunData.out")
+  expect_known_output(str(as.irregFunData(f1), list.len = 1), file = "outputs/str_irregFunData_len1.out")
+})
+
 test_that("summary",{
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   
