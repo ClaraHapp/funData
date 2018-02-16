@@ -26,7 +26,7 @@ setMethod("names", signature = "funData",
 setMethod("names<-", signature = "funData",
           function(x, value)
           {
-            if(length(value) != nObs(x))
+            if(!is.null(value) & length(value) != nObs(x))
               stop("Names must have the same length as funData object.")
             
             dimnames(x@X)[[1]] <- value
@@ -60,7 +60,7 @@ setMethod("names", signature = "irregFunData",
 setMethod("names<-", signature = "irregFunData",
           function(x, value)
           {
-            if(length(value) != nObs(x))
+            if(!is.null(value) & length(value) != nObs(x))
               stop("Names must have the same length as funData object.")
             
             names(x@argvals) <- value
