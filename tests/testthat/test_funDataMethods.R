@@ -32,6 +32,21 @@ test_that("summary",{
   expect_known_output(print(summary(as.irregFunData(f1))), file = "outputs/summary_irregFunData.out")
 })
 
+test_that("names",{
+  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
+  
+  expect_error(names(f1) <- letters[1:3], "Names must have the same length as funData object.")
+  
+  names1 <- paste("Obs", 1:4)
+  expect_equal({names(f1) <- names1}, names1) 
+  expect_equal(names(f1), names1)
+  
+  i1 <- as.irregFunData(f1)
+  expect_equal({names(i1) <- names1}, names1)
+  expect_equal(names(i1), names(i1@argvals))
+  expect_equal(names(i1), names(i1@X))
+})
+
 test_that("dimSupp", {
   f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   f2 <- funData(argvals = list(1:5, 6:10), X = array(100, c(4, 5, 5)))
