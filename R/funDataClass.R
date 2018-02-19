@@ -483,7 +483,10 @@ setAs("irregFunData", "funData",
         for(i in 1:nObs(from))
           X[i, argvals %in% from@argvals[[i]]] <- from@X[[i]]
         
-        return(funData(argvals = argvals, X = X))})
+        res <- funData(argvals = argvals, X = X)
+        names(res) <- names(from)
+        
+        return(res)})
 
 #' Coerce an irregFunData object to class funData
 #' 
@@ -528,9 +531,12 @@ setAs("funData", "irregFunData",
                 stop("The funData object must be defined on a one-dimensional domain.")
         
         # simple apply does not work if data is in fact dense...
-        return(irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
-                       X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X)
-                       ))
+        res <- irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
+                            X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X))
+        
+        names(res) <- names(from)
+                            
+        return(res)
 })
 
 #' Coerce a funData object to class irregFunData
