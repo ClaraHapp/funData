@@ -41,7 +41,18 @@ test_that("names",{
   expect_equal({names(f1) <- names1}, names1) 
   expect_equal(names(f1), names1)
   
+  m1 <- multiFunData(f1, 2*f1)
+  
+  expect_error(names(m1) <- letters[1:3], "Names must have the same length as multiFunData object.")
+  
+  namesM <- paste("Element", 1:2)
+  expect_equal({names(m1) <- namesM}, namesM) 
+  expect_equal(names(m1), namesM)
+  
   i1 <- as.irregFunData(f1)
+  
+  expect_error(names(i1) <- letters[1:3], "Names must have the same length as irregFunData object.")
+  
   expect_equal({names(i1) <- names1}, names1)
   expect_equal(names(i1), names(i1@argvals))
   expect_equal(names(i1), names(i1@X))

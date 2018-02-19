@@ -35,6 +35,40 @@ setMethod("names<-", signature = "funData",
           })
 
 
+#' @describeIn multiFunData Get the names of the \code{multiFunData} object.
+#' 
+#' @param x The \code{multiFunData} object.
+#' 
+#' @docType methods
+#'
+#' @exportMethod names
+setMethod("names", signature = "multiFunData",
+          function(x)
+          {
+            return(names(S3Part(x, strictS3 = TRUE))) 
+          })
+
+
+#' @describeIn funData Set the names of the \code{multiFunData} object.
+#' 
+#' @inheritParams names
+#' @param value The names to be given to the \code{multiFunData} curves.
+#' 
+#' @docType methods
+#'
+#' @exportMethod names<-
+setMethod("names<-", signature = "multiFunData",
+          function(x, value)
+          {
+            if(!is.null(value) & length(value) != length(x))
+              stop("Names must have the same length as multiFunData object.")
+            
+            names(S3Part(x, strictS3 = TRUE)) <- value
+            
+            return(x)
+          })
+
+
 #' @describeIn irregFunData Get the names of the \code{irregFunData} object.
 #' 
 #' @param x The \code{irregFunData} object.
