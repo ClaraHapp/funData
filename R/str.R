@@ -36,9 +36,21 @@ setMethod("str", signature = "funData",
 setMethod("str", signature = "multiFunData",
           function(object, ...)
           {
-            cat("MultiFunData object with", length(object), "elements:\n")
+            cat("MultiFunData object with", length(object), "elements:\n---\n")
             
-            lapply(object, str, ...)
+            elNames <- {
+              if(is.null(names(object)))
+                paste("Element", 1:length(object))
+              else
+                names(object)
+            }
+            
+            for(i in 1:length(object))
+            {
+              cat(elNames[i], ": ")
+              str(object[[i]])
+              cat("--- \n")
+            }
             
             invisible()
           })
