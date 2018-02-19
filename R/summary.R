@@ -14,7 +14,12 @@ setMethod("summary", signature = "funData",
             rownames(argvalsSummary) <- paste("Dim.", 1:dimSupp(object), ":")
             
             XSummary <- apply(object@X, 1, function(x){summary(as.numeric(x))})
-            colnames(XSummary) <- paste("Obs", 1:nObs(object))
+            colnames(XSummary) <- {
+              if(is.null(names(object)))
+                 paste("Obs", 1:nObs(object))
+              else
+                   names(object)
+            }
             
             res <- list(argvals = argvalsSummary, X = XSummary)
             class(res) <- "summary.funData"
@@ -50,11 +55,18 @@ setMethod("summary", signature = "multiFunData",
 setMethod("summary", signature = "irregFunData",
           function(object, ...)
           {
+            obsNames <- {
+              if(is.null(names(object)))
+                paste("Obs", 1:nObs(object))
+              else
+                names(object)
+            }
+            
             argvalsSummary <- do.call("cbind", lapply(object@argvals, summary))
-            colnames(argvalsSummary) <- paste("Obs", 1:nObs(object))
+            colnames(argvalsSummary) <- obsNames
             
             XSummary <- do.call("cbind", lapply(object@X, summary))
-            colnames(XSummary) <- paste("Obs", 1:nObs(object))
+            colnames(XSummary) <- obsNames
             
             res <- list(argvals = argvalsSummary, X = XSummary)
             class(res) <- c("summary.irregFunData")
