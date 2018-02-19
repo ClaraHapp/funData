@@ -49,7 +49,7 @@ setMethod("names", signature = "multiFunData",
           })
 
 
-#' @describeIn funData Set the names of the \code{multiFunData} object.
+#' @describeIn multiFunData Set the names of the \code{multiFunData} object.
 #' 
 #' @inheritParams names
 #' @param value The names to be given to the \code{multiFunData} curves.
