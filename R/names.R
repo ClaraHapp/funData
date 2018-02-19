@@ -95,7 +95,7 @@ setMethod("names<-", signature = "irregFunData",
           function(x, value)
           {
             if(!is.null(value) & length(value) != nObs(x))
-              stop("Names must have the same length as funData object.")
+              stop("Names must have the same length as irregFunData object.")
             
             names(x@argvals) <- value
             names(x@X) <- value
