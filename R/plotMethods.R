@@ -211,7 +211,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' \dontrun{plot(m2, main = c("1st element", "2nd element")) # must specify obs!}
 #' 
 #' par(oldpar)
-plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
+plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = names(x), 
                               xlab = "argvals", ylab = "", log = "", ylim = NULL, ...){
   
   if(length(xlab) == 1)
