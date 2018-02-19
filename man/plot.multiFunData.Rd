@@ -7,8 +7,8 @@
 \title{Plotting multivariate functional data}
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
-  par.plot = NULL, main = NULL, xlab = "argvals", ylab = "", log = "",
-  ylim = NULL, ...)
+  par.plot = NULL, main = names(x), xlab = "argvals", ylab = "",
+  log = "", ylim = NULL, ...)
 
 \S4method{plot}{multiFunData,missing}(x, y, ...)
 }
