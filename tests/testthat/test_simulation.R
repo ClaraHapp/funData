@@ -143,9 +143,9 @@ expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-
              "Parameter 'N' must be passed as a positive number.")
 
   expect_error(simMultiFunData(type = "test", argvals = list(1:10, 1:20), M = 5, eFunType = "Poly", eValType = "linear", N = 7),
-               "simMultiFunData: choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
+               "Choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
   expect_error(funData:::simMultiSplit(argvals = list(1:5), M = list(5,6), eFunType = list("Fourier"), eValType = "linear"),
-               "simMultiSplit: argvals, M, eFunType, eValType must all be of length 1!")
+               "argvals, M, eFunType, eValType must all be of length 1!")
   expect_error(funData:::simMultiWeight(argvals = list(1:5, 1:6, 1:7), M = list(5,6,7), eFunType = list("Fourier"), eValType = "linear"),
                "Function simMultiWeight: method is not implemented for objects of dimension > 2!")
   expect_error(funData:::simMultiWeight(argvals = list(list(1:25), list(1:5,1:4)), M = list(8,c(4,5)), eFunType = list("Fourier"), eValType = "linear"),
@@ -208,9 +208,9 @@ test_that("sparsify",{
   # check errors:
   expect_error(sparsify(f, minObs = "2", maxObs = 4), "Parameter 'minObs' must be passed as a number.")
   expect_error(sparsify(f, minObs = 2, maxObs = "4"), "Parameter 'maxObs' must be passed as a number.")
-  expect_error(sparsify(f, minObs = -1, maxObs = 5), "Sparsification: 'minObs' must be a positive integer!")
-  expect_error(sparsify(f, minObs = 1, maxObs = nObsPoints(f)+1), "Sparsification: 'maxObs' must not exceed the maximal number of observations")
-  expect_error(sparsify(f, minObs = 5, maxObs = 2), "Sparsification: 'minObs' must be smaller or equal to 'maxObs'.")
+  expect_error(sparsify(f, minObs = -1, maxObs = 5), "'minObs' must be a positive integer!")
+  expect_error(sparsify(f, minObs = 1, maxObs = nObsPoints(f)+1), "'maxObs' must not exceed the maximal number of observations")
+  expect_error(sparsify(f, minObs = 5, maxObs = 2), "'minObs' must be smaller or equal to 'maxObs'.")
   
   # check functionality:
   set.seed(2)

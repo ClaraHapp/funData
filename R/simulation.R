@@ -86,13 +86,13 @@ setMethod("sparsify", signature = "funData",
               stop("Parameter 'maxObs' must be passed as a number.") 
             
             if(maxObs > nObsPoints(funDataObject))
-              stop("Sparsification: 'maxObs' must not exceed the maximal number of observations")
+              stop("'maxObs' must not exceed the maximal number of observations")
 
             if(minObs < 1)
-              stop("Sparsification: 'minObs' must be a positive integer!")
+              stop("'minObs' must be a positive integer!")
             
             if(maxObs < minObs)
-              stop("Sparsification: 'minObs' must be smaller or equal to 'maxObs'.")
+              stop("'minObs' must be smaller or equal to 'maxObs'.")
             
             sparseData <- funDataObject
 
@@ -398,7 +398,7 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
                 Fourier = efFourier(argvals, M, linear = FALSE),
                 FourierLin = efFourier(argvals, M, linear = TRUE),
                 Wiener = efWiener(argvals, M),
-                stop("eFun: choose either Poly, PolyHigh, Fourier, FourierLin or Wiener"))
+                stop("Choose either Poly, PolyHigh, Fourier, FourierLin or Wiener"))
   return(ret)
 }
 
@@ -455,7 +455,7 @@ eVal <- function(M, type)
                 linear = ((M+1) - (1:M)) / M,
                 exponential = exp(-(0:(M-1)) / 2),
                 wiener = 1/(pi/2 * (2 * (1:M) - 1))^2,
-                stop("eVal: choose either linear, exponential or wiener"))
+                stop("Choose either linear, exponential or wiener"))
   return(ret)
 }
 
@@ -783,7 +783,7 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
   trueFuns <- switch(type,
                      split = simMultiSplit(argvals, M, eFunType, ignoreDeg, eValType, N),
                      weighted = simMultiWeight(argvals, M, eFunType, ignoreDeg, eValType, N),
-                     stop("simMultiFunData: choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
+                     stop("Choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
   )
   
   # number of eigenfunctions generated
@@ -822,7 +822,7 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
   # consistency check
   if(any( c(length(M), length(eFunType), length(eValType)) != 1) )
-    stop("simMultiSplit: argvals, M, eFunType, eValType must all be of length 1!")
+    stop("argvals, M, eFunType, eValType must all be of length 1!")
   
   # number of elements
   p <- length(argvals)

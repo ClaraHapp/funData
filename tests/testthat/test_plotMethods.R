@@ -37,7 +37,7 @@ test_that("plots", {
   expect_error(plot(funData(argvals = list(1:5,2:6,3:7), X = array(10*5*5*5, dim = c(10,5,5,5)))),
                "plot is implemented only for functional data with one- or two-dimensional domain")
   expect_error(plot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1:2),
-               "plot: specify one observation for plotting")
+               "Specify one observation for plotting")
   expect_error(plot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1, add = TRUE),
                "Option add = TRUE not implemented for images")
   
@@ -113,7 +113,7 @@ test_that("ggplots", {
   expect_error(ggplot(funData(argvals = list(1:5,2:6,3:7), X = array(10*5*5*5, dim = c(10,5,5,5)))),
                "plot is implemented only for functional data with one- or two-dimensional domain")
   expect_error(ggplot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1:2),
-               "plot: specify one observation for plotting")
+               "Specify one observation for plotting")
   expect_error(ggplot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1, add = TRUE),
                "Option add = TRUE not implemented for images")
 

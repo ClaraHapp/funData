@@ -5,7 +5,7 @@ test_that("funData class constructor", {
   expect_error(funData(argvals = "Test", X = matrix(2, nrow = 1)),
                "unable to find an inherited method") # argvals is neither list nor vector of numerics
   expect_error(funData(argvals = list(1,"Test"), X = array(1:2, dim = c(1,1,1))),
-               "all argvals elements must be numeric") # argvals contains non-numeric
+               "All argvals elements must be numeric") # argvals contains non-numeric
   expect_error(funData(argvals = list(1:5), X = list(cbind(1:5,6:10))), 
                "unable to find an inherited method") # X is not an array
   expect_error(funData(argvals = list(1:5), X = array(1:25, dim = c(1,5,5))), 
@@ -26,7 +26,7 @@ test_that("multiFunData class constructor", {
   
   # validity
   expect_error(multiFunData(list(5, 5)), 
-               "elements of multiFunData must be of class funData!")
+               "Elements of multiFunData must be of class funData!")
   expect_error(multiFunData(list(f1, funData(argvals = list(1:5, 6:10), X = array(1:125, c(5,5,5))))),
                "All elements must have the same number of observations!")
   

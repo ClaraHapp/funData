@@ -173,16 +173,16 @@ test_that("Arith", {
   # Check errors:
   # univariateFD, univariate FD
   expect_error(f1 + extractObs(f1,1:2), 
-               "Arithmetics: nObs of funData objects is neither equal nor one.")
+               "nObs of funData objects is neither equal nor one.")
   
   
   # irreg & irreg
   expect_error(extractObs(i1, obs = 1) + i1,
-               "Arithmetics: Multiple functions must be defined on subdomain of single function.")
+               "Multiple functions must be defined on subdomain of single function.")
   expect_error(i1 + extractObs(i1, obs = 1),
-               "Arithmetics: Multiple functions must be defined on subdomain of single function.")
+               "Multiple functions must be defined on subdomain of single function.")
   expect_error(i1 + extractObs(i1, obs = 1:5),
-               "Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
+               "IrregFunData objects must have either the same number of observations or just one.")
   expect_error(i1 +  irregFunData(argvals = lapply(i1@argvals, function(l){l+1}), X = i1@X),
                "Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
    
@@ -413,22 +413,22 @@ test_that("set/get", {
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (argvals)
   expect_error(setX(f1, matrix(1:24, nrow = 4)), 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (X)
-  expect_warning(setX(f1, matrix(1:25, nrow = 5)), 'setX: Number of observations has changed') # warning: more observations
+  expect_warning(setX(f1, matrix(1:25, nrow = 5)), 'Number of observations has changed') # warning: more observations
   # univariate FD object (two-dim)
   expect_error(setArgvals(f2, 1:5), 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (argvals)
   expect_error(setX(f2, matrix(1:20, nrow = 4)), 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (X)
   # multivariate FD object
-  expect_error(setArgvals(m, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'setArgvals: multiFunData object and newArgvals must have the same length') # wrong length (argvals, multiFunData)
-  expect_error(setX(m, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'setX: multiFunData object and newX must have the same length') # wrong length (X, multiFunData)
-  expect_error(setX(m, list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))), 'setX: newX object must have the same number of observations in all elements!') # different number of observations
-  expect_warning(setX(m, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'setX: Number of observations has changed') # warning: more observations
+  expect_error(setArgvals(m, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'multiFunData object and newArgvals must have the same length') # wrong length (argvals, multiFunData)
+  expect_error(setX(m, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'multiFunData object and newX must have the same length') # wrong length (X, multiFunData)
+  expect_error(setX(m, list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))), 'newX object must have the same number of observations in all elements!') # different number of observations
+  expect_warning(setX(m, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'Number of observations has changed') # warning: more observations
   # irreg FD object
-  expect_error(setArgvals(i1, list(1:4)), "setArgvals: newArgvals must be a list of the same length as the original argvals.")
-  expect_error(setArgvals(i1, list(1:6, 1:3)), "setArgvals: newArgvals must have the same structure as the original argvals.")
-  expect_error(setX(i1, list(1:4)), "setX: newX must be a list of the same length as the original X.")
-  expect_error(setX(i1, list(1:6, 1:3)), "setX: newX must have the same structure as the original X.")
+  expect_error(setArgvals(i1, list(1:4)), "newArgvals must be a list of the same length as the original argvals.")
+  expect_error(setArgvals(i1, list(1:6, 1:3)), "newArgvals must have the same structure as the original argvals.")
+  expect_error(setX(i1, list(1:4)), "newX must be a list of the same length as the original X.")
+  expect_error(setX(i1, list(1:6, 1:3)), "newX must have the same structure as the original X.")
   
   # Check functionality:
   # univariate FD object (one-dim)
@@ -458,23 +458,23 @@ test_that("flipFun", {
   # Check errors:
   # univariate FD object (one-dim)
   expect_error(flipFuns(f1,funData(argvals = list(1:5), X = array(1:30,c(6,5)))), 
-               'flipFuns: Functions must have the same number of observations or use a single function as reference.') # not the same number of observations
+               'Functions must have the same number of observations or use a single function as reference.') # not the same number of observations
   expect_error(flipFuns(f1,f2), 
-               'flipFuns: Functions must have the dimension.') # not the same dimension
+               'Functions must have the dimension.') # not the same dimension
   expect_error(flipFuns(f1,funData(argvals = list(2:6), X = array(1:20,c(4,5)))), 
-               'flipFuns: Functions must be defined on the same domain.') # not the same domain
+               'Functions must be defined on the same domain.') # not the same domain
   # irreg FD object (regular reference)
   expect_error(flipFuns(f2,i1),
-               "flipFuns: Function is only implemented for irregular data with one-dimensional support")
+               "Function is only implemented for irregular data with one-dimensional support")
   expect_error(flipFuns(extractObs(f1, 1:2), i1),
-               "flipFuns: Functions must have the same number of observations or use a single function as reference.")
+               "Functions must have the same number of observations or use a single function as reference.")
   expect_error(flipFuns(extractObs(f1, argvals = 1:3), i1),
-               "flipFuns: Irregular functions must be defined on a sub-domain of the reference function(s).", fixed = TRUE)# fixed, as '(...)' is interpreted as regexp
+               "Irregular functions must be defined on a sub-domain of the reference function(s).", fixed = TRUE)# fixed, as '(...)' is interpreted as regexp
   # irreg FD object (irregular reference)
   expect_error(flipFuns(extractObs(i1, 1:2), i1),
-               "flipFuns: Functions must have the same number of observations or use a single function as reference.")
+               "Functions must have the same number of observations or use a single function as reference.")
   expect_error(flipFuns(extractObs(i1, argvals = 1:3), i1),
-               "flipFuns: New functions must be defined on a sub-domain of the reference function(s).", fixed = TRUE)  # fixed, as '(...)' is interpreted as regexp
+               "New functions must be defined on a sub-domain of the reference function(s).", fixed = TRUE)  # fixed, as '(...)' is interpreted as regexp
   
   # Check functionality:
   # univariate FD object (one-dim)

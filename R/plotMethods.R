@@ -126,7 +126,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
   if(dimSupp(x) == 2)
   {
     if(length(obs) > 1)
-      stop("plot: specify one observation for plotting")
+      stop("Specify one observation for plotting")
     
     if(add == TRUE)
       stop("Option add = TRUE not implemented for images")
@@ -501,7 +501,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
   if(dimSupp(data) == 2)
   {
     if(length(obs) > 1)
-      stop("plot: specify one observation for plotting")
+      stop("Specify one observation for plotting")
     
     if(add == TRUE)
       stop("Option add = TRUE not implemented for images")

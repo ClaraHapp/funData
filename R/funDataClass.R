@@ -96,7 +96,7 @@ setClass("funData", representation = representation(argvals = "list", X = "array
 # Validity checks for funData objects
 setValidity("funData", function(object){
     if(!all(sapply(object@argvals, is.numeric, simplify = TRUE)))
-      return("all argvals elements must be numeric")
+      return("All argvals elements must be numeric")
   
     if(length(object@argvals) != length(dim(object@X)[-1]))
       return("argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md")
@@ -253,7 +253,7 @@ setClass("multiFunData", representation = "list")
 # Validity check for multiFunData objects
 setValidity("multiFunData", function(object){
  if(!all(sapply(object, is, "funData", simplify = TRUE)))
-    return("elements of multiFunData must be of class funData!")
+    return("Elements of multiFunData must be of class funData!")
   
   if(diff(range(sapply(object,nObs)))!= 0)
     return("All elements must have the same number of observations!")
