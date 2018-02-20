@@ -15,6 +15,31 @@ test_that("eFuns", {
   expect_equal(norm(efFourier(M = 4, argvals = argvals, linear = TRUE)), 
                c(1, 1, 1, 1.0015304))
   
+  # eFun /eVal
+  expect_error(eFun(argvals = "argvals", M = 2, type = "Poly"), "Parameter 'argvals' must be numeric.")
+  expect_error(eFun(argvals = numeric(0), M = 2, type = "Poly"), "Parameter 'argvals' must be numeric.")
+  expect_error(eFun(argvals = argvals, M = "2", type = "Poly"), "Parameter 'M' must be passed as a positive number.")
+  expect_error(eFun(argvals = argvals, M = 1:2, type = "Poly"), "Parameter 'M' must be passed as a positive number.")
+  expect_error(eFun(argvals = argvals, M = -2, type = "Poly"), "Parameter 'M' must be passed as a positive number.")
+  expect_error(eFun(argvals = argvals, M = 2, ignoreDeg = "1", type = "PolyHigh"),
+               "Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.")
+  expect_error(eFun(argvals = argvals, M = 2, ignoreDeg = -2, type = "PolyHigh"),
+               "Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.")
+  expect_error(eFun(argvals = argvals, M = 2, type = 2),
+               "Parameter 'type' must be passed as a string.")
+  expect_error(eFun(argvals = argvals, M = 2, type = c("Poly", "Fourier")),
+               "Parameter 'type' must be passed as a string.")
+  expect_error(eVal(M = "2", type = "linear"),
+               "Parameter 'M' must be passed as a positive number.")
+  expect_error(eVal(M = 1:2, type = "linear"),
+               "Parameter 'M' must be passed as a positive number.")
+  expect_error(eVal(M = -2, type = "linear"),
+               "Parameter 'M' must be passed as a positive number.")
+  expect_error(eVal(M = 2, type = 1),
+               "Parameter 'type' must be passed as a string.")
+  expect_error(eVal(M = 2, type = c("linear", "wiener")),
+               "Parameter 'type' must be passed as a string.")
+  
   expect_error(eFun(argvals = argvals, M = 2, type = "PolyHigh"), "eFun, type = PolyHigh: specify ignoreDeg !", fixed = TRUE)
   expect_equal(eFun(argvals = argvals, M = 2, ignoreDeg = 1:2, type = "PolyHigh"),
                extractObs(eFun(argvals = argvals, M = 4, type = "Poly"), obs = 3:4))
@@ -22,10 +47,32 @@ test_that("eFuns", {
 
 test_that("simFunData",{
   # check errors
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = "10", eFunType = "Fourier", eValType = "linear", N = 4),
+               "Parameter 'M' must be numeric.") 
   expect_error(simFunData(argvals = 1:10, M = c(10,20), eFunType = "Fourier", eValType = "linear", N = 4),
                "M must have the same length as argvals or 1.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = 1, eValType = "linear", N = 4),
+               "Parameter 'eFunType' must be passed as a string.")
   expect_error(simFunData(argvals = 1:10, M = 4, eFunType = c("Fourier", "Poly"), eValType = "linear", N = 4),
                "eFunType must have the same length as argvals or 1.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = "linear", ignoreDeg = "1", N = 4),
+               "Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = "linear", ignoreDeg = -1, N = 4),
+               "Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = 1, N = 4),
+               "Parameter 'eValType' must be passed as a string.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = c("linear", "wiener"), N = 4),
+               "Parameter 'eValType' must be passed as a string.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = "4"),
+               "Parameter 'N' must be passed as a positive number.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = 1:4),
+               "Parameter 'N' must be passed as a positive number.")
+  expect_error(simFunData(argvals = seq(0,1,0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = -4),
+               "Parameter 'N' must be passed as a positive number.")
+  expect_error(simFunData(argvals = rep("argvals",4), M = 10, eFunType = "Fourier", eValType = "linear", N = 4),
+               "Parameter 'argvals' must be either passed as a list or as a vector of numerics.")
+  expect_error(simFunData(argvals = list("argvals",1:4), M = 10, eFunType = "Fourier", eValType = "linear", N = 4),
+               "Parameter 'argvals' must be either passed as a list or as a vector of numerics.")
   
   # check warnings
   expect_warning(simFunData(argvals = list(seq(0,1,0.01), seq(-pi/2, pi/2, 0.02)), M = 5, eFunType = c("Poly","Fourier"), eValType = "linear", N = 4),
@@ -55,6 +102,46 @@ test_that("simFunData",{
 
 test_that("simMultiFunData", {
   # check errors
+ expect_error(simMultiFunData(type = 1, argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                              M = 5, eFunType = "Poly", eValType = "linear", N = 7),
+               "Parameter 'type' must be passed as a string.")
+  expect_error(simMultiFunData(type = c("split", "weighted"), argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                               M = 5, eFunType = "Poly", eValType = "linear", N = 7),
+               "Parameter 'type' must be passed as a string.")
+expect_error(simMultiFunData(type = "split", argvals = seq(-0.5,0.5,0.02),
+                    M = 5, eFunType = "Poly", eValType = "linear", N = 7),
+    "Parameter 'argvals' must be passed as a list of numerics.")
+expect_error(simMultiFunData(type = "split", argvals = list("argvals", seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "Poly", eValType = "linear", N = 7),
+             "Parameter 'argvals' must be passed as a list of numerics.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = "5", eFunType = "Poly", eValType = "linear", N = 7),
+    "Parameter 'M' must contain only numerics.") 
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = 1, eValType = "linear", N = 7),
+             "Parameter 'eFunType' must contain only strings.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "PolyHigh", ignoreDeg = "2", eValType = "linear", N = 7),
+                  "Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "PolyHigh", ignoreDeg = -2, eValType = "linear", N = 7),
+             "Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "Poly", eValType = 1, N = 7),
+               "Parameter 'eValType' must be passed as a string.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "Poly", eValType = c("linear", "wiener"), N = 7),
+             "Parameter 'eValType' must be passed as a string.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "Poly", eValType = "linear", N = "7"),
+                  "Parameter 'N' must be passed as a positive number.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "Poly", eValType = "linear", N = 1:7),
+             "Parameter 'N' must be passed as a positive number.")
+expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-0.5,0.5,0.02)),
+                             M = 5, eFunType = "Poly", eValType = "linear", N = -7),
+             "Parameter 'N' must be passed as a positive number.")
+
   expect_error(simMultiFunData(type = "test", argvals = list(1:10, 1:20), M = 5, eFunType = "Poly", eValType = "linear", N = 7),
                "simMultiFunData: choose either 'split' or 'weighted' for the simulation of multivariate functional data.")
   expect_error(funData:::simMultiSplit(argvals = list(1:5), M = list(5,6), eFunType = list("Fourier"), eValType = "linear"),
@@ -119,6 +206,8 @@ test_that("sparsify",{
   f <- simFunData(argvals = seq(0,1, 0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = 2)$simData
   
   # check errors:
+  expect_error(sparsify(f, minObs = "2", maxObs = 4), "Parameter 'minObs' must be passed as a number.")
+  expect_error(sparsify(f, minObs = 2, maxObs = "4"), "Parameter 'maxObs' must be passed as a number.")
   expect_error(sparsify(f, minObs = -1, maxObs = 5), "Sparsification: 'minObs' must be a positive integer!")
   expect_error(sparsify(f, minObs = 1, maxObs = nObsPoints(f)+1), "Sparsification: 'maxObs' must not exceed the maximal number of observations")
   expect_error(sparsify(f, minObs = 5, maxObs = 2), "Sparsification: 'minObs' must be smaller or equal to 'maxObs'.")
@@ -144,6 +233,11 @@ test_that("addError",{
   # univariate functional data
   set.seed(1)
   f <- simFunData(argvals = seq(0,1, 0.01), M = 10, eFunType = "Fourier", eValType = "linear", N = 2)$simData
+
+  # check errors
+  expect_error(addError(f, sd = "1/2"), "Parameter 'sd' must be passed as a positive number.")
+  expect_error(addError(f, sd = 1:5), "Parameter 'sd' must be passed as a positive number.")
+  expect_error(addError(f, sd = -0.5), "Parameter 'sd' must be passed as a positive number.")
   
   # check functionality:
   set.seed(2)

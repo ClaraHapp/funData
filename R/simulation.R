@@ -78,6 +78,13 @@ setGeneric("sparsify", function(funDataObject, minObs, maxObs) {standardGeneric(
 #' @keywords internal
 setMethod("sparsify", signature = "funData",
           function(funDataObject, minObs, maxObs){
+            
+            if(! all(is.numeric(minObs), length(minObs) == 1))
+              stop("Parameter 'minObs' must be passed as a number.") 
+            
+            if(! all(is.numeric(maxObs), length(maxObs) == 1))
+              stop("Parameter 'maxObs' must be passed as a number.") 
+            
             if(maxObs > nObsPoints(funDataObject))
               stop("Sparsification: 'maxObs' must not exceed the maximal number of observations")
 
@@ -175,6 +182,9 @@ setGeneric("addError", function(funDataObject, sd) {standardGeneric("addError")}
 #' @keywords internal
 setMethod("addError", signature = "funData",
           function(funDataObject, sd){
+            if(! all(is.numeric(sd), length(sd) == 1, sd > 0))
+              stop("Parameter 'sd' must be passed as a positive number.") 
+            
             ME <- array(stats::rnorm(prod(dim(funDataObject@X)), mean = 0, sd = sd),  dim(funDataObject@X))
             
             return(funDataObject + funData(funDataObject@argvals, ME))
@@ -363,6 +373,20 @@ efWiener <- function(argvals, M)
 #' par(oldPar)
 eFun <- function(argvals, M, ignoreDeg = NULL, type)
 {
+  if(! all(is.numeric(argvals), length(argvals) > 0))
+    stop("Parameter 'argvals' must be numeric.")
+  
+  if(! all(is.numeric(M), length(M) == 1, M > 0))
+    stop("Parameter 'M' must be passed as a positive number.") 
+  
+  if(!(is.null(ignoreDeg ) | all(is.numeric(ignoreDeg), ignoreDeg > 0)))
+    stop("Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.") 
+  
+  if(! all(is.character(type), length(type) == 1))
+     stop("Parameter 'type' must be passed as a string.")
+  
+  
+  
   ret <- switch(type,
                 Poly = efPoly(argvals, M),
                 PolyHigh = {
@@ -421,6 +445,12 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
 #' par(oldpar)
 eVal <- function(M, type)
 {
+  if(! all(is.numeric(M), length(M) == 1, M > 0))
+    stop("Parameter 'M' must be passed as a positive number.") 
+  
+  if(! all(is.character(type), length(type) == 1))
+    stop("Parameter 'type' must be passed as a string.")
+  
   ret <- switch(type,
                 linear = ((M+1) - (1:M)) / M,
                 exponential = exp(-(0:(M-1)) / 2),
@@ -498,9 +528,30 @@ eVal <- function(M, type)
 #' par(oldPar)
 simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
-  ### transform argvals to list, if necessary
-  if(!is.list(argvals))
-    argvals <- list(argvals)
+  ### check type of input parameters
+  if(! is.numeric(M))
+    stop("Parameter 'M' must be numeric.") 
+  
+  if(! is.character(eFunType))
+    stop("Parameter 'eFunType' must be passed as a string.")
+  
+  if(!(is.null(ignoreDeg ) | all(is.numeric(ignoreDeg), ignoreDeg > 0)))
+    stop("Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.") 
+  
+  if(! all(is.character(eValType), length(eValType) == 1))
+    stop("Parameter 'eValType' must be passed as a string.")
+  
+  if(! all(is.numeric(N), length(N) == 1, N > 0))
+    stop("Parameter 'N' must be passed as a positive number.") 
+  
+  # transform argvals to list, if necessary
+  if(! (is.list(argvals) & all(is.numeric(unlist(argvals)))))
+  {
+    if(is.numeric(argvals))
+      argvals <- list(argvals)
+    else
+      stop("Parameter 'argvals' must be either passed as a list or as a vector of numerics.")
+  }  
 
   ### check consistency of input data
   p <- length(argvals)
@@ -707,6 +758,27 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' par(oldPar)
 simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 {
+  if(! all(is.character(type), length(type) == 1))
+    stop("Parameter 'type' must be passed as a string.")
+  
+  if(! (is.list(argvals) & all(is.numeric(unlist(argvals)))) )
+    stop("Parameter 'argvals' must be passed as a list of numerics.")
+  
+  if(! all(is.numeric(unlist(M))))
+    stop("Parameter 'M' must contain only numerics.") 
+  
+  if(! all(is.character(unlist(eFunType))))
+    stop("Parameter 'eFunType' must contain only strings.")
+  
+  if(!(is.null(ignoreDeg ) | all(is.numeric(ignoreDeg), ignoreDeg > 0)))
+    stop("Parameter 'ignoreDeg' must be either NULL or a vector of positive numbers.") 
+  
+  if(! all(is.character(eValType), length(eValType) == 1))
+    stop("Parameter 'eValType' must be passed as a string.")
+  
+  if(! all(is.numeric(N), length(N) == 1, N > 0))
+    stop("Parameter 'N' must be passed as a positive number.") 
+  
   # generate eigenfunctions
   trueFuns <- switch(type,
                      split = simMultiSplit(argvals, M, eFunType, ignoreDeg, eValType, N),
