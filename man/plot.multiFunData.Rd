@@ -25,12 +25,12 @@ all observations in \code{x}. For two-dimensional functions (images)
 functions in \code{x} are plotted.}
 
 \item{par.plot}{Graphic parameters to be passed to the plotting regions. The 
-option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
+option \code{mfrow} is ignored. Defaults to \code{NULL}. See 
 \code{\link[graphics]{par}} for details.}
 
 \item{main}{A string vector, giving the title of the plot. Can have the same 
 length as \code{dim} (different titles for each dimension) or length 
-\code{1} (one title for all dimensions). Defaults to \code{NULL}.}
+\code{1} (one title for all dimensions). Defaults to \code{names(x)}.}
 
 \item{xlab, ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} 
 for the x-axis and no title for the y-axis for all elements. Can be 
