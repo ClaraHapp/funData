@@ -444,7 +444,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
 #' \code{\link[methods]{Math}}.  The operations are made pointwise for each
 #' observation.
 #'   
-#' @param x An nbject of class \code{funData}, \code{irregFunData} or
+#' @param x An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #'   
 #' @return An object of the same functional data class as \code{x}.
@@ -504,7 +504,6 @@ setMethod("Math", signature = c(x = "irregFunData"),
             
             irregFunData(argvals = x@argvals, X = lapply(x@X, f))
           })
-
 
 #### nObs ####
 

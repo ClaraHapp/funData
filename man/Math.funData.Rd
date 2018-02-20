@@ -15,7 +15,7 @@
 \S4method{Math}{irregFunData}(x)
 }
 \arguments{
-\item{x}{An nbject of class \code{funData}, \code{irregFunData} or
+\item{x}{An object of class \code{funData}, \code{irregFunData} or
 \code{multiFunData}.}
 }
 \value{
