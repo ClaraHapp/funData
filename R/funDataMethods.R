@@ -884,6 +884,9 @@ setMethod("integrate", signature = "funData",
             if(dimSupp(object) > 3)
               stop("Integration is not yet defined for functional data objects with dim > 3")
             
+            if(! all(is.character(method), length(method) == 1) )
+              stop("Parameter 'method' must be a string.")
+            
             if(dimSupp(object) == 1)
               res <- object@X %*% .intWeights(object@argvals[[1]],method)
             
@@ -921,6 +924,9 @@ setMethod("integrate", signature = "multiFunData",
 #' @keywords internal
 setMethod("integrate", signature = c(object = "irregFunData"),
           function(object, method = "trapezoidal", fullDom = FALSE){
+            if(! all(is.logical(fullDom), length(fullDom) == 1))
+              stop("Parameter 'fullDom' must be a logical.")
+            
             if(fullDom) # fullDomain: extrapolate each function linearly (or by a constant, if only one value is observed)
               object <- extrapolateIrreg(object)
             
@@ -1053,6 +1059,13 @@ norm.funData <- function(object, squared, obs, method, weight)
 #' @keywords internal
 setMethod("norm", signature = signature(x = "funData", type = "missing"),
           function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1){
+            
+            if(! all(is.logical(squared), length(squared) == 1))
+              stop("Parameter 'squared' must be passed as a logical.")
+            
+            if(! all(is.numeric(weight), length(weight) == 1, weight > 0))
+              stop("Parameter 'weight' must be passed as a positive number.") 
+            
             norm.funData(object = x, squared, obs, method, weight)
           })
 
@@ -1064,6 +1077,9 @@ setMethod("norm", signature = signature(x = "funData", type = "missing"),
 setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
           function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = rep(1, length(x)))
           {
+            if(! all(is.numeric(weight), length(weight) == length(x), weight > 0))
+              stop("Parameter 'weight' must be passed as a vector of ", length(x), " positive numbers.") 
+            
             # univariate functions must be squared in any case!
             uniNorms <- mapply(norm, x, weight = weight, 
                                MoreArgs = list(squared = TRUE, obs = obs, method = method), SIMPLIFY = "array")
@@ -1107,6 +1123,13 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 #' @keywords internal
 setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
           function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1, fullDom = FALSE){
+            
+            if(! all(is.logical(squared), length(squared) == 1))
+              stop("Parameter 'squared' must be passed as a logical.")
+            
+            if(! all(is.numeric(weight), length(weight) == 1, weight > 0))
+              stop("Parameter 'weight' must be passed as a positive number.") 
+            
             norm.irregFunData(object = x, squared, obs, method, weight, fullDom)
           })
 
@@ -1772,6 +1795,9 @@ setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("mea
 #' @keywords internal
 setMethod("meanFunction", signature = c("funData", "ANY"),
           function(object, na.rm){
+            if(! all(is.logical(na.rm), length(na.rm) == 1))
+              stop("Parameter 'na.rm' must be a logical.")
+            
             meanX <- colMeans(object@X, na.rm = na.rm, dims = 1) 
             
             # resize to array with one observation
@@ -1800,6 +1826,9 @@ setMethod("meanFunction", signature = c("multiFunData", "ANY"),
 #' @keywords internal
 setMethod("meanFunction", signature = c("irregFunData", "ANY"),
           function(object, na.rm){
+            if(! all(is.logical(na.rm), length(na.rm) == 1))
+              stop("Parameter 'na.rm' must be a logical.")
+            
             if(na.rm == TRUE)
               stop("Option na.rm = TRUE is not implemented for mean functions of irregular data.")
             

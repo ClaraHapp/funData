@@ -275,6 +275,27 @@ test_that("norm", {
   x2 <- seq(-0.5, 0.5, by = 0.01)
   i1 <- irregFunData(list(x1,x2), list(x1^2, x2^2))
   
+  # Check errors:
+  # univariate FD object
+  expect_error(norm(f1, squared = "Yes"), "Parameter 'squared' must be passed as a logical.") 
+  expect_error(norm(f1, squared = c(TRUE, FALSE)), "Parameter 'squared' must be passed as a logical.") 
+  expect_error(norm(f1, weight = "1"), "Parameter 'weight' must be passed as a positive number.")
+  expect_error(norm(f1, weight = 1:2), "Parameter 'weight' must be passed as a positive number.")
+  expect_error(norm(f1, weight = -1), "Parameter 'weight' must be passed as a positive number.")
+  # multivariate FD object
+  expect_error(norm(m1, weight = c(1,"2")),
+               "Parameter 'weight' must be passed as a vector of 2 positive numbers.") 
+  expect_error(norm(m1, weight = 1:3),
+               "Parameter 'weight' must be passed as a vector of 2 positive numbers.") 
+  expect_error(norm(m1, weight = c(-1,1)),
+               "Parameter 'weight' must be passed as a vector of 2 positive numbers.") 
+  # irreg FD object
+  expect_error(norm(i1, squared = "Yes"), "Parameter 'squared' must be passed as a logical.")
+  expect_error(norm(i1, squared = c(TRUE, TRUE)), "Parameter 'squared' must be passed as a logical.")
+  expect_error(norm(i1, weight = "1"), "Parameter 'weight' must be passed as a positive number.")
+  expect_error(norm(i1, weight = 1:2), "Parameter 'weight' must be passed as a positive number.")
+  expect_error(norm(i1, weight = -1), "Parameter 'weight' must be passed as a positive number.")
+  
   # Check functionality:
   # univariate FD object
   expect_equal(norm(f1), # all observations
@@ -340,6 +361,12 @@ test_that("integrate", {
   m1.1 <- multiFunData(list(f1.1,f2.1))
   
   #Check errors:  
+  expect_error(integrate(funData(argvals = list(1:2,1:3,1:4,1:5), X = array(rnorm(120), dim = c(1,2,3,4,5)))),
+               "Integration is not yet defined for functional data objects with dim > 3")
+  expect_error(integrate(f1, method = 1),"Parameter 'method' must be a string.")
+  expect_error(integrate(f1, method = c("m1", "m2")),"Parameter 'method' must be a string.")
+  expect_error(integrate(i1, fullDom = "Yes"),"Parameter 'fullDom' must be a logical.") 
+  expect_error(integrate(i1, fullDom = c(TRUE, FALSE)),"Parameter 'fullDom' must be a logical.")
   expect_warning(integrate(extractObs(f1, argvals = 1:2)), # method = trapezoidal and not enough observation points
                  "Trapezoidal quadrature is not applicable for functions with < 3 observation points. 'method' changed to 'midpoint'.")
   
@@ -473,7 +500,12 @@ test_that("meanFunction",{
   i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
  
   # Check errors:
+# funData
+expect_error(meanFunction(f1, na.rm = "Yes"), "Parameter 'na.rm' must be a logical.")
+expect_error(meanFunction(f1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must be a logical.")
   # irreg FD object
+expect_error(meanFunction(i1, na.rm = "Yes"), "Parameter 'na.rm' must be a logical.")
+expect_error(meanFunction(i1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must be a logical.")
   expect_error(meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))),
                              "Mean function defined only for irregular functional data objects on the same domain.")
   expect_error(meanFunction(i1, na.rm = TRUE),
