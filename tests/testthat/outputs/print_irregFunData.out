@@ -1,7 +1,7 @@
-Irregular functional data object with 4 observations of 1 - dimensional support
+Irregular functional data object with 3 observations of 1 - dimensional support
 argvals:
 	Values in 1 ... 5.
 X:
-	Values in 1 ... 20.
+	Values in 0 ... 5.
 Total:
-	20 observations on 5 different x-values (5 - 5 per observation).
+	11 observations on 5 different x-values (3 - 5 per observation).

@@ -1,25 +1,27 @@
 context("Test funData methods")
 
+f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
+f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120, c(4,5,6)))
+m1 <- multiFunData(f1, f2)
+i1 <- irregFunData(argvals = list(1:5, 2:4, 3:5), X = list(1:5, 2:4, -(3:1)))
+fi <- as.irregFunData(f1)
+
 test_that("print",{
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   expect_known_output(print(f1), file = "outputs/print_funData.out")
-  expect_known_output(print(multiFunData(f1)), file = "outputs/print_multiFunData.out")
-  expect_known_output(print(as.irregFunData(f1)), file = "outputs/print_irregFunData.out")
+  expect_known_output(print(m1), file = "outputs/print_multiFunData.out")
+  expect_known_output(print(i1), file = "outputs/print_irregFunData.out")
 })
 
 test_that("str",{
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
   expect_known_output(str(f1), file = "outputs/str_funData.out")
-  expect_known_output(str(multiFunData(f1)), file = "outputs/str_multiFunData.out")
-  expect_known_output(str(as.irregFunData(f1)), file = "outputs/str_irregFunData.out")
-  expect_known_output(str(as.irregFunData(f1), list.len = 1), file = "outputs/str_irregFunData_len1.out")
+  expect_known_output(str(m1), file = "outputs/str_multiFunData.out")
+  expect_known_output(str(i1), file = "outputs/str_irregFunData.out")
+  expect_known_output(str(i1, list.len = 1), file = "outputs/str_irregFunData_len1.out")
 })
 
 test_that("summary",{
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  
   # check errors
-  expect_error(funData:::print.summary.funData(summary(multiFunData(f1))), 
+  expect_error(funData:::print.summary.funData(summary(m1)), 
                "Argument is not of class 'summary.funData'.")
   expect_error(funData:::print.summary.multiFunData(summary(f1)), 
                "Argument is not of class 'summary.multiFunData'.")
@@ -28,20 +30,16 @@ test_that("summary",{
   
   # check functionality
   expect_known_output(print(summary(f1)), file = "outputs/summary_funData.out")
-  expect_known_output(print(summary(multiFunData(f1))), file = "outputs/summary_multiFunData.out")
-  expect_known_output(print(summary(as.irregFunData(f1))), file = "outputs/summary_irregFunData.out")
+  expect_known_output(print(summary(m1)), file = "outputs/summary_multiFunData.out")
+  expect_known_output(print(summary(i1)), file = "outputs/summary_irregFunData.out")
 })
 
 test_that("names",{
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  
   expect_error(names(f1) <- letters[1:3], "Names must have the same length as funData object.")
   
   names1 <- paste("Obs", 1:4)
   expect_equal({names(f1) <- names1}, names1) 
   expect_equal(names(f1), names1)
-  
-  m1 <- multiFunData(f1, 2*f1)
   
   expect_error(names(m1) <- letters[1:3], "Names must have the same length as multiFunData object.")
   
@@ -49,20 +47,16 @@ test_that("names",{
   expect_equal({names(m1) <- namesM}, namesM) 
   expect_equal(names(m1), namesM)
   
-  i1 <- as.irregFunData(f1)
+  expect_error(names(i1) <- letters[1:5], "Names must have the same length as irregFunData object.")
   
-  expect_error(names(i1) <- letters[1:3], "Names must have the same length as irregFunData object.")
-  
-  expect_equal({names(i1) <- names1}, names1)
+  namesI <- paste("Obs", 1:3)
+  expect_equal({names(i1) <- namesI}, namesI)
   expect_equal(names(i1), names(i1@argvals))
   expect_equal(names(i1), names(i1@X))
 })
 
 test_that("dimSupp", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 6:10), X = array(100, c(4, 5, 5)))
-  m1 <- multiFunData(f1, f2)
-  i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
+  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
   
   # Check functionality:
   # univariate FD object (one-dim)
@@ -76,10 +70,7 @@ test_that("dimSupp", {
 })
 
 test_that("nObs", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 6:10), X = array(1:100, c(4, 5, 5)))
-  m1 <- multiFunData(f1, f2)
-  i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
+  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
   
   # Check functionality:
   # univariate FD object (one-dim)
@@ -89,35 +80,28 @@ test_that("nObs", {
   # multivariate FD object
   expect_equal(nObs(m1), 4)
   # irreg FD object
-  expect_equal(nObs(i1),2)
+  expect_equal(nObs(i1),3)
   
 })
 
 
 test_that("nObsPoints", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 6:10), X = array(1:100, c(4, 5, 5)))
-  m1 <- multiFunData(f1, f2)
-  i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
+  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
   
   # Check functionality:
   # univariate FD object (one-dim)
   expect_equal(nObsPoints(f1), 5)
   # univariate FD object (two-dim)
-  expect_equal(nObsPoints(f2), c(5,5))
+  expect_equal(nObsPoints(f2), c(5,6))
   # multivariate FD object
-  expect_equal(nObsPoints(m1), list(5,c(5,5)))
+  expect_equal(nObsPoints(m1), list(5,c(5,6)))
   # irreg FD object
-  expect_equal(nObsPoints(i1), c(5,3))  
+  expect_equal(nObsPoints(i1), c(5,3,3))  
 })
 
 test_that("extractObs", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120, c(4, 5, 6)))
   f3 <- funData(argvals = list(1:5, 1:6, 1:4), X = array(1:480, c(4, 5, 6, 4)))
-  m1 <- multiFunData(list(f1, f2))
-  i1 <- irregFunData(argvals = list(1:5, 1:3), X = list(2:6, 2:4))
-  
+
   # Check errors:
   # univariate FD object (one-dim)
   expect_error(extractObs(f1, obs = 5), 
@@ -132,13 +116,13 @@ test_that("extractObs", {
   # irreg FD object
   expect_error(extractObs(i1, obs = list(1:3)), 
                "Supply observations as numeric vector")
-  expect_error(extractObs(i1, obs = 3),
+  expect_error(extractObs(i1, obs = 4),
                "Trying to extract observations that do not exist!")
   expect_error(extractObs(extractObs(i1, argvals = "1")),
                "Supply argvals for extracted observations either as list or as numeric vector")
   expect_error(extractObs(i1, argvals = 6),
                "Trying to extract x-values that do not exist!")
-  expect_warning(extractObs(i1, argvals = 4:5),
+  expect_warning(extractObs(i1, argvals = c(1,5)),
                  "Some functions were not observed on the given argvals and therefore removed.")
   
   # Check functionality:
@@ -155,20 +139,19 @@ test_that("extractObs", {
   # multivariate FD object
   expect_equal(extractObs(m1, obs = 2), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 2)))  
   # irreg FD object
-  expect_equal(extractObs(i1, argvals = list(1:2)), extractObs(i1, argvals = 1:2))
-  expect_equal(extractObs(i1, obs = 1), irregFunData(argvals = list(1:5), X = list(2:6)))
-  expect_equal(extractObs(i1, argvals =2:3), irregFunData(argvals = list(2:3, 2:3), X = list(3:4, 3:4)))
+  expect_equal(extractObs(i1, argvals = list(3:4)), extractObs(i1, argvals = 3:4))
+  expect_equal(extractObs(i1, obs = 1), irregFunData(argvals = list(1:5), X = list(1:5)))
+  expect_equal(extractObs(i1, argvals = 2:3), irregFunData(argvals = list(2:3, 2:3, 3), X = list(2:3, 2:3, -3)))
 })
 
 test_that("Arith", {
-  x <- seq(0,1,length.out = 100)
+# x <- <- seq(0,1,length.out = 100)
   ind <- replicate(10, sort(sample(1:100, sample(10:20, 1))))
-  f1 <- funData(x, t(replicate(40, sin(x) + rnorm(100, sd = 0.1))))
-  f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120, c(4, 5, 6)))
-  m1 <- multiFunData(f1, funData(x, t(replicate(40, cos(x) + rnorm(100, sd = 0.1)))))
-  i1 <- irregFunData(argvals = lapply(ind, function(i, x){x[i]}, x = f1@argvals[[1]]),
-                     X = lapply(1:10, function(i, y){y[i,ind[[i]]]}, y = f1@X))
-  x1 <- unique(unlist(i1@argvals))
+  # f1 <- funData(x, t(replicate(40, sin(x) + rnorm(100, sd = 0.1))))
+  # m1 <-multiFunData(f1, funData(x, t(replicate(40, cos(x) + rnorm(100, sd = 0.1)))))
+  # i1 <- irregFunData(argvals = lapply(ind, function(i, x){x[i]}, x = f1@argvals[[1]]),
+  #                   X = lapply(1:10, function(i, y){y[i,ind[[i]]]}, y = f1@X))
+
   
   # Check errors:
   # univariateFD, univariate FD
@@ -177,17 +160,17 @@ test_that("Arith", {
   
   
   # irreg & irreg
-  expect_error(extractObs(i1, obs = 1) + i1,
+  expect_error(extractObs(i1, obs = 2) + i1,
                "Multiple functions must be defined on subdomain of single function.")
-  expect_error(i1 + extractObs(i1, obs = 1),
+  expect_error(i1 + extractObs(i1, obs = 2),
                "Multiple functions must be defined on subdomain of single function.")
-  expect_error(i1 + extractObs(i1, obs = 1:5),
+  expect_error(i1 + extractObs(i1, obs = 1:2),
                "IrregFunData objects must have either the same number of observations or just one.")
   expect_error(i1 +  irregFunData(argvals = lapply(i1@argvals, function(l){l+1}), X = i1@X),
                "Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
    
   # irreg & reg
-  expect_error(i1+setArgvals(extractObs(f1, obs = 1:10), x+2),
+  expect_error(i1 + extractObs(f1, argvals = 3:4, obs = 1:3),
                "irregFunData object must be defined on a subdomain of the funData object!")
   expect_error(i1+f1,
                "funData object must have either one observation or the same number of observations as the irregFunData object")
@@ -210,6 +193,7 @@ test_that("Arith", {
   # univariate with e1/e2 having only one observation
   expect_equal(extractObs(f1 + extractObs(f1,1),1), extractObs(2*f1,1), check.attributes = FALSE)
   expect_equal(extractObs(f2 + extractObs(f2,1),1), extractObs(2*f2,1), check.attributes = FALSE)
+  
   # multivariate & multivariate
   expect_equal(m1+m1, multiFunData(mapply("+", m1, m1)))
   expect_equal(m1-m1, multiFunData(mapply("-", m1, m1)))
@@ -223,7 +207,9 @@ test_that("Arith", {
   expect_equal(m1*m1, m1^2)
   expect_equal(m1/m1, 0*m1+1)
   expect_equal(m1/m1, 1 + m1*0) 
+  
   # irreg & irreg
+  x1 <- unique(unlist(i1@argvals))
   expect_equal(i1+i1, irregFunData(i1@argvals,mapply('+', i1@X, i1@X)))
   expect_equal(i1-i1, irregFunData(i1@argvals,mapply('-', i1@X, i1@X)))
   expect_equal(i1*i1, irregFunData(i1@argvals,mapply('*', i1@X, i1@X)))
@@ -231,7 +217,7 @@ test_that("Arith", {
   expect_equal(i1 + irregFunData(argvals = list(x1), X = list(rep(0, length(x1)))), i1)
   expect_equal(irregFunData(argvals = list(x1), X = list(rep(1, length(x1)))) + i1, 1+ i1)
   # irreg & reg
-  expect_equal(i1 + extractObs(f1, obs = 1:10), extractObs(f1, obs = 1:10) + i1) # same number of observations
+  expect_equal(i1 + extractObs(f1, obs = 1:3), extractObs(f1, obs = 1:3) + i1) # same number of observations
   expect_equal(i1 + extractObs(f1, obs = 1), extractObs(f1, obs = 1) + i1) # funData object has only one observation
   # irreg & scalar
   expect_equal(i1+i1, 2*i1)
@@ -250,30 +236,27 @@ test_that("Math", {
   argvals <- seq(0,1, 0.01)
   
   # funData
-  f <- simFunData(argvals = argvals, N = 10, M = 5, eFunType = "Fourier", eValType = "linear")$simData
+  # f<-simFunData(argvals = argvals, N = 10, M = 5, eFunType = "Fourier", eValType = "linear")$simData
 
   expect_equal(exp(f), funData(argvals, exp(f@X)))
   expect_equal(sin(f)^2 + cos(f)^2, 0*f+1) # combination of Arith and math
   
   # irregFunData
-  i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
-  
   expect_equal(exp(i), irregFunData(i@argvals, lapply(i@X,exp)))
   expect_equal(sin(i)^2 + cos(i)^2, 0*i+1) # combination of Arith and math
   
   # multiFunData
-  m <- multiFunData(f, -1*f)
+  # m <- multiFunData(f, -1*f)
   
   expect_equal(exp(m), multiFunData(exp(f), exp(-1*f)))
   expect_equal(sin(m)^2 + cos(m)^2, 0*m+1) # combination of Arith and math
 })
 
 test_that("norm", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  m1 <- multiFunData(f1,f1)
-  x1 <- seq(-1,1, by = 0.01)
-  x2 <- seq(-0.5, 0.5, by = 0.01)
-  i1 <- irregFunData(list(x1,x2), list(x1^2, x2^2))
+  # m1 <-multiFunData(f1,f1)
+  # x1 <- <- seq(-1,1, by = 0.01)
+  # x2 <- <- seq(-0.5, 0.5, by = 0.01)
+  # i1 <- irregFunData(list(# x1 <-,# x2 <-), list(# x1 <-^2, # x2 <-^2))
   
   # Check errors:
   # univariate FD object
@@ -309,19 +292,19 @@ test_that("norm", {
   expect_equal(norm(m1, squared = FALSE), sqrt(rowSums(sapply(m1, norm, squared = TRUE, simplify = TRUE)))) # squared option
   expect_equal(norm(m1, weight = c(2,1)), norm(multiFunData(sqrt(2)*f1,f1))) # with weight
   # irreg FD object  
-  expect_equal(norm(i1), c(2/5, 1/80), tolerance = 5e-4) # result calculated explicitly
-  expect_equal(norm(i1, fullDom = TRUE), c(2/5, 1/80 + 2*13/96), tolerance = 1e-1) # result calculated explicitly
+  expect_equal(norm(i1), c(42,19,9), tolerance = 1e-5) # result calculated explicitly
+  expect_equal(norm(i1, fullDom = TRUE), c(42,42,43), tolerance = 1e-5) # result calculated explicitly
   expect_equal(norm(i1, weight = 2), 2*norm(i1)) # weight (makes little sense for univariate funData objects...)
 })
 
 
 test_that("scalarProduct", {
   set.seed(1)
-  f <- simFunData(N = 5, M = 7, eValType = "linear",
-                  eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
-  g <- simFunData(N = 5, M = 4, eValType = "linear",
-                  eFunType = "Poly", argvals = seq(0,1,0.01))$simData
-  m <- multiFunData(f,g)
+  # f<-simFunData(N = 5, M = 7, eValType = "linear",
+  #                eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
+  # g <- simFunData(N = 5, M = 4, eValType = "linear",
+  #                eFunType = "Poly", argvals = seq(0,1,0.01))$simData
+  # m <- multiFunData(f,g)
   i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
   
   # Check errors
@@ -348,12 +331,9 @@ test_that("scalarProduct", {
   })
 
 test_that("integrate", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120,c(4,5,6)))
-  m1 <- multiFunData(f1,f2)
-  x1 <- seq(-1,1, by = 0.01)
-  x2 <- seq(-0.5, 0.5, by = 0.01)
-  i1 <- irregFunData(list(x1,x2), list(x1^2, x2^2))
+  # x1 <- <- seq(-1,1, by = 0.01)
+  # x2 <- <- seq(-0.5, 0.5, by = 0.01)
+  # i1 <- irregFunData(list(# x1 <-,# x2 <-), list(# x1 <-^2, # x2 <-^2))
   
   # special case for data with only one observation
   f1.1 <- funData(argvals = 1:5, X = matrix(1:5, nrow = 1))
@@ -378,14 +358,14 @@ test_that("integrate", {
   expect_equal(integrate(m1), as.numeric(integrate(f1) + integrate(f2)))
   expect_equal(integrate(m1.1), as.numeric(integrate(f1.1) + integrate(f2.1)))
   # irreg FD object 
-  expect_equal(integrate(i1), c(2/3, 1/12), tolerance = 1e-4)
-  expect_equal(integrate(i1, fullDom = TRUE), c(2/3, 7/12), tolerance = 5e-3)
+  expect_equal(integrate(i1), c(12,6,-4), tolerance = 1e-5)
+  expect_equal(integrate(i1, fullDom = TRUE), c(12,12,-12), tolerance = 1e-5)
 })
 
 test_that("integrate3D",{
-  x <- seq(0,1, 0.02)
-  y <- seq(-0.5,0.5, 0.02)
-  z <- seq(1,2,0.02)
+# x <- <- seq(0,1, 0.02)
+# y <- <- seq(-0.5,0.5, 0.02)
+# z <- <- seq(1,2,0.02)
   
   nX <- length(x)
   nY <- length(y)
@@ -402,10 +382,7 @@ test_that("integrate3D",{
 })
 
 test_that("set/get", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120,c(4,5,6)))
-  m <- multiFunData(f1,f2)
-  i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
+  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
   
   #Check errors:
   # univariate FD object (one-dim)
@@ -426,9 +403,9 @@ test_that("set/get", {
   expect_warning(setX(m, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'Number of observations has changed') # warning: more observations
   # irreg FD object
   expect_error(setArgvals(i1, list(1:4)), "newArgvals must be a list of the same length as the original argvals.")
-  expect_error(setArgvals(i1, list(1:6, 1:3)), "newArgvals must have the same structure as the original argvals.")
+  expect_error(setArgvals(i1, list(1:6, 1:3, 1:10)), "newArgvals must have the same structure as the original argvals.")
   expect_error(setX(i1, list(1:4)), "newX must be a list of the same length as the original X.")
-  expect_error(setX(i1, list(1:6, 1:3)), "newX must have the same structure as the original X.")
+  expect_error(setX(i1, list(1:6, 1:3, 1:10)), "newX must have the same structure as the original X.")
   
   # Check functionality:
   # univariate FD object (one-dim)
@@ -442,18 +419,15 @@ test_that("set/get", {
   expect_equal(getX(setX(m, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))), list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))
   expect_equal(getArgvals(setArgvals(m, list(1+1:5, list(2+1:5, 3+1:6)))), list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
   # irreg FD object
-  expect_equal(getArgvals(setArgvals(i1, list(0:4,0:2))), list(0:4, 0:2))
-  expect_equal(getX(setX(i1, list(0:4,0:2))), list(0:4, 0:2))
+  expect_equal(getArgvals(setArgvals(i1, list(0:4, 0:2, 1:3))), list(0:4, 0:2, 1:3))
+  expect_equal(getX(setX(i1, list(0:4, 0:2, 1:3))), list(0:4, 0:2, 1:3))
   
   # check multivariate functions with one element
   expect_equal(getArgvals(f1), getArgvals(as.multiFunData(f1))[[1]])
 })
 
 test_that("flipFun", {
-  f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
-  f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120,c(4,5,6)))
-  m1 <- multiFunData(list(f1,f2))
-  i1 <- irregFunData(argvals = list(1:5, 2:5, 3:5, c(1,3,5)), X = list(2:6, 3:6, 4:6, c(2,4,6)))
+  # i1 <- irregFunData(argvals = list(1:5, 2:5, 3:5, c(1,3,5)), X = list(2:6, 3:6, 4:6, c(2,4,6)))
   
   # Check errors:
   # univariate FD object (one-dim)
@@ -484,20 +458,20 @@ test_that("flipFun", {
   # multivariate FD object
   expect_equal(flipFuns(m1, -1*m1), m1) 
   # irreg FD object
-  expect_equal(flipFuns(f1,i1),i1) # regular reference for each observation
-  expect_equal(flipFuns(extractObs(f1, obs = 1), i1), i1) # single  regular reference function
+  expect_equal(flipFuns(f1,fi),fi) # regular reference for each observation
+  expect_equal(flipFuns(extractObs(f1, obs = 1), fi), fi) # single  regular reference function
   expect_equal(flipFuns(i1, -1*i1), i1) # irreg reference for each observation
-  expect_equal(flipFuns(extractObs(i1, obs = 1), -1*i1), i1) # irreg reference for each observation
+  expect_equal(flipFuns(extractObs(fi, obs = 1), -1*fi), fi) # irreg reference for each observation
 })
 
 
 test_that("meanFunction",{
-  x <- seq(0, 2*pi, 0.01)
-  f1 <- funData(x, outer(seq(0.75, 1.25, 0.05), sin(x)))
+# x <- <- seq(0, 2*pi, 0.01)
+  # f1 <- funData(x, outer(seq(0.75, 1.25, 0.05), sin(x)))
   f1NA <- f1; f1NA@X[sample(prod(dim(f1NA@X)), 100)] <- NA
-  f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
-  m <- multiFunData(f1,f2)
-  i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
+  # f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
+  # m <- multiFunData(f1,f2)
+  # i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
  
   # Check errors:
 # funData
@@ -530,10 +504,10 @@ test_that("expand.int",{
           )
 
 test_that("tensorProduct",{
-  x <- seq(0, 2*pi, 0.1)
-  f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), sin(x)))
-  y <- seq(-pi, pi, 0.1)
-  f2 <- funData(y, outer(seq(0.25, 0.75, 0.1), sin(y)))
+# x <- <- seq(0, 2*pi, 0.1)
+  # f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), sin(x)))
+# y <- <- seq(-pi, pi, 0.1)
+  # f2 <- funData(y, outer(seq(0.25, 0.75, 0.1), sin(y)))
   
   # Check errors:
  expect_error(tensorProduct(f1), "tensorProduct currently accepts only 2 or 3 arguments.")
@@ -559,8 +533,8 @@ test_that("tensorProduct",{
  })
 
 test_that("approxNA",{
-  x <- seq(0, 2*pi, 0.1)
-  f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), x)) # linear functions
+# x <- <- seq(0, 2*pi, 0.1)
+  # f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), x)) # linear functions
   
   set.seed(1)
   expect_equal(integrate(f1 - as.irregFunData(approxNA(sparsify(f1, minObs = 5, maxObs = 8)))),
