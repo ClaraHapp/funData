@@ -364,7 +364,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                 
                 res <- irregFunData(argvals = e2@argvals, 
                                     X = sapply(1:nObs(e2), function(i){
-                                      do.call(f, list(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]]))}))
+                                      do.call(f, list(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]]))}, simplify = FALSE))
               }
               else
               {
@@ -397,7 +397,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
             #    stop("defined only for irregFunData objects with one-dimensional domain")
             
-            if(!any(unlist(e1@argvals) %in% e2@argvals[[1]]))
+            if(!all(unlist(e1@argvals) %in% e2@argvals[[1]]))
               stop("irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
@@ -1704,7 +1704,7 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
             sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
             
             # flip functions
-            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X)
+            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X, SIMPLIFY = FALSE)
             
             return(newObject)
           })
@@ -1731,7 +1731,7 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
             sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
             
             # flip functions
-            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X)
+            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X, SIMPLIFY = FALSE)
             
             return(newObject)
           })
