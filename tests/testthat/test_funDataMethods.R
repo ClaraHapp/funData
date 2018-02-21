@@ -178,10 +178,10 @@ test_that("Arith", {
   
   # Check functionality:
   # univariate & univariate
-  expect_equal(f1+f1, funData(x,f1@X+f1@X))
-  expect_equal(f1-f1, funData(x,f1@X-f1@X))
-  expect_equal(f1*f1, funData(x,f1@X*f1@X))
-  expect_equal(f1/f1, funData(x,f1@X/f1@X))  
+  expect_equal(f1+f1, funData(f1@argvals,f1@X+f1@X))
+  expect_equal(f1-f1, funData(f1@argvals,f1@X-f1@X))
+  expect_equal(f1*f1, funData(f1@argvals,f1@X*f1@X))
+  expect_equal(f1/f1, funData(f1@argvals,f1@X/f1@X))  
   # univariate & scalar
   expect_equal(f1+f1, 2*f1)
   expect_equal(f1+f1, f1*2)
@@ -238,18 +238,18 @@ test_that("Math", {
   # funData
   # f<-simFunData(argvals = argvals, N = 10, M = 5, eFunType = "Fourier", eValType = "linear")$simData
 
-  expect_equal(exp(f), funData(argvals, exp(f@X)))
-  expect_equal(sin(f)^2 + cos(f)^2, 0*f+1) # combination of Arith and math
+  expect_equal(exp(f1), funData(f1@argvals, exp(f1@X)))
+  expect_equal(sin(f1)^2 + cos(f1)^2, 0*f1+1) # combination of Arith and math
   
   # irregFunData
-  expect_equal(exp(i), irregFunData(i@argvals, lapply(i@X,exp)))
-  expect_equal(sin(i)^2 + cos(i)^2, 0*i+1) # combination of Arith and math
+  expect_equal(exp(i1), irregFunData(i1@argvals, lapply(i1@X,exp)))
+  expect_equal(sin(i1)^2 + cos(i1)^2, 0*i1+1) # combination of Arith and math
   
   # multiFunData
   # m <- multiFunData(f, -1*f)
   
-  expect_equal(exp(m), multiFunData(exp(f), exp(-1*f)))
-  expect_equal(sin(m)^2 + cos(m)^2, 0*m+1) # combination of Arith and math
+  expect_equal(exp(m1), multiFunData(exp(f1), exp(f2)))
+  expect_equal(sin(m1)^2 + cos(m1)^2, 0*m1+1) # combination of Arith and math
 })
 
 test_that("norm", {
