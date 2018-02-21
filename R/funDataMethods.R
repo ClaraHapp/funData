@@ -1834,7 +1834,7 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
             if(!all(sapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))})))
               stop("Mean function defined only for irregular functional data objects on the same domain.")
             
-            irregFunData(object@argvals[1], list(sapply(object@X, mean)))
+            irregFunData(object@argvals[1], list(Reduce('+', object@X) / nObs(object)))
           })
 
 
