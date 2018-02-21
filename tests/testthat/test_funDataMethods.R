@@ -26,7 +26,7 @@ test_that("str",{
 })
 
 test_that("summary",{
-  # check errors
+  # Check errors:
   expect_error(funData:::print.summary.funData(summary(m1)), 
                "Argument is not of class 'summary.funData'.")
   expect_error(funData:::print.summary.multiFunData(summary(f1)), 
@@ -34,27 +34,28 @@ test_that("summary",{
   expect_error(funData:::print.summary.irregFunData(summary(f1)), 
                "Argument is not of class 'summary.irregFunData'.")
   
-  # check functionality
+  # Check functionality:
   expect_known_output(print(summary(f1)), file = "outputs/summary_funData.out")
   expect_known_output(print(summary(m1)), file = "outputs/summary_multiFunData.out")
   expect_known_output(print(summary(i1)), file = "outputs/summary_irregFunData.out")
 })
 
 test_that("names",{
+  # Check errors:
   expect_error(names(f1) <- letters[1:3], "Names must have the same length as funData object.")
+  expect_error(names(m1) <- letters[1:3], "Names must have the same length as multiFunData object.")
+  expect_error(names(i1) <- letters[1:5], "Names must have the same length as irregFunData object.")
   
+  # Check functionality:
+  # funData (1D)
   names1 <- paste("Obs", 1:4)
   expect_equal({names(f1) <- names1}, names1) 
   expect_equal(names(f1), names1)
-  
-  expect_error(names(m1) <- letters[1:3], "Names must have the same length as multiFunData object.")
-  
+  # multiFunData
   namesM <- paste("Element", 1:2)
   expect_equal({names(m1) <- namesM}, namesM) 
   expect_equal(names(m1), namesM)
-  
-  expect_error(names(i1) <- letters[1:5], "Names must have the same length as irregFunData object.")
-  
+  # irregFunData
   namesI <- paste("Obs", 1:3)
   expect_equal({names(i1) <- namesI}, namesI)
   expect_equal(names(i1), names(i1@argvals))
@@ -219,6 +220,8 @@ test_that("Arith", {
 
 
 test_that("Math", {
+  # Check functionality:
+  # funData
   expect_equal(exp(f1), funData(f1@argvals, exp(f1@X)))
   expect_equal(sin(f1)^2 + cos(f1)^2, 0*f1+1) # combination of Arith and math
   
@@ -273,7 +276,7 @@ test_that("norm", {
 
 
 test_that("scalarProduct", {
-  # Check errors
+  # Check errors:
   expect_error(scalarProduct(m1, as.multiFunData(f1)),
                "multiFunData objects must have the same number of elements.")
   expect_error(scalarProduct(m1, m1, weight = c(-1,1)),
@@ -295,7 +298,7 @@ test_that("scalarProduct", {
 })
 
 test_that("integrate", {
-  #Check errors:  
+  # Check errors:  
   expect_error(integrate(funData(argvals = list(1:2,1:3,1:4,1:5), X = array(rnorm(120), dim = c(1,2,3,4,5)))),
                "Integration is not yet defined for functional data objects with dim > 3")
   expect_error(integrate(f1, method = 1),"Parameter 'method' must be a string.")
@@ -334,7 +337,7 @@ test_that("integrate3D",{
 })
 
 test_that("set/get", {
-  #Check errors:
+  # Check errors:
   # univariate FD object (one-dim)
   expect_error(setArgvals(f1, 1:6), 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (argvals)
