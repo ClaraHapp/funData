@@ -1,8 +1,8 @@
-Argument values (@argvals):
+$argvals
          Min. 1st Qu. Median Mean 3rd Qu. Max.
 Dim. 1 :    1       2      3    3       4    5
 
-Observed functions (@X):
+$X
         Obs 1 Obs 2 Obs 3 Obs 4
 Min.        1     2     3     4
 1st Qu.     5     6     7     8
@@ -11,3 +11,5 @@ Mean        9    10    11    12
 3rd Qu.    13    14    15    16
 Max.       17    18    19    20
 
+attr(,"class")
+[1] "summary.funData"
