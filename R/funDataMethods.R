@@ -374,7 +374,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                     stop("Multiple functions must be defined on subdomain of single function.")
                   
                   res <- irregFunData(argvals = e1@argvals,
-                                      X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}))
+                                      X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}, simplify = FALSE))
                 }
                 else
                   stop("IrregFunData objects must have either the same number of observations or just one.")
