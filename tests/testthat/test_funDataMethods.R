@@ -2,6 +2,7 @@ context("Test funData methods")
 
 f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
 f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120, c(4,5,6)))
+f3 <- funData(argvals = list(1:5, 1:6, 1:4), X = array(1:480, c(4, 5, 6, 4)))
 m1 <- multiFunData(f1, f2)
 i1 <- irregFunData(argvals = list(1:5, 2:4, 3:5), X = list(1:5, 2:4, -(3:1)))
 fi <- as.irregFunData(f1)
@@ -61,8 +62,6 @@ test_that("names",{
 })
 
 test_that("dimSupp", {
-  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
-  
   # Check functionality:
   # univariate FD object (one-dim)
   expect_equal(dimSupp(f1), 1)
@@ -75,8 +74,6 @@ test_that("dimSupp", {
 })
 
 test_that("nObs", {
-  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
-  
   # Check functionality:
   # univariate FD object (one-dim)
   expect_equal(nObs(f1), 4)
@@ -86,13 +83,10 @@ test_that("nObs", {
   expect_equal(nObs(m1), 4)
   # irreg FD object
   expect_equal(nObs(i1),3)
-  
 })
 
 
 test_that("nObsPoints", {
-  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(1:5, 2:4))
-  
   # Check functionality:
   # univariate FD object (one-dim)
   expect_equal(nObsPoints(f1), 5)
@@ -105,8 +99,6 @@ test_that("nObsPoints", {
 })
 
 test_that("extractObs", {
-  f3 <- funData(argvals = list(1:5, 1:6, 1:4), X = array(1:480, c(4, 5, 6, 4)))
-
   # Check errors:
   # univariate FD object (one-dim)
   expect_error(extractObs(f1, obs = 5), 
@@ -150,19 +142,10 @@ test_that("extractObs", {
 })
 
 test_that("Arith", {
-# x <- <- seq(0,1,length.out = 100)
-  ind <- replicate(10, sort(sample(1:100, sample(10:20, 1))))
-  # f1 <- funData(x, t(replicate(40, sin(x) + rnorm(100, sd = 0.1))))
-  # m1 <-multiFunData(f1, funData(x, t(replicate(40, cos(x) + rnorm(100, sd = 0.1)))))
-  # i1 <- irregFunData(argvals = lapply(ind, function(i, x){x[i]}, x = f1@argvals[[1]]),
-  #                   X = lapply(1:10, function(i, y){y[i,ind[[i]]]}, y = f1@X))
-
-  
   # Check errors:
   # univariateFD, univariate FD
   expect_error(f1 + extractObs(f1,1:2), 
                "nObs of funData objects is neither equal nor one.")
-  
   
   # irreg & irreg
   expect_error(extractObs(i1, obs = 2) + i1,
@@ -173,13 +156,13 @@ test_that("Arith", {
                "IrregFunData objects must have either the same number of observations or just one.")
   expect_error(i1 +  irregFunData(argvals = lapply(i1@argvals, function(l){l+1}), X = i1@X),
                "Arithmetics for two irregular functional data objects are defined only for functions on the same domain.")
-   
+  
   # irreg & reg
   expect_error(i1 + extractObs(f1, argvals = 3:4, obs = 1:3),
                "irregFunData object must be defined on a subdomain of the funData object!")
   expect_error(i1+f1,
                "funData object must have either one observation or the same number of observations as the irregFunData object")
-
+  
   
   # Check functionality:
   # univariate & univariate
@@ -236,13 +219,6 @@ test_that("Arith", {
 
 
 test_that("Math", {
-  set.seed(1)
-  
-  argvals <- seq(0,1, 0.01)
-  
-  # funData
-  # f<-simFunData(argvals = argvals, N = 10, M = 5, eFunType = "Fourier", eValType = "linear")$simData
-
   expect_equal(exp(f1), funData(f1@argvals, exp(f1@X)))
   expect_equal(sin(f1)^2 + cos(f1)^2, 0*f1+1) # combination of Arith and math
   
@@ -251,18 +227,11 @@ test_that("Math", {
   expect_equal(sin(i1)^2 + cos(i1)^2, 0*i1+1) # combination of Arith and math
   
   # multiFunData
-  # m <- multiFunData(f, -1*f)
-  
   expect_equal(exp(m1), multiFunData(exp(f1), exp(f2)))
   expect_equal(sin(m1)^2 + cos(m1)^2, 0*m1+1) # combination of Arith and math
 })
 
 test_that("norm", {
-  # m1 <-multiFunData(f1,f1)
-  # x1 <- <- seq(-1,1, by = 0.01)
-  # x2 <- <- seq(-0.5, 0.5, by = 0.01)
-  # i1 <- irregFunData(list(# x1 <-,# x2 <-), list(# x1 <-^2, # x2 <-^2))
-  
   # Check errors:
   # univariate FD object
   expect_error(norm(f1, squared = "Yes"), "Parameter 'squared' must be passed as a logical.") 
@@ -304,21 +273,11 @@ test_that("norm", {
 
 
 test_that("scalarProduct", {
-  set.seed(1)
-  # f<-simFunData(N = 5, M = 7, eValType = "linear",
-  #                eFunType = "Fourier", argvals = seq(0,1,0.01))$simData
-  # g <- simFunData(N = 5, M = 4, eValType = "linear",
-  #                eFunType = "Poly", argvals = seq(0,1,0.01))$simData
-  # m <- multiFunData(f,g)
-  i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
-  
   # Check errors
   expect_error(scalarProduct(m1, as.multiFunData(f1)),
                "multiFunData objects must have the same number of elements.")
-  
   expect_error(scalarProduct(m1, m1, weight = c(-1,1)),
                "Weights must be non-negative.")
-  
   expect_error(scalarProduct(m1, m1, weight = c(0,0)),
                "At least one weighting factor must be different from 0.")
   
@@ -333,15 +292,9 @@ test_that("scalarProduct", {
   expect_equal(scalarProduct(m1,m1, weight = c(1,2)), norm(m1, squared = TRUE, weight = c(1,2))) # with weights
   # irreg FD object  
   expect_equal(scalarProduct(i1,i1), norm(i1, squared = TRUE))
-  })
+})
 
 test_that("integrate", {
-  # x1 <- <- seq(-1,1, by = 0.01)
-  # x2 <- <- seq(-0.5, 0.5, by = 0.01)
-  # i1 <- irregFunData(list(# x1 <-,# x2 <-), list(# x1 <-^2, # x2 <-^2))
-  
-
-  
   #Check errors:  
   expect_error(integrate(funData(argvals = list(1:2,1:3,1:4,1:5), X = array(rnorm(120), dim = c(1,2,3,4,5)))),
                "Integration is not yet defined for functional data objects with dim > 3")
@@ -381,8 +334,6 @@ test_that("integrate3D",{
 })
 
 test_that("set/get", {
-  # i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
-  
   #Check errors:
   # univariate FD object (one-dim)
   expect_error(setArgvals(f1, 1:6), 
@@ -426,8 +377,6 @@ test_that("set/get", {
 })
 
 test_that("flipFun", {
-  # i1 <- irregFunData(argvals = list(1:5, 2:5, 3:5, c(1,3,5)), X = list(2:6, 3:6, 4:6, c(2,4,6)))
-  
   # Check errors:
   # univariate FD object (one-dim)
   expect_error(flipFuns(f1,funData(argvals = list(1:5), X = array(1:30,c(6,5)))), 
@@ -465,22 +414,18 @@ test_that("flipFun", {
 
 
 test_that("meanFunction",{
-# x <- <- seq(0, 2*pi, 0.01)
-  # f1 <- funData(x, outer(seq(0.75, 1.25, 0.05), sin(x)))
+  set.seed(2)
   f1NA <- f1; f1NA@X[sample(prod(dim(f1NA@X)), 5)] <- NA
-  # f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
-  # m <- multiFunData(f1,f2)
-  # i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
- 
+  
   # Check errors:
-# funData
-expect_error(meanFunction(f1, na.rm = "Yes"), "Parameter 'na.rm' must be a logical.")
-expect_error(meanFunction(f1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must be a logical.")
+  # funData
+  expect_error(meanFunction(f1, na.rm = "Yes"), "Parameter 'na.rm' must be a logical.")
+  expect_error(meanFunction(f1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must be a logical.")
   # irreg FD object
-expect_error(meanFunction(i1, na.rm = "Yes"), "Parameter 'na.rm' must be a logical.")
-expect_error(meanFunction(i1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must be a logical.")
+  expect_error(meanFunction(i1, na.rm = "Yes"), "Parameter 'na.rm' must be a logical.")
+  expect_error(meanFunction(i1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must be a logical.")
   expect_error(meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))),
-                             "Mean function defined only for irregular functional data objects on the same domain.")
+               "Mean function defined only for irregular functional data objects on the same domain.")
   expect_error(meanFunction(i1, na.rm = TRUE),
                "Option na.rm = TRUE is not implemented for mean functions of irregular data.")
   
@@ -495,42 +440,37 @@ expect_error(meanFunction(i1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must b
   expect_equal(meanFunction(m1), multiFunData(mean1,mean2))
   # irregular FD object
   expect_equal(meanFunction(fi), as.irregFunData(mean1))
- })
+})
 
 test_that("expand.int",{
   expect_null(funData:::expand.int())
   expect_equal(funData:::expand.int(2,5), data.frame(Var1 = rep(1:2, each = 5), Var2 = rep(1:5, times = 2)))
 }
-          )
+)
 
 test_that("tensorProduct",{
-# x <- <- seq(0, 2*pi, 0.1)
-  # f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), sin(x)))
-# y <- <- seq(-pi, pi, 0.1)
-  # f2 <- funData(y, outer(seq(0.25, 0.75, 0.1), sin(y)))
-  
   # Check errors:
- expect_error(tensorProduct(f1), "tensorProduct currently accepts only 2 or 3 arguments.")
- expect_error(tensorProduct(f1, f2, f2, f1), "tensorProduct currently accepts only 2 or 3 arguments.")
- expect_error(tensorProduct(f1, tensorProduct(f1,f2)), "tensorProduct is defined only for funData objects on one-dimensional domains!")
- 
- # Check functionality:
- # tensor product of two functions
- TP1 <- tensorProduct(f1, f1.1)
- expect_equal(dimSupp(TP1), 2)
- expect_equal(TP1@argvals, list(f1@argvals[[1]], f1.1@argvals[[1]]))
- expect_equal(nObs(TP1), nObs(f1)*nObs(f1.1))
- expect_equal(apply(TP1@X[1,-1,]/TP1@X[4,-1,], 1, mean), c(0.625, 0.75, 0.8125, 0.85), tol = 1e-5)
- expect_equal(apply(TP1@X[1,-1,]/TP1@X[4,-1,], 1, var), rep(0,4), tol = 1e-5)
- 
- # tensor product of three functions
- TP2 <- tensorProduct(f1, f1.1, f1)
- expect_equal(dimSupp(TP2), 3)
- expect_equal(TP2@argvals, list(f1@argvals[[1]], f1.1@argvals[[1]], f1@argvals[[1]]))
- expect_equal(nObs(TP2), nObs(f1)^2*nObs(f1.1))
- expect_equal(mean(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.90159, tol = 1e-5)
- expect_equal(var(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.0018352, tol = 1e-7)
- })
+  expect_error(tensorProduct(f1), "tensorProduct currently accepts only 2 or 3 arguments.")
+  expect_error(tensorProduct(f1, f2, f2, f1), "tensorProduct currently accepts only 2 or 3 arguments.")
+  expect_error(tensorProduct(f1, tensorProduct(f1,f2)), "tensorProduct is defined only for funData objects on one-dimensional domains!")
+  
+  # Check functionality:
+  # tensor product of two functions
+  TP1 <- tensorProduct(f1, f1.1)
+  expect_equal(dimSupp(TP1), 2)
+  expect_equal(TP1@argvals, list(f1@argvals[[1]], f1.1@argvals[[1]]))
+  expect_equal(nObs(TP1), nObs(f1)*nObs(f1.1))
+  expect_equal(apply(TP1@X[1,-1,]/TP1@X[4,-1,], 1, mean), c(0.625, 0.75, 0.8125, 0.85), tol = 1e-5)
+  expect_equal(apply(TP1@X[1,-1,]/TP1@X[4,-1,], 1, var), rep(0,4), tol = 1e-5)
+  
+  # tensor product of three functions
+  TP2 <- tensorProduct(f1, f1.1, f1)
+  expect_equal(dimSupp(TP2), 3)
+  expect_equal(TP2@argvals, list(f1@argvals[[1]], f1.1@argvals[[1]], f1@argvals[[1]]))
+  expect_equal(nObs(TP2), nObs(f1)^2*nObs(f1.1))
+  expect_equal(mean(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.90159, tol = 1e-5)
+  expect_equal(var(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.0018352, tol = 1e-7)
+})
 
 test_that("approxNA",{
   set.seed(2)
