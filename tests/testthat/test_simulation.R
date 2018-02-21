@@ -4,16 +4,16 @@ test_that("eFuns", {
   argvals <- seq(0,1,0.01)
   
   # check special cases for M = 1
-  expect_equal(efPoly(M = 1, argvals = argvals), 
-               extractObs(efPoly(M = 4, argvals = argvals), obs = 1))
-  expect_equal(efFourier(M = 1, argvals = argvals), 
-               extractObs(efFourier(M = 4, argvals = argvals), obs = 1))
+  expect_equal(funData:::efPoly(M = 1, argvals = argvals), 
+               extractObs(funData:::efPoly(M = 4, argvals = argvals), obs = 1))
+  expect_equal(funData:::efFourier(M = 1, argvals = argvals), 
+               extractObs(funData:::efFourier(M = 4, argvals = argvals), obs = 1))
   
   # linear version of Fourier
-  expect_error(efFourier(M = 2, argvals = argvals + 1, linear = TRUE),
+  expect_error(funData:::efFourier(M = 2, argvals = argvals + 1, linear = TRUE),
                "efFourier, option linear: not yet implemented for argvals != [0,1]!", fixed = TRUE)
-  expect_equal(norm(efFourier(M = 4, argvals = argvals, linear = TRUE)), 
-               c(1, 1, 1, 1.0015304))
+  expect_equal(norm(funData:::efFourier(M = 4, argvals = argvals, linear = TRUE)), 
+               c(1, 1, 1, 1.00153), tol = 1e-5)
   
   # eFun /eVal
   expect_error(eFun(argvals = "argvals", M = 2, type = "Poly"), "Parameter 'argvals' must be numeric.")
@@ -88,7 +88,7 @@ test_that("simFunData",{
   expect_equal(nObs(f$trueFuns), 10)
   expect_equal(norm(f$trueFuns)[1], 1)
   expect_equal(nObs(f$simData), 4)
-  expect_equal(norm(f$simData)[1], 3.49879378)
+  expect_equal(norm(f$simData)[1], 3.49880, tol = 1e-5)
   
   # tensor product eigenfunctions
   set.seed(2)
@@ -97,7 +97,7 @@ test_that("simFunData",{
   expect_equal(nObs(f2$trueFuns), 40)
   expect_equal(norm(f2$trueFuns)[1], 1)
   expect_equal(nObs(f2$simData), 4)
-  expect_equal(norm(f2$simData)[1], 25.4940667)
+  expect_equal(norm(f2$simData)[1], 25.49407, tol = 1e-5)
 })
 
 test_that("simMultiFunData", {
@@ -158,7 +158,7 @@ expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-
   all.equal(nObs(split$trueFuns), 5)
   all.equal(norm(split$trueFuns)[1], 1)
   all.equal(nObs(split$simData), 7)
-  all.equal(norm(split$simData)[1], 2.29714788)
+  all.equal(norm(split$simData)[1], 2.29715, tol = 1e-5)
   
   # check weighted version for 1D data
   set.seed(2)
@@ -168,7 +168,7 @@ expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-
   all.equal(nObs(weighted1D$trueFuns), 5)
   all.equal(norm(weighted1D$trueFuns)[1], 1)
   all.equal(nObs(weighted1D$simData), 7)
-  all.equal(norm(weighted1D$simData)[1], 2.82413497)
+  all.equal(norm(weighted1D$simData)[1], 2.82413, tol = 1e-5)
   
   # check weighted version for 1D and 2D data
   set.seed(3)
@@ -179,7 +179,7 @@ expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-
   all.equal(nObs(weighted$trueFuns), 20)
   all.equal(norm(weighted$trueFuns)[1], 1)
   all.equal(nObs(weighted$simData), 7)
-  all.equal(norm(weighted$simData)[1], 5.98032046)
+  all.equal(norm(weighted$simData)[1], 5.98032, tol = 1e-5)
   
   # check special case for N = 1
   set.seed(4)
@@ -188,7 +188,7 @@ expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-
   all.equal(nObs(split1$trueFuns), 5)
   all.equal(norm(split1$trueFuns)[1], 1)
   all.equal(nObs(split1$simData), 1)
-  all.equal(norm(split1$simData), 2.3134751)
+  all.equal(norm(split1$simData), 2.31348, tol = 1e-5)
   
   set.seed(5)
   weighted1 <- simMultiFunData(type = "weighted", argvals = list(list(seq(0,1,0.01))),
@@ -196,7 +196,7 @@ expect_error(simMultiFunData(type = "split", argvals = list(seq(0,1,0.01), seq(-
   all.equal(nObs(weighted1$trueFuns), 5)
   all.equal(norm(weighted1$trueFuns)[1], 1)
   all.equal(nObs(weighted1$simData), 1)
-  all.equal(norm(weighted1$simData), 0.90397833)
+  all.equal(norm(weighted1$simData), 0.90398, tol = 1e-5)
   
 })
 
@@ -217,8 +217,8 @@ test_that("sparsify",{
   s <- as.irregFunData(sparsify(f, minObs = 2, maxObs = 4))
   expect_equal(nObs(s), 2)
   expect_equal(nObsPoints(s), c(2,2))
-  expect_equal(getArgvals(s), list(c(0.57, 0.70), c(0.94, 0.95)))
-  expect_equal(getX(s), list(c(1.1767821, -2.7691465), c(-2.4019547, -2.3261600)))
+  expect_equal(getArgvals(s), list(c(0.57, 0.70), c(0.94, 0.95)), tol = 1e-5)
+  expect_equal(getX(s), list(c(1.17678, -2.76915), c(-2.40195, -2.32616)), tol = 1e-5)
   
   # multivariate functional data
   m <- multiFunData(funData(argvals = 1:4, X = rbind(1:4, 2:5)), funData(argvals = 1:5, X = rbind(1:5, 2:6)))
@@ -244,7 +244,7 @@ test_that("addError",{
   e1 <- addError(f, sd = 0.5)
   expect_equal(nObs(e1), 2)
   expect_equal(nObsPoints(e1), nObsPoints(f))
-  expect_equal(norm(e1), c(3.6424288, 7.7852419))
+  expect_equal(norm(e1), c(3.64243, 7.78524), tol = 1e-5)
   
   # multivariate functional data
   m <- multiFunData(funData(argvals = 1:4, X = rbind(1:4, 2:5)), funData(argvals = 1:5, X = rbind(1:5, 2:6)))
@@ -252,5 +252,5 @@ test_that("addError",{
   e2 <- addError(m, sd = c(0.5, 5))
   expect_equal(nObs(e2), nObs(m))
   expect_equal(nObsPoints(e2), nObsPoints(m))
-  expect_equal(norm(e2), c(61.411285, 124.458903)) 
+  expect_equal(norm(e2), c(61.41128, 124.45890), tol = 1e-5) 
 })
