@@ -498,8 +498,8 @@ expect_error(meanFunction(i1, na.rm = c(TRUE, FALSE)), "Parameter 'na.rm' must b
  })
 
 test_that("expand.int",{
-  expect_null(expand.int())
-  expect_equal(expand.int(2,5), data.frame(Var1 = rep(1:2, each = 5), Var2 = rep(1:5, times = 2)))
+  expect_null(funData:::expand.int())
+  expect_equal(funData:::expand.int(2,5), data.frame(Var1 = rep(1:2, each = 5), Var2 = rep(1:5, times = 2)))
 }
           )
 
