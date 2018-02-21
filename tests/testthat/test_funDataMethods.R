@@ -282,7 +282,7 @@ test_that("norm", {
   # Check functionality:
   # univariate FD object
   expect_equal(norm(f1), # all observations
-               apply((f1^2)@X, 1, function(f, argvals, method){.intWeights(argvals, method) %*% f}, argvals = f1@argvals[[1]], method = "trapezoidal") )
+               apply((f1^2)@X, 1, function(f, argvals, method){funData:::.intWeights(argvals, method) %*% f}, argvals = f1@argvals[[1]], method = "trapezoidal") )
   expect_equal(norm(f1)[1:3], norm(f1, obs = 1:3))   # only some observations
   expect_equal(norm(f1, squared = FALSE)[2], sqrt(norm(f1)[2])) # squared option
   expect_equal(norm(f1, weight = 2), 2*norm(f1)) # weight (makes little sense for univariate funData objects...)
@@ -290,7 +290,7 @@ test_that("norm", {
   expect_equal(norm(m1), rowSums(sapply(m1, norm, simplify = TRUE))) # all observations
   expect_equal(norm(m1)[1], norm(m1, obs = 1)) # only one observation
   expect_equal(norm(m1, squared = FALSE), sqrt(rowSums(sapply(m1, norm, squared = TRUE, simplify = TRUE)))) # squared option
-  expect_equal(norm(m1, weight = c(2,1)), norm(multiFunData(sqrt(2)*f1,f1))) # with weight
+  expect_equal(norm(m1, weight = c(2,1)), norm(multiFunData(sqrt(2)*f1,f2))) # with weight
   # irreg FD object  
   expect_equal(norm(i1), c(42,19,9), tolerance = 1e-5) # result calculated explicitly
   expect_equal(norm(i1, fullDom = TRUE), c(42,42,43), tolerance = 1e-5) # result calculated explicitly
