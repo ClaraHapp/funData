@@ -516,28 +516,25 @@ test_that("tensorProduct",{
  
  # Check functionality:
  # tensor product of two functions
- TP1 <- tensorProduct(f1, f2)
+ TP1 <- tensorProduct(f1, f1.1)
  expect_equal(dimSupp(TP1), 2)
- expect_equal(TP1@argvals, list(f1@argvals[[1]], f2@argvals[[1]]))
- expect_equal(nObs(TP1), nObs(f1)*nObs(f2))
- expect_equal(mean(TP1@X[1,-1,]/TP1@X[7,-1,]), 0.88235294) # what was 2nd before now is 7th
- expect_equal(sum(var(TP1@X[1,-1,]/TP1@X[7,-1,])), 0)
+ expect_equal(TP1@argvals, list(f1@argvals[[1]], f1.1@argvals[[1]]))
+ expect_equal(nObs(TP1), nObs(f1)*nObs(f1.1))
+ expect_equal(apply(TP1@X[1,-1,]/TP1@X[4,-1,], 1, mean), c(0.625, 0.75, 0.8125, 0.85), tol = 1e-5)
+ expect_equal(apply(TP1@X[1,-1,]/TP1@X[4,-1,], 1, var), rep(0,4), tol = 1e-5)
  
  # tensor product of three functions
- TP2 <- tensorProduct(f1, f2, f1)
+ TP2 <- tensorProduct(f1, f1.1, f1)
  expect_equal(dimSupp(TP2), 3)
- expect_equal(TP2@argvals, list(f1@argvals[[1]], f2@argvals[[1]], f1@argvals[[1]]))
- expect_equal(nObs(TP2), nObs(f1)^2*nObs(f2))
- expect_equal(mean(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.88235294)
- expect_equal(sum(var(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1])), 0)
+ expect_equal(TP2@argvals, list(f1@argvals[[1]], f1.1@argvals[[1]], f1@argvals[[1]]))
+ expect_equal(nObs(TP2), nObs(f1)^2*nObs(f1.1))
+ expect_equal(mean(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.90159, tol = 1e-5)
+ expect_equal(var(TP2@X[1,-1,-1,-1]/TP2@X[2,-1,-1,-1]), 0.0018352, tol = 1e-7)
  })
 
 test_that("approxNA",{
-# x <- <- seq(0, 2*pi, 0.1)
-  # f1 <- funData(x, outer(seq(0.75, 1.25, 0.1), x)) # linear functions
-  
-  set.seed(1)
-  expect_equal(integrate(f1 - as.irregFunData(approxNA(sparsify(f1, minObs = 5, maxObs = 8)))),
+  set.seed(2)
+  expect_equal(integrate(f1 - as.irregFunData(approxNA(sparsify(f1, minObs = 3, maxObs = 5)))),
                rep(0, nObs(f1)))
   
 })
