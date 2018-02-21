@@ -1,4 +1,4 @@
-$argvals
+Argument values (@argvals):
         Obs 1 Obs 2 Obs 3
 Min.        1   2.0   3.0
 1st Qu.     2   2.5   3.5
@@ -7,7 +7,7 @@ Mean        3   3.0   4.0
 3rd Qu.     4   3.5   4.5
 Max.        5   4.0   5.0
 
-$X
+Observed functions (@X):
         Obs 1 Obs 2 Obs 3
 Min.        1   2.0  -3.0
 1st Qu.     2   2.5  -2.5
@@ -16,5 +16,3 @@ Mean        3   3.0  -2.0
 3rd Qu.     4   3.5  -1.5
 Max.        5   4.0  -1.0
 
-attr(,"class")
-[1] "summary.irregFunData"
