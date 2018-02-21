@@ -441,7 +441,7 @@ test_that("flipFun", {
                "Function is only implemented for irregular data with one-dimensional support")
   expect_error(flipFuns(extractObs(f1, 1:2), i1),
                "Functions must have the same number of observations or use a single function as reference.")
-  expect_error(flipFuns(extractObs(f1, argvals = 1:3), i1),
+  expect_error(flipFuns(extractObs(f1, argvals = 1:3), fi),
                "Irregular functions must be defined on a sub-domain of the reference function(s).", fixed = TRUE)# fixed, as '(...)' is interpreted as regexp
   # irreg FD object (irregular reference)
   expect_error(flipFuns(extractObs(i1, 1:2), i1),
