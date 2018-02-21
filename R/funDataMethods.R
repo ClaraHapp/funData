@@ -870,7 +870,7 @@ integrate3D <- function(f, argvals)
 {
   res <- t(.intWeights(argvals[[1]])) %*% apply(f, 1:2, function(w){w %*% .intWeights(argvals[[3]])}) %*% .intWeights(argvals[[2]])
   
-  return(res)
+  return(as.numeric(res))
 }
 
 #' Integrate method for funData objects
