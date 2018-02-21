@@ -6,6 +6,11 @@ m1 <- multiFunData(f1, f2)
 i1 <- irregFunData(argvals = list(1:5, 2:4, 3:5), X = list(1:5, 2:4, -(3:1)))
 fi <- as.irregFunData(f1)
 
+# special case for data with only one observation
+f1.1 <- funData(argvals = 1:5, X = matrix(1:5, nrow = 1))
+f2.1 <- funData(argvals = list(1:5, 1:6), X = array(1:30,c(1,5,6)))
+m1.1 <- multiFunData(list(f1.1,f2.1))
+
 test_that("print",{
   expect_known_output(print(f1), file = "outputs/print_funData.out")
   expect_known_output(print(m1), file = "outputs/print_multiFunData.out")
@@ -308,26 +313,26 @@ test_that("scalarProduct", {
   i <- as.irregFunData(sparsify(f, minObs = 5, maxObs = 10))
   
   # Check errors
-  expect_error(scalarProduct(m, as.multiFunData(f)),
+  expect_error(scalarProduct(m1, as.multiFunData(f1)),
                "multiFunData objects must have the same number of elements.")
   
-  expect_error(scalarProduct(m, m, weight = c(-1,1)),
+  expect_error(scalarProduct(m1, m1, weight = c(-1,1)),
                "Weights must be non-negative.")
   
-  expect_error(scalarProduct(m, m, weight = c(0,0)),
+  expect_error(scalarProduct(m1, m1, weight = c(0,0)),
                "At least one weighting factor must be different from 0.")
   
   # Check functionality:
   # univariate FD objects
-  s <- scalarProduct(f,g)
-  expect_equal(length(s), nObs(f))
-  expect_equal(s[1], 0.68327608)
-  expect_equal(scalarProduct(f,f), norm(f, squared = TRUE))
+  s <- scalarProduct(f1, 2*f1)
+  expect_equal(length(s), nObs(f1))
+  expect_equal(s[1], 840, tol = 1e-5)
+  expect_equal(scalarProduct(f1,f1), norm(f1, squared = TRUE))
   # multivariate FD object
-  expect_equal(scalarProduct(m,m), norm(m, squared = TRUE))
-  expect_equal(scalarProduct(m,m, weight = c(1,2)), norm(m, squared = TRUE, weight = c(1,2))) # with weights
+  expect_equal(scalarProduct(m1,m1), norm(m1, squared = TRUE))
+  expect_equal(scalarProduct(m1,m1, weight = c(1,2)), norm(m1, squared = TRUE, weight = c(1,2))) # with weights
   # irreg FD object  
-  expect_equal(scalarProduct(i,i), norm(i, squared = TRUE))
+  expect_equal(scalarProduct(i1,i1), norm(i1, squared = TRUE))
   })
 
 test_that("integrate", {
@@ -335,10 +340,7 @@ test_that("integrate", {
   # x2 <- <- seq(-0.5, 0.5, by = 0.01)
   # i1 <- irregFunData(list(# x1 <-,# x2 <-), list(# x1 <-^2, # x2 <-^2))
   
-  # special case for data with only one observation
-  f1.1 <- funData(argvals = 1:5, X = matrix(1:5, nrow = 1))
-  f2.1 <- funData(argvals = list(1:5, 1:6), X = array(1:30,c(1,5,6)))
-  m1.1 <- multiFunData(list(f1.1,f2.1))
+
   
   #Check errors:  
   expect_error(integrate(funData(argvals = list(1:2,1:3,1:4,1:5), X = array(rnorm(120), dim = c(1,2,3,4,5)))),
@@ -352,8 +354,9 @@ test_that("integrate", {
   
   # Check functionality:
   # univariate FD objects
-  expect_equal(integrate(f1)[1], sum(.intWeights(f1@argvals[[1]], "trapezoidal")*f1@X[1,]))
-  expect_equal(integrate(f2)[1], as.numeric(t(.intWeights(f2@argvals[[1]], "trapezoidal")) %*%  f2@X[1,,] %*% .intWeights(f2@argvals[[2]], "trapezoidal")))
+  expect_equal(integrate(f1)[1], sum(funData:::.intWeights(f1@argvals[[1]], "trapezoidal")*f1@X[1,]))
+  expect_equal(integrate(f2)[1], as.numeric(t(funData:::.intWeights(f2@argvals[[1]], "trapezoidal")) %*% 
+                                              f2@X[1,,] %*% funData:::.intWeights(f2@argvals[[2]], "trapezoidal")))
   # multivariate FD objects
   expect_equal(integrate(m1), as.numeric(integrate(f1) + integrate(f2)))
   expect_equal(integrate(m1.1), as.numeric(integrate(f1.1) + integrate(f2.1)))
