@@ -1,3 +1,12 @@
+# funData 1.2
+
+## New features
+* Basic generics `names`, `names<-` `str` and `summary` for all functional data classes.
+* S4 generic `norm` is now based on function `norm` in package base (no masking).
+* More argument checking for user-facing functions including unit tests.
+* Bug fixed for `meanFunction` and `irregFunData`.
+
+
 # funData 1.1
 
 ## New features
