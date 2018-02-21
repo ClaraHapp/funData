@@ -70,8 +70,9 @@ NULL
 #' # A more realistic object
 #' argvals <- seq(0,2*pi,0.01)
 #' object <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
-#' # Display gives basic information
+#' # Display / summary give basic information
 #' object 
+#' summary(object)
 #' # Use the plot function to get an impression of the data
 #' plot(object) 
 #' 
@@ -87,28 +88,21 @@ NULL
 #' all.equal(g1,g2)
 #' # Display funData object in the console
 #' g2 
+#' # Summarize information
+#' summary(g2)
 setClass("funData", representation = representation(argvals = "list", X = "array"))
 
 
 # Validity checks for funData objects
 setValidity("funData", function(object){
-  if(!is(object@argvals, "list"))
-  {
-    return("argvals objects must be supplied as lists of numerics")
-  } else {
     if(!all(sapply(object@argvals, is.numeric, simplify = TRUE)))
-      return("all argvals elements must be numeric")
-  }
-  if(!is(object@X, "array"))
-  {
-    return("X elements must be supplied as arrays")
-  } else {
+      return("All argvals elements must be numeric")
+  
     if(length(object@argvals) != length(dim(object@X)[-1]))
       return("argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md")
     
     if(!all(dim(object@X)[-1] == sapply(object@argvals, length, simplify = TRUE)))
       return("argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md")
-  }
   
   return(TRUE)
 })
@@ -213,6 +207,8 @@ setMethod("funData", signature = c(argvals = "numeric", X = "array"),
 #' all.equal(m1,m3)
 #' # Display multiFunData object in the console
 #' m3
+#' # Summarize
+#' summary(m3)
 #' 
 #' ### Creating a multifunData object with 2 observations on different domains (both 1D)
 #' # A new element
@@ -245,6 +241,8 @@ setMethod("funData", signature = c(argvals = "numeric", X = "array"),
 #' m6 <- multiFunData(f1,f2)
 #' # Display multiFunData object in the console for basic information
 #' m6
+#' # Summarize
+#' summary(m6)
 #' # Use the plot function to get an impression of the data
 #' \dontrun{plot(m6)} # m6 has 2D element, must specify one observation for plotting
 #' plot(m6, obs = 1, main = c("1st element (obs 1)", "2nd element (obs 1)"))
@@ -254,11 +252,8 @@ setClass("multiFunData", representation = "list")
 
 # Validity check for multiFunData objects
 setValidity("multiFunData", function(object){
-  if(!is.list(object))
-    return("Objects to multiFunData must be supplied as a list!")
-  
-  if(!all(sapply(object, is, "funData", simplify = TRUE)))
-    return("elements of multiFunData must be of class funData!")
+ if(!all(sapply(object, is, "funData", simplify = TRUE)))
+    return("Elements of multiFunData must be of class funData!")
   
   if(diff(range(sapply(object,nObs)))!= 0)
     return("All elements must have the same number of observations!")
@@ -395,6 +390,8 @@ setMethod("as.multiFunData", signature = "funData",
 #' i1 <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' # Display in the console
 #' i1
+#' # Summarize
+#' summary(i1)
 #' 
 #' # A more realistic object
 #' argvals <- seq(0,2*pi, 0.01)
@@ -402,8 +399,9 @@ setMethod("as.multiFunData", signature = "funData",
 #' argvalsIrreg <- lapply(ind, function(i){argvals[i]})
 #' i2 <- irregFunData(argvals = argvalsIrreg, X = mapply(function(x, a){a * sin(x)},
 #'              x = argvalsIrreg, a = seq(0.75, 1.25, by = 0.05)))
-#' # Display gives basic information
+#' # Display/summary gives basic information
 #' i2
+#' summary(i2)
 #' # Use the plot function to get an impression of the data
 #' plot(i2) 
 setClass("irregFunData", representation = representation(argvals = "list", X = "list"))
@@ -411,14 +409,8 @@ setClass("irregFunData", representation = representation(argvals = "list", X = "
 
 # Validity checks for irregfunData objects
 setValidity("irregFunData", function(object){
-  if(!is(object@argvals, "list"))
-    return("argvals objects must be supplied as list (of numerics)")
-  
   if(any(sapply(object@argvals, function(l){!is.numeric(l)})))
     return("argvals must be supplied as list of numerics")
-  
-  if(!is(object@X, "list"))
-    return("X elements must be supplied as list (of numerics)")
   
   if(any(sapply(object@X, function(l){!is.numeric(l)})))
     return("X must be supplied as list of numerics")
@@ -491,7 +483,10 @@ setAs("irregFunData", "funData",
         for(i in 1:nObs(from))
           X[i, argvals %in% from@argvals[[i]]] <- from@X[[i]]
         
-        return(funData(argvals = argvals, X = X))})
+        res <- funData(argvals = argvals, X = X)
+        names(res) <- names(from)
+        
+        return(res)})
 
 #' Coerce an irregFunData object to class funData
 #' 
@@ -536,9 +531,12 @@ setAs("funData", "irregFunData",
                 stop("The funData object must be defined on a one-dimensional domain.")
         
         # simple apply does not work if data is in fact dense...
-        return(irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
-                       X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X)
-                       ))
+        res <- irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
+                            X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X))
+        
+        names(res) <- names(from)
+                            
+        return(res)
 })
 
 #' Coerce a funData object to class irregFunData

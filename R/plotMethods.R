@@ -97,6 +97,15 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
                          col = NULL, xlab = "argvals", ylab = "", legend = TRUE,
                          plotNA = FALSE, add = FALSE, ...)
 {
+  # check arguments, which are not simply passed to other plot methods
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(x)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(x), ".")
+  if(! all(is.logical(plotNA), length(plotNA) == 1))
+    stop("Parameter 'plotNA' must be passed as a logical.")
+  if(! all(is.logical(add), length(add) == 1))
+    stop("Parameter 'add' must be passed as a logical.")
+  
+  
   if(dimSupp(x) > 2)
     stop("plot is implemented only for functional data with one- or two-dimensional domain")
   
@@ -117,7 +126,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
   if(dimSupp(x) == 2)
   {
     if(length(obs) > 1)
-      stop("plot: specify one observation for plotting")
+      stop("Specify one observation for plotting")
     
     if(add == TRUE)
       stop("Option add = TRUE not implemented for images")
@@ -157,11 +166,11 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' @param dim The dimensions to plot. Defaults to \code{length(x)}, i.e. all 
 #'   functions in \code{x} are plotted.
 #' @param par.plot Graphic parameters to be passed to the plotting regions. The 
-#'   option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
+#'   option \code{mfrow} is ignored. Defaults to \code{NULL}. See 
 #'   \code{\link[graphics]{par}} for details.
 #' @param main A string vector, giving the title of the plot. Can have the same 
 #'   length as \code{dim} (different titles for each dimension) or length 
-#'   \code{1} (one title for all dimensions). Defaults to \code{NULL}.
+#'   \code{1} (one title for all dimensions). Defaults to \code{names(x)}.
 #' @param xlab,ylab The titles for x- and y-axis. Defaults to \code{"argvals"} 
 #'   for the x-axis and no title for the y-axis for all elements. Can be 
 #'   supplied as a vector of the same length as \code{dim} (one x-/y-lab for each 
@@ -211,8 +220,20 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' \dontrun{plot(m2, main = c("1st element", "2nd element")) # must specify obs!}
 #' 
 #' par(oldpar)
-plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = NULL, 
+plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = names(x), 
                               xlab = "argvals", ylab = "", log = "", ylim = NULL, ...){
+  
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(x)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(x), ".")
+  if(! all(is.numeric(dim), 0 < dim, dim <= length(x)))
+    stop("Parameter 'dim' must be a vector of numerics with values between 1 and ", length(x), ".")
+  if(! any(is.null(par.plot), is.list(par.plot)))
+    stop("Parameter 'par.plot' must be either NULL or passed as a list.")
+  
+  if(!any(is.null(main), length(main) == c(1,length(x))))
+      stop("Parameter 'main' must be either NULL or have lengths 1 or ", length(x), ".")
+  if(length(main) == 1)
+        main <- rep(main, length(dim))
   
   if(length(xlab) == 1)
     xlab <- rep(xlab, length(dim))
@@ -225,17 +246,15 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   
   if(!is.null(ylim)) # if ylim is not set by default...
   {
-    if(!(is.list(ylim) & length(ylim) == length(dim))) # it can either be a list with separate values for each element
+    if(!all(is.list(ylim), length(ylim) == length(dim))) # it can either be a list with separate values for each element
     {
-      if(is.vector(ylim) & length(ylim) == 2) # or a vector with values to be used for all elements
+      if(all(is.vector(ylim), length(ylim) == 2)) # or a vector with values to be used for all elements
         ylim <- rep(list(ylim), length(dim))
       else
         stop("The ylim argument must be either a vector (used for all elements) or a list with values for each element.")
     }  
   }
- 
-  if(!is.null(main) & (length(main) == 1))
-    main <- rep(main, length(dim))
+
 
   # if no par.plot specified: get graphics parameters
   if(is.null(par.plot))
@@ -309,6 +328,12 @@ plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               log = "", add = FALSE, ...)
 {
+  # check arguments, which are not simply passed to other plot methods
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(x)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(x), ".")
+  if(! all(is.logical(add), length(add) == 1))
+    stop("Parameter 'add' must be passed as a logical.")
+  
   if(length(col) < length(obs))
     col <- rep(col,length(obs))
   
@@ -439,14 +464,21 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' }
 ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE, add = FALSE, ...)
 {
-  if(dimSupp(data) > 2)
-    stop("ggplot is implemented only for functional data with one- or two-dimensional domain")
-  
   if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
   {
     warning("Please install the ggplot2 and reshape2 packages to use the ggplot function for funDataObjects.")
     return()
   } 
+  
+  if(dimSupp(data) > 2)
+    stop("ggplot is implemented only for functional data with one- or two-dimensional domain")
+  
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(data)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(data), ".")
+  if(! all(is.logical(plotNA), length(plotNA) == 1))
+    stop("Parameter 'plotNA' must be passed as a logical.")
+  if(! all(is.logical(add), length(add) == 1))
+    stop("Parameter 'add' must be passed as a logical.")
   
   if(dimSupp(data) == 1)
   {
@@ -469,7 +501,7 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
   if(dimSupp(data) == 2)
   {
     if(length(obs) > 1)
-      stop("plot: specify one observation for plotting")
+      stop("Specify one observation for plotting")
     
     if(add == TRUE)
       stop("Option add = TRUE not implemented for images")
@@ -554,6 +586,11 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
 #' }
 ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE, ...)
 {
+  if(! all(is.numeric(dim), 0 < dim, dim <= length(data)))
+    stop("Parameter 'dim' must be a vector of numerics with values between 1 and ", length(data), ".")
+  if(! all(is.logical(plotGrid), length(plotGrid) == 1))
+    stop("Parameter 'plotGrid' must be passed as a logical.")
+  
   p <- sapply(data[dim], ggplot.funData, obs = obs, ...,  simplify = FALSE)
   
   if(plotGrid)
@@ -626,6 +663,11 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), geom = "line", add = F
     warning("Please install the ggplot2 and reshape2 packages to use the ggplot function for funDataObjects.")
     return()
   } 
+  
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(data)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(data), ".")
+  if(! all(is.logical(add), length(add) == 1))
+    stop("Parameter 'add' must be passed as a logical.")
   
   meltData <- reshape2::melt(data@X[obs])
   names(meltData)[2] <- "obsInd"

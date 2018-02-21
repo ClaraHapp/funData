@@ -3,9 +3,6 @@
 \name{norm}
 \alias{norm}
 \title{Calculate the norm of functional data}
-\usage{
-norm(object, ...)
-}
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or 
 \code{multiFunData}.}
@@ -48,6 +45,7 @@ Defaults to \code{FALSE}. See \code{\link{integrate}} for details. }
  The function is currently implemented only for functional 
   data with one- and two-dimensional domains.
 }
+
 \examples{
 # Univariate
 object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
@@ -67,4 +65,3 @@ norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to t
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
 }
-

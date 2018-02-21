@@ -24,4 +24,3 @@ functions (see below).
   \code{\link{ggplot.multiFunData}} for \code{multiFunData} objects and
   \code{\link{ggplot.irregFunData}} for \code{irregFunData} objects.
 }
-

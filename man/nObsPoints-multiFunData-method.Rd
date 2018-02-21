@@ -11,4 +11,3 @@
 nObsPoints for multiFunData objects
 }
 \keyword{internal}
-

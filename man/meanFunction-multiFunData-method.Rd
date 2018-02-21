@@ -14,4 +14,3 @@ Mean for multivariate functional data
 \code{\link{meanFunction}}
 }
 \keyword{internal}
-

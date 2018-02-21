@@ -18,4 +18,3 @@ The result of the numerical integration of f on the given grid.
 Integrate a function on a rectangular 3D grid
 }
 \keyword{internal}
-

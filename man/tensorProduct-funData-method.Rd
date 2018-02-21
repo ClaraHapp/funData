@@ -14,4 +14,3 @@ Tensor product for functional data
 \code{\link{tensorProduct}}
 }
 \keyword{internal}
-

@@ -11,4 +11,3 @@
 Add gaussian white noise to multivariate functional data
 }
 \keyword{internal}
-

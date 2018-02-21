@@ -2,10 +2,10 @@
 % Please edit documentation in R/funDataMethods.R
 \docType{methods}
 \name{Math.funData}
-\alias{Math,funData-method}
-\alias{Math,irregFunData-method}
-\alias{Math,multiFunData-method}
 \alias{Math.funData}
+\alias{Math,funData-method}
+\alias{Math,multiFunData-method}
+\alias{Math,irregFunData-method}
 \title{Mathematical operations for functional data objects}
 \usage{
 \S4method{Math}{funData}(x)
@@ -15,7 +15,7 @@
 \S4method{Math}{irregFunData}(x)
 }
 \arguments{
-\item{x}{An nbject of class \code{funData}, \code{irregFunData} or
+\item{x}{An object of class \code{funData}, \code{irregFunData} or
 \code{multiFunData}.}
 }
 \value{
@@ -58,4 +58,3 @@ par(oldpar)
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
   \code{\linkS4class{multiFunData}}, \link[methods]{Math}
 }
-

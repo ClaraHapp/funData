@@ -14,4 +14,3 @@ Mean for irregular functional data
 \code{\link{meanFunction}}
 }
 \keyword{internal}
-

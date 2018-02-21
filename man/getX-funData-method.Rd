@@ -14,4 +14,3 @@ Get X slot for funData objects
 \code{\link{getX}}
 }
 \keyword{internal}
-

@@ -24,4 +24,3 @@ Constructor for functional data objects, first argument (argvals) passed as list
 \code{\linkS4class{funData}}
 }
 \keyword{internal}
-

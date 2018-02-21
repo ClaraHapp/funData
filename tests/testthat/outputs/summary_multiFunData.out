@@ -1,0 +1,29 @@
+--- Element 1  ---
+Argument values (@argvals):
+         Min. 1st Qu. Median Mean 3rd Qu. Max.
+Dim. 1 :    1       2      3    3       4    5
+
+Observed functions (@X):
+        Obs 1 Obs 2 Obs 3 Obs 4
+Min.        1     2     3     4
+1st Qu.     5     6     7     8
+Median      9    10    11    12
+Mean        9    10    11    12
+3rd Qu.    13    14    15    16
+Max.       17    18    19    20
+
+--- Element 2  ---
+Argument values (@argvals):
+         Min. 1st Qu. Median Mean 3rd Qu. Max.
+Dim. 1 :    1    2.00    3.0  3.0    4.00    5
+Dim. 2 :    1    2.25    3.5  3.5    4.75    6
+
+Observed functions (@X):
+        Obs 1 Obs 2 Obs 3 Obs 4
+Min.        1     2     3     4
+1st Qu.    30    31    32    33
+Median     59    60    61    62
+Mean       59    60    61    62
+3rd Qu.    88    89    90    91
+Max.      117   118   119   120
+

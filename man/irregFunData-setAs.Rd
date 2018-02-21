@@ -24,4 +24,3 @@ f1@X
 \code{\linkS4class{funData}}, \code{\link{as.funData}}
 }
 \keyword{internal}
-

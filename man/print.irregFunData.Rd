@@ -14,4 +14,3 @@ This function prints basic information about a \code{irregFunData} object. This 
 the standard console output for \code{irregFunData} objects.
 }
 \keyword{internal}
-

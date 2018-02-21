@@ -14,4 +14,3 @@ Flip irregular functional data - funData as reference
 \code{\link{flipFuns}}
 }
 \keyword{internal}
-

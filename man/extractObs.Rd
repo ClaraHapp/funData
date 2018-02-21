@@ -36,6 +36,7 @@ functions are removed from the extracted dataset and a warning is thrown.
  The function is currently implemented only for functional
   data with up to three-dimensional domains.
 }
+
 \examples{
 # Univariate - one-dimensional domain
 object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
@@ -62,4 +63,3 @@ extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
 }
-

@@ -11,4 +11,3 @@
 dimSupp for funData objects
 }
 \keyword{internal}
-

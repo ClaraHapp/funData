@@ -28,6 +28,7 @@ If \code{object} is of class \code{irregFunData}, the option \code{na.rm =
 TRUE} is not implemented and throws an error. If \code{na.rm = FALSE}, the
 functions must be observed on the same domain.
 }
+
 \examples{
 ### Univariate (one-dimensional support)
 x <- seq(0, 2*pi, 0.01)
@@ -54,4 +55,3 @@ all.equal(meanFunction(i1), extractObs(i1, obs = 2))
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\linkS4class{multiFunData}}, \code{\link{Arith.funData}}
 }
-

@@ -14,4 +14,3 @@ Constructor for multivariate functional data objects
 \code{\linkS4class{multiFunData}}
 }
 \keyword{internal}
-

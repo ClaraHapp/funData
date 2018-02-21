@@ -14,4 +14,3 @@ Set X slot for funData objects
 \code{\link{setX}}
 }
 \keyword{internal}
-

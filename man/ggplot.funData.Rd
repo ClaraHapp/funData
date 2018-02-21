@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{ggplot.funData}
-\alias{ggplot,funData-method}
 \alias{ggplot.funData}
+\alias{ggplot,funData-method}
 \title{Visualize functional data objects using ggplot}
 \usage{
 ggplot.funData(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE,
@@ -109,4 +109,3 @@ ggplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::th
 \code{\linkS4class{funData}}, \code{\link[ggplot2]{ggplot}}, 
   \code{\link{plot.funData}}
 }
-

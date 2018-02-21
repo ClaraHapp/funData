@@ -11,4 +11,3 @@
 approxNA for funData objects
 }
 \keyword{internal}
-

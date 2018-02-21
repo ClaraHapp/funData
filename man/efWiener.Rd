@@ -26,4 +26,3 @@ Wiener process on an arbitrary interval.
 \code{\linkS4class{funData}}, \code{\link{simFunData}}, \code{\link{simMultiFunData}}
 }
 \keyword{internal}
-

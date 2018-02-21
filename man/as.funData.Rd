@@ -22,4 +22,3 @@ all observation points.
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}
 }
-

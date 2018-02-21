@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{plot.funData}
-\alias{plot,funData,missing-method}
 \alias{plot.funData}
+\alias{plot,funData,missing-method}
 \title{Plotting univariate functional data}
 \usage{
 plot.funData(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
@@ -69,6 +69,7 @@ functions only in the function \code{\link{approxNA}}.
  The function is currently implemented only for functional 
   data with one- and two-dimensional domains.
 }
+
 \examples{
 oldpar <- par(no.readonly = TRUE)
 
@@ -114,4 +115,3 @@ par(oldpar)
 \code{\linkS4class{funData}}, \code{\link[graphics]{matplot}}, 
   \code{\link[fields]{image.plot}}, \code{\link[graphics]{image}}
 }
-

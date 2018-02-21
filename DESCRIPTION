@@ -1,8 +1,8 @@
 Package: funData
 Type: Package
 Title: An S4 Class for Functional Data
-Version: 1.1
-Date: 2017-06-10
+Version: 1.2
+Date: 2018-02-21
 Authors@R: person("Clara", "Happ", email = "clara.happ@stat.uni-muenchen.de",
                   role = c("aut", "cre"))
 Author: Clara Happ [aut, cre]
@@ -26,4 +26,4 @@ Suggests:
     reshape2,
     zoo,
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

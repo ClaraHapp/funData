@@ -12,4 +12,3 @@ If only one point is observed, the function is extrapolated as a constant; in
 all other cases it is extrapolated linearly.
 }
 \keyword{internal}
-

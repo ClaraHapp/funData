@@ -1,0 +1,10 @@
+IrregFunData object:
+3 observations of 1-dimensional support on 5 different x-values (3 - 5 per curve).
+
+@argvals: List of 3
+ $ : int [1:5] 1 2 3 4 5
+  [list output truncated]
+
+@X: List of 3
+ $ : int [1:5] 1 2 3 4 5
+  [list output truncated]

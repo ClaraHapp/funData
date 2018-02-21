@@ -14,4 +14,3 @@ Set argvals slot for multiFunData objects
 \code{\link{setArgvals}}
 }
 \keyword{internal}
-

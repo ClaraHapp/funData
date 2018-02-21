@@ -2,13 +2,13 @@
 % Please edit documentation in R/plotMethods.R
 \docType{methods}
 \name{plot.multiFunData}
-\alias{plot,multiFunData,missing-method}
 \alias{plot.multiFunData}
+\alias{plot,multiFunData,missing-method}
 \title{Plotting multivariate functional data}
 \usage{
 plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
-  par.plot = NULL, main = NULL, xlab = "argvals", ylab = "", log = "",
-  ylim = NULL, ...)
+  par.plot = NULL, main = names(x), xlab = "argvals", ylab = "",
+  log = "", ylim = NULL, ...)
 
 \S4method{plot}{multiFunData,missing}(x, y, ...)
 }
@@ -25,12 +25,12 @@ all observations in \code{x}. For two-dimensional functions (images)
 functions in \code{x} are plotted.}
 
 \item{par.plot}{Graphic parameters to be passed to the plotting regions. The 
-option \code{mfrow} is ignored. Defaults to \code{FALSE}. See 
+option \code{mfrow} is ignored. Defaults to \code{NULL}. See 
 \code{\link[graphics]{par}} for details.}
 
 \item{main}{A string vector, giving the title of the plot. Can have the same 
 length as \code{dim} (different titles for each dimension) or length 
-\code{1} (one title for all dimensions). Defaults to \code{NULL}.}
+\code{1} (one title for all dimensions). Defaults to \code{names(x)}.}
 
 \item{xlab, ylab}{The titles for x- and y-axis. Defaults to \code{"argvals"} 
 for the x-axis and no title for the y-axis for all elements. Can be 
@@ -62,6 +62,7 @@ device is split in a number of subplots (specified by \code{dim}) via \code{mfro
  The function is currently implemented only for functional data with one- and
   two-dimensional domains.
 }
+
 \examples{
 oldpar <- par(no.readonly = TRUE)
 argvals <- seq(0, 2*pi, 0.1)
@@ -95,4 +96,3 @@ par(oldpar)
 \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}, 
   \code{\link{plot.funData}}
 }
-

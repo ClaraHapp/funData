@@ -14,4 +14,3 @@ Integrate method for funData objects
 \code{\link{integrate}}, \code{\linkS4class{funData}}
 }
 \keyword{internal}
-

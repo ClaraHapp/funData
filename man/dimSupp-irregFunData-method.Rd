@@ -11,4 +11,3 @@
 dimSupp for irregular functional data objects
 }
 \keyword{internal}
-

@@ -34,6 +34,7 @@ observations in the \code{j}-th observed function.}
   number of observations (i.e. the number of observed functions) in an object
   of a functional data class.
 }
+
 \examples{
 # Univariate (one-dimensional)
 object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
@@ -54,4 +55,3 @@ nObsPoints(irregObject)
 \seealso{
 \code{\linkS4class{irregFunData}}, \code{\link{extractObs}}
 }
-

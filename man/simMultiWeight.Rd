@@ -10,4 +10,3 @@ simMultiWeight(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 Simulate multivariate eigenfunctions based on weighted orthonormal bases
 }
 \keyword{internal}
-

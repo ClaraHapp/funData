@@ -14,4 +14,3 @@ Set argvals slot for irregular functional objects
 \code{\link{setArgvals}}
 }
 \keyword{internal}
-

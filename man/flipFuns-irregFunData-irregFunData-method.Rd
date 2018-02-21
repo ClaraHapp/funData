@@ -14,4 +14,3 @@ Flip irregular functional data - irregFunData as reference
 \code{\link{flipFuns}}
 }
 \keyword{internal}
-

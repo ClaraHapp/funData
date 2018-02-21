@@ -15,4 +15,3 @@ Scalar product for multivariate functional data
 \code{\link{integrate}}, \code{\link{norm}}.
 }
 \keyword{internal}
-

@@ -269,13 +269,13 @@ NULL
 setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
             if(!all.equal(e1@argvals, e2@argvals))
-              stop("Arithmetics: Functions must be defined on the same domain!")        
+              stop("Functions must be defined on the same domain!")        
             
             # different number of observations
             if(nObs(e1) != nObs(e2))
             {
               if(all(c(nObs(e1), nObs(e2)) > 1))
-                stop("Arithmetics: nObs of funData objects is neither equal nor one.")
+                stop("nObs of funData objects is neither equal nor one.")
               
               # if one of e1, e2 has only one observation: replicate it nObs(e2) / nObs(e1) times 
               # is more efficient than aaply / apply
@@ -306,7 +306,7 @@ setMethod("Arith", signature = c(e1 = "numeric", e2 = "funData"),
 setMethod("Arith", signature = signature(e1 = "multiFunData", e2 = "multiFunData"),
           function(e1, e2) {
             if(length(e1) != length(e2))
-              stop("arithmetic operations:multivariate functional data must have same length!")
+              stop("Multivariate functional data must have same length!")
             
             m <- vector("list", length(e1))
             for( i in 1:length(e1))
@@ -360,24 +360,24 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
               if(nObs(e1) == 1)
               {
                 if(!all(unlist(e2@argvals) %in% unlist(e1@argvals)))
-                  stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
+                  stop("Multiple functions must be defined on subdomain of single function.")
                 
                 res <- irregFunData(argvals = e2@argvals, 
                                     X = sapply(1:nObs(e2), function(i){
-                                      do.call(f, list(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]]))}))
+                                      do.call(f, list(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]]))}, simplify = FALSE))
               }
               else
               {
                 if(nObs(e2) == 1)
                 {
                   if(!all(unlist(e1@argvals) %in% unlist(e2@argvals)))
-                    stop("Arithmetics: Multiple functions must be defined on subdomain of single function.")
+                    stop("Multiple functions must be defined on subdomain of single function.")
                   
                   res <- irregFunData(argvals = e1@argvals,
-                                      X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}))
+                                      X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}, simplify = FALSE))
                 }
                 else
-                  stop("Arithmethics: IrregFunData objects must have either the same number of observations or just one.")
+                  stop("IrregFunData objects must have either the same number of observations or just one.")
               } 
             }            
             else
@@ -395,10 +395,10 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
 setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
           function(e1, e2){
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
-            #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
+            #    stop("defined only for irregFunData objects with one-dimensional domain")
             
-            if(!any(unlist(e1@argvals) %in% e2@argvals[[1]]))
-              stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
+            if(!all(unlist(e1@argvals) %in% e2@argvals[[1]]))
+              stop("irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
             if(nObs(e1) != nObs(e2))
@@ -417,10 +417,10 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
 setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
           function(e1, e2){
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
-            #    stop("Arithmetic operations: defined only for irregFunData objects with one-dimensional domain")
+            #    stop("defined only for irregFunData objects with one-dimensional domain")
             
             if(!any(unlist(e2@argvals) %in% e1@argvals[[1]]))
-              stop("arithmetic operations: irregFunData object must be defined on a subdomain of the funData object!")
+              stop("irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
             if(nObs(e1) != nObs(e2))
@@ -444,7 +444,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
 #' \code{\link[methods]{Math}}.  The operations are made pointwise for each
 #' observation.
 #'   
-#' @param x An nbject of class \code{funData}, \code{irregFunData} or
+#' @param x An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #'   
 #' @return An object of the same functional data class as \code{x}.
@@ -504,7 +504,6 @@ setMethod("Math", signature = c(x = "irregFunData"),
             
             irregFunData(argvals = x@argvals, X = lapply(x@X, f))
           })
-
 
 #### nObs ####
 
@@ -825,7 +824,8 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' integrate(multiObject)
-setGeneric("integrate", function(object, ...) {standardGeneric("integrate")})
+setGeneric("integrate", function(object, ...) {standardGeneric("integrate")},
+           useAsDefault = function(object, ...) stats::integrate(f = object, ...))
 
 # integration weights (internal functions)
 
@@ -870,7 +870,7 @@ integrate3D <- function(f, argvals)
 {
   res <- t(.intWeights(argvals[[1]])) %*% apply(f, 1:2, function(w){w %*% .intWeights(argvals[[3]])}) %*% .intWeights(argvals[[2]])
   
-  return(res)
+  return(as.numeric(res))
 }
 
 #' Integrate method for funData objects
@@ -882,6 +882,9 @@ setMethod("integrate", signature = "funData",
           function(object, method = "trapezoidal"){
             if(dimSupp(object) > 3)
               stop("Integration is not yet defined for functional data objects with dim > 3")
+            
+            if(! all(is.character(method), length(method) == 1) )
+              stop("Parameter 'method' must be a string.")
             
             if(dimSupp(object) == 1)
               res <- object@X %*% .intWeights(object@argvals[[1]],method)
@@ -920,6 +923,9 @@ setMethod("integrate", signature = "multiFunData",
 #' @keywords internal
 setMethod("integrate", signature = c(object = "irregFunData"),
           function(object, method = "trapezoidal", fullDom = FALSE){
+            if(! all(is.logical(fullDom), length(fullDom) == 1))
+              stop("Parameter 'fullDom' must be a logical.")
+            
             if(fullDom) # fullDomain: extrapolate each function linearly (or by a constant, if only one value is observed)
               object <- extrapolateIrreg(object)
             
@@ -1011,7 +1017,8 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
 #'   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
 #'   
-#' @export norm
+#' @name norm
+#' @exportMethod norm
 #'   
 #' @examples
 #' # Univariate
@@ -1027,8 +1034,7 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' norm(multiObject)
 #' norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to the first element
-setGeneric("norm", function(object,...) {
-  standardGeneric("norm")})
+NULL
 
 #' Calculate the norm for univariate functional data
 #'
@@ -1050,9 +1056,16 @@ norm.funData <- function(object, squared, obs, method, weight)
 #' @seealso \code{\link{norm}}, \code{\linkS4class{funData}}
 #'
 #' @keywords internal
-setMethod("norm", signature = "funData",
-          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1){
-            norm.funData(object, squared, obs, method, weight)
+setMethod("norm", signature = signature(x = "funData", type = "missing"),
+          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1){
+            
+            if(! all(is.logical(squared), length(squared) == 1))
+              stop("Parameter 'squared' must be passed as a logical.")
+            
+            if(! all(is.numeric(weight), length(weight) == 1, weight > 0))
+              stop("Parameter 'weight' must be passed as a positive number.") 
+            
+            norm.funData(object = x, squared, obs, method, weight)
           })
 
 #' Calculate the norm for multivariate functional data
@@ -1060,11 +1073,14 @@ setMethod("norm", signature = "funData",
 #' @seealso \code{\link{norm}}, \code{\linkS4class{multiFunData}}
 #'
 #' @keywords internal
-setMethod("norm", signature = "multiFunData",
-          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = rep(1, length(object)))
+setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
+          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = rep(1, length(x)))
           {
+            if(! all(is.numeric(weight), length(weight) == length(x), weight > 0))
+              stop("Parameter 'weight' must be passed as a vector of ", length(x), " positive numbers.") 
+            
             # univariate functions must be squared in any case!
-            uniNorms <- mapply(norm, object = object, weight = weight, 
+            uniNorms <- mapply(norm, x, weight = weight, 
                                MoreArgs = list(squared = TRUE, obs = obs, method = method), SIMPLIFY = "array")
             
             # handle one observation separate, as rowSums does not work in that case...
@@ -1104,9 +1120,16 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 #' @seealso \code{\link{norm}}, \code{\linkS4class{irregFunData}}
 #'
 #' @keywords internal
-setMethod("norm", signature = "irregFunData",
-          function(object, squared = TRUE, obs = 1:nObs(object), method = "trapezoidal", weight = 1, fullDom = FALSE){
-            norm.irregFunData(object, squared, obs, method, weight, fullDom)
+setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
+          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1, fullDom = FALSE){
+            
+            if(! all(is.logical(squared), length(squared) == 1))
+              stop("Parameter 'squared' must be passed as a logical.")
+            
+            if(! all(is.numeric(weight), length(weight) == 1, weight > 0))
+              stop("Parameter 'weight' must be passed as a positive number.") 
+            
+            norm.irregFunData(object = x, squared, obs, method, weight, fullDom)
           })
 
 #### Scalar product ####
@@ -1410,7 +1433,7 @@ setMethod("setArgvals", signature = "funData",
 setMethod("setArgvals", signature = "multiFunData",
           function(object, newArgvals){
             if(length(object) != length(newArgvals))
-              stop("setArgvals: multiFunData object and newArgvals must have the same length")
+              stop("multiFunData object and newArgvals must have the same length")
             multiFunData(mapply(setArgvals, object, newArgvals))
           })
 
@@ -1423,10 +1446,10 @@ setMethod("setArgvals", signature = "multiFunData",
 setMethod("setArgvals", signature = "irregFunData",
           function(object, newArgvals){
             if(length(object@argvals) != length(newArgvals))
-              stop("setArgvals: newArgvals must be a list of the same length as the original argvals.")
+              stop("newArgvals must be a list of the same length as the original argvals.")
             
             if(any(sapply(object@argvals, function(l){length(l)}) != sapply(newArgvals, function(l){length(l)})))
-              stop("setArgvals: newArgvals must have the same structure as the original argvals.")
+              stop("newArgvals must have the same structure as the original argvals.")
             
             object@argvals <- newArgvals
             
@@ -1459,10 +1482,10 @@ setMethod("setX", signature = "funData",
 setMethod("setX", signature = "multiFunData",
           function(object, newX){
             if(length(object) != length(newX))
-              stop("setX: multiFunData object and newX must have the same length")
+              stop("multiFunData object and newX must have the same length")
             
             if(diff(range(sapply(newX, function(x){dim(x)[1]}))) != 0)
-              stop("setX: newX object must have the same number of observations in all elements!")
+              stop("newX object must have the same number of observations in all elements!")
             
             multiFunData(mapply(setX, object, newX))
           })
@@ -1475,10 +1498,10 @@ setMethod("setX", signature = "multiFunData",
 setMethod("setX", signature = "irregFunData",
           function(object, newX){
             if(length(object@X) != length(newX))
-              stop("setX: newX must be a list of the same length as the original X.")
+              stop("newX must be a list of the same length as the original X.")
             
             if(any(sapply(object@X, function(l){length(l)}) != sapply(newX, function(l){length(l)})))
-              stop("setX: newX must have the same structure as the original X.")
+              stop("newX must have the same structure as the original X.")
             
             object@X <- newX  
             
@@ -1610,16 +1633,16 @@ setMethod("flipFuns", signature = c("funData", "funData"),
           function(refObject, newObject){
             
             if(dimSupp(newObject) > 2)
-              stop("flipFuns: Function is only implemented for data of dimension <= 2")
+              stop("Function is only implemented for data of dimension <= 2")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
-              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+              stop("Functions must have the same number of observations or use a single function as reference.")
             
             if(dimSupp(refObject) != dimSupp(newObject))
-              stop("flipFuns: Functions must have the dimension.")
+              stop("Functions must have the dimension.")
             
             if(!isTRUE(all.equal(refObject@argvals, newObject@argvals)))
-              stop("flipFuns: Functions must be defined on the same domain.")
+              stop("Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
@@ -1639,16 +1662,16 @@ setMethod("flipFuns", signature = c("funData", "funData"),
 setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
           function(refObject, newObject){
             if(length(refObject) != length(newObject))
-              stop("flipFuns: multiFunData objects must have the same length")
+              stop("multiFunData objects must have the same length")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
-              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+              stop("Functions must have the same number of observations or use a single function as reference.")
             
             if(any(dimSupp(refObject) != dimSupp(newObject)))
-              stop("flipFuns: Functions must have the dimension.")
+              stop("Functions must have the dimension.")
             
             if(!isTRUE(all.equal(getArgvals(refObject), getArgvals(newObject))))
-              stop("flipFuns: Functions must be defined on the same domain.")
+              stop("Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
@@ -1669,19 +1692,19 @@ setMethod("flipFuns", signature = c("funData", "irregFunData"),
           function(refObject, newObject,...){
             
             if(any(c(dimSupp(refObject), dimSupp(newObject)) > 1))
-              stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
+              stop("Function is only implemented for irregular data with one-dimensional support")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
-              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+              stop("Functions must have the same number of observations or use a single function as reference.")
             
             if(!all(unlist(newObject@argvals) %in% unlist(refObject@argvals)))
-              stop("flipFuns: Irregular functions must be defined on a sub-domain of the reference function(s).")
+              stop("Irregular functions must be defined on a sub-domain of the reference function(s).")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
             
             # flip functions
-            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X)
+            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X, SIMPLIFY = FALSE)
             
             return(newObject)
           })
@@ -1696,19 +1719,19 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
           function(refObject, newObject,...){
             
             #    if(any(dimSupp(refObject), dimSupp(newObject)) > 1)
-            #      stop("flipFuns: Function is only implemented for irregular data with one-dimensional support")
+            #      stop("Function is only implemented for irregular data with one-dimensional support")
             
             if( (! nObs(refObject) == nObs(newObject)) & (! nObs(refObject) == 1))
-              stop("flipFuns: Functions must have the same number of observations or use a single function as reference.")
+              stop("Functions must have the same number of observations or use a single function as reference.")
             
             if(!all(unlist(newObject@argvals) %in% unlist(refObject@argvals)))
-              stop("flipFuns: New functions must be defined on a sub-domain of the reference function(s).")
+              stop("New functions must be defined on a sub-domain of the reference function(s).")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject,...) < norm(newObject - refObject,...), -1, 1)
             
             # flip functions
-            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X)
+            newObject@X <- mapply(function(s,y){s*y}, s = sig, y = newObject@X, SIMPLIFY = FALSE)
             
             return(newObject)
           })
@@ -1771,6 +1794,9 @@ setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("mea
 #' @keywords internal
 setMethod("meanFunction", signature = c("funData", "ANY"),
           function(object, na.rm){
+            if(! all(is.logical(na.rm), length(na.rm) == 1))
+              stop("Parameter 'na.rm' must be a logical.")
+            
             meanX <- colMeans(object@X, na.rm = na.rm, dims = 1) 
             
             # resize to array with one observation
@@ -1799,13 +1825,16 @@ setMethod("meanFunction", signature = c("multiFunData", "ANY"),
 #' @keywords internal
 setMethod("meanFunction", signature = c("irregFunData", "ANY"),
           function(object, na.rm){
+            if(! all(is.logical(na.rm), length(na.rm) == 1))
+              stop("Parameter 'na.rm' must be a logical.")
+            
             if(na.rm == TRUE)
               stop("Option na.rm = TRUE is not implemented for mean functions of irregular data.")
             
             if(!all(sapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))})))
               stop("Mean function defined only for irregular functional data objects on the same domain.")
             
-            irregFunData(object@argvals[1], list(sapply(object@X, mean)))
+            irregFunData(object@argvals[1], list(Reduce('+', object@X) / nObs(object)))
           })
 
 

@@ -102,4 +102,3 @@ multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\linkS4class{multiFunData}}
 }
-

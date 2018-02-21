@@ -74,4 +74,3 @@ scalarProduct(m,m, weight = c(1,2))
 \seealso{
 \code{\link{integrate}}, \code{\link{norm}},
 }
-
