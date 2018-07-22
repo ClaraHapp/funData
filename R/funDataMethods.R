@@ -783,44 +783,45 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #### integrate ####
 
 #' Integrate functional data
-#' 
-#' Integrate all observations of a \code{funData}, \code{irregFunData} or 
+#'
+#' Integrate all observations of a \code{funData}, \code{irregFunData} or
 #' \code{multiFunData} object over their domain.
-#' 
-#' Further parameters passed to this function may include: \itemize{ \item 
-#' \code{method}: Character string. The integration rule to be used, passed to 
-#' the internal function \code{.intWeights}. Defaults to \code{"trapezoidal"} 
+#'
+#' Further parameters passed to this function may include: \itemize{ \item
+#' \code{method}: Character string. The integration rule to be used, passed to
+#' the internal function \code{.intWeights}. Defaults to \code{"trapezoidal"}
 #' (alternative: \code{"midpoint"}). \item \code{fullDom}: Logical. If
 #' \code{object} is of class \code{irregFunData}, setting fullDom = \code{TRUE}
 #' extrapolates all functions linearly to the full domain before calculating the
-#' integrals. Defaults to \code{FALSE}. For details on the extrapolation, see 
+#' integrals. Defaults to \code{FALSE}. For details on the extrapolation, see
 #' \code{\link{extrapolateIrreg}}.}
-#' 
-#' @section Warning: The function is currently implemented only for functional 
-#'   data with up to three-dimensional domains.
-#'   
+#'
+#' @section Warning: The function is currently implemented only for functional
+#'   data with up to three-dimensional domains. In the default case, this
+#'   function calls \link[stats]{integrate()}.
+#'
 #' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #' @param ... Further parameters (see Details).
-#'   
-#' @return A vector of numerics, containing the integral values for each 
+#'
+#' @return A vector of numerics, containing the integral values for each
 #'   observation.
-#'   
+#'
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
 #'   \code{\linkS4class{multiFunData}}
-#'   
+#'
 #' @export integrate
-#'   
+#'
 #' @examples
 #' # Univariate
 #' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' integrate(object)
-#' 
+#'
 #' # Univariate (irregular)
 #' irregObject <-irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' integrate(irregObject) # fullDom = FALSE
 #' integrate(irregObject, fullDom = TRUE)
-#' 
+#'
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' integrate(multiObject)
