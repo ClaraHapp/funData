@@ -39,39 +39,39 @@
 \S4method{Arith}{funData,irregFunData}(e1, e2)
 }
 \arguments{
-\item{e1, e2}{Objects of class \code{funData}, \code{irregFunData}, 
-\code{multiFunData} or \code{numeric}. If two functional data objects are 
-used, they must be of the same class, have the same domain and the same 
+\item{e1, e2}{Objects of class \code{funData}, \code{irregFunData},
+\code{multiFunData} or \code{numeric}. If two functional data objects are
+used, they must be of the same class, have the same domain and the same
 number of observations. For exceptions, see Details.}
 }
 \value{
-An object of the same functional data class as \code{e1} or 
+An object of the same functional data class as \code{e1} or
   \code{e2}, respectively.
 }
 \description{
-These functions allow basic arithmetics for functional data and numerics 
-based on \code{\link[methods]{Arith}}.  The operations are made pointwise for
-each observation.
+These functions allow basic arithmetics (such as `+`, `-`, `*`, `sqrt`) for
+functional data and numerics based on \code{\link[methods]{Arith}}.  The
+operations are made pointwise for each observation. See examples below.
 }
 \details{
-If two objects of a functional data class (\code{funData}, 
-\code{irregFunData} or \code{multiFunData}) are used, they normally must be 
-of the same class, have the same domain and the same number of observations. 
-Exceptions are accepted if \itemize{\item one object has only one 
-observation. In this case, the arithmetic operations are done pairwise for 
-this single function and all functions of the other object (e.g. when 
-subtracting the mean function from a \code{funData} object). This single
-function must be defined on the same domain as the other functions (or, in
-case of \code{irregFunData}, on the union of all observation grids). \item
-one of the two objects is of class \code{irregFunData}. Then, the other
-object can be of class \code{fundata}, too, if it is defined on the union of
-all observation grids. The result is an \code{irregFunData} object which is
-defined on the same observation grid as the original \code{irregFunData}
-object.}
+If two objects of a functional data class (\code{funData},
+\code{irregFunData} or \code{multiFunData}) are used, they normally must be
+of the same class, have the same domain and the same number of observations.
+Exceptions are accepted if \itemize{\item one object has only one
+observation. In this case, the arithmetic operations (`+`, `-`, `*`, ...) are
+done pairwise for this single function and all functions of the other object.
+A typical example would be when subtracting the mean function from all
+observations in a \code{funData} object. This single function must be defined
+on the same domain as the other functions (or, in case of
+\code{irregFunData}, on the union of all observation grids). \item one of the
+two objects is of class \code{irregFunData}. Then, the other object can be of
+class \code{funData}, too, if it is defined on the union of all observation
+grids. The result is an \code{irregFunData} object which is defined on the
+same observation grid as the original \code{irregFunData} object.}
 }
 \section{Warning}{
- Note that not all combinations of operations and classes 
-  make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class 
+ Note that not all combinations of operations and classes
+  make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class
   \code{funData}, \code{irregFunData} or \code{multiFunData} and \code{e2} is
   numeric. The reverse is not true.
 }
@@ -117,6 +117,6 @@ plot(i1^2 + i2^2, main = "Pythagoras")
 par(oldpar)
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}, 
-  \link[methods]{Arith}
+\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+  \code{\linkS4class{multiFunData}}, \link[methods]{Arith}
 }

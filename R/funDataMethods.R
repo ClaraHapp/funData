@@ -184,63 +184,63 @@ setMethod("approxNA", signature = "funData",
 #### Arith ####
 
 #' Arithmetics for functional data objects
-#' 
-#' These functions allow basic arithmetics for functional data and numerics 
-#' based on \code{\link[methods]{Arith}}.  The operations are made pointwise for
-#' each observation.
-#' 
-#' If two objects of a functional data class (\code{funData}, 
-#' \code{irregFunData} or \code{multiFunData}) are used, they normally must be 
-#' of the same class, have the same domain and the same number of observations. 
-#' Exceptions are accepted if \itemize{\item one object has only one 
-#' observation. In this case, the arithmetic operations are done pairwise for 
-#' this single function and all functions of the other object (e.g. when 
-#' subtracting the mean function from a \code{funData} object). This single
-#' function must be defined on the same domain as the other functions (or, in
-#' case of \code{irregFunData}, on the union of all observation grids). \item
-#' one of the two objects is of class \code{irregFunData}. Then, the other
-#' object can be of class \code{fundata}, too, if it is defined on the union of
-#' all observation grids. The result is an \code{irregFunData} object which is
-#' defined on the same observation grid as the original \code{irregFunData}
-#' object.}
-#' 
-#' @section Warning: Note that not all combinations of operations and classes 
-#'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class 
+#'
+#' These functions allow basic arithmetics (such as `+`, `-`, `*`, `sqrt`) for
+#' functional data and numerics based on \code{\link[methods]{Arith}}.  The
+#' operations are made pointwise for each observation. See examples below.
+#'
+#' If two objects of a functional data class (\code{funData},
+#' \code{irregFunData} or \code{multiFunData}) are used, they normally must be
+#' of the same class, have the same domain and the same number of observations.
+#' Exceptions are accepted if \itemize{\item one object has only one
+#' observation. In this case, the arithmetic operations (`+`, `-`, `*`, ...) are
+#' done pairwise for this single function and all functions of the other object.
+#' A typical example would be when subtracting the mean function from all
+#' observations in a \code{funData} object. This single function must be defined
+#' on the same domain as the other functions (or, in case of
+#' \code{irregFunData}, on the union of all observation grids). \item one of the
+#' two objects is of class \code{irregFunData}. Then, the other object can be of
+#' class \code{funData}, too, if it is defined on the union of all observation
+#' grids. The result is an \code{irregFunData} object which is defined on the
+#' same observation grid as the original \code{irregFunData} object.}
+#'
+#' @section Warning: Note that not all combinations of operations and classes
+#'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class
 #'   \code{funData}, \code{irregFunData} or \code{multiFunData} and \code{e2} is
 #'   numeric. The reverse is not true.
-#'   
-#' @param e1,e2 Objects of class \code{funData}, \code{irregFunData}, 
-#'   \code{multiFunData} or \code{numeric}. If two functional data objects are 
-#'   used, they must be of the same class, have the same domain and the same 
+#'
+#' @param e1,e2 Objects of class \code{funData}, \code{irregFunData},
+#'   \code{multiFunData} or \code{numeric}. If two functional data objects are
+#'   used, they must be of the same class, have the same domain and the same
 #'   number of observations. For exceptions, see Details.
-#'   
-#' @return An object of the same functional data class as \code{e1} or 
+#'
+#' @return An object of the same functional data class as \code{e1} or
 #'   \code{e2}, respectively.
-#'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}, 
-#'   \link[methods]{Arith}
-#'   
+#'
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}}, \link[methods]{Arith}
+#'
 #' @name Arith.funData
-#'   
+#'
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
 #' par(mfrow = c(3,2), mar = rep(2.1,4))
-#' 
+#'
 #' argvals <- seq(0, 2*pi, 0.01)
 #' object1 <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
 #' object2 <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), cos(argvals)))
-#' 
+#'
 #' plot(object1, main = "Object1")
 #' plot(object2, main = "Object2")
-#' 
+#'
 #' # Only functional data objects
 #' plot(object1 + object2, main = "Sum")
 #' plot(object1 - object2, main = "Difference")
-#' 
+#'
 #' # Mixed
 #' plot(4 * object1 + 5,  main = "4 * Object1 + 5") # Note y-axis!
 #' plot(object1^2 + object2^2, main = "Pythagoras")
-#' 
+#'
 #' ### Irregular
 #' ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10, 1))))
 #' i1 <- irregFunData(
@@ -249,14 +249,14 @@ setMethod("approxNA", signature = "funData",
 #' i2 <- irregFunData(
 #'    argvals = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@argvals[[1]]),
 #'    X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@@X))
-#' 
+#'
 #' plot(i1, main = "Object 1 (irregular)")
 #' plot(i2, main = "Object 2 (irregular)")
-#' 
+#'
 #' # Irregular and regular functional data objects
 #' plot(i1 + i2, main = "Sum")
 #' plot(i1 - object2, main = "Difference")
-#' 
+#'
 #' # Mixed
 #' plot(4 * i1 + 5,  main = "4 * i1 + 5") # Note y-axis!
 #' plot(i1^2 + i2^2, main = "Pythagoras")
