@@ -15,7 +15,7 @@ NULL
 #'
 #' @keywords internal
 print.funData <- function(x,...){
-  cat("Functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\nargvals:\n")
+  cat("Functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\nargvals:\n", sep = "")
   
   for(i in 1:dimSupp(x))
   {
@@ -51,13 +51,13 @@ setMethod("show", signature = "funData",
 #'
 #' @keywords internal
 print.irregFunData <- function(x,...){
-  cat("Irregular functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\n")
+  cat("Irregular functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\n", sep = "")
   
   cat("argvals:\n\tValues in ", paste(round(range(x@argvals),3), collapse = " ... "), ".\n", sep = "")
   
   cat("X:\n\tValues in ", paste(round(range(x@X),3), collapse = " ... "),".\n", sep = "")
   
-  cat("Total:\n\t", length(unlist(x@argvals)), " observations on " , length(unique(unlist(x@argvals))), " different x-values (",
+  cat("Total:\n\t", length(unlist(x@argvals)), " observations on " , length(unique(unlist(x@argvals))), " different argvals (",
       paste(range(nObsPoints(x)), collapse = " - "), " per observation).\n", sep = "")
 }
 
