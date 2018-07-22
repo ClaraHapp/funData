@@ -9,6 +9,7 @@ Author: Clara Happ [aut, cre]
 Maintainer: Clara Happ <clara.happ@stat.uni-muenchen.de>
 Description: S4 classes for univariate and multivariate functional data with
     utility functions.
+URL: https://github.com/ClaraHapp/funData
 License: GPL-2
 Depends:
     methods
