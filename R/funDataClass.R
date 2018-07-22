@@ -8,14 +8,14 @@ NULL
 #' different observations (y-values).
 #' 
 #' Functional data can be seen as realizations of a random process \deqn{X: 
-#' \mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional 
-#' domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid 
-#' \eqn{T \subset \mathcal{T}}{T subset of \calT}, which is represented in the 
+#' \mathcal{T} \to \mathrm{IR}}{X: T -> IR} on a \eqn{d}{d}-dimensional 
+#' domain \eqn{\mathcal{T}}{T}. The data is usually sampled on a fine grid 
+#' \eqn{T \subset \mathcal{T}}{T subset of T}, which is represented in the 
 #' \code{argvals} slot of a \code{funData} object. All observations are assumed 
 #' to be sampled over the same grid \eqn{T}{T}, but can contain missing values 
-#' (see below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{argvals} 
+#' (see below). If \eqn{\mathcal{T}}{T} is one-dimensional, \code{argvals} 
 #' can be supplied either as a numeric vector, containing the x-values or as a 
-#' list, containing such a vector. If \eqn{\mathcal{T}}{\calT} is 
+#' list, containing such a vector. If \eqn{\mathcal{T}}{T} is 
 #' higher-dimensional, \code{argvals} must always be supplied as a list, 
 #' containing numeric vectors of the x-values in dimensions 
 #' \eqn{1,\ldots,d}{1,\ldots,d}.
@@ -46,7 +46,7 @@ NULL
 #' A \code{funData} object can be coerced to a \code{multiFunData} object using 
 #' \code{as.multiFunData(funDataObject).}
 #' 
-#' @slot argvals The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.
+#' @slot argvals The domain \eqn{\mathcal{T}}{T} of the data. See Details.
 #' @slot X The functional data samples. See Details.
 #'   
 #' @aliases funData
@@ -343,9 +343,9 @@ setMethod("as.multiFunData", signature = "funData",
 #' observation points (x-values) and the observed function values (y-values).
 #' 
 #' Irregular functional data are realizations of a random process \deqn{X: 
-#' \mathcal{T} \to \mathrm{IR},}{X: \calT -> IR,} where each realization 
+#' \mathcal{T} \to \mathrm{IR},}{X: T -> IR,} where each realization 
 #' \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset 
-#' \mathcal{T}}{T_i \subset \calT} of observation points. As for the 
+#' \mathcal{T}}{T_i \subset T} of observation points. As for the 
 #' \code{\linkS4class{funData}} class, each object of the \code{irregFunData}
 #' class has two slots; the \code{argvals} slot represents the observation
 #' points and the \code{X} slot represents the observed data. In contrast to the
@@ -373,7 +373,7 @@ setMethod("as.multiFunData", signature = "funData",
 #' are in the union, but not in the original observation grid.
 #' 
 #' @section Warning: Currently, the class is implemented only for functional 
-#'   data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{\calT
+#'   data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{T
 #'   \subset IR}.
 #'   
 #' @slot argvals A list of numerics, representing the observation grid \eqn{T_i}

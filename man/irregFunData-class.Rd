@@ -45,9 +45,9 @@ observation points (x-values) and the observed function values (y-values).
 }
 \details{
 Irregular functional data are realizations of a random process \deqn{X: 
-\mathcal{T} \to \mathrm{IR},}{X: \calT -> IR,} where each realization 
+\mathcal{T} \to \mathrm{IR},}{X: T -> IR,} where each realization 
 \eqn{X_i} of \eqn{X} is given on an individual grid \eqn{T_i \subset 
-\mathcal{T}}{T_i \subset \calT} of observation points. As for the 
+\mathcal{T}}{T_i \subset T} of observation points. As for the 
 \code{\linkS4class{funData}} class, each object of the \code{irregFunData}
 class has two slots; the \code{argvals} slot represents the observation
 points and the \code{X} slot represents the observed data. In contrast to the
@@ -103,7 +103,7 @@ for each realization \eqn{X_i} of \eqn{X}.}
 
 \section{Warning}{
  Currently, the class is implemented only for functional 
-  data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{\calT
+  data on one-dimensional domains \eqn{\mathcal{T} \subset \mathrm{IR}}{T
   \subset IR}.
 }
 

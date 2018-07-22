@@ -53,14 +53,14 @@ different observations (y-values).
 }
 \details{
 Functional data can be seen as realizations of a random process \deqn{X: 
-\mathcal{T} \to \mathrm{IR}}{X: \calT -> IR} on a \eqn{d}{d}-dimensional 
-domain \eqn{\mathcal{T}}{\calT}. The data is usually sampled on a fine grid 
-\eqn{T \subset \mathcal{T}}{T subset of \calT}, which is represented in the 
+\mathcal{T} \to \mathrm{IR}}{X: T -> IR} on a \eqn{d}{d}-dimensional 
+domain \eqn{\mathcal{T}}{T}. The data is usually sampled on a fine grid 
+\eqn{T \subset \mathcal{T}}{T subset of T}, which is represented in the 
 \code{argvals} slot of a \code{funData} object. All observations are assumed 
 to be sampled over the same grid \eqn{T}{T}, but can contain missing values 
-(see below). If \eqn{\mathcal{T}}{\calT} is one-dimensional, \code{argvals} 
+(see below). If \eqn{\mathcal{T}}{T} is one-dimensional, \code{argvals} 
 can be supplied either as a numeric vector, containing the x-values or as a 
-list, containing such a vector. If \eqn{\mathcal{T}}{\calT} is 
+list, containing such a vector. If \eqn{\mathcal{T}}{T} is 
 higher-dimensional, \code{argvals} must always be supplied as a list, 
 containing numeric vectors of the x-values in dimensions 
 \eqn{1,\ldots,d}{1,\ldots,d}.
@@ -113,7 +113,7 @@ in the console. The default console output for \code{funData} objects.
 \section{Slots}{
 
 \describe{
-\item{\code{argvals}}{The domain \eqn{\mathcal{T}}{\calT} of the data. See Details.}
+\item{\code{argvals}}{The domain \eqn{\mathcal{T}}{T} of the data. See Details.}
 
 \item{\code{X}}{The functional data samples. See Details.}
 }}
