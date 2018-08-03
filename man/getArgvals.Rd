@@ -8,6 +8,10 @@
 \alias{argvals,multiFunData-method}
 \alias{argvals,irregFunData-method}
 \alias{getX}
+\alias{X}
+\alias{X,funData-method}
+\alias{X,multiFunData-method}
+\alias{X,irregFunData-method}
 \alias{setArgvals}
 \alias{setX}
 \title{Extract and set slots from functional data objects}
@@ -23,6 +27,14 @@ argvals(object)
 \S4method{argvals}{irregFunData}(object)
 
 getX(object)
+
+X(object)
+
+\S4method{X}{funData}(object)
+
+\S4method{X}{multiFunData}(object)
+
+\S4method{X}{irregFunData}(object)
 
 setArgvals(object, newArgvals)
 
@@ -80,8 +92,9 @@ object
 getArgvals(object)
 getX(object)
 
-# alias
+# aliases
 argvals(object)
+X(object)
 
 # set-methods
 setArgvals(object, 0:4)

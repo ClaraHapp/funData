@@ -3,6 +3,7 @@
 S3method(print,summary.funData)
 S3method(print,summary.irregFunData)
 S3method(print,summary.multiFunData)
+export(X)
 export(addError)
 export(approxNA)
 export(argvals)

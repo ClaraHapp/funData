@@ -1321,8 +1321,9 @@ setMethod("scalarProduct", signature = c("irregFunData", "funData"),
 #' getArgvals(object)
 #' getX(object)
 #' 
-#' # alias
+#' # aliases
 #' argvals(object)
+#' X(object)
 #'
 #' # set-methods
 #' setArgvals(object, 0:4)
@@ -1429,6 +1430,23 @@ setMethod("getX", signature = "multiFunData",
 setMethod("getX", signature = "irregFunData",
           function(object){object@X})
 
+
+### aliases
+#' @rdname getArgvals
+#' @export X
+setGeneric("X", function(object) {standardGeneric("X")}, useAsDefault = getX)
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("X", signature = "funData",
+          function(object){getX(object)})
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("X", signature = "multiFunData",
+          function(object){getX(object)})
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("X", signature = "irregFunData",
+          function(object){getX(object)})
 
 
 #' @rdname getArgvals
