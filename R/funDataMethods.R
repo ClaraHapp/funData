@@ -1269,56 +1269,61 @@ setMethod("scalarProduct", signature = c("irregFunData", "funData"),
 #### get/set ####
 
 #' Extract and set slots from functional data objects
-#' 
-#' These functions can be used to extract and set the slots of \code{funData}, 
-#' \code{irregFunData} and \code{multiFunData} objects.
-#' 
-#' Objects of class \code{funData} or \code{irregFunData} have two slots, 
-#' \code{argvals} (for the x-values) and \code{X} (for the y-values for each 
-#' observation). Using the \code{getArgvals} and \code{getX} methods for the 
-#' classes \code{funData} and \code{irregFunData} is equivalent to accessing the
-#' slots directly via \code{object@@argvals} and \code{object@@X}. Analogously,
-#' the \code{setArgvals} and \code{setX} functions are equivalent to setting 
+#'
+#' These functions can be used to extract and set the slots of
+#' \code{funData}, \code{irregFunData} and \code{multiFunData} objects.
+#'
+#' Objects of class \code{funData} or \code{irregFunData} have two slots,
+#' \code{argvals} (for the x-values) and \code{X} (for the y-values for
+#' each observation). Using the \code{getArgvals} (alias: \code{argvals})
+#' and \code{getX} methods for the classes \code{funData} and
+#' \code{irregFunData} is equivalent to accessing the slots directly via
+#' \code{object@@argvals} and \code{object@@X}. Analogously, the
+#' \code{setArgvals} and \code{setX} functions are equivalent to setting
 #' \code{object@@argvals} to \code{newArgvals} or \code{object@@X} to
-#' \code{newX}, respectively. The new values must hence have the same structure
-#' as the original ones. As an exception, for an object of class \code{funData} 
-#' the number of new observations in \code{newX} may differ from the current
-#' (e.g. when adding new observations). In this case, the function throws a
-#' warning.
-#' 
-#' Objects of class \code{multiFunData} are lists of several \code{funData} 
-#' objects. The functions \code{getArgvals} and \code{getX} for
-#' \code{multiFunData} objects therefore return a list of the same length as
-#' \code{object}, where each list element corresponds to the \code{argvals} or
-#' \code{X} slot of the univariate element. The \code{setArgvals} and
-#' \code{getArgvals} functions for \code{multiFunData} objects must be lists of
-#' the same length as \code{object}, where each list element corresponds to the
-#' new \code{argvals} or new \code{X} slot for the univariate elements.
-#' 
-#' For all classes, the set functions do not change the object, unless 
+#' \code{newX}, respectively. The new values must hence have the same
+#' structure as the original ones. As an exception, for an object of class
+#' \code{funData} the number of new observations in \code{newX} may differ
+#' from the current (e.g. when adding new observations). In this case, the
+#' function throws a warning.
+#'
+#' Objects of class \code{multiFunData} are lists of several
+#' \code{funData} objects. The functions \code{getArgvals} and \code{getX}
+#' for \code{multiFunData} objects therefore return a list of the same
+#' length as \code{object}, where each list element corresponds to the
+#' \code{argvals} or \code{X} slot of the univariate element. The
+#' \code{setArgvals} and \code{getArgvals} functions for
+#' \code{multiFunData} objects must be lists of the same length as
+#' \code{object}, where each list element corresponds to the new
+#' \code{argvals} or new \code{X} slot for the univariate elements.
+#'
+#' For all classes, the set functions do not change the object, unless
 #' their result is assigned to \code{object} (see Examples).
-#' 
-#' @param object An object of class \code{funData}, \code{irregFunData} or 
+#'
+#' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #' @param newArgvals See Details.
 #' @param newX See Details.
-#'   
+#'
 #' @return See Details.
-#'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
-#'   \code{\linkS4class{multiFunData}}
-#'   
+#'
+#' @seealso \code{\linkS4class{funData}},
+#'   \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
+#'
 #' @export getArgvals
-#'   
+#'
 #' @examples
 #' ### Univariate
 #' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' object
-#' 
+#'
 #' # get-methods
 #' getArgvals(object)
 #' getX(object)
 #' 
+#' # alias
+#' argvals(object)
+#'
 #' # set-methods
 #' setArgvals(object, 0:4)
 #' object # no change
@@ -1328,26 +1333,26 @@ setMethod("scalarProduct", signature = c("irregFunData", "funData"),
 #' object <- setX(object, rbind(0:4, 5:9))
 #' newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations (was 2 before)
 #' \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
-#' 
+#'
 #' ### Univariate (irregular)
 #' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' irregObject
-#' 
+#'
 #' # get-methods
 #' getArgvals(irregObject)
 #' getX(irregObject)
-#' 
+#'
 #' newIrregObject <- setArgvals(irregObject, list(0:4, 1:3))
 #' newIrregObject <- setX(irregObject, list(12:16, 13:15))
-#' 
+#'
 #' ### Multivariate
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' multiObject
-#' 
+#'
 #' # get-methods
 #' getArgvals(multiObject)
 #' getX(multiObject)
-#' 
+#'
 #' # set-methods (for special cases see univariate version)
 #' multiObject <- setArgvals(multiObject, list(5:1, 3:1))
 #' multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
@@ -1376,6 +1381,23 @@ setMethod("getArgvals", signature = "multiFunData",
 #' @keywords internal
 setMethod("getArgvals", signature = "irregFunData",
           function(object){object@argvals})
+
+### aliases
+#' @rdname getArgvals
+#' @export argvals
+setGeneric("argvals", function(object) {standardGeneric("argvals")}, useAsDefault = getArgvals)
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("argvals", signature = "funData",
+          function(object){getArgvals(object)})
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("argvals", signature = "multiFunData",
+          function(object){getArgvals(object)})
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("argvals", signature = "irregFunData",
+          function(object){getArgvals(object)})
 
 
 #'@rdname getArgvals

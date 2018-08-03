@@ -377,6 +377,9 @@ test_that("set/get", {
   
   # check multivariate functions with one element
   expect_equal(getArgvals(f1), getArgvals(as.multiFunData(f1))[[1]])
+  
+  # check aliases
+  expect_equal(getArgvals(f1), argvals(f1))
 })
 
 test_that("flipFun", {
