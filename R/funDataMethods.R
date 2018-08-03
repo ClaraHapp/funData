@@ -798,7 +798,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #'
 #' @section Warning: The function is currently implemented only for functional
 #'   data with up to three-dimensional domains. In the default case, this
-#'   function calls \link[stats]{integrate()}.
+#'   function calls \link[stats]{integrate}.
 #'
 #' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
