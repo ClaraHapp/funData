@@ -33,7 +33,7 @@ integrals. Defaults to \code{FALSE}. For details on the extrapolation, see
 \section{Warning}{
  The function is currently implemented only for functional
   data with up to three-dimensional domains. In the default case, this
-  function calls \link[stats]{integrate()}.
+  function calls \link[stats]{integrate}.
 }
 
 \examples{
