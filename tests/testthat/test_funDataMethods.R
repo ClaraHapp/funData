@@ -380,6 +380,15 @@ test_that("set/get", {
   
   # check aliases
   expect_equal(getArgvals(f1), argvals(f1))
+  expect_equal(getArgvals(f2), argvals(f2))
+  expect_equal(getArgvals(m1), argvals(m1))
+  expect_equal(getArgvals(i1), argvals(i1))
+  
+  expect_equal(getX(f1), X(f1))
+  expect_equal(getX(f2), X(f2))
+  expect_equal(getX(m1), X(m1))
+  expect_equal(getX(i1), X(i1))
+  
 })
 
 test_that("flipFun", {
