@@ -59,16 +59,16 @@ These functions can be used to extract and set the slots of
 Objects of class \code{funData} or \code{irregFunData} have two slots,
 \code{argvals} (for the x-values) and \code{X} (for the y-values for
 each observation). Using the \code{getArgvals} (alias: \code{argvals})
-and \code{getX} methods for the classes \code{funData} and
-\code{irregFunData} is equivalent to accessing the slots directly via
-\code{object@argvals} and \code{object@X}. Analogously, the
-\code{setArgvals} and \code{setX} functions are equivalent to setting
-\code{object@argvals} to \code{newArgvals} or \code{object@X} to
-\code{newX}, respectively. The new values must hence have the same
-structure as the original ones. As an exception, for an object of class
-\code{funData} the number of new observations in \code{newX} may differ
-from the current (e.g. when adding new observations). In this case, the
-function throws a warning.
+and \code{getX} (alias: \code{X}) methods for the classes
+\code{funData} and \code{irregFunData} is equivalent to accessing the
+slots directly via \code{object@argvals} and \code{object@X}.
+Analogously, the \code{setArgvals} and \code{setX} functions are
+equivalent to setting \code{object@argvals} to \code{newArgvals} or
+\code{object@X} to \code{newX}, respectively. The new values must
+hence have the same structure as the original ones. As an exception,
+for an object of class \code{funData} the number of new observations in
+\code{newX} may differ from the current (e.g. when adding new
+observations). In this case, the function throws a warning.
 
 Objects of class \code{multiFunData} are lists of several
 \code{funData} objects. The functions \code{getArgvals} and \code{getX}
