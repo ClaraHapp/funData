@@ -6,7 +6,7 @@
 \title{extractObs for funData objects}
 \usage{
 \S4method{extractObs}{funData}(object, obs = 1:nObs(object),
-  argvals = getArgvals(object))
+  argvals = funData::argvals(object))
 }
 \description{
 extractObs for funData objects

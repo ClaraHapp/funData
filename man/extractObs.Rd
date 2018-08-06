@@ -4,7 +4,7 @@
 \alias{extractObs}
 \title{Extract observations of functional data}
 \usage{
-extractObs(object, obs = 1:nObs(object), argvals = getArgvals(object))
+extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
 }
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or
