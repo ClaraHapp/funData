@@ -591,7 +591,8 @@ ggplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), 
   if(! all(is.logical(plotGrid), length(plotGrid) == 1))
     stop("Parameter 'plotGrid' must be passed as a logical.")
   
-  p <- sapply(data[dim], ggplot.funData, obs = obs, ...,  simplify = FALSE)
+  # unlist(data) returns list of elements and [dim] subsets list of selected elements. This is NOT logical, but it works...
+  p <- sapply(unlist(data)[dim], ggplot.funData, obs = obs, ...,  simplify = FALSE)
   
   if(plotGrid)
   {
