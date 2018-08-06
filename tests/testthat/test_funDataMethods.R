@@ -140,6 +140,13 @@ test_that("extractObs", {
   expect_equal(extractObs(i1, argvals = list(3:4)), extractObs(i1, argvals = 3:4))
   expect_equal(extractObs(i1, obs = 1), irregFunData(argvals = list(1:5), X = list(1:5)))
   expect_equal(extractObs(i1, argvals = 2:3), irregFunData(argvals = list(2:3, 2:3, 3), X = list(2:3, 2:3, -3)))
+  
+  # alternative via []
+  expect_equal(extractObs(f1, obs = 1:2), f1[1:2])
+  expect_equal(extractObs(f2, obs = 2), f2[2])
+  expect_equal(extractObs(f3, obs = 4),f3[4])
+  expect_equal(extractObs(m1, obs = 2), m1[2])
+  expect_equal(extractObs(i1, obs = 1), i1[1])
 })
 
 test_that("Arith", {
