@@ -671,7 +671,7 @@ setMethod("nObsPoints", signature = "irregFunData",
 #' multiObject <- multiFunData(object1, object2)
 #' extractObs(multiObject, obs = 2)
 #' extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
-setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals = getArgvals(object)) {
+setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals = funData::argvals(object)) {
   standardGeneric("extractObs")
 })
 
@@ -1427,7 +1427,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             if(any(dimSupp(refObject) != dimSupp(newObject)))
               stop("Functions must have the dimension.")
             
-            if(!isTRUE(all.equal(getArgvals(refObject), getArgvals(newObject))))
+            if(!isTRUE(all.equal(argvals(refObject), argvals(newObject))))
               stop("Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject
