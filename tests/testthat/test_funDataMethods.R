@@ -343,7 +343,7 @@ test_that("set/get", {
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (argvals)
   expect_error({X(f1) <- matrix(1:24, nrow = 4)}, 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (X)
-  expect_warning({X(f1) <- matrix(1:25, nrow = 5)}, 'Number of observations has changed') # warning: more observations
+  expect_warning({tmp <- f1; X(tmp) <- matrix(1:25, nrow = 5)}, 'Number of observations has changed') # warning: more observations
   # univariate FD object (two-dim)
   expect_error({argvals(f2) <- 1:5}, 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (argvals)
