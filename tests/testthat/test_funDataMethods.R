@@ -147,6 +147,17 @@ test_that("extractObs", {
   expect_equal(extractObs(f3, obs = 4),f3[4])
   expect_equal(extractObs(m1, obs = 2), m1[2])
   expect_equal(extractObs(i1, obs = 1), i1[1])
+  
+  # alias: subset
+  expect_equal(extractObs(f1, obs = 1:2), subset(f1, obs = 1:2))
+  expect_equal(extractObs(f1, argvals = 1:2), subset(f1, argvals = 1:2))
+  expect_equal(extractObs(f2, obs = 2), subset(f2, obs = 2))
+  expect_equal(extractObs(f2, argvals = list(1:3, 4:6)), subset(f2, argvals = list(1:3, 4:6)))
+  expect_equal(extractObs(f3, obs = 4), subset(f3, obs = 4))
+  expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), subset(f3, argvals = list(1:3, 4:6, 2:4)))
+  expect_equal(extractObs(m1, obs = 2), subset(m1, obs = 2))  
+  expect_equal(extractObs(i1, obs = 1), subset(i1, obs = 1))
+  expect_equal(extractObs(i1, argvals = 2:3), subset(i1, argvals = 2:3))
 })
 
 test_that("Arith", {

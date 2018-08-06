@@ -3,12 +3,21 @@
 \docType{methods}
 \name{extractObs}
 \alias{extractObs}
+\alias{subset,funData-method}
+\alias{subset,multiFunData-method}
+\alias{subset,irregFunData-method}
 \alias{[,funData,numeric,missing,missing-method}
 \alias{[,multiFunData,numeric,missing,missing-method}
 \alias{[,irregFunData,numeric,missing,missing-method}
 \title{Extract observations of functional data}
 \usage{
 extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
+
+\S4method{subset}{funData}(x, ...)
+
+\S4method{subset}{multiFunData}(x, ...)
+
+\S4method{subset}{irregFunData}(x, ...)
 
 \S4method{[}{funData,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
 
@@ -53,15 +62,22 @@ If only observations are to be extracted, the usual notation
   functional data with up to three-dimensional domains.
 }
 
+\section{Alias}{
+ The function \code{subset} is an alias for
+  \code{extractObs}.
+}
+
 \examples{
 # Univariate - one-dimensional domain
 object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 extractObs(object1, obs = 1)
 extractObs(object1, argvals = 1:3)
 extractObs(object1, argvals = list(1:3)) # the same as the statement before
-# shorthand 
+# shorthand
 object1[1]
 object1[1:3]
+# alias
+subset(object1, obs = 1:3)
 
 # Univariate - two-dimensional domains
 object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))

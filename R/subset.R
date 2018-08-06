@@ -21,6 +21,9 @@
 #' @section Warning: The function is currently implemented only for
 #'   functional data with up to three-dimensional domains.
 #'
+#' @section Alias: The function \code{subset} is an alias for
+#'   \code{extractObs}.
+#'
 #' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #' @param obs A numeric vector, giving the indices of the observations to
@@ -45,9 +48,11 @@
 #' extractObs(object1, obs = 1)
 #' extractObs(object1, argvals = 1:3)
 #' extractObs(object1, argvals = list(1:3)) # the same as the statement before
-#' # shorthand 
+#' # shorthand
 #' object1[1]
 #' object1[1:3]
+#' # alias
+#' subset(object1, obs = 1:3)
 #'
 #' # Univariate - two-dimensional domains
 #' object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
@@ -175,13 +180,38 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
             return(irregFunData(extractargvals, extractX))
           })
 
+#### Alias: subset ####
+#' @rdname extractObs
+#' @exportMethod subset
+setMethod("subset", c("funData"),
+          function(x, ...)
+          {
+            extractObs(x, ...)
+          })
+
+#' @rdname extractObs
+#' @exportMethod subset
+setMethod("subset", c("multiFunData"),
+          function(x, ...)
+          {
+            extractObs(x, ...)
+          })
+
+#' @rdname extractObs
+#' @exportMethod subset
+setMethod("subset", c("irregFunData"),
+          function(x, ...)
+          {
+            extractObs(x, ...)
+          })
+
+#### Alternative via [ (only observations) ####
 
 #' @rdname extractObs
 #' @exportMethod [
 setMethod("[", c("funData", "numeric", "missing", "missing"),
           function(x, i, j, ..., drop=TRUE)
           {
-            cat(length(i), "\n")
             extractObs(x, obs = i)
           })
 
