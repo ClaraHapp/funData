@@ -46,13 +46,11 @@
 #' # Univariate - one-dimensional domain
 #' object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' extractObs(object1, obs = 1)
+#' object1[1]  # shorthand
 #' extractObs(object1, argvals = 1:3)
 #' extractObs(object1, argvals = list(1:3)) # the same as the statement before
-#' # shorthand
-#' object1[1]
-#' object1[1:3]
 #' # alias
-#' subset(object1, obs = 1:3)
+#' subset(object1, argvals = 1:3)
 #'
 #' # Univariate - two-dimensional domains
 #' object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
@@ -209,24 +207,24 @@ setMethod("subset", c("irregFunData"),
 
 #' @rdname extractObs
 #' @exportMethod [
-setMethod("[", c("funData", "numeric", "missing", "missing"),
-          function(x, i, j, ..., drop=TRUE)
+setMethod("[", c("funData", "numeric"),
+          function(x, i)
           {
             extractObs(x, obs = i)
           })
 
 #' @rdname extractObs
 #' @exportMethod [
-setMethod("[", c("multiFunData", "numeric", "missing", "missing"),
-          function(x, i, j, ..., drop=TRUE)
+setMethod("[", c("multiFunData", "numeric"),
+          function(x, i)
           {
             extractObs(x, obs = i)
           })
 
 #' @rdname extractObs
 #' @exportMethod [
-setMethod("[", c("irregFunData", "numeric", "missing", "missing"),
-          function(x, i, j, ..., drop=TRUE)
+setMethod("[", c("irregFunData", "numeric"),
+          function(x, i)
           {
             extractObs(x, obs = i)
           })

@@ -6,9 +6,9 @@
 \alias{subset,funData-method}
 \alias{subset,multiFunData-method}
 \alias{subset,irregFunData-method}
-\alias{[,funData,numeric,missing,missing-method}
-\alias{[,multiFunData,numeric,missing,missing-method}
-\alias{[,irregFunData,numeric,missing,missing-method}
+\alias{[,funData,numeric,ANY,ANY-method}
+\alias{[,multiFunData,numeric,ANY,ANY-method}
+\alias{[,irregFunData,numeric,ANY,ANY-method}
 \title{Extract observations of functional data}
 \usage{
 extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
@@ -19,11 +19,11 @@ extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
 
 \S4method{subset}{irregFunData}(x, ...)
 
-\S4method{[}{funData,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
+\S4method{[}{funData,numeric,ANY,ANY}(x, i)
 
-\S4method{[}{multiFunData,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
+\S4method{[}{multiFunData,numeric,ANY,ANY}(x, i)
 
-\S4method{[}{irregFunData,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
+\S4method{[}{irregFunData,numeric,ANY,ANY}(x, i)
 }
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or
@@ -71,13 +71,11 @@ If only observations are to be extracted, the usual notation
 # Univariate - one-dimensional domain
 object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 extractObs(object1, obs = 1)
+object1[1]  # shorthand
 extractObs(object1, argvals = 1:3)
 extractObs(object1, argvals = list(1:3)) # the same as the statement before
-# shorthand
-object1[1]
-object1[1:3]
 # alias
-subset(object1, obs = 1:3)
+subset(object1, argvals = 1:3)
 
 # Univariate - two-dimensional domains
 object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
