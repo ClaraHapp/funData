@@ -339,67 +339,66 @@ test_that("integrate3D",{
 test_that("set/get", {
   # Check errors:
   # univariate FD object (one-dim)
-  expect_error(setArgvals(f1, 1:6), 
+  expect_error({argvals(f1) <-  1:6}, 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (argvals)
-  expect_error(setX(f1, matrix(1:24, nrow = 4)), 
+  expect_error({X(f1) <- matrix(1:24, nrow = 4)}, 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (X)
-  expect_warning(setX(f1, matrix(1:25, nrow = 5)), 'Number of observations has changed') # warning: more observations
+  expect_warning({X(f1) <- matrix(1:25, nrow = 5)}, 'Number of observations has changed') # warning: more observations
   # univariate FD object (two-dim)
-  expect_error(setArgvals(f2, 1:5), 
+  expect_error({argvals(f2) <- 1:5}, 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (argvals)
-  expect_error(setX(f2, matrix(1:20, nrow = 4)), 
+  expect_error({X(f2) <- matrix(1:20, nrow = 4)}, 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (X)
   # multivariate FD object
-  expect_error(setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'multiFunData object and newArgvals must have the same length') # wrong length (argvals, multiFunData)
-  expect_error(setX(m1, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'multiFunData object and newX must have the same length') # wrong length (X, multiFunData)
-  expect_error(setX(m1, list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))), 'newX object must have the same number of observations in all elements!') # different number of observations
-  expect_warning(setX(m1, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'Number of observations has changed') # warning: more observations
+  expect_error({argvals(m1) <- list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)}, 'multiFunData object and new argvals must have the same length') # wrong length (argvals, multiFunData)
+  expect_error({X(m1) <- list(X(f1), X(f2), matrix(1:12, nrow = 4))}, 'multiFunData object and new X must have the same length') # wrong length (X, multiFunData)
+  expect_error({X(m1) <- list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))}, 'New X object must have the same number of observations in all elements!') # different number of observations
+  expect_warning({X(m1) <- list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))}, 'Number of observations has changed') # warning: more observations
   # irreg FD object
-  expect_error(setArgvals(i1, list(1:4)), "newArgvals must be a list of the same length as the original argvals.")
-  expect_error(setArgvals(i1, list(1:6, 1:3, 1:10)), "newArgvals must have the same structure as the original argvals.")
-  expect_error(setX(i1, list(1:4)), "newX must be a list of the same length as the original X.")
-  expect_error(setX(i1, list(1:6, 1:3, 1:10)), "newX must have the same structure as the original X.")
+  expect_error({argvals(i1) <- list(1:4)}, "New argvals must be a list of the same length as the original argvals.")
+  expect_error({argvals(i1) <- list(1:6, 1:3, 1:10)}, "New argvals must have the same structure as the original argvals.")
+  expect_error({X(i1) <- list(1:4)}, "New X must be a list of the same length as the original X.")
+  expect_error({X(i1) <- list(1:6, 1:3, 1:10)}, "New X must have the same structure as the original X.")
   
   # Check functionality:
   # univariate FD object (one-dim)
-  expect_equal(getArgvals(setArgvals(f1, list(1+1:5))), list(1+1:5))
-  expect_equal(getArgvals(setArgvals(f1, 1+1:5)), list(1+1:5)) # special case: one-dimensional domain
-  expect_equal(getX(setX(f1, matrix(1+1:20, nrow = 4))), matrix(1+1:20, nrow = 4))
+  expect_equal({argvals(f1) <- list(1+1:5)}, list(1+1:5))
+  expect_equal({argvals(f1) <- 1+1:5; argvals(f1)}, list(1+1:5)) # special case: one-dimensional domain
+  expect_equal({X(f1) <- matrix(1+1:20, nrow = 4)}, matrix(1+1:20, nrow = 4))
   # univariate FD object (two-dim)
-  expect_equal(getArgvals(setArgvals(f2, list(1+1:5, 2+1:6))), list(1+1:5, 2+1:6))  
+  expect_equal({argvals(f2) <- list(1+1:5, 2+1:6)}, list(1+1:5, 2+1:6))  
   # multivariate FD object
-  expect_equal(getArgvals(setArgvals(m1, list(list(2+1:5), list(1+1:5, 3+1:6)))), list(list(2+1:5), list(1+1:5, 3+1:6)))
-  expect_equal(getX(setX(m1, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))), list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))
-  expect_equal(getArgvals(setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6)))), list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
+  expect_equal({argvals(m1) <- list(list(2+1:5), list(1+1:5, 3+1:6))}, list(list(2+1:5), list(1+1:5, 3+1:6)))
+  expect_equal({X(m1) <- list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6)))}, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))
+  expect_equal({argvals(m1) <- list(1+1:5, list(2+1:5, 3+1:6)); argvals(m1)}, list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
   # irreg FD object
-  expect_equal(getArgvals(setArgvals(i1, list(0:4, 0:2, 1:3))), list(0:4, 0:2, 1:3))
-  expect_equal(getX(setX(i1, list(0:4, 0:2, 1:3))), list(0:4, 0:2, 1:3))
+  expect_equal({argvals(i1) <- list(0:4, 0:2, 1:3)}, list(0:4, 0:2, 1:3))
+  expect_equal({X(i1) <- list(0:4, 0:2, 1:3)}, list(0:4, 0:2, 1:3))
   
   # check multivariate functions with one element
-  expect_equal(getArgvals(f1), getArgvals(as.multiFunData(f1))[[1]])
+  expect_equal(argvals(f1), argvals(as.multiFunData(f1))[[1]])
   
-  # check aliases
-  expect_equal(getArgvals(f1), argvals(f1))
-  expect_equal(getArgvals(f2), argvals(f2))
-  expect_equal(getArgvals(m1), argvals(m1))
-  expect_equal(getArgvals(i1), argvals(i1))
+  # check deprecated functions
+  expect_warning(tmp <- getArgvals(f1));   expect_equal(tmp, argvals(f1))
+  expect_warning(tmp <- getArgvals(f2)); expect_equal(tmp, argvals(f2))
+  expect_warning(tmp <- getArgvals(m1)); expect_equal(tmp, argvals(m1))
+  expect_warning(tmp <- getArgvals(i1)); expect_equal(tmp, argvals(i1))
   
-  expect_equal(getX(f1), X(f1))
-  expect_equal(getX(f2), X(f2))
-  expect_equal(getX(m1), X(m1))
-  expect_equal(getX(i1), X(i1))
+  expect_warning(tmp <- getX(f1)); expect_equal(tmp, X(f1))
+  expect_warning(tmp <- getX(f2)); expect_equal(tmp, X(f2))
+  expect_warning(tmp <- getX(m1)); expect_equal(tmp, X(m1))
+  expect_warning(tmp <- getX(i1)); expect_equal(tmp, X(i1))
   
-  expect_equal( {argvals(f1) <- list(1+1:5); f1}, setArgvals(f1, list(1+1:5)))
-  expect_equal( {argvals(f1) <- list(1+1:5); f1}, setArgvals(f1, 1+1:5)) # special case: one-dimensional domain
-  expect_equal( {argvals(f2) <- list(1+1:5, 2+1:6); f2}, setArgvals(f2, list(1+1:5, 2+1:6)))  
-  expect_equal( {argvals(m1) <- list(list(2+1:5), list(1+1:5, 3+1:6)); m1}, setArgvals(m1, list(list(2+1:5), list(1+1:5, 3+1:6))))
-  expect_equal( {argvals(m1) <- list(list(1+1:5), list(2+1:5, 3+1:6)); m1}, setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6)))) # special case: one-dimensional domains
-  expect_equal( {argvals(i1) <- list(0:4, 0:2, 1:3); i1}, setArgvals(i1, list(0:4, 0:2, 1:3)))
+  expect_warning(tmp <- setArgvals(f1, list(1+1:5))); expect_equal( {argvals(f1) <- list(1+1:5); f1}, tmp)
+  expect_warning(tmp <- setArgvals(f1, 1+1:5)); expect_equal( {argvals(f1) <- list(1+1:5); f1}, tmp) # special case: one-dimensional domain
+  expect_warning(tmp <- setArgvals(f2, list(1+1:5, 2+1:6))); expect_equal( {argvals(f2) <- list(1+1:5, 2+1:6); f2}, tmp)  
+  expect_warning(tmp <- setArgvals(m1, list(list(2+1:5), list(1+1:5, 3+1:6))));  expect_equal( {argvals(m1) <- list(list(2+1:5), list(1+1:5, 3+1:6)); m1}, tmp)
+  expect_warning(tmp <- setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6)))); expect_equal( {argvals(m1) <- list(list(1+1:5), list(2+1:5, 3+1:6)); m1}, tmp) # special case: one-dimensional domains
+  expect_warning(tmp <- setArgvals(i1, list(0:4, 0:2, 1:3))); expect_equal( {argvals(i1) <- list(0:4, 0:2, 1:3); i1}, tmp)
   
-  expect_equal( {X(f1) <- matrix(1+1:20, nrow = 4); f1}, setX(f1, matrix(1+1:20, nrow = 4)))
-  expect_equal( {X(m1) <- list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))); m1}, setX(m1, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6)))))
-  expect_equal( {X(i1) <-  list(0:4, 0:2, 1:3); i1}, setX(i1, list(0:4, 0:2, 1:3)))
-  
+  expect_warning(tmp <- setX(f1, matrix(1+1:20, nrow = 4))); expect_equal( {X(f1) <- matrix(1+1:20, nrow = 4); f1}, tmp)
+  expect_warning(tmp <- setX(m1, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))); expect_equal( {X(m1) <- list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))); m1}, tmp)
+  expect_warning(tmp <- setX(i1, list(0:4, 0:2, 1:3))); expect_equal( {X(i1) <-  list(0:4, 0:2, 1:3); i1}, tmp)
 })
 
 test_that("flipFun", {
