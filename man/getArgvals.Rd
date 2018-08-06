@@ -13,7 +13,15 @@
 \alias{X,multiFunData-method}
 \alias{X,irregFunData-method}
 \alias{setArgvals}
+\alias{argvals<-}
+\alias{argvals<-,funData-method}
+\alias{argvals<-,multiFunData-method}
+\alias{argvals<-,irregFunData-method}
 \alias{setX}
+\alias{X<-}
+\alias{X<-,funData-method}
+\alias{X<-,multiFunData-method}
+\alias{X<-,irregFunData-method}
 \title{Extract and set slots from functional data objects}
 \usage{
 getArgvals(object)
@@ -38,7 +46,23 @@ X(object)
 
 setArgvals(object, newArgvals)
 
+argvals(object) <- value
+
+\S4method{argvals}{funData}(object) <- value
+
+\S4method{argvals}{multiFunData}(object) <- value
+
+\S4method{argvals}{irregFunData}(object) <- value
+
 setX(object, newX)
+
+X(object) <- value
+
+\S4method{X}{funData}(object) <- value
+
+\S4method{X}{multiFunData}(object) <- value
+
+\S4method{X}{irregFunData}(object) <- value
 }
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or

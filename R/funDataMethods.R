@@ -1387,14 +1387,17 @@ setMethod("getArgvals", signature = "irregFunData",
 #' @rdname getArgvals
 #' @export argvals
 setGeneric("argvals", function(object) {standardGeneric("argvals")}, useAsDefault = getArgvals)
+
 #' @rdname getArgvals
 #' @keywords internal
 setMethod("argvals", signature = "funData",
           function(object){getArgvals(object)})
+
 #' @rdname getArgvals
 #' @keywords internal
 setMethod("argvals", signature = "multiFunData",
           function(object){getArgvals(object)})
+
 #' @rdname getArgvals
 #' @keywords internal
 setMethod("argvals", signature = "irregFunData",
@@ -1435,14 +1438,17 @@ setMethod("getX", signature = "irregFunData",
 #' @rdname getArgvals
 #' @export X
 setGeneric("X", function(object) {standardGeneric("X")}, useAsDefault = getX)
+
 #' @rdname getArgvals
 #' @keywords internal
 setMethod("X", signature = "funData",
           function(object){getX(object)})
+
 #' @rdname getArgvals
 #' @keywords internal
 setMethod("X", signature = "multiFunData",
           function(object){getX(object)})
+
 #' @rdname getArgvals
 #' @keywords internal
 setMethod("X", signature = "irregFunData",
@@ -1498,6 +1504,46 @@ setMethod("setArgvals", signature = "irregFunData",
           })
 
 
+### alias argvals()<-
+#' @rdname getArgvals
+#' @export argvals<-
+setGeneric("argvals<-", function(object, value) {standardGeneric("argvals<-")})
+
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("argvals<-", signature = "funData",
+          function(object, value)
+          {
+            # include checking procedures
+            object@argvals <- setArgvals(object, value)@argvals
+            return(object)
+          })
+
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("argvals<-", signature = "multiFunData",
+          function(object, value)
+          {
+            # include checking procedures
+            tmp <- setArgvals(object, value)
+            for(i in 1:length(object))
+              object[[i]]@argvals <- tmp[[i]]@argvals
+            
+            return(object)
+          })
+
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("argvals<-", signature = "irregFunData",
+          function(object, value)
+          {
+            # include checking procedures
+            object@argvals <- setArgvals(object, value)@argvals
+            return(object)
+          })
+
+
+
 #' @rdname getArgvals
 #'
 #' @export setX
@@ -1548,6 +1594,46 @@ setMethod("setX", signature = "irregFunData",
             
             return(object)
           })
+
+
+### alias X()<-
+#' @rdname getArgvals
+#' @export X<-
+setGeneric("X<-", function(object, value) {standardGeneric("X<-")})
+
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("X<-", signature = "funData",
+          function(object, value)
+          {
+            # include checking procedures
+            object@X <- setX(object, value)@X
+            return(object)
+          })
+
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("X<-", signature = "multiFunData",
+          function(object, value)
+          {
+            # include checking procedures
+            tmp <- setX(object, value)
+            for(i in 1:length(object))
+              object[[i]]@X <- tmp[[i]]@X
+            
+            return(object)
+          })
+
+#' @rdname getArgvals
+#' @keywords internal
+setMethod("X<-", signature = "irregFunData",
+          function(object, value)
+          {
+            # include checking procedures
+            object@X <- setX(object, value)@X
+            return(object)
+          })
+
 
 
 #### flipFuns ####

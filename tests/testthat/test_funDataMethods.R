@@ -389,6 +389,17 @@ test_that("set/get", {
   expect_equal(getX(m1), X(m1))
   expect_equal(getX(i1), X(i1))
   
+  expect_equal( {argvals(f1) <- list(1+1:5); f1}, setArgvals(f1, list(1+1:5)))
+  expect_equal( {argvals(f1) <- list(1+1:5); f1}, setArgvals(f1, 1+1:5)) # special case: one-dimensional domain
+  expect_equal( {argvals(f2) <- list(1+1:5, 2+1:6); f2}, setArgvals(f2, list(1+1:5, 2+1:6)))  
+  expect_equal( {argvals(m1) <- list(list(2+1:5), list(1+1:5, 3+1:6)); m1}, setArgvals(m1, list(list(2+1:5), list(1+1:5, 3+1:6))))
+  expect_equal( {argvals(m1) <- list(list(1+1:5), list(2+1:5, 3+1:6)); m1}, setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6)))) # special case: one-dimensional domains
+  expect_equal( {argvals(i1) <- list(0:4, 0:2, 1:3); i1}, setArgvals(i1, list(0:4, 0:2, 1:3)))
+  
+  expect_equal( {X(f1) <- matrix(1+1:20, nrow = 4); f1}, setX(f1, matrix(1+1:20, nrow = 4)))
+  expect_equal( {X(m1) <- list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))); m1}, setX(m1, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6)))))
+  expect_equal( {X(i1) <-  list(0:4, 0:2, 1:3); i1}, setX(i1, list(0:4, 0:2, 1:3)))
+  
 })
 
 test_that("flipFun", {
