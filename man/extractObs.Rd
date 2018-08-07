@@ -6,24 +6,28 @@
 \alias{subset,funData-method}
 \alias{subset,multiFunData-method}
 \alias{subset,irregFunData-method}
-\alias{[,funData,numeric,ANY,ANY-method}
-\alias{[,multiFunData,numeric,ANY,ANY-method}
-\alias{[,irregFunData,numeric,ANY,ANY-method}
+\alias{[,funData,ANY,missing,missing-method}
+\alias{[,multiFunData,ANY,missing,missing-method}
+\alias{[,irregFunData,ANY,missing,missing-method}
 \title{Extract observations of functional data}
 \usage{
 extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
 
-\S4method{subset}{funData}(x, ...)
+\S4method{subset}{funData}(x, obs = 1:nObs(x),
+  argvals = funData::argvals(x))
 
-\S4method{subset}{multiFunData}(x, ...)
+\S4method{subset}{multiFunData}(x, obs = 1:nObs(x),
+  argvals = funData::argvals(x))
 
-\S4method{subset}{irregFunData}(x, ...)
+\S4method{subset}{irregFunData}(x, obs = 1:nObs(x),
+  argvals = funData::argvals(x))
 
-\S4method{[}{funData,numeric,ANY,ANY}(x, i)
+\S4method{[}{funData,ANY,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{multiFunData,numeric,ANY,ANY}(x, i)
+\S4method{[}{multiFunData,ANY,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{irregFunData,numeric,ANY,ANY}(x, i)
+\S4method{[}{irregFunData,ANY,missing,missing}(x, i = 1:nObs(x), j, ...,
+  drop = TRUE)
 }
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or
@@ -37,6 +41,17 @@ whole domain \code{object}@\code{argvals}). Must be a list or a
 numeric vector (only for one-dimensional domains, see also the
 definition of \code{\linkS4class{funData}},
 \code{\linkS4class{multiFunData}}).}
+
+\item{x}{An object of class \code{funData}, \code{irregFunData} or
+\code{multiFunData} (for \code{subset}).}
+
+\item{i}{A numeric vector, giving the indices of the observations to
+extract when using \code{x[i]}. Defaults to all observations.}
+
+\item{j, drop}{not used}
+
+\item{...}{Used to pass further arguments to \code{extractObs}. Here
+only usable for \code{argvals}.}
 }
 \value{
 An object of class \code{funData}, \code{irregFunData} or
@@ -57,6 +72,11 @@ If only observations are to be extracted, the usual notation
 \code{object[1:3]} is equivalent to \code{extractObs(object, obs =
 1:3)}. This works only if the domain remains unchanged.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{x = funData,i = ANY,j = missing,drop = missing}: 
+}}
+
 \section{Warning}{
  The function is currently implemented only for
   functional data with up to three-dimensional domains.

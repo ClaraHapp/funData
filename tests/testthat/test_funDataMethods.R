@@ -143,10 +143,14 @@ test_that("extractObs", {
   
   # alternative via []
   expect_equal(extractObs(f1, obs = 1:2), f1[1:2])
+  expect_equal(extractObs(f1, argvals = 1:2), f1[argvals = 1:2])
   expect_equal(extractObs(f2, obs = 2), f2[2])
+  expect_equal(extractObs(f2, argvals = list(1:3, 4:6)), f2[argvals = list(1:3, 4:6)])
   expect_equal(extractObs(f3, obs = 4),f3[4])
+  expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), f3[argvals = list(1:3, 4:6, 2:4)])
   expect_equal(extractObs(m1, obs = 2), m1[2])
   expect_equal(extractObs(i1, obs = 1), i1[1])
+  expect_equal(extractObs(i1, argvals = 2:3), i1[argvals = 2:3])
   
   # alias: subset
   expect_equal(extractObs(f1, obs = 1:2), subset(f1, obs = 1:2))

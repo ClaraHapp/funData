@@ -180,51 +180,70 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 
 #### Alias: subset ####
 #' @rdname extractObs
+#' 
+#' @param x An object of class \code{funData}, \code{irregFunData} or
+#'   \code{multiFunData} (for \code{subset}).
 #' @exportMethod subset
 setMethod("subset", c("funData"),
-          function(x, ...)
+          function(x, obs = 1:nObs(x), argvals = funData::argvals(x))
           {
-            extractObs(x, ...)
+            extractObs(x, obs = obs, argvals = argvals)
           })
 
 #' @rdname extractObs
 #' @exportMethod subset
 setMethod("subset", c("multiFunData"),
-          function(x, ...)
+          function(x, obs = 1:nObs(x), argvals = funData::argvals(x))
           {
-            extractObs(x, ...)
+            extractObs(x, obs = obs, argvals = argvals)
           })
 
 #' @rdname extractObs
 #' @exportMethod subset
 setMethod("subset", c("irregFunData"),
-          function(x, ...)
+          function(x, obs = 1:nObs(x), argvals = funData::argvals(x))
           {
-            extractObs(x, ...)
+            extractObs(x, obs = obs, argvals = argvals)
           })
 
 #### Alternative via [ (only observations) ####
 
-#' @rdname extractObs
+#' @describeIn extractObs
+#'
+#' @param i A numeric vector, giving the indices of the observations to
+#'   extract when using \code{x[i]}. Defaults to all observations.
+#' @param ... Used to pass further arguments to \code{extractObs}. Here
+#'   only usable for \code{argvals}.
+#' @param j,drop not used
+#'
 #' @exportMethod [
-setMethod("[", c("funData", "numeric"),
-          function(x, i)
+setMethod("[", c(x = "funData", i = "ANY", j = "missing", drop = "missing"),
+          function(x, i, j, ..., drop)
           {
-            extractObs(x, obs = i)
+            if(missing(i)) # default value not found...
+              i = 1:nObs(x)
+            
+            extractObs(x, obs = i, ...)
           })
 
 #' @rdname extractObs
 #' @exportMethod [
-setMethod("[", c("multiFunData", "numeric"),
-          function(x, i)
+setMethod("[", c("multiFunData",  i = "ANY", j = "missing", drop = "missing"),
+          function(x, i, j, ..., drop)
           {
-            extractObs(x, obs = i)
+            if(missing(i)) # default value not found...
+              i = 1:nObs(x)
+            
+            extractObs(x, obs = i, ...)
           })
 
 #' @rdname extractObs
 #' @exportMethod [
-setMethod("[", c("irregFunData", "numeric"),
-          function(x, i)
+setMethod("[", c("irregFunData",  i = "ANY", j = "missing", drop = "missing"),
+          function(x, i = 1:nObs(x), j, ..., drop)
           {
-            extractObs(x, obs = i)
+            if(missing(i)) # default value not found...
+              i = 1:nObs(x)
+            
+            extractObs(x, obs = i, ...)
           })
