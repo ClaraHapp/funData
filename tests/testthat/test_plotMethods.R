@@ -100,58 +100,54 @@ test_that("ggplots", {
   
   # funData 1D / 2D
   # check errors
-  expect_error(ggplot(object1D, obs = "1"),
+  expect_error(autoplot(object1D, obs = "1"),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
-  expect_error(ggplot(object1D, obs = 0),
+  expect_error(autoplot(object1D, obs = 0),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
-  expect_error(ggplot(object1D, obs = 50),
+  expect_error(autoplot(object1D, obs = 50),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
-  expect_error(ggplot(object1D, plotNA = "Yes"), "Parameter 'plotNA' must be passed as a logical.")
-  expect_error(ggplot(object1D, plotNA = c(TRUE, FALSE)), "Parameter 'plotNA' must be passed as a logical.")
-  expect_error(ggplot(object1D, add = "Yes"), "Parameter 'add' must be passed as a logical.")
-  expect_error(ggplot(object1D, add = c(TRUE, FALSE)), "Parameter 'add' must be passed as a logical.")
-  expect_error(ggplot(funData(argvals = list(1:5,2:6,3:7), X = array(10*5*5*5, dim = c(10,5,5,5)))),
+  expect_error(autoplot(object1D, plotNA = "Yes"), "Parameter 'plotNA' must be passed as a logical.")
+  expect_error(autoplot(object1D, plotNA = c(TRUE, FALSE)), "Parameter 'plotNA' must be passed as a logical.")
+  expect_error(autoplot(funData(argvals = list(1:5,2:6,3:7), X = array(10*5*5*5, dim = c(10,5,5,5)))),
                "plot is implemented only for functional data with one- or two-dimensional domain")
-  expect_error(ggplot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1:2),
+  expect_error(autoplot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1:2),
                "Specify one observation for plotting")
-  expect_error(ggplot(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1, add = TRUE),
-               "Option add = TRUE not implemented for images")
+  expect_error(autolayer(funData(argvals = list(1:5,2:6), X = array(10*5*5, dim = c(10,5,5))), obs = 1),
+               "autolayer is implemented only for functional data with one-dimensional domain")
 
   # check functionality
-  expect_s3_class(ggplot(object1D), "ggplot")
-  expect_s3_class(ggplot(object2D, obs = 1), "ggplot")
+  expect_s3_class(autoplot(object1D), "ggplot")
+  expect_s3_class(autoplot(object2D, obs = 1), "ggplot")
    
   # multiFunData
   # check errors
-  expect_error(ggplot(m, dim = "1"),
+  expect_error(autoplot(m, dim = "1"),
                "Parameter 'dim' must be a vector of numerics with values between 1 and 2.")
-  expect_error(ggplot(m, dim = 0),
+  expect_error(autoplot(m, dim = 0),
                "Parameter 'dim' must be a vector of numerics with values between 1 and 2.")
-  expect_error(ggplot(m, dim = 5),
+  expect_error(autoplot(m, dim = 5),
                "Parameter 'dim' must be a vector of numerics with values between 1 and 2.")
-  expect_error(ggplot(m, plotGrid = "Yes"),
+  expect_error(autoplot(m, plotGrid = "Yes"),
                "Parameter 'plotGrid' must be passed as a logical.")
-  expect_error(ggplot(m, plotGrid = c(TRUE, FALSE)),
+  expect_error(autoplot(m, plotGrid = c(TRUE, FALSE)),
                "Parameter 'plotGrid' must be passed as a logical.")
   
   # check functionality
-  expect_equal(length(ggplot(multiFunData(object1D, 2*object1D), plotGrid = TRUE)), 2)
-  expect_equal(length(ggplot(multiFunData(object1D, 2*object1D), plotGrid = FALSE)), 2)
+  expect_equal(length(autoplot(multiFunData(object1D, 2*object1D), plotGrid = TRUE)), 2)
+  expect_equal(length(autoplot(multiFunData(object1D, 2*object1D), plotGrid = FALSE)), 2)
   
   
   # irregFunData
   # check errors
-  expect_error(ggplot(i, obs = "1"),
+  expect_error(autoplot(i, obs = "1"),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
-  expect_error(ggplot(i, obs = 0),
+  expect_error(autoplot(i, obs = 0),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
-  expect_error(ggplot(i, obs = 50),
+  expect_error(autoplot(i, obs = 50),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
-  expect_error(ggplot(i, add = "Yes"), "Parameter 'add' must be passed as a logical.")
-  expect_error(ggplot(i, add = c(TRUE, FALSE)), "Parameter 'add' must be passed as a logical.")
   
   # check functionality
-  expect_s3_class(ggplot(as.irregFunData(object1D)), "ggplot")
+  expect_s3_class(autoplot(as.irregFunData(object1D)), "ggplot")
 })
 
 dev.off()
