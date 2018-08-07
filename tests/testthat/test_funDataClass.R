@@ -65,10 +65,17 @@ test_that("coerce methods", {
   expect_error(as.irregFunData(tensorProduct(f,f)),
                "The funData object must be defined on a one-dimensional domain.")
  
+  # coercion between methods
   expect_equal(f, as.multiFunData(f)[[1]])
   expect_equal(as.funData(i1), {f1 <- funData(1:6, rbind(c(2:6, NA), c(NA,NA,4:7)))})
   expect_equal(unique(unlist(i1@argvals)), f1@argvals[[1]])
   expect_equal(i1@X, apply(f1@X, 1, na.omit), check.attributes = FALSE)
   expect_equal(i1, as.irregFunData(f1))
+  
+  # coercion to data.frame
+  expect_equal(head(as.data.frame(f), nObsPoints(f)), data.frame(obs = 1, argvals1 = x, X = f@X[1,]))
+  expect_equal(tail(as.data.frame(f), nObsPoints(f)), data.frame(obs = 5, argvals1 = x, X = f@X[5,]), check.attributes = FALSE)
+  expect_equal(as.data.frame(as.multiFunData(f)), list(as.data.frame(f)))
+  expect_equal(as.data.frame(i1), data.frame(obs = rep(1:2, times = c(5,4)), argvals = unlist(argvals(i1)), X = unlist(X(i1))))
 })
 
