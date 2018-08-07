@@ -117,8 +117,8 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
     
     if(plotNA) # interpolate NA values
     {
-        plot(approxNA(x), obs = obs, type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
-        add = TRUE
+      plot(approxNA(x), obs = obs, type = "l", lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
+      add = TRUE
     }
     
     graphics::matplot(x = x@argvals[[1]], y = t(x@X[obs,, drop = FALSE]), type = type, lty = lty,  lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
@@ -231,9 +231,9 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
     stop("Parameter 'par.plot' must be either NULL or passed as a list.")
   
   if(!any(is.null(main), length(main) == c(1,length(x))))
-      stop("Parameter 'main' must be either NULL or have lengths 1 or ", length(x), ".")
+    stop("Parameter 'main' must be either NULL or have lengths 1 or ", length(x), ".")
   if(length(main) == 1)
-        main <- rep(main, length(dim))
+    main <- rep(main, length(dim))
   
   if(length(xlab) == 1)
     xlab <- rep(xlab, length(dim))
@@ -254,8 +254,8 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
         stop("The ylim argument must be either a vector (used for all elements) or a list with values for each element.")
     }  
   }
-
-
+  
+  
   # if no par.plot specified: get graphics parameters
   if(is.null(par.plot))
   {
@@ -268,14 +268,14 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   # split screen
   par(mfrow = c(1,length(dim)))
   
-    # plot the univariate functions
+  # plot the univariate functions
   for(i in 1:length(dim))
     plot(x[[dim[i]]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], log = log[i], ylim = ylim[[i]], ...)
   
   # if no par.plot specified: reset graphics parameters
   if(is.null(par.plot))
     par(oldPar)
-
+  
   # return invisibly
   invisible()
 }
@@ -480,22 +480,20 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
   if(! all(is.logical(add), length(add) == 1))
     stop("Parameter 'add' must be passed as a logical.")
   
+  if(dimSupp(data) == 1 & plotNA) # interpolate NA values
+    data <- approxNA(data)
+  
+  meltData <- as.data.frame(extractObs(data, obs))
+  
   if(dimSupp(data) == 1)
   {
-    if(plotNA) # interpolate NA values
-        data <- approxNA(data)
-
-    meltData <- reshape2::melt(data@X[obs, , drop = FALSE], varnames = c("obsInd", "obsPointX"))
-    meltData$argvals <- data@argvals[[1]][meltData$obsPointX]
-    meltData$obsInd <- as.factor(meltData$obsInd)
-    
     if(add == TRUE)
-      p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd"),
-                             geom = geom, ...)
+      p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs"),
+                                  geom = geom, ...)
     else
-      p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
-      ggplot2::stat_identity(geom = geom, ...) + 
-      ggplot2::ylab("") 
+      p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs")) +
+        ggplot2::stat_identity(geom = geom, ...) + 
+        ggplot2::ylab("") 
   }
   
   if(dimSupp(data) == 2)
@@ -506,13 +504,8 @@ ggplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FAL
     if(add == TRUE)
       stop("Option add = TRUE not implemented for images")
     
-    meltData <- reshape2::melt(data@X[obs, , , drop = FALSE], varnames = c("obsInd", "obsPointX", "obsPointY"))
-    meltData$argvalsX <- data@argvals[[1]][meltData$obsPointX]
-    meltData$argvalsY <- data@argvals[[2]][meltData$obsPointY]
-    meltData$obsInd <- as.factor(meltData$obsInd)
-    
-    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvalsX", y = "argvalsY")) + 
-      ggplot2::geom_raster(ggplot2::aes_string(fill = "value"), ...) + 
+    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals1", y = "argvals2")) + 
+      ggplot2::geom_raster(ggplot2::aes_string(fill = "X"), ...) + 
       ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::labs(fill = "")
   }
   
@@ -670,16 +663,13 @@ ggplot.irregFunData <- function(data, obs = 1:nObs(data), geom = "line", add = F
   if(! all(is.logical(add), length(add) == 1))
     stop("Parameter 'add' must be passed as a logical.")
   
-  meltData <- reshape2::melt(data@X[obs])
-  names(meltData)[2] <- "obsInd"
-  meltData$argvals <- unlist(data@argvals[obs])
-  meltData$obsInd <- as.factor(meltData$obsInd)
+  meltData <- as.data.frame(extractObs(data,obs))
   
   if(add == TRUE)
-    p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd"),
-                           geom = geom, ...)
+    p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs"),
+                                geom = geom, ...)
   else
-  p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "value", group = "obsInd")) +
+    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs")) +
     ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
   
