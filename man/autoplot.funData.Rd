@@ -85,8 +85,8 @@ objectMissing <- funData(1:5, rbind(c(1, NA, 5, 4, 3), c(10, 9, NA, NA, 6)))
 g1 <- autoplot(objectMissing) # the default
 g2 <- autoplot(objectMissing, plotNA = TRUE) # requires zoo
 
-gridExtra::grid.arrange(g1 + ggplot2::ggtitle("plotNA = FALSE (default)"),
-                        g2 + ggplot2::ggtitle("plotNA = TRUE")) # requires gridExtra
+gridExtra::grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"),
+                        g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
 
 # Customizing plots (see ggplot2 documentation for more details)
 # parameters passed to geom_line are passed via the ... argument
@@ -94,12 +94,12 @@ gFancy <- autoplot(object, color = "red", linetype = 2)
 gFancy
 
 # new layers can be added directly to the ggplot object
-gFancy + ggplot2::theme_bw() # add new layers to the ggplot object
-gFancy + ggplot2::ggtitle("Fancy Plot with Title and Axis Legends") + 
-         ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
+gFancy + theme_bw() # add new layers to the ggplot object
+gFancy + ggtitle("Fancy Plot with Title and Axis Legends") + 
+         xlab("The x-Axis") + ylab("The y-Axis")
 
-autoplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
-          ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
+autoplot(object2D, obs = 1) + ggtitle("Customized 2D plot") + theme_minimal() +
+          scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
 }
 }
 \seealso{

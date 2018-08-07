@@ -446,8 +446,8 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' g1 <- autoplot(objectMissing) # the default
 #' g2 <- autoplot(objectMissing, plotNA = TRUE) # requires zoo
 #' 
-#' gridExtra::grid.arrange(g1 + ggplot2::ggtitle("plotNA = FALSE (default)"),
-#'                         g2 + ggplot2::ggtitle("plotNA = TRUE")) # requires gridExtra
+#' gridExtra::grid.arrange(g1 + ggtitle("plotNA = FALSE (default)"),
+#'                         g2 + ggtitle("plotNA = TRUE")) # requires gridExtra
 #' 
 #' # Customizing plots (see ggplot2 documentation for more details)
 #' # parameters passed to geom_line are passed via the ... argument
@@ -455,12 +455,12 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' gFancy
 #' 
 #' # new layers can be added directly to the ggplot object
-#' gFancy + ggplot2::theme_bw() # add new layers to the ggplot object
-#' gFancy + ggplot2::ggtitle("Fancy Plot with Title and Axis Legends") + 
-#'          ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
+#' gFancy + theme_bw() # add new layers to the ggplot object
+#' gFancy + ggtitle("Fancy Plot with Title and Axis Legends") + 
+#'          xlab("The x-Axis") + ylab("The y-Axis")
 #' 
-#' autoplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
-#'           ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
+#' autoplot(object2D, obs = 1) + ggtitle("Customized 2D plot") + theme_minimal() +
+#'           scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
 #' }
 autoplot.funData <- function(object, obs = 1:nObs(object), geom = "line", plotNA = FALSE, ...)
 {
@@ -588,9 +588,9 @@ autolayer.funData <- function(object, obs = 1:nObs(object), geom = "line", plotN
 #' 
 #' # Customizing plots (see ggplot2 documentation for more details)
 #' g2 <- autoplot(m2, obs = 1)
-#' g2[[1]] <- g2[[1]] + ggplot2::ggtitle("First element") + ggplot2::theme_bw()
-#' g2[[2]] <- g2[[2]] + ggplot2::ggtitle("Second element") + 
-#'                      ggplot2::scale_fill_gradient(high = "green", low = "blue")
+#' g2[[1]] <- g2[[1]] + ggtitle("First element") + theme_bw()
+#' g2[[2]] <- g2[[2]] + ggtitle("Second element") + 
+#'                      scale_fill_gradient(high = "green", low = "blue")
 #' gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
 #' }
 autoplot.multiFunData <- function(object, obs = 1:nObs(object), dim = 1:length(object), plotGrid = FALSE, ...)
@@ -664,8 +664,8 @@ autoplot.multiFunData <- function(object, obs = 1:nObs(object), dim = 1:length(o
 #' 
 #' # New layers can be added directly to the ggplot object using functions from the ggplot2 package
 #' g <- autoplot(object)
-#' g + ggplot2::theme_bw() + ggplot2::ggtitle("Plot with minimal theme and axis labels") +
-#'     ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
+#' g + theme_bw() + ggtitle("Plot with minimal theme and axis labels") +
+#'     xlab("The x-Axis") + ylab("The y-Axis")
 autoplot.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))

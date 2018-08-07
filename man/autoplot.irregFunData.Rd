@@ -54,8 +54,8 @@ autoplot(object) + autolayer(object, obs = 2, geom = "point", color = "green")
 
 # New layers can be added directly to the ggplot object using functions from the ggplot2 package
 g <- autoplot(object)
-g + ggplot2::theme_bw() + ggplot2::ggtitle("Plot with minimal theme and axis labels") +
-    ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
+g + theme_bw() + ggtitle("Plot with minimal theme and axis labels") +
+    xlab("The x-Axis") + ylab("The y-Axis")
 }
 \seealso{
 \code{\linkS4class{irregFunData}}, \code{\link[ggplot2]{ggplot}}, 

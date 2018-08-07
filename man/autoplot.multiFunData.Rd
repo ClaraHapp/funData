@@ -70,9 +70,9 @@ autoplot(m2, obs = 1, plotGrid = TRUE)
 
 # Customizing plots (see ggplot2 documentation for more details)
 g2 <- autoplot(m2, obs = 1)
-g2[[1]] <- g2[[1]] + ggplot2::ggtitle("First element") + ggplot2::theme_bw()
-g2[[2]] <- g2[[2]] + ggplot2::ggtitle("Second element") + 
-                     ggplot2::scale_fill_gradient(high = "green", low = "blue")
+g2[[1]] <- g2[[1]] + ggtitle("First element") + theme_bw()
+g2[[2]] <- g2[[2]] + ggtitle("Second element") + 
+                     scale_fill_gradient(high = "green", low = "blue")
 gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
 }
 }
