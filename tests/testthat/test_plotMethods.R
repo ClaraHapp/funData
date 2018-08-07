@@ -97,7 +97,18 @@ test_that("plots", {
 
 
 test_that("ggplots", {
-  
+  if(!(requireNamespace("ggplot2", quietly = TRUE))) # if ggplot2 is not available
+  {
+    expect_warning(autoplot(object1D), "Please install the ggplot2 package to use the autoplot function for funData objects.")
+    expect_warning(autolayer(object1D), "Please install the ggplot2 package to use the autolayer function for funData objects.")
+    expect_warning(autoplot(m), "Please install the ggplot2 package to use the autoplot function for multifunData objects.")
+    expect_warning(autoplot(i), "Please install the ggplot2 package to use the autoplot function for irregfunData objects.")
+    expect_warning(autolayer(i), "Please install the ggplot2 package to use the autolayer function for irregfunData objects.")
+  } 
+  else
+  {
+    library("ggplot2") # load package
+    
   # funData 1D / 2D
   # check errors
   expect_error(autoplot(object1D, obs = "1"),
@@ -148,6 +159,7 @@ test_that("ggplots", {
   
   # check functionality
   expect_s3_class(autoplot(as.irregFunData(object1D)), "ggplot")
+  }
 })
 
 dev.off()

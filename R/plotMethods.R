@@ -387,9 +387,9 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' \code{\link[zoo]{zoo}} and is currently implemented for one-dimensional 
 #' functions only in the function \code{\link{approxNA}}.
 #' 
-#' @param data A \code{funData} object on a one- or two-dimensional domain.
+#' @param object A \code{funData} object on a one- or two-dimensional domain.
 #' @param obs A vector of numerics giving the observations to plot. Defaults to 
-#'   all observations in \code{data}. For two-dimensional functions (images) 
+#'   all observations in \code{object}. For two-dimensional functions (images) 
 #'   \code{obs} must have length 1.
 #' @param geom A character string describing the geometric object to use.
 #'   Defaults to \code{"line"}. See \pkg{ggplot2} for details.
@@ -407,9 +407,11 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' @seealso \code{\linkS4class{funData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.funData}}
 #'   
+#' @export autoplot.funData
+#'   
 #' @examples
-#' # Install package ggplot2 before running the examples
-#' \dontshow{requireNamespace("ggplot2", quietly = TRUE)}
+#' # Install / load package ggplot2 before running the examples
+#' library("ggplot2")
 #' 
 #' # One-dimensional
 #' argvals <- seq(0,2*pi,0.01)
@@ -460,34 +462,34 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' autoplot(object2D, obs = 1) + ggplot2::ggtitle("Customized 2D plot") + ggplot2::theme_minimal() +
 #'           ggplot2::scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
 #' }
-autoplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE, ...)
+autoplot.funData <- function(object, obs = 1:nObs(object), geom = "line", plotNA = FALSE, ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
-    warning("Please install the ggplot2 package to use the autoplot function for funDataObjects.")
+    warning("Please install the ggplot2 package to use the autoplot function for funData objects.")
     return()
   } 
   
-  if(dimSupp(data) > 2)
+  if(dimSupp(object) > 2)
     stop("autoplot is implemented only for functional data with one- or two-dimensional domain")
   
-  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(data)))
-    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(data), ".")
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(object)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(object), ".")
   if(! all(is.logical(plotNA), length(plotNA) == 1))
     stop("Parameter 'plotNA' must be passed as a logical.")
-  if(dimSupp(data) == 2 & length(obs) > 1)
+  if(dimSupp(object) == 2 & length(obs) > 1)
     stop("Specify one observation for plotting")
   
-  if(dimSupp(data) == 1 & plotNA) # interpolate NA values
-    data <- approxNA(data)
+  if(dimSupp(object) == 1 & plotNA) # interpolate NA values
+    object <- approxNA(object)
   
-  meltData <- as.data.frame(extractObs(data, obs))
+  meltData <- as.data.frame(extractObs(object, obs))
   
-  if(dimSupp(data) == 1)
+  if(dimSupp(object) == 1)
     p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs")) +
     ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
-  if(dimSupp(data) == 2)
+  if(dimSupp(object) == 2)
     p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals1", y = "argvals2")) + 
     ggplot2::geom_raster(ggplot2::aes_string(fill = "X"), ...) + 
     ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::labs(fill = "")
@@ -496,27 +498,27 @@ autoplot.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = F
 }
 
 #' @rdname autoplot.funData
-#' @keywords internal
-autolayer.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = FALSE, ...)
+#' @export autolayer.funData
+autolayer.funData <- function(object, obs = 1:nObs(object), geom = "line", plotNA = FALSE, ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
-    warning("Please install the ggplot2 package to use the autolayer function for funDataObjects.")
+    warning("Please install the ggplot2 package to use the autolayer function for funData objects.")
     return()
   } 
   
-  if(dimSupp(data) > 1)
+  if(dimSupp(object) > 1)
     stop("autolayer is implemented only for functional data with one-dimensional domain.")
   
-  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(data)))
-    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(data), ".")
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(object)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(object), ".")
   if(! all(is.logical(plotNA), length(plotNA) == 1))
     stop("Parameter 'plotNA' must be passed as a logical.")
   
-  if(dimSupp(data) == 1 & plotNA) # interpolate NA values
-    data <- approxNA(data)
+  if(dimSupp(object) == 1 & plotNA) # interpolate NA values
+    object <- approxNA(object)
   
-  meltData <- as.data.frame(extractObs(data, obs))
+  meltData <- as.data.frame(extractObs(object, obs))
   
   p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs"),
                               geom = geom, ...)
@@ -536,16 +538,16 @@ autolayer.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = 
 #' @section Warning: Currently, the function does not accept different parameters for the univariate
 #'   elements.
 #'   
-#' @param data A \code{multiFunData} object that is to be plotted.
+#' @param object A \code{multiFunData} object that is to be plotted.
 #' @param obs A vector of numerics giving the observations to plot. Defaults to all observations in 
-#'   \code{data}. For two-dimensional functions (images) \code{obs} must have length 1.
-#' @param dim The dimensions to plot. Defaults to \code{length(data)}, i.e. all functions in 
-#'   \code{data} are plotted.
+#'   \code{object}. For two-dimensional functions (images) \code{obs} must have length 1.
+#' @param dim The dimensions to plot. Defaults to \code{length(object)}, i.e. all functions in 
+#'   \code{object} are plotted.
 #' @param plotGrid Logical. If \code{TRUE}, the data is plotted using 
 #'   \code{\link[gridExtra]{grid.arrange}} and the list of \code{\link[ggplot2]{ggplot}} objects is 
 #'   returned invisibly. If \code{FALSE}, only the list of objects is returned. Defaults to 
 #'   \code{FALSE}.
-#' @param ... Further parameters passed to the univariate \code{\link{autoplot}} functions for 
+#' @param ... Further parameters passed to the univariate \code{\link{autoplot.funData}} functions for 
 #'   \code{funData} objects.
 #'   
 #' @return A list of \code{\link[ggplot2]{ggplot}} objects that are also printed directly as a grid 
@@ -554,9 +556,11 @@ autolayer.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = 
 #' @seealso \code{\linkS4class{multiFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.multiFunData}}
 #'   
+#' @export autoplot.multiFunData
+#'   
 #' @examples
-#' # Install packages ggplot2 and gridExtra before running the examples
-#' \dontshow{requireNamespace("ggplot2", quietly = TRUE); requireNamespace("gridExtra", quietly = TRUE)}
+#' # Load packages ggplot2 and gridExtra before running the examples
+#' library("ggplot2"); library("gridExtra")
 #' 
 #' # One-dimensional elements
 #' argvals <- seq(0, 2*pi, 0.01)
@@ -589,21 +593,21 @@ autolayer.funData <- function(data, obs = 1:nObs(data), geom = "line", plotNA = 
 #'                      ggplot2::scale_fill_gradient(high = "green", low = "blue")
 #' gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
 #' }
-autoplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data), plotGrid = FALSE, ...)
+autoplot.multiFunData <- function(object, obs = 1:nObs(object), dim = 1:length(object), plotGrid = FALSE, ...)
 {
-  if(! all(is.numeric(dim), 0 < dim, dim <= length(data)))
-    stop("Parameter 'dim' must be a vector of numerics with values between 1 and ", length(data), ".")
+  if(! all(is.numeric(dim), 0 < dim, dim <= length(object)))
+    stop("Parameter 'dim' must be a vector of numerics with values between 1 and ", length(object), ".")
   if(! all(is.logical(plotGrid), length(plotGrid) == 1))
     stop("Parameter 'plotGrid' must be passed as a logical.")
   
-  # unlist(data) returns list of elements and [dim] subsets list of selected elements. This is NOT logical, but it works...
-  p <- sapply(unlist(data)[dim], autoplot.funData, obs = obs, ...,  simplify = FALSE)
+  # unlist(object) returns list of elements and [dim] subsets list of selected elements. This is NOT logical, but it works...
+  p <- sapply(unlist(object)[dim], autoplot.funData, obs = obs, ...,  simplify = FALSE)
   
   if(plotGrid)
   {
     if(!requireNamespace("gridExtra", quietly = TRUE))
     {
-      warning("Please install the gridExtra package to use the ggplot function for multiFunDataObjects with plotGrid = TRUE.")
+      warning("Please install the gridExtra package to use the autoplot function for multiFunDataObjects with plotGrid = TRUE.")
       return()
     } 
     
@@ -618,13 +622,13 @@ autoplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data)
 #' 
 #' This function allows to plot \code{irregFunData} objects on their domain
 #' based on the \pkg{ggplot2} package. The function provides a wrapper that
-#' rearranges the data in a \code{irregFunData} object returns a basic
+#'  returns a basic
 #' \code{\link[ggplot2]{ggplot}} object, which can be customized using all
 #' functionalities of the \pkg{ggplot2} package.
 #' 
-#' @param data A \code{irregFunData} object.
+#' @param object A \code{irregFunData} object.
 #' @param obs A vector of numerics giving the observations to plot. Defaults to
-#'   all observations in \code{data}. For two-dimensional functions (images)
+#'   all observations in \code{object}. For two-dimensional functions (images)
 #'   \code{obs} must have length 1.
 #' @param geom A character string describing the geometric object to use.
 #'   Defaults to \code{"line"}. See \pkg{ggplot2} for details.
@@ -637,9 +641,11 @@ autoplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data)
 #' @seealso \code{\linkS4class{irregFunData}}, \code{\link[ggplot2]{ggplot}}, 
 #'   \code{\link{plot.irregFunData}}
 #'   
+#' @export autoplot.irregFunData
+#'   
 #' @examples
-#' # Install packages ggplot2 and gridExtra before running the examples
-#' \dontshow{requireNamespace("ggplot2", quietly = TRUE)}
+#' # Install / load package ggplot2 before running the examples
+#' library("ggplot2")
 #' 
 #' # Generate data
 #' argvals <- seq(0,2*pi,0.01)
@@ -660,18 +666,18 @@ autoplot.multiFunData <- function(data, obs = 1:nObs(data), dim = 1:length(data)
 #' g <- autoplot(object)
 #' g + ggplot2::theme_bw() + ggplot2::ggtitle("Plot with minimal theme and axis labels") +
 #'     ggplot2::xlab("The x-Axis") + ggplot2::ylab("The y-Axis")
-autoplot.irregFunData <- function(data, obs = 1:nObs(data), geom = "line", ...)
+autoplot.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", ...)
 {
-  if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
+  if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
-    warning("Please install the ggplot2 and reshape2 packages to use the ggplot function for funDataObjects.")
+    warning("Please install the ggplot2 package to use the autopplot function for irregfunData objects.")
     return()
   } 
   
-  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(data)))
-    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(data), ".")
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(object)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(object), ".")
   
-  meltData <- as.data.frame(extractObs(data,obs))
+  meltData <- as.data.frame(extractObs(object,obs))
   
     p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs")) +
     ggplot2::stat_identity(geom = geom, ...) + 
@@ -681,76 +687,22 @@ autoplot.irregFunData <- function(data, obs = 1:nObs(data), geom = "line", ...)
 }
 
 #' @rdname autoplot.irregFunData
-#' @keywords internal
-autolayer.irregFunData <- function(data, obs = 1:nObs(data), geom = "line", ...)
+#' @export autolayer.irregFunData
+autolayer.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", ...)
 {
-  if(!(requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("reshape2", quietly = TRUE)))
+  if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
-    warning("Please install the ggplot2 and reshape2 packages to use the ggplot function for funDataObjects.")
+    warning("Please install the ggplot2 package to use the autolayer function for irregfunData objects.")
     return()
   } 
   
-  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(data)))
-    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(data), ".")
+  if(! all(is.numeric(obs), 0 < obs, obs <= nObs(object)))
+    stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(object), ".")
   
-  meltData <- as.data.frame(extractObs(data,obs))
+  meltData <- as.data.frame(extractObs(object,obs))
 
-    p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs"),
+    p <- ggplot2::stat_identity(object = meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs"),
                                 geom = geom, ...)
   
   return(p)
 }
-
-#' ggplot Graphics for Functional Data Objects
-#'
-#' The \pkg{funData} package allows to plot \code{funData},
-#' \code{multiFunData} and \code{irregFunData} objects via \code{autoplot}
-#' / \code{autolayer} and the \pkg{ggplot2} package. For Details, see the
-#' help pages of the class-specific plot functions (see below).
-#'
-#' @param data A \code{funData}, \code{multiFunData} or
-#'   \code{irregFunData} object.
-#' @param ... Further parameters passed to the class-specific methods.
-#'
-#' @return A \code{\link[ggplot2]{ggplot} object}
-#'
-#' @seealso \code{\link{autoplot.funData}}/\code{\link{autolayer.funData}}
-#'   for \code{funData} objects, \code{\link{autoplot.multiFunData}} for
-#'   \code{multiFunData} objects and
-#'   \code{\link{autoplot.irregFunData}}/\code{\link{autolayer.irregFunData}}
-#'   for \code{irregFunData} objects.
-setGeneric("autoplot", function(data,...) {standardGeneric("autoplot")})
-
-#' @rdname autoplot.funData
-#'
-#' @exportMethod autoplot
-setMethod("autoplot", signature = signature(data = "funData"),
-          function(data,...){autoplot.funData(data,...)})
-
-#' @rdname autoplot.multiFunData
-#'
-#' @exportMethod autoplot
-setMethod("autoplot", signature = signature(data = "multiFunData"),
-          function(data,...){autoplot.multiFunData(data,...)})
-
-#' @rdname autoplot.irregFunData
-#'
-#' @exportMethod autoplot
-setMethod("autoplot", signature = signature(data = "irregFunData"),
-          function(data,...){autoplot.irregFunData(data,...)})
-
-
-#' @rdname autoplot
-setGeneric("autolayer", function(data,...) {standardGeneric("autolayer")})
-
-#' @rdname autoplot.funData
-#'
-#' @exportMethod autolayer
-setMethod("autolayer", signature = signature(data = "funData"),
-          function(data,...){autolayer.funData(data,...)})
-
-#' @rdname autoplot.irregFunData
-#'
-#' @exportMethod autolayer
-setMethod("autolayer", signature = signature(data = "irregFunData"),
-          function(data,...){autolayer.irregFunData(data,...)})

@@ -22,7 +22,7 @@ Imports:
     stats
 Suggests:
     covr,
-    ggplot2,
+    ggplot2 (>= 3.0.0),
     gridExtra,
     reshape2,
     zoo,
@@ -39,3 +39,4 @@ Collate:
     'str.R'
     'subset.R'
     'summary.R'
+    'zzz.R'
