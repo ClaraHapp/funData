@@ -268,7 +268,7 @@ NULL
 #' @importFrom abind abind
 setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
-            if(!all.equal(e1@argvals, e2@argvals))
+            if(!isTRUE(all.equal(e1@argvals, e2@argvals)))
               stop("Functions must be defined on the same domain!")        
             
             # different number of observations
@@ -419,7 +419,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
             #    stop("defined only for irregFunData objects with one-dimensional domain")
             
-            if(!any(unlist(e2@argvals) %in% e1@argvals[[1]]))
+            if(!all(unlist(e2@argvals) %in% e1@argvals[[1]]))
               stop("irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
