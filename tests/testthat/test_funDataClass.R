@@ -77,5 +77,37 @@ test_that("coerce methods", {
   expect_equal(tail(as.data.frame(f), nObsPoints(f)), data.frame(obs = 5, argvals1 = x, X = f@X[5,]), check.attributes = FALSE)
   expect_equal(as.data.frame(as.multiFunData(f)), list(as.data.frame(f)))
   expect_equal(as.data.frame(i1), data.frame(obs = rep(1:2, times = c(5,4)), argvals = unlist(argvals(i1)), X = unlist(X(i1))))
+  
+  # coercion to fd from fda package
+  if(!(requireNamespace("fda", quietly = TRUE)))
+  {
+    expect_warning(funData2fd(f), "Please install the fda package to use the funData2fd function for funData objects.")
+    expect_warning(fd2funData(NULL), "Please install the fda package to use the fd2funData function for funData objects.")
+  } 
+  else
+  {
+    library("fda")
+    
+    # from Data2fd help
+    daybasis <- create.fourier.basis(c(0, 365), nbasis=65) 
+    tempfd <- Data2fd(CanadianWeather$dailyAv[,,"Temperature.C"], day.5, daybasis)
+    
+    # check errors
+    expect_error(funData2fd("fun", daybasis), "Argument is not of class 'funData'.")
+    expect_error(funData2fd(funData(argvals = list(1:5, 1:4), X = 3:1 %o% 1:5 %o% 1:4)), "funData2fd is only defined for functions on one-dimensional domains.")
+    expect_error(fd2funData(tempfd, letters[1:5]), "Parameter 'argvals' must be either a vector of argument values or a list containing such a vector.")
+    
+    # check functionality
+    tempFun <- fd2funData(tempfd, argvals = day.5)
+    expect_equal(nObs(tempFun), 35)
+    expect_equal(nObsPoints(tempFun), 365)
+    expect_equal(mean(norm(tempFun)), 60906.17, tol = 1e-5)
+    expect_equal(norm(tempFun)[1], 27068, tol = 1e-5)
+    
+    reTempfd <- funData2fd(tempFun, daybasis)
+    reTempfd$fdnames$time <- tempfd$fdnames$time # time names are not preserved
+    expect_equal(tempfd, reTempfd)
+    
+  }
 })
 

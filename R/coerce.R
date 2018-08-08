@@ -86,3 +86,123 @@ setAs("irregFunData", "data.frame",
 #' @export as.data.frame
 setMethod("as.data.frame", signature = "irregFunData", 
           function(x){as(x, "data.frame")})
+
+
+#### Coercion to fd (from fda) ####
+
+#' Convert a funData object to fd
+#'
+#' This function converts an object of class \code{\link{funData}} to an
+#' object of class \code{\link[fda]{fd}} (from package \pkg{fda}). It
+#' heavily builds on the function \code{\link[fda]{Data2fd}} from the
+#' \pkg{fda} package. The \code{\link[fda]{fd}} representation assumes a
+#' basis representation for the observed functions and therefore
+#' implicitly smoothes the data. In \code{funData} objects, the data is
+#' saved in 'raw' format.
+#'
+#' @section Warning: This function works only for funData objects on
+#'   one-dimensional domains.
+#'
+#' @param object A \code{funData} object
+#' @param ... Other parameters passed to \code{\link[fda]{Data2fd}}.
+#'
+#' @return An object of class \code{\link[fda]{fd}}.
+#'
+#' @export
+#'
+#' @seealso \code{\linkS4class{funData}}, \code{\link[fda]{fd}},
+#'   \code{\link[fda]{Data2fd}}, \code{\link{fd2funData}}
+#'
+#' @examples
+#' # Install / load package fda before running the examples
+#' library("fda")
+#'
+#' # from Data2fd help
+#' daybasis <- create.fourier.basis(c(0, 365), nbasis=65)
+#' # funData object with temperature
+#' tempFun <- funData(day.5, t(CanadianWeather$dailyAv[, , "Temperature.C"]))
+#' # convert to fd
+#' tempfd <- funData2fd(tempFun, daybasis)
+#'
+#' # plot to compare
+#' par(mfrow = c(1,2))
+#' plot(tempFun, main = "funData object (raw data)")
+#' plot(tempfd, main = "fd object (smoothed)")
+funData2fd <- function(object, ...) 
+{
+  if(!(requireNamespace("fda", quietly = TRUE)))
+  {
+    warning("Please install the fda package to use the funData2fd function for funData objects.")
+    return()
+  } 
+  
+  if(!inherits(object,"funData"))
+    stop("Argument is not of class 'funData'.")
+  
+  if(dimSupp(object) > 1)
+    stop("funData2fd is only defined for functions on one-dimensional domains.")
+  
+  return(fda::Data2fd(argvals = object@argvals[[1]], y = t(object@X), ...))
+}
+
+
+#' Convert an f2 object to funData
+#'
+#' This function converts an object of class \code{\link[fda]{fd}} (from
+#' package \pkg{fda}) to an object of class \code{\link{funData}}. It
+#' heavily builds on the function \code{\link[fda]{eval.fd}} from the
+#' \pkg{fda} package. The \code{\link[fda]{fd}} representation assumes a
+#' basis representation for the observed functions and therefore
+#' implicitly smoothes the data. In \code{funData} objects, the data is
+#' saved in 'raw' format.
+#'
+#' @section Warning: Time names in \code{fdobj$fdnames$time} are not
+#'   preserved.
+#'
+#' @param fdobj An \code{fd} object
+#' @param argvals A vector or a list of length one, containing a vector
+#'   with argument values at which the functions in \code{fdobj} should be
+#'   evaluated.
+#' @param ... Other parameters passed to \code{\link[fda]{eval.fd}}.
+#'
+#' @return An object of class \code{\link{funData}}.
+#'
+#' @export
+#'
+#' @seealso \code{\linkS4class{funData}}, \code{\link[fda]{fd}},
+#'   \code{\link[fda]{eval.fd}}
+#'
+#' @examples
+#' # Install / load package fda before running the examples
+#' library("fda")
+#'
+#' # from Data2fd help
+#' daybasis <- create.fourier.basis(c(0, 365), nbasis=65)
+#' # fd object of daily temperatures
+#' tempfd <- Data2fd(CanadianWeather$dailyAv[,,"Temperature.C"], day.5, daybasis)
+#' # convert to funData
+#' tempFun <- fd2funData(tempfd, argvals = day.5)
+#'
+#' # plot to compare
+#' par(mfrow = c(1,2))
+#' plot(tempfd, main = "fd object")
+#' plot(tempFun, main = "funData object") 
+fd2funData <- function(fdobj, argvals, ...)
+{
+  if(!(requireNamespace("fda", quietly = TRUE)))
+  {
+    warning("Please install the fda package to use the fd2funData function for funData objects.")
+    return()
+  } 
+  
+  if(!is.numeric(argvals))
+  {
+    if(is.list(argvals) & length(argvals) == 1)
+      argvals = unlist(argvals)
+    else
+      stop("Parameter 'argvals' must be either a vector of argument values or a list containing such a vector.")
+  }
+  
+  # eval.fd checks validity of argvals
+  return(funData(argvals = argvals, X = t(fda::eval.fd(argvals, fdobj, ...))))
+}

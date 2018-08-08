@@ -22,6 +22,7 @@ Imports:
     stats
 Suggests:
     covr,
+    fda,
     ggplot2 (>= 3.0.0),
     gridExtra,
     reshape2,
