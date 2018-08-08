@@ -108,6 +108,7 @@ test_that("ggplots", {
   else
   {
     library("ggplot2") # load package
+    g <- ggplot2::ggplot() # empty plot
     
   # funData 1D / 2D
   # check errors
@@ -118,6 +119,14 @@ test_that("ggplots", {
   expect_error(autoplot(object1D, obs = 50),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
   expect_error(autoplot(object1D, plotNA = "Yes"), "Parameter 'plotNA' must be passed as a logical.")
+  expect_error(g + autolayer(object1D, obs = "1"),
+               "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
+  expect_error(g + autolayer(object1D, obs = 0),
+               "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
+  expect_error(g + autolayer(object1D, obs = 50),
+               "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
+  expect_error(g + autolayer(object1D, plotNA = "Yes"), "Parameter 'plotNA' must be passed as a logical.")
+  
   expect_error(autoplot(object1D, plotNA = c(TRUE, FALSE)), "Parameter 'plotNA' must be passed as a logical.")
   expect_error(autoplot(funData(argvals = list(1:5,2:6,3:7), X = array(10*5*5*5, dim = c(10,5,5,5)))),
                "plot is implemented only for functional data with one- or two-dimensional domain")
@@ -129,6 +138,9 @@ test_that("ggplots", {
   # check functionality
   expect_s3_class(autoplot(object1D), "ggplot")
   expect_s3_class(autoplot(object2D, obs = 1), "ggplot")
+  expect_s3_class(autoplot(object1D, plotNA = TRUE), "ggplot")
+  expect_s3_class(g + autolayer(object1D), "ggplot")
+  expect_s3_class(g + autolayer(object1D, plotNA = TRUE), "ggplot")
    
   # multiFunData
   # check errors
@@ -156,6 +168,12 @@ test_that("ggplots", {
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
   expect_error(autoplot(i, obs = 50),
                "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
+  expect_error(g + autolayer(i, obs = "1"),
+               "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
+  expect_error(g + autolayer(i, obs = 0),
+               "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
+  expect_error(g + autolayer(i, obs = 50),
+               "Parameter 'obs' must be a vector of numerics with values between 1 and 11.")
   
   # check functionality
   expect_s3_class(autoplot(as.irregFunData(object1D)), "ggplot")
@@ -164,10 +182,12 @@ test_that("ggplots", {
   ### deprecated ggplot functions
   expect_warning({tmp <- funData::ggplot(object1D)}); expect_s3_class(tmp, "ggplot")
   expect_warning({tmp <- funData::ggplot(object2D, obs = 1)}); expect_s3_class(tmp, "ggplot")
+  expect_warning({tmp <- g + funData::ggplot(object1D, add = TRUE)}); expect_s3_class(tmp, "ggplot")
 
   expect_warning({tmp <- funData::ggplot(multiFunData(object1D, 2*object1D), plotGrid = TRUE)}); expect_equal(length(tmp), 2)
   expect_warning({tmp <- funData::ggplot(multiFunData(object1D, 2*object1D), plotGrid = FALSE)}); expect_equal(length(tmp), 2)
   expect_warning({tmp <- funData::ggplot(as.irregFunData(object1D))}); expect_s3_class(tmp, "ggplot")
+  expect_warning({tmp <- g + funData::ggplot(as.irregFunData(object1D), add = TRUE)}); expect_s3_class(tmp, "ggplot")
   }
 })
 

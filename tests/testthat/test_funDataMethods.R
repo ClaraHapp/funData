@@ -169,6 +169,12 @@ test_that("Arith", {
   # univariateFD, univariate FD
   expect_error(f1 + extractObs(f1,1:2), 
                "nObs of funData objects is neither equal nor one.")
+  expect_error(f1 -  extractObs(f1, argvals = 1:2),
+               "Functions must be defined on the same domain!")
+  
+  #multivaraite FD
+  expect_error(m1 - as.multiFunData(f1),
+               "Multivariate functional data must have same length!")
   
   # irreg & irreg
   expect_error(extractObs(i1, obs = 2) + i1,
@@ -184,6 +190,10 @@ test_that("Arith", {
   expect_error(i1 + extractObs(f1, argvals = 3:4, obs = 1:3),
                "irregFunData object must be defined on a subdomain of the funData object!")
   expect_error(i1+f1,
+               "funData object must have either one observation or the same number of observations as the irregFunData object")
+  expect_error(extractObs(f1, argvals = 3:4, obs = 1:3) + i1,
+               "irregFunData object must be defined on a subdomain of the funData object!")
+  expect_error(f1 + i1,
                "funData object must have either one observation or the same number of observations as the irregFunData object")
   
   
@@ -204,6 +214,8 @@ test_that("Arith", {
   # univariate with e1/e2 having only one observation
   expect_equal(extractObs(f1 + extractObs(f1,1),1), extractObs(2*f1,1), check.attributes = FALSE)
   expect_equal(extractObs(f2 + extractObs(f2,1),1), extractObs(2*f2,1), check.attributes = FALSE)
+  expect_equal(extractObs(extractObs(f1,1),1) + f1, extractObs(2*f1,1), check.attributes = FALSE)
+  expect_equal(extractObs(extractObs(f2,1),1) + f2, extractObs(2*f2,1), check.attributes = FALSE)
   
   # multivariate & multivariate
   expect_equal(m1+m1, multiFunData(mapply("+", m1, m1)))
@@ -301,6 +313,8 @@ test_that("scalarProduct", {
   # Check errors:
   expect_error(scalarProduct(m1, as.multiFunData(f1)),
                "multiFunData objects must have the same number of elements.")
+  expect_error(scalarProduct(m1, m1, weight = 1:3),
+               "Weight vector must have the same number of elements as the multiFunData objects.")
   expect_error(scalarProduct(m1, m1, weight = c(-1,1)),
                "Weights must be non-negative.")
   expect_error(scalarProduct(m1, m1, weight = c(0,0)),
@@ -315,8 +329,10 @@ test_that("scalarProduct", {
   # multivariate FD object
   expect_equal(scalarProduct(m1,m1), norm(m1, squared = TRUE))
   expect_equal(scalarProduct(m1,m1, weight = c(1,2)), norm(m1, squared = TRUE, weight = c(1,2))) # with weights
+  expect_equal(scalarProduct(as.multiFunData(f1),as.multiFunData(f1)), norm(f1, squared = TRUE)) # special case: only one element
   # irreg FD object  
   expect_equal(scalarProduct(i1,i1), norm(i1, squared = TRUE))
+  expect_equal(norm(i1, squared = FALSE)^2, norm(i1, squared = TRUE)) # check squared
 })
 
 test_that("integrate", {
@@ -335,12 +351,17 @@ test_that("integrate", {
   expect_equal(integrate(f1)[1], sum(funData:::.intWeights(f1@argvals[[1]], "trapezoidal")*f1@X[1,]))
   expect_equal(integrate(f2)[1], as.numeric(t(funData:::.intWeights(f2@argvals[[1]], "trapezoidal")) %*% 
                                               f2@X[1,,] %*% funData:::.intWeights(f2@argvals[[2]], "trapezoidal")))
+  expect_equal(integrate(f3)[1], 14340)
   # multivariate FD objects
   expect_equal(integrate(m1), as.numeric(integrate(f1) + integrate(f2)))
   expect_equal(integrate(m1.1), as.numeric(integrate(f1.1) + integrate(f2.1)))
   # irreg FD object 
   expect_equal(integrate(i1), c(12,6,-4), tolerance = 1e-5)
   expect_equal(integrate(i1, fullDom = TRUE), c(12,12,-12), tolerance = 1e-5)
+  expect_equal( integrate(extractObs(i1, argvals = 1:3), fullDom = TRUE), c(4,4,6)) # fullDom uses extrapolate and 3rd obs has only one observation point
+  
+  # check generic default (from stats::integrate help page)
+  expect_equal(integrate(dnorm, -1.96, 1.96)$value, 2*pnorm(1.96)- 1)
 })
 
 test_that("integrate3D",{
@@ -425,13 +446,24 @@ test_that("set/get", {
 
 test_that("flipFun", {
   # Check errors:
-  # univariate FD object (one-dim)
+  # univariate FD object
   expect_error(flipFuns(f1,funData(argvals = list(1:5), X = array(1:30,c(6,5)))), 
                'Functions must have the same number of observations or use a single function as reference.') # not the same number of observations
   expect_error(flipFuns(f1,f2), 
                'Functions must have the dimension.') # not the same dimension
   expect_error(flipFuns(f1,funData(argvals = list(2:6), X = array(1:20,c(4,5)))), 
                'Functions must be defined on the same domain.') # not the same domain
+  expect_error(flipFuns(f3, 2*f3),
+               "Function is only implemented for data of dimension <= 2")
+  # multivariate FD
+  expect_error(flipFuns(m1, as.multiFunData(f1)),
+               "multiFunData objects must have the same length")
+  expect_error(flipFuns(m1, extractObs(m1, 1:2)),
+               "Functions must have the same number of observations or use a single function as reference.")
+  expect_error(flipFuns(m1, multiFunData(f2,f1)),
+               "Functions must have the dimension.")
+  expect_error(flipFuns(m1, multiFunData(extractObs(f1, argvals = 1:4), f2)),
+               "Functions must be defined on the same domain.")
   # irreg FD object (regular reference)
   expect_error(flipFuns(f2,i1),
                "Function is only implemented for irregular data with one-dimensional support")

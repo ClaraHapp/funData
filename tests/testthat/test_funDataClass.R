@@ -99,10 +99,12 @@ test_that("coerce methods", {
     
     # check functionality
     tempFun <- fd2funData(tempfd, argvals = day.5)
+    tempFun2 <- fd2funData(tempfd, argvals = list(day.5))
     expect_equal(nObs(tempFun), 35)
     expect_equal(nObsPoints(tempFun), 365)
     expect_equal(mean(norm(tempFun)), 60906.17, tol = 1e-5)
     expect_equal(norm(tempFun)[1], 27068, tol = 1e-5)
+    expect_equal(tempFun, tempFun2)
     
     reTempfd <- funData2fd(tempFun, daybasis)
     reTempfd$fdnames$time <- tempfd$fdnames$time # time names are not preserved
