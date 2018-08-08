@@ -706,3 +706,66 @@ autolayer.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", 
   
   return(p)
 }
+
+
+#### ggplot (deprecated) ####
+
+#' ggplot Graphics for Functional Data Objects
+#'
+#' This function is deprecated. Use \code{\link{autoplot.funData}} /
+#' \code{\link{autolayer.funData}} for \code{funData} objects,
+#' \code{\link{autoplot.multiFunData}} for \code{multiFunData} objects and
+#' \code{\link{autoplot.irregFunData}} /
+#' \code{\link{autolayer.irregFunData}} for \code{irregFunData} objects
+#' instead.
+#'
+#' @param data A \code{funData}, \code{multiFunData} or
+#'   \code{irregFunData} object.
+#' @param ... Further parameters passed to the class-specific methods.
+#'
+#' @return A \code{\link[ggplot2]{ggplot}} object
+#'
+#' @seealso  \code{\link[ggplot2]{ggplot}},
+#'   \code{\link[ggplot2]{autoplot}}, \code{\link[ggplot2]{autolayer}}
+#'   from package \pkg{ggplot2}
+setGeneric("ggplot", function(data,...) {standardGeneric("ggplot")})
+
+#' @rdname ggplot
+#' @exportMethod ggplot
+setMethod("ggplot", signature = signature(data = "funData"),
+          function(data, add = FALSE,...){
+            if(add == FALSE)
+            {
+              .Deprecated("autoplot", old = "ggplot")
+              return(autoplot.funData(data, ...))
+            } 
+            else
+            {
+              .Deprecated("autolayer", old = "ggplot")
+              return(autolayer.funData(data, ...))
+            }
+          })
+
+#' @rdname ggplot
+#' @exportMethod ggplot
+setMethod("ggplot", signature = signature(data = "multiFunData"),
+          function(data, ...){
+            .Deprecated("autoplot", old = "ggplot")
+            return(autoplot.multiFunData(data, ...))
+          })
+
+#' @rdname ggplot
+#' @exportMethod ggplot
+setMethod("ggplot", signature = signature(data = "irregFunData"),
+          function(data, add = FALSE,...){
+            if(add == FALSE)
+            {
+              .Deprecated("autoplot", old = "ggplot")
+              return(autoplot.irregFunData(data, ...))
+            } 
+            else
+            {
+              .Deprecated("autolayer", old = "ggplot")
+              return(autolayer.irregFunData(data, ...))
+            }
+          })

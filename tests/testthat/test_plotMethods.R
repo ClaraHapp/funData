@@ -159,6 +159,15 @@ test_that("ggplots", {
   
   # check functionality
   expect_s3_class(autoplot(as.irregFunData(object1D)), "ggplot")
+  
+  
+  ### deprecated ggplot functions
+  expect_warning({tmp <- funData::ggplot(object1D)}); expect_s3_class(tmp, "ggplot")
+  expect_warning({tmp <- funData::ggplot(object2D, obs = 1)}); expect_s3_class(tmp, "ggplot")
+
+  expect_warning({tmp <- funData::ggplot(multiFunData(object1D, 2*object1D), plotGrid = TRUE)}); expect_equal(length(tmp), 2)
+  expect_warning({tmp <- funData::ggplot(multiFunData(object1D, 2*object1D), plotGrid = FALSE)}); expect_equal(length(tmp), 2)
+  expect_warning({tmp <- funData::ggplot(as.irregFunData(object1D))}); expect_s3_class(tmp, "ggplot")
   }
 })
 
