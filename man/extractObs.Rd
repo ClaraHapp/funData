@@ -34,7 +34,7 @@ extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
 \code{multiFunData}.}
 
 \item{obs}{A numeric vector, giving the indices of the observations to
-extract (default: all obervations).}
+extract (default: all observations).}
 
 \item{argvals}{The part of the domain to be extracted (default: the
 whole domain \code{object}@\code{argvals}). Must be a list or a

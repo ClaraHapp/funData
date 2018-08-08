@@ -38,7 +38,7 @@ Objects of the classes \code{\link{funData}} and \code{\link{irregFunData}}
 can be combined, see \code{\link{integrate}} for details.
 }
 \details{
-For \code{\linkS4class{multiFunData}} one cann pass optional vector
+For \code{\linkS4class{multiFunData}} one can pass an optional vector
 \code{weight} for calculating a weighted scalar product. This vector must
 have the same number of elements as the \code{\link{multiFunData}} objects
 and have to be non-negative with at least one weight that is different from

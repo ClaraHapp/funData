@@ -27,7 +27,7 @@
 #' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #' @param obs A numeric vector, giving the indices of the observations to
-#'   extract (default: all obervations).
+#'   extract (default: all observations).
 #' @param argvals The part of the domain to be extracted (default: the
 #'   whole domain \code{object}@@\code{argvals}). Must be a list or a
 #'   numeric vector (only for one-dimensional domains, see also the
