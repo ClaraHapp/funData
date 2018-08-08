@@ -11,30 +11,31 @@ NULL
 #' @param x The functional data object that is to be transformed to a
 #'   \code{data.frame}
 #'
-#' @return A data frame with columns \code{obs} (gives index of observed
-#'   curve), \code{argvals1, ... argvalsd} with \code{d} the dimension of
-#'   the support and \code{X} for the observed values. One-dimensional
-#'   functions have only \code{argvals1}, two-dimensional functions
-#'   (images) have \code{argvals1} and \code{argvals2}, etc.
-#'  
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
-#'   \code{\linkS4class{multiFunData}}, \code{\link{data.frame}}
+#' @return A data frame with columns \code{obs} (gives index/name of
+#'   observed curve), \code{argvals1, ... argvalsd} with \code{d} the
+#'   dimension of the support and \code{X} for the observed values.
+#'   One-dimensional functions have only \code{argvals1}, two-dimensional
+#'   functions (images) have \code{argvals1} and \code{argvals2}, etc.
+#'
+#' @seealso \code{\linkS4class{funData}},
+#'   \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}},
+#'   \code{\link{data.frame}}
 #'
 #' @name as.data.frame.funData
-#'  
+#'
 #' @examples
 #' # one-dimensional domain
 #' f1 <- funData(argvals = 1:5, X = matrix(1:20, nrow = 4))
 #' head(as.data.frame(f1))
-#' 
+#'
 #' # two-dimensional domain
 #' f2 <- funData(argvals = list(1:5, 1:6), X = array(1:120, c(4,5,6)))
 #' head(as.data.frame(f2))
-#' 
+#'
 #' # multivariate functional data
 #' m1 <- multiFunData(f1, f2)
 #' str(as.data.frame(m1))
-#' 
+#'
 #' # irregular functional data
 #' i1 <- irregFunData(argvals = list(1:5, 2:4, 3:5), X = list(1:5, 2:4, -(3:1)))
 #' head(as.data.frame(i1))
@@ -51,7 +52,12 @@ setAs("funData", "data.frame",
         colnames(allArgvals) <- paste("argvals", 1:d, sep = "")
         row.names(allArgvals) <- NULL
         
-        return(cbind(obs = rep(1:nObs(from), each = prod(nObsPoints(from))),
+        if(is.null(names(from)))
+          nm <- as.character(1:nObs(from))
+        else
+          nm <- names(from)
+        
+        return(cbind(obs = rep(nm, each = prod(nObsPoints(from))),
                      allArgvals,
                      X = as.numeric(aperm(from@X, c(1 + 1:d,1)))))
       })
@@ -77,7 +83,12 @@ setMethod("as.data.frame", signature = "multiFunData",
 setAs("irregFunData", "data.frame", 
       def = function(from){
         
-        return(data.frame(obs = rep(1:nObs(from), times = nObsPoints(from)),
+        if(is.null(names(from)))
+          nm <- as.character(1:nObs(from))
+        else
+          nm <- names(from)
+        
+        return(data.frame(obs = rep(nm, times = nObsPoints(from)),
                      argvals = unlist(from@argvals),
                      X = unlist(from@X)))
       })

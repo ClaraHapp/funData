@@ -19,11 +19,11 @@
 \code{data.frame}}
 }
 \value{
-A data frame with columns \code{obs} (gives index of observed
-  curve), \code{argvals1, ... argvalsd} with \code{d} the dimension of
-  the support and \code{X} for the observed values. One-dimensional
-  functions have only \code{argvals1}, two-dimensional functions
-  (images) have \code{argvals1} and \code{argvals2}, etc.
+A data frame with columns \code{obs} (gives index/name of
+  observed curve), \code{argvals1, ... argvalsd} with \code{d} the
+  dimension of the support and \code{X} for the observed values.
+  One-dimensional functions have only \code{argvals1}, two-dimensional
+  functions (images) have \code{argvals1} and \code{argvals2}, etc.
 }
 \description{
 Coerce objects of class \code{funData},  \code{multiFunData} and
@@ -47,6 +47,7 @@ i1 <- irregFunData(argvals = list(1:5, 2:4, 3:5), X = list(1:5, 2:4, -(3:1)))
 head(as.data.frame(i1))
 }
 \seealso{
-\code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
-  \code{\linkS4class{multiFunData}}, \code{\link{data.frame}}
+\code{\linkS4class{funData}},
+  \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}},
+  \code{\link{data.frame}}
 }
