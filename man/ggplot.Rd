@@ -21,6 +21,9 @@ ggplot(data, ...)
 \code{irregFunData} object.}
 
 \item{...}{Further parameters passed to the class-specific methods.}
+
+\item{add}{Logical. If \code{TRUE}, add to current plot (only for 
+one-dimensional functions). Defaults to \code{FALSE}.}
 }
 \value{
 A \code{\link[ggplot2]{ggplot}} object

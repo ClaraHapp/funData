@@ -731,6 +731,10 @@ autolayer.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", 
 setGeneric("ggplot", function(data,...) {standardGeneric("ggplot")})
 
 #' @rdname ggplot
+#' 
+#' @param add Logical. If \code{TRUE}, add to current plot (only for 
+#'   one-dimensional functions). Defaults to \code{FALSE}.
+#'   
 #' @exportMethod ggplot
 setMethod("ggplot", signature = signature(data = "funData"),
           function(data, add = FALSE,...){
