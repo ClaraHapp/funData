@@ -717,7 +717,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #'   \code{\link{eVal}}, \code{\link{simFunData}}, \code{\link{addError}}, 
 #'   \code{\link{sparsify}}.
 #'   
-#' @references C. Happ, S. Greven (2015): Multivariate Functional Principal 
+#' @references C. Happ, S. Greven (2018): Multivariate Functional Principal 
 #'   Component Analysis for Data Observed on Different (Dimensional) Domains. 
 #'   Journal of the American Statistical Association, 113(522): 649-659. 
 #'   
