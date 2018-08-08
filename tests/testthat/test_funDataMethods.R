@@ -19,8 +19,11 @@ test_that("print",{
 })
 
 test_that("str",{
+  m2 <- m1
+  names(m2) <- letters[1:length(m2)]
   expect_known_output(str(f1), file = "outputs/str_funData.out")
   expect_known_output(str(m1), file = "outputs/str_multiFunData.out")
+  expect_known_output(str(m2), file = "outputs/str_multiFunData_2.out")
   expect_known_output(str(i1), file = "outputs/str_irregFunData.out")
   expect_known_output(str(i1, list.len = 1), file = "outputs/str_irregFunData_len1.out")
 })
@@ -35,9 +38,13 @@ test_that("summary",{
                "Argument is not of class 'summary.irregFunData'.")
   
   # Check functionality:
+  fName <- f1
+  names(fName) <- letters[1:nObs(fName)]
   expect_known_output(print(summary(f1)), file = "outputs/summary_funData.out")
+  expect_known_output(print(summary(fName)), file = "outputs/summary_funData_names.out")
   expect_known_output(print(summary(m1)), file = "outputs/summary_multiFunData.out")
   expect_known_output(print(summary(i1)), file = "outputs/summary_irregFunData.out")
+  expect_known_output(print(summary(as.irregFunData(fName))), file = "outputs/summary_irregFunData_names.out")
 })
 
 test_that("names",{
@@ -102,6 +109,8 @@ test_that("nObsPoints", {
 test_that("extractObs", {
   # Check errors:
   # univariate FD object (one-dim)
+  expect_error(extractObs(f1, obs = "5"), 
+               "Supply observations as numeric vector") # observation does not exist
   expect_error(extractObs(f1, obs = 5), 
                "Trying to extract observations that do not exist!") # observation does not exist
   expect_error(extractObs(f1, argvals = list(4:6)), 
@@ -111,6 +120,11 @@ test_that("extractObs", {
   # univariate FD object (two-dim)
   expect_error(extractObs(f2, argvals = 1:5),
                "Supply argvals for extracted observations either as list or as numeric vector (only if support is one-dimensional", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
+  # univariate FD object (> 3-dim)
+  expect_error(extractObs(funData(argvals = list(1:2,2:3,3:4,4:5), X = (1:5) %o% (1:2) %o% (2:3) %o% (3:4) %o% (4:5))),
+               "extracting observations is not implemented yet for functional data of dimension > 3")
+  # multi FD object
+  expect_error(extractObs(m1, argvals = "1"), "extractObs for multiFunData: argvals must be supplied as list (or missing).", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
   # irreg FD object
   expect_error(extractObs(i1, obs = list(1:3)), 
                "Supply observations as numeric vector")
@@ -135,7 +149,8 @@ test_that("extractObs", {
   expect_equal(extractObs(f3, obs = 4),  funData(argvals = f3@argvals, X = f3@X[4, , , , drop = FALSE]))
   expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), funData(argvals = list(1:3, 4:6, 2:4), X = f3@X[, 1:3, 4:6, 2:4]))
   # multivariate FD object
-  expect_equal(extractObs(m1, obs = 2), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 2)))  
+  expect_equal(extractObs(m1, obs = 2), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 2)))
+  expect_equal(extractObs(m1, obs = list(2,3)), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 3)))  
   # irreg FD object
   expect_equal(extractObs(i1, argvals = list(3:4)), extractObs(i1, argvals = 3:4))
   expect_equal(extractObs(i1, obs = 1), irregFunData(argvals = list(1:5), X = list(1:5)))
@@ -144,6 +159,7 @@ test_that("extractObs", {
   # alternative via []
   expect_equal(extractObs(f1, obs = 1:2), f1[1:2])
   expect_equal(extractObs(f1, argvals = 1:2), f1[argvals = 1:2])
+  expect_equal(f1, f1[]) # default: select all observations
   expect_equal(extractObs(f2, obs = 2), f2[2])
   expect_equal(extractObs(f2, argvals = list(1:3, 4:6)), f2[argvals = list(1:3, 4:6)])
   expect_equal(extractObs(f3, obs = 4),f3[4])

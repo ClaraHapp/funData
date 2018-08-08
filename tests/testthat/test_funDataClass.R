@@ -73,8 +73,10 @@ test_that("coerce methods", {
   expect_equal(i1, as.irregFunData(f1))
   
   # coercion to data.frame
+  fName <- f; names(fName) <- letters[1:nObs(fName)]
   expect_equal(head(as.data.frame(f), nObsPoints(f)), data.frame(obs = "1", argvals1 = x, X = f@X[1,]), check.attributes = FALSE)
   expect_equal(tail(as.data.frame(f), nObsPoints(f)), data.frame(obs = "5", argvals1 = x, X = f@X[5,]), check.attributes = FALSE)
+  expect_equal(tail(as.data.frame(fName), nObsPoints(fName)), data.frame(obs = "e", argvals1 = x, X = f@X[5,]), check.attributes = FALSE)
   expect_equal(as.data.frame(as.multiFunData(f)), list(as.data.frame(f)))
   expect_equal(as.data.frame(i1), data.frame(obs = rep(c("1","2"), times = c(5,4)), argvals = unlist(argvals(i1)), X = unlist(X(i1))))
   
