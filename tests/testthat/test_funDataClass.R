@@ -90,7 +90,7 @@ test_that("coerce methods", {
     
     # from Data2fd help
     daybasis <- create.fourier.basis(c(0, 365), nbasis=65) 
-    tempfd <- Data2fd(CanadianWeather$dailyAv[,,"Temperature.C"], day.5, daybasis)
+    tempfd <- Data2fd(argvals = day.5, y = CanadianWeather$dailyAv[,,"Temperature.C"], daybasis)
     
     # check errors
     expect_error(funData2fd("fun", daybasis), "Argument is not of class 'funData'.")

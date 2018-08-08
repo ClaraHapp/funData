@@ -179,7 +179,7 @@ funData2fd <- function(object, ...)
 #' # from Data2fd help
 #' daybasis <- create.fourier.basis(c(0, 365), nbasis=65)
 #' # fd object of daily temperatures
-#' tempfd <- Data2fd(CanadianWeather$dailyAv[,,"Temperature.C"], day.5, daybasis)
+#' tempfd <- Data2fd(argvals = day.5, y = CanadianWeather$dailyAv[,,"Temperature.C"], daybasis)
 #' # convert to funData
 #' tempFun <- fd2funData(tempfd, argvals = day.5)
 #'
