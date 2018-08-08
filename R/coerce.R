@@ -146,7 +146,7 @@ funData2fd <- function(object, ...)
 }
 
 
-#' Convert an f2 object to funData
+#' Convert an fd object to funData
 #'
 #' This function converts an object of class \code{\link[fda]{fd}} (from
 #' package \pkg{fda}) to an object of class \code{\link{funData}}. It

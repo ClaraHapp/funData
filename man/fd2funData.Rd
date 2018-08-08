@@ -2,7 +2,7 @@
 % Please edit documentation in R/coerce.R
 \name{fd2funData}
 \alias{fd2funData}
-\title{Convert an f2 object to funData}
+\title{Convert an fd object to funData}
 \usage{
 fd2funData(fdobj, argvals, ...)
 }
