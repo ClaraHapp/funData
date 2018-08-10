@@ -11,7 +11,7 @@ efFourier(argvals, M, linear = FALSE)
 Fourier basis functions are computed.}
 
 \item{M}{An integer, specifying the number of basis functions that are
-calculcated.}
+calculated.}
 
 \item{linear}{Logical. If \code{TRUE}, the last function is not a Fourier
 function but the linear function orthogonalized to all previous Fourier

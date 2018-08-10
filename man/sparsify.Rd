@@ -33,7 +33,7 @@ al. (2005): For each element \eqn{x_i^{(j)}}{x_i^(j)} of an observed
 \eqn{R_i^{(j)} \in \{\mathrm{minObs}, \ldots, \mathrm{maxObs}\}}{R_i^(j)
 in {\code{minObs}, \ldots, \code{maxObs}}} of observation points is generated. The points
 are sampled uniformly from the full grid \eqn{\{t_{j,1} , \ldots , t_{j,
-S_j}\} \subset \mathcal{T}_j}{{t_{j,1} , \ldots , t_{j, S_j}} in \calT_j}, resulting in
+S_j}\} \subset \mathcal{T}_j}{{t_{j,1} , \ldots , t_{j, S_j}} in T_j}, resulting in
 observations \deqn{ x_{i,r}^{(j)} = x_i^{(j)}(t_{j,r}), \quad r = 1
 ,\ldots,R_i^{(j)},~ j = 1, \ldots, p.}{ x_{i,r}^(j) = x_i^(j)(t_{j,r}), r = 1
 ,\ldots,R_i^(j), j = 1, \ldots, p.}

@@ -24,12 +24,12 @@ A vector of length \code{nObs(object1)} (or \code{nObs(object2)}, if
 This function calculates the scalar product between two objects of the class 
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}} and 
 \code{\linkS4class{multiFunData}}. For univariate functions \eqn{f,g} on a
-domain \eqn{\mathcal{T}}{\calT}, the scalar product is defined as 
-\deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_\calT f(t) g(t) dt} and 
+domain \eqn{\mathcal{T}}{T}, the scalar product is defined as 
+\deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_T f(t) g(t) dt} and 
 for multivariate functions \eqn{f,g} on domains \eqn{\mathcal{T}_1, \ldots, 
-\mathcal{T}_p}{\calT_1,\ldots,\calT_p}, it is defined as \deqn{\sum_{j = 1}^p
+\mathcal{T}_p}{T_1,\ldots,T_p}, it is defined as \deqn{\sum_{j = 1}^p
 \int_{\mathcal{T}_j} f^{(j)}(t) g^{(j)}(t) \mathrm{d}t.}{\sum_{j = 1}^p 
-\int_\calT_j f^{(j)}(t) g^{(j)}(t) dt.} As seen in the formula, the objects 
+\int_T_j f^{(j)}(t) g^{(j)}(t) dt.} As seen in the formula, the objects 
 must be defined on the same domain. The scalar product is calculated pairwise
 for all observations, thus the objects must also have the same number of 
 observations or one object may have only one observation (for which the 
@@ -38,7 +38,7 @@ Objects of the classes \code{\link{funData}} and \code{\link{irregFunData}}
 can be combined, see \code{\link{integrate}} for details.
 }
 \details{
-For \code{\linkS4class{multiFunData}} one cann pass optional vector
+For \code{\linkS4class{multiFunData}} one can pass an optional vector
 \code{weight} for calculating a weighted scalar product. This vector must
 have the same number of elements as the \code{\link{multiFunData}} objects
 and have to be non-negative with at least one weight that is different from

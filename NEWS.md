@@ -1,3 +1,16 @@
+# funData 1.3
+
+## New features
+* New coercion methods `as.data.frame` and `funData2fd` / `fd2funData` (for `fd` objects from **fda** package).
+* New functions `argvals` / `argvals<-` / `X` / `X<-` for accessing and setting slot values. The old functions  `getArgvals` / `setArgvals` / `getX` / `setX` are deprecated.
+* New functions `autoplot` / `autolayer` for ggplot-type plotting (requires **ggplot2**, version 3.0.0). The old `ggplot` function is deprecated.
+* Alias functions `subset` and `"["` for `extractObs` to achieve better compatibility with R's standard API.
+* `print.summary` is now registered in `NAMESPACE`.
+* Minor adjustments in output of `show` and `str` to fit into the standard 80 columns terminal.
+* Documentation of `Arith` functions with more examples for standard operators
+* Fixed some typos in the documentation.
+* DESCRIPTION file now contains link to GitHub repo.
+
 # funData 1.2
 
 ## New features

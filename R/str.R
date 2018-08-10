@@ -11,7 +11,7 @@ setMethod("str", signature = "funData",
           {
             dims <- dimSupp(object)
             
-            cat("Functional data object:\n", nObs(object), " observations of ",
+            cat("Functional data:\n", nObs(object), " observations of ",
                 dims, "-dimensional support with ",
                 paste(nObsPoints(object), collapse = " x "), " sampling points.\n", sep = "")
             
@@ -36,7 +36,7 @@ setMethod("str", signature = "funData",
 setMethod("str", signature = "multiFunData",
           function(object, ...)
           {
-            cat("MultiFunData object with", length(object), "elements:\n---\n")
+            cat("MultiFunData with", length(object), "elements:\n---\n")
             
             elNames <- {
               if(is.null(names(object)))
@@ -71,8 +71,8 @@ setMethod("str", signature = "irregFunData",
             if(is.null(dots$list.len))
               dots$list.len <- 10
             
-            cat("IrregFunData object:\n", nObs(object), " observations of ",
-                dims, "-dimensional support on " , length(unique(unlist(object@argvals))), " different x-values (",
+            cat("IrregFunData:\n", nObs(object), " observations of ",
+                dims, "-dimensional support on " , length(unique(unlist(object@argvals))), " different argvals (",
                 paste(range(nObsPoints(object)), collapse = " - "), " per curve).\n\n", sep = "")
             
             cat("@argvals: ")

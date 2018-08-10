@@ -11,7 +11,7 @@ efPoly(argvals, M)
 Legendre polynomials are computed.}
 
 \item{M}{An integer, specifying the number (and hence the degree) of
-polynomials that are calculcated.}
+polynomials that are calculated.}
 }
 \value{
 A univariate functional data object of class \code{\linkS4class{funData}}

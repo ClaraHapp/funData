@@ -11,7 +11,7 @@ efWiener(argvals, M)
 eigenfunctions are computed.}
 
 \item{M}{An integer, specifying the number of eigenfunctions that are
-calculcated.}
+calculated.}
 }
 \value{
 A univariate functional data object of class

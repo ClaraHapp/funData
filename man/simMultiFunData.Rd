@@ -17,7 +17,7 @@ the multivariate functional data that is to be simulated. The length of
 multivariate functional data. See Details.}
 
 \item{M}{An integer (\code{type = "split"}) or a list of integers (\code{type
-= "weighted"}), giving the number of unvariate basis functions to use. See 
+= "weighted"}), giving the number of univariate basis functions to use. See 
 Details.}
 
 \item{eFunType}{A character string (\code{type = "split"})   or a list of 
@@ -95,7 +95,7 @@ orthonormal basis functions in each direction (x- and y-direction).
 If the \eqn{j}-th element of the simulated data should be defined on a 
 one-dimensional domain, then \itemize{ \item \code{argvals[[j]]} is a list, 
 containing one vector of observation points. \item \code{M[[j]]} is an 
-integer, specifiying the number of basis functions to use for this entry. 
+integer, specifying the number of basis functions to use for this entry. 
 \item  \code{eFunType[[j]]} is a character string, specifying the type of 
 orthonormal basis functions to use for this entry (see \code{\link{eFun}} for
 possible options). \item \code{ignoreDeg[[j]]} is a vector of integers, 

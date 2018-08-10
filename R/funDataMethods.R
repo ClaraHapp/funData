@@ -15,7 +15,7 @@ NULL
 #'
 #' @keywords internal
 print.funData <- function(x,...){
-  cat("Functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\nargvals:\n")
+  cat("Functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\nargvals:\n", sep = "")
   
   for(i in 1:dimSupp(x))
   {
@@ -51,13 +51,13 @@ setMethod("show", signature = "funData",
 #'
 #' @keywords internal
 print.irregFunData <- function(x,...){
-  cat("Irregular functional data object with", nObs(x) ,"observations of", dimSupp(x) ,"- dimensional support\n")
+  cat("Irregular functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\n", sep = "")
   
   cat("argvals:\n\tValues in ", paste(round(range(x@argvals),3), collapse = " ... "), ".\n", sep = "")
   
   cat("X:\n\tValues in ", paste(round(range(x@X),3), collapse = " ... "),".\n", sep = "")
   
-  cat("Total:\n\t", length(unlist(x@argvals)), " observations on " , length(unique(unlist(x@argvals))), " different x-values (",
+  cat("Total:\n\t", length(unlist(x@argvals)), " observations on " , length(unique(unlist(x@argvals))), " different argvals (",
       paste(range(nObsPoints(x)), collapse = " - "), " per observation).\n", sep = "")
 }
 
@@ -184,63 +184,63 @@ setMethod("approxNA", signature = "funData",
 #### Arith ####
 
 #' Arithmetics for functional data objects
-#' 
-#' These functions allow basic arithmetics for functional data and numerics 
-#' based on \code{\link[methods]{Arith}}.  The operations are made pointwise for
-#' each observation.
-#' 
-#' If two objects of a functional data class (\code{funData}, 
-#' \code{irregFunData} or \code{multiFunData}) are used, they normally must be 
-#' of the same class, have the same domain and the same number of observations. 
-#' Exceptions are accepted if \itemize{\item one object has only one 
-#' observation. In this case, the arithmetic operations are done pairwise for 
-#' this single function and all functions of the other object (e.g. when 
-#' subtracting the mean function from a \code{funData} object). This single
-#' function must be defined on the same domain as the other functions (or, in
-#' case of \code{irregFunData}, on the union of all observation grids). \item
-#' one of the two objects is of class \code{irregFunData}. Then, the other
-#' object can be of class \code{fundata}, too, if it is defined on the union of
-#' all observation grids. The result is an \code{irregFunData} object which is
-#' defined on the same observation grid as the original \code{irregFunData}
-#' object.}
-#' 
-#' @section Warning: Note that not all combinations of operations and classes 
-#'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class 
+#'
+#' These functions allow basic arithmetics (such as `+`, `-`, `*`, `sqrt`) for
+#' functional data and numerics based on \code{\link[methods]{Arith}}.  The
+#' operations are made pointwise for each observation. See examples below.
+#'
+#' If two objects of a functional data class (\code{funData},
+#' \code{irregFunData} or \code{multiFunData}) are used, they normally must be
+#' of the same class, have the same domain and the same number of observations.
+#' Exceptions are accepted if \itemize{\item one object has only one
+#' observation. In this case, the arithmetic operations (`+`, `-`, `*`, ...) are
+#' done pairwise for this single function and all functions of the other object.
+#' A typical example would be when subtracting the mean function from all
+#' observations in a \code{funData} object. This single function must be defined
+#' on the same domain as the other functions (or, in case of
+#' \code{irregFunData}, on the union of all observation grids). \item one of the
+#' two objects is of class \code{irregFunData}. Then, the other object can be of
+#' class \code{funData}, too, if it is defined on the union of all observation
+#' grids. The result is an \code{irregFunData} object which is defined on the
+#' same observation grid as the original \code{irregFunData} object.}
+#'
+#' @section Warning: Note that not all combinations of operations and classes
+#'   make sense, e.g. \code{e1 ^ e2} is sensible if \code{e1} is of class
 #'   \code{funData}, \code{irregFunData} or \code{multiFunData} and \code{e2} is
 #'   numeric. The reverse is not true.
-#'   
-#' @param e1,e2 Objects of class \code{funData}, \code{irregFunData}, 
-#'   \code{multiFunData} or \code{numeric}. If two functional data objects are 
-#'   used, they must be of the same class, have the same domain and the same 
+#'
+#' @param e1,e2 Objects of class \code{funData}, \code{irregFunData},
+#'   \code{multiFunData} or \code{numeric}. If two functional data objects are
+#'   used, they must be of the same class, have the same domain and the same
 #'   number of observations. For exceptions, see Details.
-#'   
-#' @return An object of the same functional data class as \code{e1} or 
+#'
+#' @return An object of the same functional data class as \code{e1} or
 #'   \code{e2}, respectively.
-#'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}, 
-#'   \link[methods]{Arith}
-#'   
+#'
+#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
+#'   \code{\linkS4class{multiFunData}}, \link[methods]{Arith}
+#'
 #' @name Arith.funData
-#'   
+#'
 #' @examples
 #' oldpar <- par(no.readonly = TRUE)
 #' par(mfrow = c(3,2), mar = rep(2.1,4))
-#' 
+#'
 #' argvals <- seq(0, 2*pi, 0.01)
 #' object1 <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), sin(argvals)))
 #' object2 <- funData(argvals, outer(seq(0.75, 1.25, by = 0.05), cos(argvals)))
-#' 
+#'
 #' plot(object1, main = "Object1")
 #' plot(object2, main = "Object2")
-#' 
+#'
 #' # Only functional data objects
 #' plot(object1 + object2, main = "Sum")
 #' plot(object1 - object2, main = "Difference")
-#' 
+#'
 #' # Mixed
 #' plot(4 * object1 + 5,  main = "4 * Object1 + 5") # Note y-axis!
 #' plot(object1^2 + object2^2, main = "Pythagoras")
-#' 
+#'
 #' ### Irregular
 #' ind <- replicate(11, sort(sample(1:length(argvals), sample(5:10, 1))))
 #' i1 <- irregFunData(
@@ -249,14 +249,14 @@ setMethod("approxNA", signature = "funData",
 #' i2 <- irregFunData(
 #'    argvals = lapply(1:11, function(i, ind, x){x[ind[[i]]]}, ind = ind, x = object2@@argvals[[1]]),
 #'    X = lapply(1:11, function(i, ind, y){y[i, ind[[i]]]}, ind = ind, y = object2@@X))
-#' 
+#'
 #' plot(i1, main = "Object 1 (irregular)")
 #' plot(i2, main = "Object 2 (irregular)")
-#' 
+#'
 #' # Irregular and regular functional data objects
 #' plot(i1 + i2, main = "Sum")
 #' plot(i1 - object2, main = "Difference")
-#' 
+#'
 #' # Mixed
 #' plot(4 * i1 + 5,  main = "4 * i1 + 5") # Note y-axis!
 #' plot(i1^2 + i2^2, main = "Pythagoras")
@@ -268,7 +268,7 @@ NULL
 #' @importFrom abind abind
 setMethod("Arith", signature = c(e1 = "funData", e2 = "funData"),
           function(e1, e2){
-            if(!all.equal(e1@argvals, e2@argvals))
+            if(!isTRUE(all.equal(e1@argvals, e2@argvals)))
               stop("Functions must be defined on the same domain!")        
             
             # different number of observations
@@ -419,7 +419,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             #  if(any(c(dimSupp(e1), dimSupp(e2)) != 1))
             #    stop("defined only for irregFunData objects with one-dimensional domain")
             
-            if(!any(unlist(e2@argvals) %in% e1@argvals[[1]]))
+            if(!all(unlist(e2@argvals) %in% e1@argvals[[1]]))
               stop("irregFunData object must be defined on a subdomain of the funData object!")
             
             # if funData object has only a single observation: apply to all of the other object
@@ -618,209 +618,48 @@ setMethod("nObsPoints", signature = "multiFunData",
 setMethod("nObsPoints", signature = "irregFunData", 
           function(object){sapply(object@argvals, length)})
 
-#### extractObs ####
-
-#' Extract observations of functional data
-#' 
-#' This function extracts one or more observations and/or observations on a part
-#' of the domain from a \code{funData}, \code{irregFunData} or
-#' \code{multiFunData} object.
-#' 
-#' In case of an \code{irregFunData} object, some functions may not have
-#' observation points in the given part of the domain. In this case, the
-#' functions are removed from the extracted dataset and a warning is thrown.
-#' 
-#' @section Warning: The function is currently implemented only for functional
-#'   data with up to three-dimensional domains.
-#'   
-#' @param object An object of class \code{funData}, \code{irregFunData} or
-#'   \code{multiFunData}.
-#' @param obs A numeric vector, giving the indices of the observations to 
-#'   extract (default: all obervations).
-#' @param argvals The part of the domain to be extracted (default: the whole domain
-#'   \code{object}@@\code{argvals}). Must be a list or a numeric vector (only for one-dimensional
-#'   domains, see also the definition of \code{\linkS4class{funData}}, 
-#'   \code{\linkS4class{multiFunData}}).
-#'   
-#' @return An object of class \code{funData}, \code{irregFunData} or \code{multiFunData} containing 
-#'   the desired observations.
-#'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, \code{\linkS4class{multiFunData}}
-#'   
-#' @export extractObs
-#'   
-#' @examples
-#' # Univariate - one-dimensional domain
-#' object1 <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
-#' extractObs(object1, obs = 1)
-#' extractObs(object1, argvals = 1:3)
-#' extractObs(object1, argvals = list(1:3)) # the same as the statement before
-#' 
-#' # Univariate - two-dimensional domains
-#' object2 <- funData(argvals = list(1:5, 1:6), X = array(1:60, dim = c(2, 5, 6)))
-#' extractObs(object2, obs = 1)
-#' extractObs(object2, argvals = list(1:3, c(2,4,6))) # argvals must be supplied as list
-#' 
-#' # Univariate - irregular
-#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
-#' extractObs(irregObject, obs = 2)
-#' extractObs(irregObject, argvals = 1:3)
-#' extractObs(irregObject, argvals = c(1,5)) # throws a warning, as second function has no observations
-#' 
-#' # Multivariate
-#' multiObject <- multiFunData(object1, object2)
-#' extractObs(multiObject, obs = 2)
-#' extractObs(multiObject, argvals = list(1:3, list(1:3, c(2,4,6))))
-setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals = getArgvals(object)) {
-  standardGeneric("extractObs")
-})
-
-#' extractObs for funData objects
-#'
-#' @keywords internal
-setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
-          function(object, obs, argvals){
-            
-            if(dimSupp(object) > 3)
-              stop("extracting observations is not implemented yet for functional data of dimension > 3")
-            
-            if(!is.numeric(obs))
-              stop("Supply observations as numeric vector")
-            
-            if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
-              stop("Trying to extract observations that do not exist!")
-            
-            if(!is.list(argvals))
-            {
-              if(dimSupp(object) == 1 & is.numeric(argvals))
-                argvals = list(argvals)
-              else
-                stop("Supply argvals for extracted observations either as list or as numeric vector (only if support is one-dimensional)")
-            }
-            
-            if(!all(unlist(mapply(function(x,y){x%in%y}, argvals,object@argvals))))
-              stop("Trying to extract x-values that do not exist!")
-            
-            if(dimSupp(object) == 1)
-              return(funData(argvals, object@X[obs,
-                                               object@argvals[[1]] %in% argvals[[1]], drop = FALSE]))
-            
-            if(dimSupp(object) == 2)
-              return(funData(argvals, object@X[obs,
-                                               object@argvals[[1]] %in% argvals[[1]],
-                                               object@argvals[[2]] %in% argvals[[2]], drop = FALSE]))
-            
-            if(dimSupp(object) == 3)
-              return(funData(argvals, object@X[obs,
-                                               object@argvals[[1]] %in% argvals[[1]],
-                                               object@argvals[[2]] %in% argvals[[2]], 
-                                               object@argvals[[3]] %in% argvals[[3]], drop = FALSE]))
-          })
-
-#' extractObs for multiFunData objects
-#'
-#' @keywords internal
-setMethod("extractObs", signature = signature("multiFunData", "ANY", "ANY"), def = function(object, obs, argvals){
-  if(!missing(argvals) & !is.list(argvals))
-    stop("extractObs for multiFunData: argvals must be supplied as list (or missing).")
-  if(is.list(obs))
-    res <-   multiFunData(mapply(extractObs, object = object, obs = obs, argvals = argvals))
-  else
-    res <-  multiFunData(mapply(extractObs, object = object, argvals = argvals, MoreArgs = list(obs = obs)))
-})
-
-#' extractObs for irregular functional data
-#' 
-#' @keywords internal
-setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
-          function(object, obs, argvals){
-            #  if(dimSupp(object) > 1)
-            #    stop("Extracting observations is not implemented yet for functional data of dimension > 1")
-            
-            if(!is.numeric(obs))
-              stop("Supply observations as numeric vector")
-            
-            if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
-              stop("Trying to extract observations that do not exist!")
-            
-            if(!is.list(argvals))
-            {
-              if(is.numeric(argvals))
-                argvals = list(argvals)
-              else
-                stop("Supply argvals for extracted observations either as list or as numeric vector")
-            }
-            
-            if(!any(unlist(argvals) %in% unlist(object@argvals[obs])))
-              stop("Trying to extract x-values that do not exist!")
-            
-            extractargvals <- extractX <- vector("list", length(obs))
-            omit <- NULL
-            
-            for(i in 1:length(obs))
-            {
-              ind <- which(object@argvals[[obs[i]]] %in% unlist(argvals))
-              
-              if(length(ind) == 0)
-              {
-                warning("Some functions were not observed on the given argvals and therefore removed.")
-                
-                omit <- c(omit, i)
-              }
-              
-              extractargvals[[i]] <- object@argvals[[obs[i]]][ind]
-              extractX[[i]] <- object@X[[obs[i]]][ind]
-            }
-            
-            # omit empty observations
-            extractargvals[omit] <- NULL
-            extractX[omit] <- NULL
-            
-            return(irregFunData(extractargvals, extractX))
-          })
-
-
 #### integrate ####
 
 #' Integrate functional data
-#' 
-#' Integrate all observations of a \code{funData}, \code{irregFunData} or 
+#'
+#' Integrate all observations of a \code{funData}, \code{irregFunData} or
 #' \code{multiFunData} object over their domain.
-#' 
-#' Further parameters passed to this function may include: \itemize{ \item 
-#' \code{method}: Character string. The integration rule to be used, passed to 
-#' the internal function \code{.intWeights}. Defaults to \code{"trapezoidal"} 
+#'
+#' Further parameters passed to this function may include: \itemize{ \item
+#' \code{method}: Character string. The integration rule to be used, passed to
+#' the internal function \code{.intWeights}. Defaults to \code{"trapezoidal"}
 #' (alternative: \code{"midpoint"}). \item \code{fullDom}: Logical. If
 #' \code{object} is of class \code{irregFunData}, setting fullDom = \code{TRUE}
 #' extrapolates all functions linearly to the full domain before calculating the
-#' integrals. Defaults to \code{FALSE}. For details on the extrapolation, see 
+#' integrals. Defaults to \code{FALSE}. For details on the extrapolation, see
 #' \code{\link{extrapolateIrreg}}.}
-#' 
-#' @section Warning: The function is currently implemented only for functional 
-#'   data with up to three-dimensional domains.
-#'   
+#'
+#' @section Warning: The function is currently implemented only for functional
+#'   data with up to three-dimensional domains. In the default case, this
+#'   function calls \link[stats]{integrate}.
+#'
 #' @param object An object of class \code{funData}, \code{irregFunData} or
 #'   \code{multiFunData}.
 #' @param ... Further parameters (see Details).
-#'   
-#' @return A vector of numerics, containing the integral values for each 
+#'
+#' @return A vector of numerics, containing the integral values for each
 #'   observation.
-#'   
+#'
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}},
 #'   \code{\linkS4class{multiFunData}}
-#'   
+#'
 #' @export integrate
-#'   
+#'
 #' @examples
 #' # Univariate
 #' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
 #' integrate(object)
-#' 
+#'
 #' # Univariate (irregular)
 #' irregObject <-irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
 #' integrate(irregObject) # fullDom = FALSE
 #' integrate(irregObject, fullDom = TRUE)
-#' 
+#'
 #' # Multivariate
 #' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
 #' integrate(multiObject)
@@ -1139,12 +978,12 @@ setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
 #' This function calculates the scalar product between two objects of the class 
 #' \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}} and 
 #' \code{\linkS4class{multiFunData}}. For univariate functions \eqn{f,g} on a
-#' domain \eqn{\mathcal{T}}{\calT}, the scalar product is defined as 
-#' \deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_\calT f(t) g(t) dt} and 
+#' domain \eqn{\mathcal{T}}{T}, the scalar product is defined as 
+#' \deqn{\int_\mathcal{T} f(t) g(t) \mathrm{d}t}{\int_T f(t) g(t) dt} and 
 #' for multivariate functions \eqn{f,g} on domains \eqn{\mathcal{T}_1, \ldots, 
-#' \mathcal{T}_p}{\calT_1,\ldots,\calT_p}, it is defined as \deqn{\sum_{j = 1}^p
+#' \mathcal{T}_p}{T_1,\ldots,T_p}, it is defined as \deqn{\sum_{j = 1}^p
 #' \int_{\mathcal{T}_j} f^{(j)}(t) g^{(j)}(t) \mathrm{d}t.}{\sum_{j = 1}^p 
-#' \int_\calT_j f^{(j)}(t) g^{(j)}(t) dt.} As seen in the formula, the objects 
+#' \int_T_j f^{(j)}(t) g^{(j)}(t) dt.} As seen in the formula, the objects 
 #' must be defined on the same domain. The scalar product is calculated pairwise
 #' for all observations, thus the objects must also have the same number of 
 #' observations or one object may have only one observation (for which the 
@@ -1152,7 +991,7 @@ setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
 #' Objects of the classes \code{\link{funData}} and \code{\link{irregFunData}} 
 #' can be combined, see \code{\link{integrate}} for details.
 #' 
-#' For \code{\linkS4class{multiFunData}} one cann pass optional vector
+#' For \code{\linkS4class{multiFunData}} one can pass an optional vector
 #' \code{weight} for calculating a weighted scalar product. This vector must
 #' have the same number of elements as the \code{\link{multiFunData}} objects
 #' and have to be non-negative with at least one weight that is different from
@@ -1263,250 +1102,6 @@ setMethod("scalarProduct", signature = c("funData", "irregFunData"),
 #' @keywords internal
 setMethod("scalarProduct", signature = c("irregFunData", "funData"),
           .scalarProduct)
-
-
-#### get/set ####
-
-#' Extract and set slots from functional data objects
-#' 
-#' These functions can be used to extract and set the slots of \code{funData}, 
-#' \code{irregFunData} and \code{multiFunData} objects.
-#' 
-#' Objects of class \code{funData} or \code{irregFunData} have two slots, 
-#' \code{argvals} (for the x-values) and \code{X} (for the y-values for each 
-#' observation). Using the \code{getArgvals} and \code{getX} methods for the 
-#' classes \code{funData} and \code{irregFunData} is equivalent to accessing the
-#' slots directly via \code{object@@argvals} and \code{object@@X}. Analogously,
-#' the \code{setArgvals} and \code{setX} functions are equivalent to setting 
-#' \code{object@@argvals} to \code{newArgvals} or \code{object@@X} to
-#' \code{newX}, respectively. The new values must hence have the same structure
-#' as the original ones. As an exception, for an object of class \code{funData} 
-#' the number of new observations in \code{newX} may differ from the current
-#' (e.g. when adding new observations). In this case, the function throws a
-#' warning.
-#' 
-#' Objects of class \code{multiFunData} are lists of several \code{funData} 
-#' objects. The functions \code{getArgvals} and \code{getX} for
-#' \code{multiFunData} objects therefore return a list of the same length as
-#' \code{object}, where each list element corresponds to the \code{argvals} or
-#' \code{X} slot of the univariate element. The \code{setArgvals} and
-#' \code{getArgvals} functions for \code{multiFunData} objects must be lists of
-#' the same length as \code{object}, where each list element corresponds to the
-#' new \code{argvals} or new \code{X} slot for the univariate elements.
-#' 
-#' For all classes, the set functions do not change the object, unless 
-#' their result is assigned to \code{object} (see Examples).
-#' 
-#' @param object An object of class \code{funData}, \code{irregFunData} or 
-#'   \code{multiFunData}.
-#' @param newArgvals See Details.
-#' @param newX See Details.
-#'   
-#' @return See Details.
-#'   
-#' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
-#'   \code{\linkS4class{multiFunData}}
-#'   
-#' @export getArgvals
-#'   
-#' @examples
-#' ### Univariate
-#' object <- funData(argvals = 1:5, X = rbind(1:5, 6:10))
-#' object
-#' 
-#' # get-methods
-#' getArgvals(object)
-#' getX(object)
-#' 
-#' # set-methods
-#' setArgvals(object, 0:4)
-#' object # no change
-#' object <- setArgvals(object, 0:4) # reassign the result to object
-#' object # now, argvals is changed
-#' \dontrun{object <- setArgvals(object, 1:4)} # wrong length
-#' object <- setX(object, rbind(0:4, 5:9))
-#' newObject <- setX(object, rbind(0:4, 5:9, 10:14)) # warning: now 3 observations (was 2 before)
-#' \dontrun{object <- setX(object, rbind(1:4, 5:8))} # wrong length
-#' 
-#' ### Univariate (irregular)
-#' irregObject <- irregFunData(argvals = list(1:5, 2:4), X = list(2:6, 3:5))
-#' irregObject
-#' 
-#' # get-methods
-#' getArgvals(irregObject)
-#' getX(irregObject)
-#' 
-#' newIrregObject <- setArgvals(irregObject, list(0:4, 1:3))
-#' newIrregObject <- setX(irregObject, list(12:16, 13:15))
-#' 
-#' ### Multivariate
-#' multiObject <- multiFunData(object, funData(argvals = 1:3, X = rbind(3:5, 6:8)))
-#' multiObject
-#' 
-#' # get-methods
-#' getArgvals(multiObject)
-#' getX(multiObject)
-#' 
-#' # set-methods (for special cases see univariate version)
-#' multiObject <- setArgvals(multiObject, list(5:1, 3:1))
-#' multiObject <- setX(multiObject, list(rbind(5:1, 10:6), rbind(5:3, 8:6)))
-setGeneric("getArgvals", function(object) {standardGeneric("getArgvals")})
-
-#' Get argvals slot for funData objects
-#'
-#' @seealso \code{\link{getArgvals}}
-#'
-#' @keywords internal
-setMethod("getArgvals", signature = "funData",
-          function(object){object@argvals})
-
-#' Get argvals slot for multiFunData objects
-#'
-#' @seealso \code{\link{getArgvals}}
-#'
-#' @keywords internal
-setMethod("getArgvals", signature = "multiFunData",
-          function(object){lapply(object, getArgvals)})
-
-#' Get argvals slot for irregular functional data objects
-#'
-#' @seealso \code{\link{getArgvals}}
-#'
-#' @keywords internal
-setMethod("getArgvals", signature = "irregFunData",
-          function(object){object@argvals})
-
-
-#'@rdname getArgvals
-#'
-#'@export getX
-setGeneric("getX", function(object) {standardGeneric("getX")})
-
-#' Get X slot for funData objects
-#'
-#' @seealso \code{\link{getX}}
-#'
-#' @keywords internal
-setMethod("getX", signature = "funData",
-          function(object){object@X})
-
-#' Get X slot for multiFunData objects
-#'
-#' @seealso \code{\link{getX}}
-#'
-#' @keywords internal
-setMethod("getX", signature = "multiFunData",
-          function(object){sapply(object, getX, simplify = FALSE)})
-
-#' Get X slot for irregular functional data objects
-#'
-#' @seealso \code{\link{getX}}
-#'
-#' @keywords internal
-setMethod("getX", signature = "irregFunData",
-          function(object){object@X})
-
-
-
-#' @rdname getArgvals
-#'
-#' @export setArgvals
-setGeneric("setArgvals", function(object, newArgvals) {standardGeneric("setArgvals")})
-
-#' Set argvals slot for funData objects
-#'
-#' @seealso \code{\link{setArgvals}}
-#'
-#' @keywords internal
-setMethod("setArgvals", signature = "funData",
-          function(object, newArgvals){
-            if(is.numeric(newArgvals))
-              newArgvals <- list(newArgvals)
-            object@argvals <- newArgvals; validObject(object); return(object)
-          })
-
-#' Set argvals slot for multiFunData objects
-#'
-#' @seealso \code{\link{setArgvals}}
-#'
-#' @keywords internal
-setMethod("setArgvals", signature = "multiFunData",
-          function(object, newArgvals){
-            if(length(object) != length(newArgvals))
-              stop("multiFunData object and newArgvals must have the same length")
-            multiFunData(mapply(setArgvals, object, newArgvals))
-          })
-
-
-#' Set argvals slot for irregular functional objects
-#'
-#' @seealso \code{\link{setArgvals}}
-#'
-#' @keywords internal
-setMethod("setArgvals", signature = "irregFunData",
-          function(object, newArgvals){
-            if(length(object@argvals) != length(newArgvals))
-              stop("newArgvals must be a list of the same length as the original argvals.")
-            
-            if(any(sapply(object@argvals, function(l){length(l)}) != sapply(newArgvals, function(l){length(l)})))
-              stop("newArgvals must have the same structure as the original argvals.")
-            
-            object@argvals <- newArgvals
-            
-            return(object)
-          })
-
-
-#' @rdname getArgvals
-#'
-#' @export setX
-setGeneric("setX", function(object, newX) {standardGeneric("setX")})
-
-#' Set X slot for funData objects
-#'
-#' @seealso \code{\link{setX}}
-#'
-#' @keywords internal
-setMethod("setX", signature = "funData",
-          function(object, newX){
-            if(nrow(object@X) != nrow(newX))
-              warning("setX: Number of observations has changed")
-            object@X <- newX; validObject(object); return(object)
-          })
-
-#' Set X slot for multiFunData objects
-#'
-#' @seealso \code{\link{setX}}
-#'
-#' @keywords internal
-setMethod("setX", signature = "multiFunData",
-          function(object, newX){
-            if(length(object) != length(newX))
-              stop("multiFunData object and newX must have the same length")
-            
-            if(diff(range(sapply(newX, function(x){dim(x)[1]}))) != 0)
-              stop("newX object must have the same number of observations in all elements!")
-            
-            multiFunData(mapply(setX, object, newX))
-          })
-
-#' Set X slot for irregular functional data objects
-#'
-#' @seealso \code{\link{setX}}
-#'
-#' @keywords internal
-setMethod("setX", signature = "irregFunData",
-          function(object, newX){
-            if(length(object@X) != length(newX))
-              stop("newX must be a list of the same length as the original X.")
-            
-            if(any(sapply(object@X, function(l){length(l)}) != sapply(newX, function(l){length(l)})))
-              stop("newX must have the same structure as the original X.")
-            
-            object@X <- newX  
-            
-            return(object)
-          })
 
 
 #### flipFuns ####
@@ -1670,7 +1265,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             if(any(dimSupp(refObject) != dimSupp(newObject)))
               stop("Functions must have the dimension.")
             
-            if(!isTRUE(all.equal(getArgvals(refObject), getArgvals(newObject))))
+            if(!isTRUE(all.equal(argvals(refObject), argvals(newObject))))
               stop("Functions must be defined on the same domain.")
             
             # calculate signs: flip if newObject is closer to -refObject than to refObject

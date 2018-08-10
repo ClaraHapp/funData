@@ -76,6 +76,8 @@ setMethod("summary", signature = "irregFunData",
 
 
 #' @keywords internal
+#' 
+#' @export
 print.summary.funData <- function(x, ...)
 {
   if(!inherits(x, "summary.funData"))
@@ -93,6 +95,8 @@ print.summary.funData <- function(x, ...)
 
 
 #' @keywords internal
+#' 
+#' @export
 print.summary.multiFunData <- function(x, ...)
 {
   if(!inherits(x, "summary.multiFunData"))
@@ -107,6 +111,8 @@ print.summary.multiFunData <- function(x, ...)
 
 
 #' @keywords internal
+#' 
+#' @export
 print.summary.irregFunData <- function(x, ...)
 {
   if(!inherits(x, "summary.irregFunData"))

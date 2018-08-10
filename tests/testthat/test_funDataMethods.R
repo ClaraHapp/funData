@@ -19,8 +19,11 @@ test_that("print",{
 })
 
 test_that("str",{
+  m2 <- m1
+  names(m2) <- letters[1:length(m2)]
   expect_known_output(str(f1), file = "outputs/str_funData.out")
   expect_known_output(str(m1), file = "outputs/str_multiFunData.out")
+  expect_known_output(str(m2), file = "outputs/str_multiFunData_2.out")
   expect_known_output(str(i1), file = "outputs/str_irregFunData.out")
   expect_known_output(str(i1, list.len = 1), file = "outputs/str_irregFunData_len1.out")
 })
@@ -35,9 +38,13 @@ test_that("summary",{
                "Argument is not of class 'summary.irregFunData'.")
   
   # Check functionality:
+  fName <- f1
+  names(fName) <- letters[1:nObs(fName)]
   expect_known_output(print(summary(f1)), file = "outputs/summary_funData.out")
+  expect_known_output(print(summary(fName)), file = "outputs/summary_funData_names.out")
   expect_known_output(print(summary(m1)), file = "outputs/summary_multiFunData.out")
   expect_known_output(print(summary(i1)), file = "outputs/summary_irregFunData.out")
+  expect_known_output(print(summary(as.irregFunData(fName))), file = "outputs/summary_irregFunData_names.out")
 })
 
 test_that("names",{
@@ -102,6 +109,8 @@ test_that("nObsPoints", {
 test_that("extractObs", {
   # Check errors:
   # univariate FD object (one-dim)
+  expect_error(extractObs(f1, obs = "5"), 
+               "Supply observations as numeric vector") # observation does not exist
   expect_error(extractObs(f1, obs = 5), 
                "Trying to extract observations that do not exist!") # observation does not exist
   expect_error(extractObs(f1, argvals = list(4:6)), 
@@ -111,6 +120,11 @@ test_that("extractObs", {
   # univariate FD object (two-dim)
   expect_error(extractObs(f2, argvals = 1:5),
                "Supply argvals for extracted observations either as list or as numeric vector (only if support is one-dimensional", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
+  # univariate FD object (> 3-dim)
+  expect_error(extractObs(funData(argvals = list(1:2,2:3,3:4,4:5), X = (1:5) %o% (1:2) %o% (2:3) %o% (3:4) %o% (4:5))),
+               "extracting observations is not implemented yet for functional data of dimension > 3")
+  # multi FD object
+  expect_error(extractObs(m1, argvals = "1"), "extractObs for multiFunData: argvals must be supplied as list (or missing).", fixed = TRUE) # fixed, as '(...)' is interpreted as regexp
   # irreg FD object
   expect_error(extractObs(i1, obs = list(1:3)), 
                "Supply observations as numeric vector")
@@ -135,11 +149,35 @@ test_that("extractObs", {
   expect_equal(extractObs(f3, obs = 4),  funData(argvals = f3@argvals, X = f3@X[4, , , , drop = FALSE]))
   expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), funData(argvals = list(1:3, 4:6, 2:4), X = f3@X[, 1:3, 4:6, 2:4]))
   # multivariate FD object
-  expect_equal(extractObs(m1, obs = 2), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 2)))  
+  expect_equal(extractObs(m1, obs = 2), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 2)))
+  expect_equal(extractObs(m1, obs = list(2,3)), multiFunData(extractObs(m1[[1]], obs = 2), extractObs(m1[[2]], obs = 3)))  
   # irreg FD object
   expect_equal(extractObs(i1, argvals = list(3:4)), extractObs(i1, argvals = 3:4))
   expect_equal(extractObs(i1, obs = 1), irregFunData(argvals = list(1:5), X = list(1:5)))
   expect_equal(extractObs(i1, argvals = 2:3), irregFunData(argvals = list(2:3, 2:3, 3), X = list(2:3, 2:3, -3)))
+  
+  # alternative via []
+  expect_equal(extractObs(f1, obs = 1:2), f1[1:2])
+  expect_equal(extractObs(f1, argvals = 1:2), f1[argvals = 1:2])
+  expect_equal(f1, f1[]) # default: select all observations
+  expect_equal(extractObs(f2, obs = 2), f2[2])
+  expect_equal(extractObs(f2, argvals = list(1:3, 4:6)), f2[argvals = list(1:3, 4:6)])
+  expect_equal(extractObs(f3, obs = 4),f3[4])
+  expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), f3[argvals = list(1:3, 4:6, 2:4)])
+  expect_equal(extractObs(m1, obs = 2), m1[2])
+  expect_equal(extractObs(i1, obs = 1), i1[1])
+  expect_equal(extractObs(i1, argvals = 2:3), i1[argvals = 2:3])
+  
+  # alias: subset
+  expect_equal(extractObs(f1, obs = 1:2), subset(f1, obs = 1:2))
+  expect_equal(extractObs(f1, argvals = 1:2), subset(f1, argvals = 1:2))
+  expect_equal(extractObs(f2, obs = 2), subset(f2, obs = 2))
+  expect_equal(extractObs(f2, argvals = list(1:3, 4:6)), subset(f2, argvals = list(1:3, 4:6)))
+  expect_equal(extractObs(f3, obs = 4), subset(f3, obs = 4))
+  expect_equal(extractObs(f3, argvals = list(1:3, 4:6, 2:4)), subset(f3, argvals = list(1:3, 4:6, 2:4)))
+  expect_equal(extractObs(m1, obs = 2), subset(m1, obs = 2))  
+  expect_equal(extractObs(i1, obs = 1), subset(i1, obs = 1))
+  expect_equal(extractObs(i1, argvals = 2:3), subset(i1, argvals = 2:3))
 })
 
 test_that("Arith", {
@@ -147,6 +185,12 @@ test_that("Arith", {
   # univariateFD, univariate FD
   expect_error(f1 + extractObs(f1,1:2), 
                "nObs of funData objects is neither equal nor one.")
+  expect_error(f1 -  extractObs(f1, argvals = 1:2),
+               "Functions must be defined on the same domain!")
+  
+  #multivaraite FD
+  expect_error(m1 - as.multiFunData(f1),
+               "Multivariate functional data must have same length!")
   
   # irreg & irreg
   expect_error(extractObs(i1, obs = 2) + i1,
@@ -162,6 +206,10 @@ test_that("Arith", {
   expect_error(i1 + extractObs(f1, argvals = 3:4, obs = 1:3),
                "irregFunData object must be defined on a subdomain of the funData object!")
   expect_error(i1+f1,
+               "funData object must have either one observation or the same number of observations as the irregFunData object")
+  expect_error(extractObs(f1, argvals = 3:4, obs = 1:3) + i1,
+               "irregFunData object must be defined on a subdomain of the funData object!")
+  expect_error(f1 + i1,
                "funData object must have either one observation or the same number of observations as the irregFunData object")
   
   
@@ -182,6 +230,8 @@ test_that("Arith", {
   # univariate with e1/e2 having only one observation
   expect_equal(extractObs(f1 + extractObs(f1,1),1), extractObs(2*f1,1), check.attributes = FALSE)
   expect_equal(extractObs(f2 + extractObs(f2,1),1), extractObs(2*f2,1), check.attributes = FALSE)
+  expect_equal(extractObs(extractObs(f1,1),1) + f1, extractObs(2*f1,1), check.attributes = FALSE)
+  expect_equal(extractObs(extractObs(f2,1),1) + f2, extractObs(2*f2,1), check.attributes = FALSE)
   
   # multivariate & multivariate
   expect_equal(m1+m1, multiFunData(mapply("+", m1, m1)))
@@ -279,6 +329,8 @@ test_that("scalarProduct", {
   # Check errors:
   expect_error(scalarProduct(m1, as.multiFunData(f1)),
                "multiFunData objects must have the same number of elements.")
+  expect_error(scalarProduct(m1, m1, weight = 1:3),
+               "Weight vector must have the same number of elements as the multiFunData objects.")
   expect_error(scalarProduct(m1, m1, weight = c(-1,1)),
                "Weights must be non-negative.")
   expect_error(scalarProduct(m1, m1, weight = c(0,0)),
@@ -293,8 +345,10 @@ test_that("scalarProduct", {
   # multivariate FD object
   expect_equal(scalarProduct(m1,m1), norm(m1, squared = TRUE))
   expect_equal(scalarProduct(m1,m1, weight = c(1,2)), norm(m1, squared = TRUE, weight = c(1,2))) # with weights
+  expect_equal(scalarProduct(as.multiFunData(f1),as.multiFunData(f1)), norm(f1, squared = TRUE)) # special case: only one element
   # irreg FD object  
   expect_equal(scalarProduct(i1,i1), norm(i1, squared = TRUE))
+  expect_equal(norm(i1, squared = FALSE)^2, norm(i1, squared = TRUE)) # check squared
 })
 
 test_that("integrate", {
@@ -313,12 +367,17 @@ test_that("integrate", {
   expect_equal(integrate(f1)[1], sum(funData:::.intWeights(f1@argvals[[1]], "trapezoidal")*f1@X[1,]))
   expect_equal(integrate(f2)[1], as.numeric(t(funData:::.intWeights(f2@argvals[[1]], "trapezoidal")) %*% 
                                               f2@X[1,,] %*% funData:::.intWeights(f2@argvals[[2]], "trapezoidal")))
+  expect_equal(integrate(f3)[1], 14340)
   # multivariate FD objects
   expect_equal(integrate(m1), as.numeric(integrate(f1) + integrate(f2)))
   expect_equal(integrate(m1.1), as.numeric(integrate(f1.1) + integrate(f2.1)))
   # irreg FD object 
   expect_equal(integrate(i1), c(12,6,-4), tolerance = 1e-5)
   expect_equal(integrate(i1, fullDom = TRUE), c(12,12,-12), tolerance = 1e-5)
+  expect_equal( integrate(extractObs(i1, argvals = 1:3), fullDom = TRUE), c(4,4,6)) # fullDom uses extrapolate and 3rd obs has only one observation point
+  
+  # check generic default (from stats::integrate help page)
+  expect_equal(integrate(dnorm, -1.96, 1.96)$value, 2*pnorm(1.96)- 1)
 })
 
 test_that("integrate3D",{
@@ -339,55 +398,88 @@ test_that("integrate3D",{
 test_that("set/get", {
   # Check errors:
   # univariate FD object (one-dim)
-  expect_error(setArgvals(f1, 1:6), 
+  expect_error({argvals(f1) <-  1:6}, 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (argvals)
-  expect_error(setX(f1, matrix(1:24, nrow = 4)), 
+  expect_error({X(f1) <- matrix(1:24, nrow = 4)}, 
                "argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md") # wrong number of sampling points (X)
-  expect_warning(setX(f1, matrix(1:25, nrow = 5)), 'Number of observations has changed') # warning: more observations
+  expect_warning({tmp <- f1; X(tmp) <- matrix(1:25, nrow = 5)}, 'Number of observations has changed') # warning: more observations
   # univariate FD object (two-dim)
-  expect_error(setArgvals(f2, 1:5), 
+  expect_error({argvals(f2) <- 1:5}, 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (argvals)
-  expect_error(setX(f2, matrix(1:20, nrow = 4)), 
+  expect_error({X(f2) <- matrix(1:20, nrow = 4)}, 
                "argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md") # wrong dimension (X)
   # multivariate FD object
-  expect_error(setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)), 'multiFunData object and newArgvals must have the same length') # wrong length (argvals, multiFunData)
-  expect_error(setX(m1, list(getX(f1), getX(f2), matrix(1:12, nrow = 4))), 'multiFunData object and newX must have the same length') # wrong length (X, multiFunData)
-  expect_error(setX(m1, list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))), 'newX object must have the same number of observations in all elements!') # different number of observations
-  expect_warning(setX(m1, list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))), 'Number of observations has changed') # warning: more observations
+  expect_error({argvals(m1) <- list(1+1:5, list(2+1:5, 3+1:6), 4+1:5)}, 'multiFunData object and new argvals must have the same length') # wrong length (argvals, multiFunData)
+  expect_error({X(m1) <- list(X(f1), X(f2), matrix(1:12, nrow = 4))}, 'multiFunData object and new X must have the same length') # wrong length (X, multiFunData)
+  expect_error({X(m1) <- list(matrix(1:25, nrow = 5), array(1:120, c(4,5,6)))}, 'New X object must have the same number of observations in all elements!') # different number of observations
+  expect_warning({X(m1) <- list(matrix(1:25, nrow = 5), array(1:150, c(5,5,6)))}, 'Number of observations has changed') # warning: more observations
   # irreg FD object
-  expect_error(setArgvals(i1, list(1:4)), "newArgvals must be a list of the same length as the original argvals.")
-  expect_error(setArgvals(i1, list(1:6, 1:3, 1:10)), "newArgvals must have the same structure as the original argvals.")
-  expect_error(setX(i1, list(1:4)), "newX must be a list of the same length as the original X.")
-  expect_error(setX(i1, list(1:6, 1:3, 1:10)), "newX must have the same structure as the original X.")
+  expect_error({argvals(i1) <- list(1:4)}, "New argvals must be a list of the same length as the original argvals.")
+  expect_error({argvals(i1) <- list(1:6, 1:3, 1:10)}, "New argvals must have the same structure as the original argvals.")
+  expect_error({X(i1) <- list(1:4)}, "New X must be a list of the same length as the original X.")
+  expect_error({X(i1) <- list(1:6, 1:3, 1:10)}, "New X must have the same structure as the original X.")
   
   # Check functionality:
   # univariate FD object (one-dim)
-  expect_equal(getArgvals(setArgvals(f1, list(1+1:5))), list(1+1:5))
-  expect_equal(getArgvals(setArgvals(f1, 1+1:5)), list(1+1:5)) # special case: one-dimensional domain
-  expect_equal(getX(setX(f1, matrix(1+1:20, nrow = 4))), matrix(1+1:20, nrow = 4))
+  expect_equal({argvals(f1) <- list(1+1:5)}, list(1+1:5))
+  expect_equal({argvals(f1) <- 1+1:5; argvals(f1)}, list(1+1:5)) # special case: one-dimensional domain
+  expect_equal({X(f1) <- matrix(1+1:20, nrow = 4)}, matrix(1+1:20, nrow = 4))
   # univariate FD object (two-dim)
-  expect_equal(getArgvals(setArgvals(f2, list(1+1:5, 2+1:6))), list(1+1:5, 2+1:6))  
+  expect_equal({argvals(f2) <- list(1+1:5, 2+1:6)}, list(1+1:5, 2+1:6))  
   # multivariate FD object
-  expect_equal(getArgvals(setArgvals(m1, list(list(2+1:5), list(1+1:5, 3+1:6)))), list(list(2+1:5), list(1+1:5, 3+1:6)))
-  expect_equal(getX(setX(m1, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))), list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))
-  expect_equal(getArgvals(setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6)))), list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
+  expect_equal({argvals(m1) <- list(list(2+1:5), list(1+1:5, 3+1:6))}, list(list(2+1:5), list(1+1:5, 3+1:6)))
+  expect_equal({X(m1) <- list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6)))}, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))
+  expect_equal({argvals(m1) <- list(1+1:5, list(2+1:5, 3+1:6)); argvals(m1)}, list(list(1+1:5), list(2+1:5, 3+1:6))) # special case: one-dimensional domains
   # irreg FD object
-  expect_equal(getArgvals(setArgvals(i1, list(0:4, 0:2, 1:3))), list(0:4, 0:2, 1:3))
-  expect_equal(getX(setX(i1, list(0:4, 0:2, 1:3))), list(0:4, 0:2, 1:3))
+  expect_equal({argvals(i1) <- list(0:4, 0:2, 1:3)}, list(0:4, 0:2, 1:3))
+  expect_equal({X(i1) <- list(0:4, 0:2, 1:3)}, list(0:4, 0:2, 1:3))
   
   # check multivariate functions with one element
-  expect_equal(getArgvals(f1), getArgvals(as.multiFunData(f1))[[1]])
+  expect_equal(argvals(f1), argvals(as.multiFunData(f1))[[1]])
+  
+  # check deprecated functions
+  expect_warning(tmp <- getArgvals(f1));   expect_equal(tmp, argvals(f1))
+  expect_warning(tmp <- getArgvals(f2)); expect_equal(tmp, argvals(f2))
+  expect_warning(tmp <- getArgvals(m1)); expect_equal(tmp, argvals(m1))
+  expect_warning(tmp <- getArgvals(i1)); expect_equal(tmp, argvals(i1))
+  
+  expect_warning(tmp <- getX(f1)); expect_equal(tmp, X(f1))
+  expect_warning(tmp <- getX(f2)); expect_equal(tmp, X(f2))
+  expect_warning(tmp <- getX(m1)); expect_equal(tmp, X(m1))
+  expect_warning(tmp <- getX(i1)); expect_equal(tmp, X(i1))
+  
+  expect_warning(tmp <- setArgvals(f1, list(1+1:5))); expect_equal( {argvals(f1) <- list(1+1:5); f1}, tmp)
+  expect_warning(tmp <- setArgvals(f1, 1+1:5)); expect_equal( {argvals(f1) <- list(1+1:5); f1}, tmp) # special case: one-dimensional domain
+  expect_warning(tmp <- setArgvals(f2, list(1+1:5, 2+1:6))); expect_equal( {argvals(f2) <- list(1+1:5, 2+1:6); f2}, tmp)  
+  expect_warning(tmp <- setArgvals(m1, list(list(2+1:5), list(1+1:5, 3+1:6))));  expect_equal( {argvals(m1) <- list(list(2+1:5), list(1+1:5, 3+1:6)); m1}, tmp)
+  expect_warning(tmp <- setArgvals(m1, list(1+1:5, list(2+1:5, 3+1:6)))); expect_equal( {argvals(m1) <- list(list(1+1:5), list(2+1:5, 3+1:6)); m1}, tmp) # special case: one-dimensional domains
+  expect_warning(tmp <- setArgvals(i1, list(0:4, 0:2, 1:3))); expect_equal( {argvals(i1) <- list(0:4, 0:2, 1:3); i1}, tmp)
+  
+  expect_warning(tmp <- setX(f1, matrix(1+1:20, nrow = 4))); expect_equal( {X(f1) <- matrix(1+1:20, nrow = 4); f1}, tmp)
+  expect_warning(tmp <- setX(m1, list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))))); expect_equal( {X(m1) <- list(matrix(1+1:20, nrow = 4), array(2+1:120, c(4,5,6))); m1}, tmp)
+  expect_warning(tmp <- setX(i1, list(0:4, 0:2, 1:3))); expect_equal( {X(i1) <-  list(0:4, 0:2, 1:3); i1}, tmp)
 })
 
 test_that("flipFun", {
   # Check errors:
-  # univariate FD object (one-dim)
+  # univariate FD object
   expect_error(flipFuns(f1,funData(argvals = list(1:5), X = array(1:30,c(6,5)))), 
                'Functions must have the same number of observations or use a single function as reference.') # not the same number of observations
   expect_error(flipFuns(f1,f2), 
                'Functions must have the dimension.') # not the same dimension
   expect_error(flipFuns(f1,funData(argvals = list(2:6), X = array(1:20,c(4,5)))), 
                'Functions must be defined on the same domain.') # not the same domain
+  expect_error(flipFuns(f3, 2*f3),
+               "Function is only implemented for data of dimension <= 2")
+  # multivariate FD
+  expect_error(flipFuns(m1, as.multiFunData(f1)),
+               "multiFunData objects must have the same length")
+  expect_error(flipFuns(m1, extractObs(m1, 1:2)),
+               "Functions must have the same number of observations or use a single function as reference.")
+  expect_error(flipFuns(m1, multiFunData(f2,f1)),
+               "Functions must have the dimension.")
+  expect_error(flipFuns(m1, multiFunData(extractObs(f1, argvals = 1:4), f2)),
+               "Functions must be defined on the same domain.")
   # irreg FD object (regular reference)
   expect_error(flipFuns(f2,i1),
                "Function is only implemented for irregular data with one-dimensional support")

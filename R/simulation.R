@@ -13,7 +13,7 @@
 #' \eqn{R_i^{(j)} \in \{\mathrm{minObs}, \ldots, \mathrm{maxObs}\}}{R_i^(j)
 #' in {\code{minObs}, \ldots, \code{maxObs}}} of observation points is generated. The points
 #' are sampled uniformly from the full grid \eqn{\{t_{j,1} , \ldots , t_{j,
-#' S_j}\} \subset \mathcal{T}_j}{{t_{j,1} , \ldots , t_{j, S_j}} in \calT_j}, resulting in
+#' S_j}\} \subset \mathcal{T}_j}{{t_{j,1} , \ldots , t_{j, S_j}} in T_j}, resulting in
 #' observations \deqn{ x_{i,r}^{(j)} = x_i^{(j)}(t_{j,r}), \quad r = 1
 #' ,\ldots,R_i^{(j)},~ j = 1, \ldots, p.}{ x_{i,r}^(j) = x_i^(j)(t_{j,r}), r = 1
 #' ,\ldots,R_i^(j), j = 1, \ldots, p.}
@@ -207,7 +207,7 @@ setMethod("addError", signature = "multiFunData",
 #' @param argvals A vector, defining a (fine) grid on the interval for which the
 #'   Legendre polynomials are computed.
 #' @param M An integer, specifying the number (and hence the degree) of
-#'   polynomials that are calculcated.
+#'   polynomials that are calculated.
 #'
 #' @return A univariate functional data object of class \code{\linkS4class{funData}}
 #'   containing the Legendre polynomials on the given interval.
@@ -251,7 +251,7 @@ efPoly <- function(argvals, M)
 #' @param argvals A vector, defining a (fine) grid on the interval for which the
 #'   Fourier basis functions are computed.
 #' @param M An integer, specifying the number of basis functions that are
-#'   calculcated.
+#'   calculated.
 #' @param linear Logical. If \code{TRUE}, the last function is not a Fourier
 #'   function but the linear function orthogonalized to all previous Fourier
 #'   basis functions. Defaults to \code{FALSE}. See Details.
@@ -303,7 +303,7 @@ efFourier <- function(argvals, M, linear = FALSE)
 #' @param argvals A vector, defining a (fine) grid on the interval for which the
 #'   eigenfunctions are computed.
 #' @param M An integer, specifying the number of eigenfunctions that are
-#'   calculcated.
+#'   calculated.
 #'
 #' @return A univariate functional data object of class
 #'   \code{\linkS4class{funData}} containing the eigenfunctions of the Wiener
@@ -336,7 +336,7 @@ efWiener <- function(argvals, M)
 #' the function returns an error. \item \code{"Fourier"}: Calculate the first
 #' \eqn{M} Fourier basis functions. \item \code{"FourierLin"}: Calculate the
 #' first \eqn{M-1} Fourier basis functions plus the linear function,
-#' orthonormalized to the previous funcitons via Gram-Schmidts method. This type
+#' orthonormalized to the previous functions via Gram-Schmidts method. This type
 #' is currently implemented for functions on the unit interval \eqn{[0,1]} only.
 #' If the function is called with other \code{argvals}, an error is thrown.
 #' \item \code{"Wiener"}: Calculate the first \eqn{M} orthonormal eigenfunctions
@@ -472,7 +472,7 @@ eVal <- function(M, type)
 #' 
 #' @param argvals A numeric vector, containing the observation points (a fine grid on a real
 #'   interval) of the functional data that is to be simulated or a list of the marginal observation points.
-#' @param M An integer, giving the number of unvariate basis functions to use. For higher-dimensional data, \code{M} is a vector with the marginal number of eigenfunctions. See Details.
+#' @param M An integer, giving the number of univariate basis functions to use. For higher-dimensional data, \code{M} is a vector with the marginal number of eigenfunctions. See Details.
 #' @param eFunType A character string specifying the type of univariate orthonormal basis functions
 #'   to use. For data on higher-dimensional domains, \code{eFunType} can be a vector, specifying the marginal type of eigenfunctions to use in the tensor product. See \code{\link{eFun}} for details.
 #' @param ignoreDeg A vector of integers, specifying the degrees to ignore when generating the
@@ -660,7 +660,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #' If the \eqn{j}-th element of the simulated data should be defined on a 
 #' one-dimensional domain, then \itemize{ \item \code{argvals[[j]]} is a list, 
 #' containing one vector of observation points. \item \code{M[[j]]} is an 
-#' integer, specifiying the number of basis functions to use for this entry. 
+#' integer, specifying the number of basis functions to use for this entry. 
 #' \item  \code{eFunType[[j]]} is a character string, specifying the type of 
 #' orthonormal basis functions to use for this entry (see \code{\link{eFun}} for
 #' possible options). \item \code{ignoreDeg[[j]]} is a vector of integers, 
@@ -690,7 +690,7 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #'   \code{argvals} determines the number of elements in the resulting simulated
 #'   multivariate functional data. See Details.
 #' @param M An integer (\code{type = "split"}) or a list of integers (\code{type
-#'   = "weighted"}), giving the number of unvariate basis functions to use. See 
+#'   = "weighted"}), giving the number of univariate basis functions to use. See 
 #'   Details.
 #' @param eFunType A character string (\code{type = "split"})   or a list of 
 #'   character strings (\code{type = "weighted"}), specifying the type of 
@@ -717,9 +717,9 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 #'   \code{\link{eVal}}, \code{\link{simFunData}}, \code{\link{addError}}, 
 #'   \code{\link{sparsify}}.
 #'   
-#' @references C. Happ, S. Greven (2015): Multivariate Functional Principal 
+#' @references C. Happ, S. Greven (2018): Multivariate Functional Principal 
 #'   Component Analysis for Data Observed on Different (Dimensional) Domains. 
-#'   Preprint on arXiv: \url{http://arxiv.org/abs/1509.02029}
+#'   Journal of the American Statistical Association, 113(522): 649-659. 
 #'   
 #' @importFrom stats rnorm
 #'   

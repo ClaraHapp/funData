@@ -39,7 +39,7 @@ specifies the functions to be ignored. If \code{ignoreDeg} is not specified,
 the function returns an error. \item \code{"Fourier"}: Calculate the first
 \eqn{M} Fourier basis functions. \item \code{"FourierLin"}: Calculate the
 first \eqn{M-1} Fourier basis functions plus the linear function,
-orthonormalized to the previous funcitons via Gram-Schmidts method. This type
+orthonormalized to the previous functions via Gram-Schmidts method. This type
 is currently implemented for functions on the unit interval \eqn{[0,1]} only.
 If the function is called with other \code{argvals}, an error is thrown.
 \item \code{"Wiener"}: Calculate the first \eqn{M} orthonormal eigenfunctions

@@ -217,8 +217,8 @@ test_that("sparsify",{
   s <- as.irregFunData(sparsify(f, minObs = 2, maxObs = 4))
   expect_equal(nObs(s), 2)
   expect_equal(nObsPoints(s), c(2,2))
-  expect_equal(getArgvals(s), list(c(0.57, 0.70), c(0.94, 0.95)), tol = 1e-5)
-  expect_equal(getX(s), list(c(1.17678, -2.76915), c(-2.40195, -2.32616)), tol = 1e-5)
+  expect_equal(argvals(s), list(c(0.57, 0.70), c(0.94, 0.95)), tol = 1e-5)
+  expect_equal(X(s), list(c(1.17678, -2.76915), c(-2.40195, -2.32616)), tol = 1e-5)
   
   # multivariate functional data
   m <- multiFunData(funData(argvals = 1:4, X = rbind(1:4, 2:5)), funData(argvals = 1:5, X = rbind(1:5, 2:6)))

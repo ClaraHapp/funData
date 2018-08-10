@@ -1,0 +1,18 @@
+Argument values (@argvals):
+        a b c d
+Min.    1 1 1 1
+1st Qu. 2 2 2 2
+Median  3 3 3 3
+Mean    3 3 3 3
+3rd Qu. 4 4 4 4
+Max.    5 5 5 5
+
+Observed functions (@X):
+         a  b  c  d
+Min.     1  2  3  4
+1st Qu.  5  6  7  8
+Median   9 10 11 12
+Mean     9 10 11 12
+3rd Qu. 13 14 15 16
+Max.    17 18 19 20
+

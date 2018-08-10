@@ -10,7 +10,7 @@ simFunData(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
 \item{argvals}{A numeric vector, containing the observation points (a fine grid on a real
 interval) of the functional data that is to be simulated or a list of the marginal observation points.}
 
-\item{M}{An integer, giving the number of unvariate basis functions to use. For higher-dimensional data, \code{M} is a vector with the marginal number of eigenfunctions. See Details.}
+\item{M}{An integer, giving the number of univariate basis functions to use. For higher-dimensional data, \code{M} is a vector with the marginal number of eigenfunctions. See Details.}
 
 \item{eFunType}{A character string specifying the type of univariate orthonormal basis functions
 to use. For data on higher-dimensional domains, \code{eFunType} can be a vector, specifying the marginal type of eigenfunctions to use in the tensor product. See \code{\link{eFun}} for details.}
