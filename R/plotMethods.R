@@ -719,6 +719,8 @@ autolayer.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", 
 #' \code{\link{autolayer.irregFunData}} for \code{irregFunData} objects
 #' instead.
 #'
+#' In the default case, this function calls \link[ggplot2]{ggplot} (if available).
+#'
 #' @param data A \code{funData}, \code{multiFunData} or
 #'   \code{irregFunData} object.
 #' @param ... Further parameters passed to the class-specific methods.
@@ -728,7 +730,17 @@ autolayer.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", 
 #' @seealso  \code{\link[ggplot2]{ggplot}},
 #'   \code{\link[ggplot2]{autoplot}}, \code{\link[ggplot2]{autolayer}}
 #'   from package \pkg{ggplot2}
-setGeneric("ggplot", function(data,...) {standardGeneric("ggplot")})
+setGeneric("ggplot", function(data,...) {standardGeneric("ggplot")},
+           useAsDefault = function(data, ...) 
+           {
+             if(!(requireNamespace("ggplot2", quietly = TRUE)))
+             {
+               warning("Please install the ggplot2 package to use the autolayer function for irregfunData objects.")
+               return()
+             } 
+             # else
+             ggplot2::ggplot(data, ...)
+           })
 
 #' @rdname ggplot
 #' 
