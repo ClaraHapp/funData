@@ -670,7 +670,7 @@ autoplot.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", .
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
-    warning("Please install the ggplot2 package to use the autopplot function for irregfunData objects.")
+    warning("Please install the ggplot2 package to use the autoplot function for irregfunData objects.")
     return()
   } 
   
