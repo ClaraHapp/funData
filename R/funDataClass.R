@@ -480,7 +480,7 @@ setAs("irregFunData", "funData",
         
         X <- array(NA, dim = c(nObs(from), length(argvals)))
         
-        for(i in 1:nObs(from))
+        for(i in seq_len(nObs(from)))
           X[i, argvals %in% from@argvals[[i]]] <- from@X[[i]]
         
         res <- funData(argvals = argvals, X = X)
@@ -531,8 +531,8 @@ setAs("funData", "irregFunData",
                 stop("The funData object must be defined on a one-dimensional domain.")
         
         # simple apply does not work if data is in fact dense...
-        res <- irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
-                            X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X))
+        res <- irregFunData(argvals = lapply(seq_len(nObs(from)), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
+                            X = lapply(seq_len(nObs(from)), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X))
         
         names(res) <- names(from)
                             
