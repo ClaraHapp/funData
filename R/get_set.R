@@ -220,7 +220,7 @@ setMethod("argvals<-", signature = "multiFunData",
           function(object, value){
             if(length(object) != length(value))
               stop("multiFunData object and new argvals must have the same length")
-            for(i in 1:length(object))
+            for(i in seq_len(length(object)))
               argvals(object[[i]]) <- value[[i]]
             
             return(object)
