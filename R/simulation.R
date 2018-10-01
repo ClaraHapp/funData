@@ -96,7 +96,7 @@ setMethod("sparsify", signature = "funData",
             
             sparseData <- funDataObject
 
-            for(i in 1:nObs(sparseData)) # for all observed functions
+            for(i in seq_len(nObs(sparseData))) # for all observed functions
             {
               if(minObs == maxObs)
                 Ni <- minObs
@@ -231,7 +231,7 @@ efPoly <- function(argvals, M)
       Phi[m, ] <- (2*m-3) / (m-1) * (2 * (argvals - min(argvals)) / diff(range(argvals)) - 1) * Phi[m-1, ]- (m-2) / (m-1) * Phi[m-2, ]
   }
   
-  for(m in 1:M) # normalize
+  for(m in seq_len(M)) # normalize
     Phi[m, ] <- sqrt((2*m-1) / diff(range(argvals))) * Phi[m, ]
   
   return(funData(argvals, Phi))
@@ -286,9 +286,9 @@ efFourier <- function(argvals, M, linear = FALSE)
       stop("efFourier, option linear: not yet implemented for argvals != [0,1]!")
     
     # orthogonalize (exact function)
-    Phi[M, ] <- argvals - 1/2  + rowSums(apply(matrix(1:((M-1) %/% 2)), 1, function(k) (-1)^k / (pi*k) * sin(k * (2*pi*argvals - pi))))
+    Phi[M, ] <- argvals - 1/2  + rowSums(apply(matrix(seq_len(((M-1) %/% 2))), 1, function(k) (-1)^k / (pi*k) * sin(k * (2*pi*argvals - pi))))
     # normalize
-    Phi[M, ] <-  Phi[M, ] / sqrt(1/3 - 1/4 - 1 / (2*pi^2)* sum( 1 / (1:((M-1) %/% 2 ))^2 ))
+    Phi[M, ] <-  Phi[M, ] / sqrt(1/3 - 1/4 - 1 / (2*pi^2)* sum( 1 / (seq_len(((M-1) %/% 2 )))^2 ))
   }
   
   return(funData(argvals, Phi))
@@ -314,7 +314,7 @@ efFourier <- function(argvals, M, linear = FALSE)
 #' @keywords internal
 efWiener <- function(argvals, M)
 {
-  Phi <- sapply(1:M, function(m,t){sqrt(2 / diff(range(t))) * sin( (pi/2) * (2*m - 1) * (t - min(t)) / diff(range(t)))}, t = argvals)
+  Phi <- sapply(seq_len(M), function(m,t){sqrt(2 / diff(range(t))) * sin( (pi/2) * (2*m - 1) * (t - min(t)) / diff(range(t)))}, t = argvals)
   
   return(funData(argvals, t(Phi)))
 }
@@ -452,9 +452,9 @@ eVal <- function(M, type)
     stop("Parameter 'type' must be passed as a string.")
   
   ret <- switch(type,
-                linear = ((M+1) - (1:M)) / M,
-                exponential = exp(-(0:(M-1)) / 2),
-                wiener = 1/(pi/2 * (2 * (1:M) - 1))^2,
+                linear = ((M+1) - (seq_len(M))) / M,
+                exponential = exp(-((seq_len(M)-1) / 2)),
+                wiener = 1/(pi/2 * (2 * (seq_len(M)) - 1))^2,
                 stop("Choose either linear, exponential or wiener"))
   return(ret)
 }
@@ -799,7 +799,7 @@ simMultiFunData <- function(type, argvals, M, eFunType, ignoreDeg = NULL, eValTy
   # generate individual observations
   simData  <- vector("list", p)
   
-  for(j in 1:p)
+  for(j in seq_len(p))
   {
     X <- apply(trueFuns[[j]]@X, -1, function(v){scores %*% v})
     
@@ -850,7 +850,7 @@ simMultiSplit <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   # result object
   trueFuns  <- vector("list", p)
   
-  for(j in 1:p)
+  for(j in seq_len(p))
     trueFuns[[j]] <- funData(argvals[[j]],  s[j] * f@X[,(1 + splitVals[j]):splitVals[j+1]])
   
   return(multiFunData(trueFuns))
@@ -870,7 +870,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   p <- length(argvals)
   
   # dimension for each component
-  dimsSupp <- foreach::foreach(j = 1:p, .combine = "c")%do%{length(argvals[[j]])}
+  dimsSupp <- foreach::foreach(j = seq_len(p), .combine = "c")%do%{length(argvals[[j]])}
   
   if(any(dimsSupp > 2))
     stop("Function simMultiWeight: method is not implemented for objects of dimension > 2!")
@@ -896,7 +896,7 @@ simMultiWeight <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
   # generate basis
   basis <- vector("list", p)
   
-  for(j in 1:p)
+  for(j in seq_len(p))
   {
     if(dimsSupp[j] == 1) # one-dimensional
       basis[[j]] <- weight[j] * eFun(argvals[[j]][[1]], M = M[[j]], ignoreDeg = ignoreDeg[[j]], type = eFunType[[j]])
