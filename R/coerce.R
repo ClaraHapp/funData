@@ -49,17 +49,17 @@ setAs("funData", "data.frame",
         
         # expand all argument values
         allArgvals <- expand.grid(from@argvals, KEEP.OUT.ATTRS = TRUE)
-        colnames(allArgvals) <- paste("argvals", 1:d, sep = "")
+        colnames(allArgvals) <- paste("argvals", seq_len(d), sep = "")
         row.names(allArgvals) <- NULL
         
         if(is.null(names(from)))
-          nm <- as.character(1:nObs(from))
+          nm <- as.character(seq_len(nObs(from)))
         else
           nm <- names(from)
         
         return(cbind(obs = rep(nm, each = prod(nObsPoints(from))),
                      allArgvals,
-                     X = as.numeric(aperm(from@X, c(1 + 1:d,1)))))
+                     X = as.numeric(aperm(from@X, c(1 + seq_len(d),1)))))
       })
 
 
@@ -84,7 +84,7 @@ setAs("irregFunData", "data.frame",
       def = function(from){
         
         if(is.null(names(from)))
-          nm <- as.character(1:nObs(from))
+          nm <- as.character(seq_len(nObs(from)))
         else
           nm <- names(from)
         
