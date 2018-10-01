@@ -93,7 +93,7 @@
 
 #' par(oldpar)
 #' }
-plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
+plot.funData <- function(x, y, obs = seq_len(nObs(x)), type = "l", lty = 1, lwd = 1,
                          col = NULL, xlab = "argvals", ylab = "", legend = TRUE,
                          plotNA = FALSE, add = FALSE, ...)
 {
@@ -220,7 +220,7 @@ plot.funData <- function(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
 #' \dontrun{plot(m2, main = c("1st element", "2nd element")) # must specify obs!}
 #' 
 #' par(oldpar)
-plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot = NULL, main = names(x), 
+plot.multiFunData <- function(x, y, obs = seq_len(nObs(x)), dim = seq_len(length(x)), par.plot = NULL, main = names(x), 
                               xlab = "argvals", ylab = "", log = "", ylim = NULL, ...){
   
   if(! all(is.numeric(obs), 0 < obs, obs <= nObs(x)))
@@ -269,7 +269,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
   par(mfrow = c(1,length(dim)))
   
   # plot the univariate functions
-  for(i in 1:length(dim))
+  for(i in seq_len(length(dim)))
     plot(x[[dim[i]]], obs = obs, main = main[i], xlab = xlab[i], ylab = ylab[i], log = log[i], ylim = ylim[[i]], ...)
   
   # if no par.plot specified: reset graphics parameters
@@ -323,7 +323,7 @@ plot.multiFunData <- function(x, y, obs = 1:nObs(x), dim = 1:length(x), par.plot
 #' plot(object, main = "Irregular functional data")
 #' 
 #' par(oldpar)
-plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
+plot.irregFunData <- function(x, y, obs = seq_len(nObs(x)), type = "b", pch = 20,
                               col = grDevices::rainbow(length(obs)), xlab = "argvals", ylab = "",
                               xlim = range(x@argvals[obs]), ylim = range(x@X[obs]),
                               log = "", add = FALSE, ...)
@@ -347,7 +347,7 @@ plot.irregFunData <- function(x, y, obs = 1:nObs(x), type = "b", pch = 20,
       warning("Parameter 'log' cannot be reset when 'add = TRUE'.")
   }
   
-  for(i in 1:length(obs))
+  for(i in seq_len(length(obs)))
     graphics::points(x = x@argvals[[obs[i]]], y = x@X[[obs[i]]], type = type, pch = pch, col = col[i], ...)
   
 }
@@ -462,7 +462,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #' autoplot(object2D, obs = 1) + ggtitle("Customized 2D plot") + theme_minimal() +
 #'           scale_fill_gradient(high = "green", low = "blue", name = "Legend here")
 #' }
-autoplot.funData <- function(object, obs = 1:nObs(object), geom = "line", plotNA = FALSE, ...)
+autoplot.funData <- function(object, obs = seq_len(nObs(object)), geom = "line", plotNA = FALSE, ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
@@ -499,7 +499,7 @@ autoplot.funData <- function(object, obs = 1:nObs(object), geom = "line", plotNA
 
 #' @rdname autoplot.funData
 #' @export autolayer.funData
-autolayer.funData <- function(object, obs = 1:nObs(object), geom = "line", plotNA = FALSE, ...)
+autolayer.funData <- function(object, obs = seq_len(nObs(object)), geom = "line", plotNA = FALSE, ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
@@ -593,7 +593,7 @@ autolayer.funData <- function(object, obs = 1:nObs(object), geom = "line", plotN
 #'                      scale_fill_gradient(high = "green", low = "blue")
 #' gridExtra::grid.arrange(grobs = g2, nrow = 1) # requires gridExtra package
 #' }
-autoplot.multiFunData <- function(object, obs = 1:nObs(object), dim = 1:length(object), plotGrid = FALSE, ...)
+autoplot.multiFunData <- function(object, obs = seq_len(nObs(object)), dim = seq_len(length(object)), plotGrid = FALSE, ...)
 {
   if(! all(is.numeric(dim), 0 < dim, dim <= length(object)))
     stop("Parameter 'dim' must be a vector of numerics with values between 1 and ", length(object), ".")
@@ -666,7 +666,7 @@ autoplot.multiFunData <- function(object, obs = 1:nObs(object), dim = 1:length(o
 #' g <- autoplot(object)
 #' g + theme_bw() + ggtitle("Plot with minimal theme and axis labels") +
 #'     xlab("The x-Axis") + ylab("The y-Axis")
-autoplot.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", ...)
+autoplot.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "line", ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
@@ -688,7 +688,7 @@ autoplot.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", .
 
 #' @rdname autoplot.irregFunData
 #' @export autolayer.irregFunData
-autolayer.irregFunData <- function(object, obs = 1:nObs(object), geom = "line", ...)
+autolayer.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "line", ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
   {
