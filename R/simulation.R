@@ -314,7 +314,7 @@ efFourier <- function(argvals, M, linear = FALSE)
 #' @keywords internal
 efWiener <- function(argvals, M)
 {
-  Phi <- sapply(seq_len(M), function(m,t){sqrt(2 / diff(range(t))) * sin( (pi/2) * (2*m - 1) * (t - min(t)) / diff(range(t)))}, t = argvals)
+  Phi <- vapply(seq_len(M), function(m,t){sqrt(2 / diff(range(t))) * sin( (pi/2) * (2*m - 1) * (t - min(t)) / diff(range(t)))}, FUN.VALUE = rep(0, length(argvals)), t = argvals)
   
   return(funData(argvals, t(Phi)))
 }
@@ -596,9 +596,9 @@ simFunData <- function(argvals, M, eFunType, ignoreDeg = NULL, eValType, N)
     trueFuns <- do.call(tensorProduct, mapply(eFun, argvals = argvals, M = M, ignoreDeg = ignoreDeg, type = eFunType))
     
     tmp <- trueFuns@X
-    dim(tmp) <- c(prod(M), prod(sapply(argvals, length)))
+    dim(tmp) <- c(prod(M), prod(vapply(argvals, FUN = length, FUN.VALUE = 0)))
     resX <- scores %*% tmp
-    dim(resX) <- c(N, sapply(argvals, length))
+    dim(resX) <- c(N, vapply(argvals, FUN = length, FUN.VALUE = 0))
   } 
     
   ### truncated Karhunen-Loeve representation
