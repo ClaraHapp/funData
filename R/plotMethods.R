@@ -483,7 +483,7 @@ autoplot.funData <- function(object, obs = seq_len(nObs(object)), geom = "line",
   if(dimSupp(object) == 1 & plotNA) # interpolate NA values
     object <- approxNA(object)
   
-  meltData <- as.data.frame(extractObs(object, obs))
+  meltData <- as.data.frame(object[obs])
   
   if(dimSupp(object) == 1)
     p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs")) +
@@ -518,7 +518,7 @@ autolayer.funData <- function(object, obs = seq_len(nObs(object)), geom = "line"
   if(dimSupp(object) == 1 & plotNA) # interpolate NA values
     object <- approxNA(object)
   
-  meltData <- as.data.frame(extractObs(object, obs))
+  meltData <- as.data.frame(object[obs])
   
   p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs"),
                               geom = geom, ...)
@@ -677,7 +677,7 @@ autoplot.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "l
   if(! all(is.numeric(obs), 0 < obs, obs <= nObs(object)))
     stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(object), ".")
   
-  meltData <- as.data.frame(extractObs(object,obs))
+  meltData <- as.data.frame(object[obs])
   
     p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs")) +
     ggplot2::stat_identity(geom = geom, ...) + 
@@ -699,7 +699,7 @@ autolayer.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "
   if(! all(is.numeric(obs), 0 < obs, obs <= nObs(object)))
     stop("Parameter 'obs' must be a vector of numerics with values between 1 and ", nObs(object), ".")
   
-  meltData <- as.data.frame(extractObs(object,obs))
+  meltData <- as.data.frame(object[obs])
 
     p <- ggplot2::stat_identity(object = meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs"),
                                 geom = geom, ...)

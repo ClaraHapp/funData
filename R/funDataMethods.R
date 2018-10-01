@@ -882,7 +882,7 @@ NULL
 #' @keywords internal
 norm.funData <- function(object, squared, obs, method, weight)
 {
-  res <- weight * integrate(extractObs(object, obs)^2, method = method)
+  res <- weight * integrate(object[obs]^2, method = method)
   
   if(!squared)
     res <- sqrt(res)
@@ -941,7 +941,7 @@ setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
 #' @keywords internal
 norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 {
-  object <- extractObs(object, obs)
+  object <- object[obs]
   
   if(fullDom == TRUE) # extrapolate first
     object <- extrapolateIrreg(object)
@@ -1368,15 +1368,15 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
 #' 
 #' ### Univariate (two-dimensional support)
 #' f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
-#' all.equal(extractObs(f2,1), meanFunction(f2)) # f2 has 11 identical observations
+#' all.equal(f2[1], meanFunction(f2)) # f2 has 11 identical observations
 #' 
 #' ### Multivariate
 #' m1 <- multiFunData(f1,f2)
-#' all.equal(extractObs(m1, obs = 6), meanFunction(m1)) # observation 6 equals the pointwise mean
+#' all.equal(m1[6], meanFunction(m1)) # observation 6 equals the pointwise mean
 #' 
 #' ### Irregular
 #' i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
-#' all.equal(meanFunction(i1), extractObs(i1, obs = 2))
+#' all.equal(meanFunction(i1), i1[2])
 #' # don't run: functions are not defined on the same domain
 #' \dontrun{meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))) }
 setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("meanFunction")})

@@ -393,7 +393,7 @@ eFun <- function(argvals, M, ignoreDeg = NULL, type)
                   if(is.null(ignoreDeg ))
                     stop("eFun, type = PolyHigh: specify ignoreDeg !")
                   
-                  extractObs(efPoly(argvals, M + length(ignoreDeg)), obs = -ignoreDeg)
+                  efPoly(argvals, M + length(ignoreDeg))[-ignoreDeg]
                 },
                 Fourier = efFourier(argvals, M, linear = FALSE),
                 FourierLin = efFourier(argvals, M, linear = TRUE),
