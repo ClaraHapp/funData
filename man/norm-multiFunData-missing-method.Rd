@@ -5,8 +5,9 @@
 \alias{norm,multiFunData,missing-method}
 \title{Calculate the norm for multivariate functional data}
 \usage{
-\S4method{norm}{multiFunData,missing}(x, squared = TRUE, obs = 1:nObs(x),
-  method = "trapezoidal", weight = rep(1, length(x)))
+\S4method{norm}{multiFunData,missing}(x, squared = TRUE,
+  obs = seq_len(nObs(x)), method = "trapezoidal", weight = rep(1,
+  length(x)))
 }
 \description{
 Calculate the norm for multivariate functional data

@@ -5,10 +5,10 @@
 \alias{autolayer.funData}
 \title{Visualize functional data objects using ggplot}
 \usage{
-autoplot.funData(object, obs = 1:nObs(object), geom = "line",
+autoplot.funData(object, obs = seq_len(nObs(object)), geom = "line",
   plotNA = FALSE, ...)
 
-autolayer.funData(object, obs = 1:nObs(object), geom = "line",
+autolayer.funData(object, obs = seq_len(nObs(object)), geom = "line",
   plotNA = FALSE, ...)
 }
 \arguments{

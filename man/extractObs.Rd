@@ -11,23 +11,24 @@
 \alias{[,irregFunData,ANY,missing,missing-method}
 \title{Extract observations of functional data}
 \usage{
-extractObs(object, obs = 1:nObs(object), argvals = funData::argvals(object))
+extractObs(object, obs = seq_len(nObs(object)),
+  argvals = funData::argvals(object))
 
-\S4method{subset}{funData}(x, obs = 1:nObs(x),
+\S4method{subset}{funData}(x, obs = seq_len(nObs(x)),
   argvals = funData::argvals(x))
 
-\S4method{subset}{multiFunData}(x, obs = 1:nObs(x),
+\S4method{subset}{multiFunData}(x, obs = seq_len(nObs(x)),
   argvals = funData::argvals(x))
 
-\S4method{subset}{irregFunData}(x, obs = 1:nObs(x),
+\S4method{subset}{irregFunData}(x, obs = seq_len(nObs(x)),
   argvals = funData::argvals(x))
 
 \S4method{[}{funData,ANY,missing,missing}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{multiFunData,ANY,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{irregFunData,ANY,missing,missing}(x, i = 1:nObs(x), j, ...,
-  drop = TRUE)
+\S4method{[}{irregFunData,ANY,missing,missing}(x, i = seq_len(nObs(x)), j,
+  ..., drop = TRUE)
 }
 \arguments{
 \item{object}{An object of class \code{funData}, \code{irregFunData} or

@@ -5,7 +5,7 @@
 \alias{extractObs,irregFunData-method}
 \title{extractObs for irregular functional data}
 \usage{
-\S4method{extractObs}{irregFunData}(object, obs = 1:nObs(object),
+\S4method{extractObs}{irregFunData}(object, obs = seq_len(nObs(object)),
   argvals = funData::argvals(object))
 }
 \description{

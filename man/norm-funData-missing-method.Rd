@@ -5,7 +5,7 @@
 \alias{norm,funData,missing-method}
 \title{Calculate the norm for univariate functional data}
 \usage{
-\S4method{norm}{funData,missing}(x, squared = TRUE, obs = 1:nObs(x),
+\S4method{norm}{funData,missing}(x, squared = TRUE, obs = seq_len(nObs(x)),
   method = "trapezoidal", weight = 1)
 }
 \description{

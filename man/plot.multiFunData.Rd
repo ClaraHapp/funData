@@ -6,7 +6,7 @@
 \alias{plot,multiFunData,missing-method}
 \title{Plotting multivariate functional data}
 \usage{
-plot.multiFunData(x, y, obs = 1:nObs(x), dim = 1:length(x),
+plot.multiFunData(x, y, obs = seq_len(nObs(x)), dim = seq_len(length(x)),
   par.plot = NULL, main = names(x), xlab = "argvals", ylab = "",
   log = "", ylim = NULL, ...)
 

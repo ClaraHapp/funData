@@ -5,8 +5,9 @@
 \alias{norm,irregFunData,missing-method}
 \title{Calculate the norm for irregular functional data}
 \usage{
-\S4method{norm}{irregFunData,missing}(x, squared = TRUE, obs = 1:nObs(x),
-  method = "trapezoidal", weight = 1, fullDom = FALSE)
+\S4method{norm}{irregFunData,missing}(x, squared = TRUE,
+  obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1,
+  fullDom = FALSE)
 }
 \description{
 Calculate the norm for irregular functional data
