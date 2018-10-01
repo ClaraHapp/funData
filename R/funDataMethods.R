@@ -123,7 +123,7 @@ setMethod("dimSupp", signature = "funData",
 #'
 #' @keywords internal
 setMethod("dimSupp", signature = "multiFunData",
-          function(object){sapply(object, dimSupp, simplify = TRUE)})
+          function(object){vapply(object, FUN = dimSupp, FUN.VALUE = 0)})
 
 #' dimSupp for irregular functional data objects
 #'
@@ -604,7 +604,7 @@ setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "funData", 
-          function(object){sapply(object@argvals, length)})
+          function(object){vapply(object@argvals, FUN = length, FUN.VALUE = 0)})
 
 #' nObsPoints for multiFunData objects
 #'
@@ -616,7 +616,7 @@ setMethod("nObsPoints", signature = "multiFunData",
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "irregFunData", 
-          function(object){sapply(object@argvals, length)})
+          function(object){vapply(object@argvals, FUN = length, FUN.VALUE = 0)})
 
 #### integrate ####
 
@@ -744,7 +744,7 @@ setMethod("integrate", signature = "funData",
 #' @keywords internal
 setMethod("integrate", signature = "multiFunData",
           function(object, ...){
-            uniIntegrate <- sapply(object, integrate, ...)
+            uniIntegrate <- vapply(object, FUN = integrate, FUN.VALUE = rep(0, nObs(object)), ...)
             
             if(nObs(object) == 1)
               res <- sum(uniIntegrate)
@@ -1426,7 +1426,7 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
             if(na.rm == TRUE)
               stop("Option na.rm = TRUE is not implemented for mean functions of irregular data.")
             
-            if(!all(sapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))})))
+            if(!all(vapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))}, FUN.VALUE = TRUE)))
               stop("Mean function defined only for irregular functional data objects on the same domain.")
             
             irregFunData(object@argvals[1], list(Reduce('+', object@X) / nObs(object)))
@@ -1531,7 +1531,7 @@ setMethod("tensorProduct", signature = c("funData"),
             if(length(l) != 2 & length(l) != 3)
               stop("tensorProduct currently accepts only 2 or 3 arguments.")
             
-            if(any(sapply(l, dimSupp) != 1))
+            if(any(vapply(l, dimSupp, FUN.VALUE = 0) != 1))
               stop("tensorProduct is defined only for funData objects on one-dimensional domains!")
             
             # expand grid of indices: first varies slowest, last varies fastest
@@ -1539,12 +1539,12 @@ setMethod("tensorProduct", signature = c("funData"),
             
             if(length(l) == 2)
             {
-              res <- sapply(seq_len(dim(g)[1]), function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] }, simplify = "array")
+              res <- vapply(seq_len(dim(g)[1]), function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] }, FUN.VALUE = array(0, dim = c(dim(l[[1]]@X)[2], dim(l[[2]]@X)[2])))
               res <- aperm(res, c(3,1,2))
             } 
             else # length(l) = 3
             {
-              res <- sapply(seq_len(dim(g)[1]), function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] %o% l[[3]]@X[g[i,3],]}, simplify = "array")
+              res <- vapply(seq_len(dim(g)[1]), function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] %o% l[[3]]@X[g[i,3],]}, FUN.VALUE = array(0, dim = c(dim(l[[1]]@X)[2], dim(l[[2]]@X)[2], dim(l[[3]]@X)[2])))
               res <- aperm(res, c(4,1,2,3))
             } 
             
