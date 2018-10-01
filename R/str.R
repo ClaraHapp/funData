@@ -16,7 +16,7 @@ setMethod("str", signature = "funData",
                 paste(nObsPoints(object), collapse = " x "), " sampling points.\n", sep = "")
             
             cat("@argvals:\n")
-            for(i in 1:dims)
+            for(i in seq_len(dims))
             {
               cat("  [[",i, "]]: ", sep ="")
               str(object@argvals[[i]], ...)
@@ -40,12 +40,12 @@ setMethod("str", signature = "multiFunData",
             
             elNames <- {
               if(is.null(names(object)))
-                paste("Element", 1:length(object))
+                paste("Element", seq_len(length(object)))
               else
                 names(object)
             }
             
-            for(i in 1:length(object))
+            for(i in seq_len(length(object)))
             {
               cat(elNames[i], ": ")
               str(object[[i]])
