@@ -27,7 +27,7 @@ Suggests:
     gridExtra,
     reshape2,
     zoo,
-    testthat (<= 2.0.0)
+    testthat (>= 2.0.0)
 RoxygenNote: 6.0.1
 Collate: 
     'funDataClass.R'
