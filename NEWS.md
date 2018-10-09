@@ -1,3 +1,9 @@
+# funData 1.3-2
+
+## New features
+* Fixed typo in DESCRIPTION (testthat requires version >= 2.0.0)
+
+
 # funData 1.3-1
 
 ## New features
