@@ -11,12 +11,12 @@ setMethod("summary", signature = "funData",
           function(object, ...)
           {
             argvalsSummary <- do.call("rbind", lapply(object@argvals, summary, ...))
-            rownames(argvalsSummary) <- paste("Dim.", 1:dimSupp(object), ":")
+            rownames(argvalsSummary) <- paste("Dim.", seq_len(dimSupp(object)), ":")
             
             XSummary <- apply(object@X, 1, function(x){summary(as.numeric(x))})
             colnames(XSummary) <- {
               if(is.null(names(object)))
-                 paste("Obs", 1:nObs(object))
+                 paste("Obs", seq_len(nObs(object)))
               else
                    names(object)
             }
@@ -57,7 +57,7 @@ setMethod("summary", signature = "irregFunData",
           {
             obsNames <- {
               if(is.null(names(object)))
-                paste("Obs", 1:nObs(object))
+                paste("Obs", seq_len(nObs(object)))
               else
                 names(object)
             }
@@ -102,7 +102,7 @@ print.summary.multiFunData <- function(x, ...)
   if(!inherits(x, "summary.multiFunData"))
     stop("Argument is not of class 'summary.multiFunData'.")
   
-  sapply(1:length(x), function(i){
+  sapply(seq_len(length(x)), function(i){
     cat("--- Element", i, " ---\n")
     print.summary.funData(x[[i]])})
   

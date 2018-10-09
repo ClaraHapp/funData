@@ -150,9 +150,9 @@ plot(weighted$simData, main = "Weighted: Simulated Data (2nd observation)", obs 
 par(oldPar)
 }
 \references{
-C. Happ, S. Greven (2015): Multivariate Functional Principal 
+C. Happ, S. Greven (2018): Multivariate Functional Principal 
   Component Analysis for Data Observed on Different (Dimensional) Domains. 
-  Preprint on arXiv: \url{http://arxiv.org/abs/1509.02029}
+  Journal of the American Statistical Association, 113(522): 649-659.
 }
 \seealso{
 \code{\linkS4class{multiFunData}}, \code{\link{eFun}}, 

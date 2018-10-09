@@ -6,7 +6,7 @@
 \alias{plot,irregFunData,missing-method}
 \title{Plotting irregular functional data}
 \usage{
-plot.irregFunData(x, y, obs = 1:nObs(x), type = "b", pch = 20,
+plot.irregFunData(x, y, obs = seq_len(nObs(x)), type = "b", pch = 20,
   col = grDevices::rainbow(length(obs)), xlab = "argvals", ylab = "",
   xlim = range(x@argvals[obs]), ylim = range(x@X[obs]), log = "",
   add = FALSE, ...)

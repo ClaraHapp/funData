@@ -5,7 +5,7 @@
 \alias{extractObs,funData-method}
 \title{extractObs for funData objects}
 \usage{
-\S4method{extractObs}{funData}(object, obs = 1:nObs(object),
+\S4method{extractObs}{funData}(object, obs = seq_len(nObs(object)),
   argvals = funData::argvals(object))
 }
 \description{

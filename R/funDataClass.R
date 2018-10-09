@@ -95,13 +95,13 @@ setClass("funData", representation = representation(argvals = "list", X = "array
 
 # Validity checks for funData objects
 setValidity("funData", function(object){
-    if(!all(sapply(object@argvals, is.numeric, simplify = TRUE)))
+    if(!all(vapply(object@argvals, FUN = is.numeric, FUN.VALUE = TRUE)))
       return("All argvals elements must be numeric")
   
     if(length(object@argvals) != length(dim(object@X)[-1]))
       return("argvals and X element have different support dimensions! X-Dimensions must be of the form N x M1 x ... x Md")
     
-    if(!all(dim(object@X)[-1] == sapply(object@argvals, length, simplify = TRUE)))
+    if(!all(dim(object@X)[-1] == vapply(object@argvals, FUN = length, FUN.VALUE = 0)))
       return("argvals and X have different number of sampling points! X-Dimensions must be of the form N x M1 x ... x Md")
   
   return(TRUE)
@@ -252,10 +252,10 @@ setClass("multiFunData", representation = "list")
 
 # Validity check for multiFunData objects
 setValidity("multiFunData", function(object){
- if(!all(sapply(object, is, "funData", simplify = TRUE)))
+ if(!all(vapply(object, FUN = is, FUN.VALUE = TRUE, "funData")))
     return("Elements of multiFunData must be of class funData!")
   
-  if(diff(range(sapply(object,nObs)))!= 0)
+  if(diff(range(vapply(object, FUN = nObs, FUN.VALUE = 0)))!= 0)
     return("All elements must have the same number of observations!")
   
   return(TRUE)
@@ -409,10 +409,10 @@ setClass("irregFunData", representation = representation(argvals = "list", X = "
 
 # Validity checks for irregfunData objects
 setValidity("irregFunData", function(object){
-  if(any(sapply(object@argvals, function(l){!is.numeric(l)})))
+  if(any(vapply(object@argvals, function(l){!is.numeric(l)}, FUN.VALUE = TRUE)))
     return("argvals must be supplied as list of numerics")
   
-  if(any(sapply(object@X, function(l){!is.numeric(l)})))
+  if(any(vapply(object@X, function(l){!is.numeric(l)}, FUN.VALUE = TRUE)))
     return("X must be supplied as list of numerics")
   
   if(length(object@argvals) != length(object@X))
@@ -480,7 +480,7 @@ setAs("irregFunData", "funData",
         
         X <- array(NA, dim = c(nObs(from), length(argvals)))
         
-        for(i in 1:nObs(from))
+        for(i in seq_len(nObs(from)))
           X[i, argvals %in% from@argvals[[i]]] <- from@X[[i]]
         
         res <- funData(argvals = argvals, X = X)
@@ -531,8 +531,8 @@ setAs("funData", "irregFunData",
                 stop("The funData object must be defined on a one-dimensional domain.")
         
         # simple apply does not work if data is in fact dense...
-        res <- irregFunData(argvals = lapply(1:nObs(from), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
-                            X = lapply(1:nObs(from), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X))
+        res <- irregFunData(argvals = lapply(seq_len(nObs(from)), function(i, mat, vals){x <- mat[i,]; vals[!is.na(x)]}, mat = from@X, vals = from@argvals[[1]]),
+                            X = lapply(seq_len(nObs(from)), function(i, mat){x <- mat[i,]; x[!is.na(x)]}, mat = from@X))
         
         names(res) <- names(from)
                             

@@ -76,7 +76,7 @@
 #' object2[argvals = list(1:3, c(2,4,6))]
 #' irregObject[2]
 #' irregObject[argvals = 1:3]
-setGeneric("extractObs", function(object, obs = 1:nObs(object), argvals = funData::argvals(object)) {
+setGeneric("extractObs", function(object, obs = seq_len(nObs(object)), argvals = funData::argvals(object)) {
   standardGeneric("extractObs")
 })
 
@@ -92,7 +92,7 @@ setMethod("extractObs", signature = signature("funData", "ANY", "ANY"),
             if(!is.numeric(obs))
               stop("Supply observations as numeric vector")
             
-            if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
+            if(!all((seq_len(nObs(object)))[obs] %in% seq_len(nObs(object))))
               stop("Trying to extract observations that do not exist!")
             
             if(!is.list(argvals))
@@ -145,7 +145,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
             if(!is.numeric(obs))
               stop("Supply observations as numeric vector")
             
-            if(!all((1:nObs(object))[obs] %in% 1:nObs(object)))
+            if(!all((seq_len(nObs(object)))[obs] %in% seq_len(nObs(object))))
               stop("Trying to extract observations that do not exist!")
             
             if(!is.list(argvals))
@@ -162,7 +162,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
             extractargvals <- extractX <- vector("list", length(obs))
             omit <- NULL
             
-            for(i in 1:length(obs))
+            for(i in seq_len(length(obs)))
             {
               ind <- which(object@argvals[[obs[i]]] %in% unlist(argvals))
               
@@ -191,7 +191,7 @@ setMethod("extractObs", signature = signature("irregFunData", "ANY", "ANY"),
 #'   \code{multiFunData} (for \code{subset}).
 #' @exportMethod subset
 setMethod("subset", c("funData"),
-          function(x, obs = 1:nObs(x), argvals = funData::argvals(x))
+          function(x, obs = seq_len(nObs(x)), argvals = funData::argvals(x))
           {
             extractObs(x, obs = obs, argvals = argvals)
           })
@@ -199,7 +199,7 @@ setMethod("subset", c("funData"),
 #' @rdname extractObs
 #' @exportMethod subset
 setMethod("subset", c("multiFunData"),
-          function(x, obs = 1:nObs(x), argvals = funData::argvals(x))
+          function(x, obs = seq_len(nObs(x)), argvals = funData::argvals(x))
           {
             extractObs(x, obs = obs, argvals = argvals)
           })
@@ -207,7 +207,7 @@ setMethod("subset", c("multiFunData"),
 #' @rdname extractObs
 #' @exportMethod subset
 setMethod("subset", c("irregFunData"),
-          function(x, obs = 1:nObs(x), argvals = funData::argvals(x))
+          function(x, obs = seq_len(nObs(x)), argvals = funData::argvals(x))
           {
             extractObs(x, obs = obs, argvals = argvals)
           })
@@ -227,7 +227,7 @@ setMethod("[", c(x = "funData", i = "ANY", j = "missing", drop = "missing"),
           function(x, i, j, ..., drop)
           {
             if(missing(i)) # default value not found...
-              i = 1:nObs(x)
+              i = seq_len(nObs(x))
             
             extractObs(x, obs = i, ...)
           })
@@ -238,7 +238,7 @@ setMethod("[", c("multiFunData",  i = "ANY", j = "missing", drop = "missing"),
           function(x, i, j, ..., drop)
           {
             if(missing(i)) # default value not found...
-              i = 1:nObs(x)
+              i = seq_len(nObs(x))
             
             extractObs(x, obs = i, ...)
           })
@@ -246,10 +246,10 @@ setMethod("[", c("multiFunData",  i = "ANY", j = "missing", drop = "missing"),
 #' @rdname extractObs
 #' @exportMethod [
 setMethod("[", c("irregFunData",  i = "ANY", j = "missing", drop = "missing"),
-          function(x, i = 1:nObs(x), j, ..., drop)
+          function(x, i = seq_len(nObs(x)), j, ..., drop)
           {
             if(missing(i)) # default value not found...
-              i = 1:nObs(x)
+              i = seq_len(nObs(x))
             
             extractObs(x, obs = i, ...)
           })

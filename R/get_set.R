@@ -220,7 +220,7 @@ setMethod("argvals<-", signature = "multiFunData",
           function(object, value){
             if(length(object) != length(value))
               stop("multiFunData object and new argvals must have the same length")
-            for(i in 1:length(object))
+            for(i in seq_len(length(object)))
               argvals(object[[i]]) <- value[[i]]
             
             return(object)
@@ -237,7 +237,7 @@ setMethod("argvals<-", signature = "irregFunData",
             if(length(object@argvals) != length(value))
               stop("New argvals must be a list of the same length as the original argvals.")
             
-            if(any(sapply(object@argvals, function(l){length(l)}) != sapply(value, function(l){length(l)})))
+            if(any(vapply(object@argvals, function(l){length(l)}, FUN.VALUE = 0) != vapply(value, function(l){length(l)}, FUN.VALUE = 0)))
               stop("New argvals must have the same structure as the original argvals.")
             
             object@argvals <- value
@@ -304,7 +304,7 @@ setMethod("X<-", signature = "multiFunData",
             if(length(object) != length(value))
               stop("multiFunData object and new X must have the same length")
             
-            if(diff(range(sapply(value, function(x){dim(x)[1]}))) != 0)
+            if(diff(range(vapply(value, function(x){dim(x)[1]}, FUN.VALUE = 0))) != 0)
               stop("New X object must have the same number of observations in all elements!")
             
             multiFunData(mapply("X<-", object, value))
@@ -319,7 +319,7 @@ setMethod("X<-", signature = "irregFunData",
             if(length(object@X) != length(value))
               stop("New X must be a list of the same length as the original X.")
             
-            if(any(sapply(object@X, function(l){length(l)}) != sapply(value, function(l){length(l)})))
+            if(any(vapply(object@X, function(l){length(l)}, FUN.VALUE = 0) != vapply(value, function(l){length(l)}, FUN.VALUE = 0)))
               stop("New X must have the same structure as the original X.")
             
             object@X <- value  

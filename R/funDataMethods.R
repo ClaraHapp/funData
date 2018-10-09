@@ -17,7 +17,7 @@ NULL
 print.funData <- function(x,...){
   cat("Functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\nargvals:\n", sep = "")
   
-  for(i in 1:dimSupp(x))
+  for(i in seq_len(dimSupp(x)))
   {
     cat("\t")
     if(length(x@argvals[[i]]) > 5)
@@ -123,7 +123,7 @@ setMethod("dimSupp", signature = "funData",
 #'
 #' @keywords internal
 setMethod("dimSupp", signature = "multiFunData",
-          function(object){sapply(object, dimSupp, simplify = TRUE)})
+          function(object){vapply(object, FUN = dimSupp, FUN.VALUE = 0)})
 
 #' dimSupp for irregular functional data objects
 #'
@@ -309,7 +309,7 @@ setMethod("Arith", signature = signature(e1 = "multiFunData", e2 = "multiFunData
               stop("Multivariate functional data must have same length!")
             
             m <- vector("list", length(e1))
-            for( i in 1:length(e1))
+            for(i in seq_len(length(e1)))
               m[[i]] <- methods::callGeneric(e1[[i]], e2[[i]])
             multiFunData(m)
           })
@@ -318,7 +318,7 @@ setMethod("Arith", signature = signature(e1 = "multiFunData", e2 = "multiFunData
 setMethod("Arith", signature = signature(e1 = "multiFunData", e2 = "numeric"),
           function(e1, e2) {
             m <- vector("list", length(e1))
-            for( i in 1:length(e1))
+            for(i in seq_len(length(e1)))
               m[[i]] <- methods::callGeneric(e1[[i]], e2)
             multiFunData(m)
           })
@@ -327,7 +327,7 @@ setMethod("Arith", signature = signature(e1 = "multiFunData", e2 = "numeric"),
 setMethod("Arith", signature = signature(e1 = "numeric", e2 = "multiFunData"),
           function(e1, e2) {
             m <- vector("list", length(e2))
-            for( i in 1:length(e2))
+            for(i in seq_len(length(e2)))
               m[[i]] <- methods::callGeneric(e1, e2[[i]])
             multiFunData(m)
           })
@@ -363,7 +363,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                   stop("Multiple functions must be defined on subdomain of single function.")
                 
                 res <- irregFunData(argvals = e2@argvals, 
-                                    X = sapply(1:nObs(e2), function(i){
+                                    X = sapply(seq_len(nObs(e2)), function(i){
                                       do.call(f, list(e1@X[[1]][which(e1@argvals[[1]] %in% e2@argvals[[i]])], e2@X[[i]]))}, simplify = FALSE))
               }
               else
@@ -374,7 +374,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "irregFunData"),
                     stop("Multiple functions must be defined on subdomain of single function.")
                   
                   res <- irregFunData(argvals = e1@argvals,
-                                      X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}, simplify = FALSE))
+                                      X = sapply(seq_len(nObs(e1)), function(i){do.call(f, list(e1@X[[i]], e2@X[[1]][which(e2@argvals[[1]] %in% e1@argvals[[i]])]))}, simplify = FALSE))
                 }
                 else
                   stop("IrregFunData objects must have either the same number of observations or just one.")
@@ -410,7 +410,7 @@ setMethod("Arith", signature = c(e1 = "irregFunData", e2 = "funData"),
             }
             generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
             f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
-            irregFunData(argvals = e1@argvals, X = sapply(1:nObs(e1), function(i){do.call(f, list(e1@X[[i]], e2@X[i,e2@argvals[[1]] %in% e1@argvals[[i]]]))}, simplify = FALSE))
+            irregFunData(argvals = e1@argvals, X = sapply(seq_len(nObs(e1)), function(i){do.call(f, list(e1@X[[i]], e2@X[i,e2@argvals[[1]] %in% e1@argvals[[i]]]))}, simplify = FALSE))
           })
 
 #' @rdname Arith.funData
@@ -432,7 +432,7 @@ setMethod("Arith", signature = c(e1 = "funData", e2 = "irregFunData"),
             }
             generic <- methods::getGeneric(as.character(sys.call())[[1]], mustFind = TRUE, where = environment())
             f <- environment(generic)$.Generic # helper function (callGeneric not applicable in lapply)
-            irregFunData(argvals = e2@argvals, X = sapply(1:nObs(e2), function(i){do.call(f, list(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]]))}, simplify = FALSE))
+            irregFunData(argvals = e2@argvals, X = sapply(seq_len(nObs(e2)), function(i){do.call(f, list(e2@X[[i]], e1@X[i,e1@argvals[[1]] %in% e2@argvals[[i]]]))}, simplify = FALSE))
           })
 
 
@@ -491,7 +491,7 @@ setMethod("Math", signature = c(x = "funData"),
 setMethod("Math", signature = c(x = "multiFunData"),
           function(x){
             m <- vector("list", length(x))
-            for( i in 1:length(x))
+            for(i in seq_len(length(x)))
               m[[i]] <- methods::callGeneric(x[[i]])
             multiFunData(m)
           })
@@ -604,7 +604,7 @@ setGeneric("nObsPoints", function(object) {standardGeneric("nObsPoints")})
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "funData", 
-          function(object){sapply(object@argvals, length)})
+          function(object){vapply(object@argvals, FUN = length, FUN.VALUE = 0)})
 
 #' nObsPoints for multiFunData objects
 #'
@@ -616,7 +616,7 @@ setMethod("nObsPoints", signature = "multiFunData",
 #'
 #' @keywords internal
 setMethod("nObsPoints", signature = "irregFunData", 
-          function(object){sapply(object@argvals, length)})
+          function(object){vapply(object@argvals, FUN = length, FUN.VALUE = 0)})
 
 #### integrate ####
 
@@ -691,7 +691,7 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")},
   ret <- switch(method,
                 midpoint = c(0,diff(argvals)),
                 trapezoidal = {D <- length(argvals)
-                               1/2 * c(argvals[2] - argvals[1], argvals[3:D] -argvals[1:(D-2)], argvals[D] - argvals[D-1])},
+                               1/2 * c(argvals[2] - argvals[1], argvals[3:D] -argvals[seq_len((D-2))], argvals[D] - argvals[D-1])},
                 stop("function intWeights: choose either midpoint or trapezoidal quadrature rule"))
   
   return(ret)
@@ -744,7 +744,7 @@ setMethod("integrate", signature = "funData",
 #' @keywords internal
 setMethod("integrate", signature = "multiFunData",
           function(object, ...){
-            uniIntegrate <- sapply(object, integrate, ...)
+            uniIntegrate <- vapply(object, FUN = integrate, FUN.VALUE = rep(0, nObs(object)), ...)
             
             if(nObs(object) == 1)
               res <- sum(uniIntegrate)
@@ -784,7 +784,7 @@ setMethod("integrate", signature = c(object = "irregFunData"),
 #' @keywords internal
 extrapolateIrreg <- function(object, rangex = range(object@argvals))
 {  
-  for(i in 1:nObs(object))
+  for(i in seq_len(nObs(object)))
   {
     e <- .extrapolate(object@argvals[[i]], object@X[[i]], rangex)
     object@argvals[[i]] <- e$x
@@ -882,7 +882,7 @@ NULL
 #' @keywords internal
 norm.funData <- function(object, squared, obs, method, weight)
 {
-  res <- weight * integrate(extractObs(object, obs)^2, method = method)
+  res <- weight * integrate(object[obs]^2, method = method)
   
   if(!squared)
     res <- sqrt(res)
@@ -896,7 +896,7 @@ norm.funData <- function(object, squared, obs, method, weight)
 #'
 #' @keywords internal
 setMethod("norm", signature = signature(x = "funData", type = "missing"),
-          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1){
+          function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1){
             
             if(! all(is.logical(squared), length(squared) == 1))
               stop("Parameter 'squared' must be passed as a logical.")
@@ -913,7 +913,7 @@ setMethod("norm", signature = signature(x = "funData", type = "missing"),
 #'
 #' @keywords internal
 setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
-          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = rep(1, length(x)))
+          function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = rep(1, length(x)))
           {
             if(! all(is.numeric(weight), length(weight) == length(x), weight > 0))
               stop("Parameter 'weight' must be passed as a vector of ", length(x), " positive numbers.") 
@@ -941,7 +941,7 @@ setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
 #' @keywords internal
 norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 {
-  object <- extractObs(object, obs)
+  object <- object[obs]
   
   if(fullDom == TRUE) # extrapolate first
     object <- extrapolateIrreg(object)
@@ -960,7 +960,7 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 #'
 #' @keywords internal
 setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
-          function(x, squared = TRUE, obs = 1:nObs(x), method = "trapezoidal", weight = 1, fullDom = FALSE){
+          function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1, fullDom = FALSE){
             
             if(! all(is.logical(squared), length(squared) == 1))
               stop("Parameter 'squared' must be passed as a logical.")
@@ -1271,7 +1271,7 @@ setMethod("flipFuns", signature = signature("multiFunData", "multiFunData"),
             # calculate signs: flip if newObject is closer to -refObject than to refObject
             sig <- ifelse(norm(newObject + refObject) < norm(newObject - refObject), -1, 1)
             
-            for(j in 1:length(newObject))
+            for(j in seq_len(length(newObject)))
               newObject[[j]]@X <- sig * newObject[[j]]@X
             
             return(newObject)
@@ -1368,15 +1368,15 @@ setMethod("flipFuns", signature = c("irregFunData", "irregFunData"),
 #' 
 #' ### Univariate (two-dimensional support)
 #' f2 <- funData(list(1:5, 1:3), array(rep(1:5,each = 11, times = 3), dim = c(11,5,3)))
-#' all.equal(extractObs(f2,1), meanFunction(f2)) # f2 has 11 identical observations
+#' all.equal(f2[1], meanFunction(f2)) # f2 has 11 identical observations
 #' 
 #' ### Multivariate
 #' m1 <- multiFunData(f1,f2)
-#' all.equal(extractObs(m1, obs = 6), meanFunction(m1)) # observation 6 equals the pointwise mean
+#' all.equal(m1[6], meanFunction(m1)) # observation 6 equals the pointwise mean
 #' 
 #' ### Irregular
 #' i1 <- irregFunData(argvals = list(1:3,1:3,1:3), X = list(1:3,2:4,3:5))
-#' all.equal(meanFunction(i1), extractObs(i1, obs = 2))
+#' all.equal(meanFunction(i1), i1[2])
 #' # don't run: functions are not defined on the same domain
 #' \dontrun{meanFunction(irregFunData(argvals = list(1:3,1:5), X = list(1:3,1:5))) }
 setGeneric("meanFunction", function(object, na.rm = FALSE) {standardGeneric("meanFunction")})
@@ -1426,7 +1426,7 @@ setMethod("meanFunction", signature = c("irregFunData", "ANY"),
             if(na.rm == TRUE)
               stop("Option na.rm = TRUE is not implemented for mean functions of irregular data.")
             
-            if(!all(sapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))})))
+            if(!all(vapply(object@argvals[-1], function(x){isTRUE(all.equal(object@argvals[[1]], x))}, FUN.VALUE = TRUE)))
               stop("Mean function defined only for irregular functional data objects on the same domain.")
             
             irregFunData(object@argvals[1], list(Reduce('+', object@X) / nObs(object)))
@@ -1465,7 +1465,7 @@ expand.int <- function(...)
     return(NULL)
   else
   {
-    res <- expand.grid(lapply(dots[p:1], function(x){1:x}))[,p:1]
+    res <- expand.grid(lapply(dots[p:1], function(x){seq_len(x)}))[,p:1]
     names(res) <- rev(names(res))
   }  
   
@@ -1531,7 +1531,7 @@ setMethod("tensorProduct", signature = c("funData"),
             if(length(l) != 2 & length(l) != 3)
               stop("tensorProduct currently accepts only 2 or 3 arguments.")
             
-            if(any(sapply(l, dimSupp) != 1))
+            if(any(vapply(l, dimSupp, FUN.VALUE = 0) != 1))
               stop("tensorProduct is defined only for funData objects on one-dimensional domains!")
             
             # expand grid of indices: first varies slowest, last varies fastest
@@ -1539,12 +1539,12 @@ setMethod("tensorProduct", signature = c("funData"),
             
             if(length(l) == 2)
             {
-              res <- sapply(1:dim(g)[1], function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] }, simplify = "array")
+              res <- vapply(seq_len(dim(g)[1]), function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] }, FUN.VALUE = array(0, dim = c(dim(l[[1]]@X)[2], dim(l[[2]]@X)[2])))
               res <- aperm(res, c(3,1,2))
             } 
             else # length(l) = 3
             {
-              res <- sapply(1:dim(g)[1], function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] %o% l[[3]]@X[g[i,3],]}, simplify = "array")
+              res <- vapply(seq_len(dim(g)[1]), function(i){l[[1]]@X[g[i,1],] %o% l[[2]]@X[g[i,2],] %o% l[[3]]@X[g[i,3],]}, FUN.VALUE = array(0, dim = c(dim(l[[1]]@X)[2], dim(l[[2]]@X)[2], dim(l[[3]]@X)[2])))
               res <- aperm(res, c(4,1,2,3))
             } 
             

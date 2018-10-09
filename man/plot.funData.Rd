@@ -6,7 +6,7 @@
 \alias{plot,funData,missing-method}
 \title{Plotting univariate functional data}
 \usage{
-plot.funData(x, y, obs = 1:nObs(x), type = "l", lty = 1, lwd = 1,
+plot.funData(x, y, obs = seq_len(nObs(x)), type = "l", lty = 1, lwd = 1,
   col = NULL, xlab = "argvals", ylab = "", legend = TRUE,
   plotNA = FALSE, add = FALSE, ...)
 

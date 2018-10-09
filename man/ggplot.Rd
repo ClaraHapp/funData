@@ -36,6 +36,9 @@ This function is deprecated. Use \code{\link{autoplot.funData}} /
 \code{\link{autolayer.irregFunData}} for \code{irregFunData} objects
 instead.
 }
+\details{
+In the default case, this function calls \link[ggplot2]{ggplot} (if available).
+}
 \seealso{
 \code{\link[ggplot2]{ggplot}},
   \code{\link[ggplot2]{autoplot}}, \code{\link[ggplot2]{autolayer}}

@@ -1,3 +1,17 @@
+# funData 1.3-2
+
+## New features
+* Fixed typo in DESCRIPTION (testthat requires version >= 2.0.0)
+
+
+# funData 1.3-1
+
+## New features
+* Consequent use of `seq_len(x)` instead of `1:x`.
+* Use of type-safe `vapply` instead of `sapply`, where applicable.
+* Standard `ggplot` function (package **ggplot**) as default for (deprecated) generic ggplot.
+
+
 # funData 1.3
 
 ## New features
