@@ -213,6 +213,8 @@ test_that("sparsify",{
   expect_error(sparsify(f, minObs = 5, maxObs = 2), "'minObs' must be smaller or equal to 'maxObs'.")
   
   # check functionality:
+  # suppress warnings in transition to new RNG, as proposed by CRAN maintainers
+  suppressWarnings(RNGversion("3.5.0")) 
   set.seed(2)
   s <- as.irregFunData(sparsify(f, minObs = 2, maxObs = 4))
   expect_equal(nObs(s), 2)
