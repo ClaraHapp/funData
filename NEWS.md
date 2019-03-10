@@ -1,3 +1,9 @@
+# funData 1.3-3
+
+## New features
+* Suppress warnings in unit tests with fixed seed caused by changing the default RNG in latest R development version.
+
+
 # funData 1.3-2
 
 ## New features
