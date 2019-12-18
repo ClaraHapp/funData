@@ -1,3 +1,9 @@
+# funData 1.3-4
+
+## New features
+* Function `.intWeights` is not external any more, as used in MFPCA package.
+* Update Author/Maintainer last name
+
 # funData 1.3-3
 
 ## New features
