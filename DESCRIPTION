@@ -28,7 +28,8 @@ Suggests:
     reshape2,
     zoo,
     testthat (>= 2.0.0)
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
+Encoding: UTF-8
 Collate: 
     'funDataClass.R'
     'coerce.R'
