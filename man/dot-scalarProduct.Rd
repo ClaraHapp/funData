@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object1, object2}{Generic objects}
+
+\item{...}{Further objects passed to \code{\link{integrate}}}
 }
 \description{
 Generic method for scalar products, based on integrate

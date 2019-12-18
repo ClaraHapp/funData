@@ -2,7 +2,6 @@
 % Please edit documentation in R/funDataClass.R
 \name{funData-setAs}
 \alias{funData-setAs}
-\alias{funData-setAs}
 \title{Coerce a funData object to class multiFunData}
 \description{
 Coerce a funData object to class multiFunData
