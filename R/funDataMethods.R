@@ -678,6 +678,8 @@ setGeneric("integrate", function(object, ...) {standardGeneric("integrate")},
 #' @return A vector of integration weights
 #'
 #' @seealso \code{\link{integrate}}
+#' 
+#' @export
 .intWeights <- function(argvals, method = "trapezoidal")
 {
   if(method == "trapezoidal" & (length(argvals) < 3))
