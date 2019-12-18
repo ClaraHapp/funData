@@ -4,8 +4,13 @@
 \alias{autoplot.multiFunData}
 \title{Visualize multivariate functional data objects using ggplot}
 \usage{
-autoplot.multiFunData(object, obs = seq_len(nObs(object)),
-  dim = seq_len(length(object)), plotGrid = FALSE, ...)
+autoplot.multiFunData(
+  object,
+  obs = seq_len(nObs(object)),
+  dim = seq_len(length(object)),
+  plotGrid = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{A \code{multiFunData} object that is to be plotted.}

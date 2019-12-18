@@ -5,11 +5,9 @@
 \alias{autolayer.irregFunData}
 \title{Visualize irregular functional data objects using ggplot}
 \usage{
-autoplot.irregFunData(object, obs = seq_len(nObs(object)), geom = "line",
-  ...)
+autoplot.irregFunData(object, obs = seq_len(nObs(object)), geom = "line", ...)
 
-autolayer.irregFunData(object, obs = seq_len(nObs(object)), geom = "line",
-  ...)
+autolayer.irregFunData(object, obs = seq_len(nObs(object)), geom = "line", ...)
 }
 \arguments{
 \item{object}{A \code{irregFunData} object.}
