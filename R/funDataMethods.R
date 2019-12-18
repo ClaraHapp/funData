@@ -1041,6 +1041,9 @@ setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
 setGeneric("scalarProduct", function(object1, object2, ...) {standardGeneric("scalarProduct")})
 
 #' Generic method for scalar products, based on integrate
+#' 
+#' @param object1,object2 Generic objects
+#' @param ... Further objects passed to \code{\link{integrate}}
 .scalarProduct <-  function(object1, object2, ...){
   return(integrate(object1 * object2, ...))
 }
