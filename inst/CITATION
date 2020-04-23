@@ -1,0 +1,15 @@
+bibentry(bibtype = "Article",
+  title        = "Object-Oriented Software for Functional Data",
+  author       = person(given = "Clara",
+                        family = "Happ-Kurz",
+                        email = "clara.happ@stat.uni-muenchen.de"),
+  journal      = "Journal of Statistical Software",
+  year         = "2020",
+  volume       = "93",
+  number       = "5",
+  pages        = "1--38",
+  doi          = "10.18637/jss.v093.i05",
+
+  header       = "To cite funData in publications use:"
+)
+
