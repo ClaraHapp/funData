@@ -35,6 +35,13 @@ To install the latest version directly from Github, please use `devtools::instal
 
 The `funData` package depends on the `R`-packages [`fields`](https://CRAN.R-project.org/package=fields), [`foreach`](https://CRAN.R-project.org/package=foreach), [`abind`](https://CRAN.R-project.org/package=abind) and `methods`.
 
+## References ##
+
+The functionalities of the `funData` package and its interplay with the [`MFPCA`](https://CRAN.R-project.org/package=MFPCA) package for multivariate functional principal component analysis are described in:
+
+C. Happ-Kurz (2020): [Object-Oriented Software for Functional Data.](http://doi.org/10.18637/jss.v093.i05>) *Journal of
+Statistical Software*, 93(5): 1-38 .
+
 ## Bug reports ##
 
 Please use [GitHub issues](https://github.com/ClaraHapp/funData/issues) for reporting bugs or issues.
