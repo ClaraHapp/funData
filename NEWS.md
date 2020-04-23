@@ -1,3 +1,8 @@
+# funData 1.3-5
+
+## New features
+* Add links to vignette.
+
 # funData 1.3-4
 
 ## New features
