@@ -1,3 +1,8 @@
+# funData 1.3-6
+
+## New features
+* Changing email address.
+
 # funData 1.3-5
 
 ## New features

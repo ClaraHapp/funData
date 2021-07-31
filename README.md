@@ -28,7 +28,7 @@ Important functionalities include:
 
 ## Installation ##
 
-The `funData` pacakge is available on [`CRAN`](https://CRAN.R-project.org/package=funData).
+The `funData` package is available on [`CRAN`](https://CRAN.R-project.org/package=funData).
 To install the latest version directly from Github, please use `devtools::install_github("ClaraHapp/funData")` (install [`devtools`](https://github.com/hadley/devtools) before).
 
 ## Dependencies ##
