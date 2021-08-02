@@ -29,7 +29,7 @@ Important functionalities include:
 ## Installation ##
 
 The `funData` package is available on [`CRAN`](https://CRAN.R-project.org/package=funData).
-To install the latest version directly from Github, please use `devtools::install_github("ClaraHapp/funData")` (install [`devtools`](https://github.com/hadley/devtools) before).
+To install the latest version directly from Github, please use `devtools::install_github("ClaraHapp/funData")` (install [`devtools`](https://github.com/r-lib/devtools) before).
 
 ## Dependencies ##
 
@@ -39,7 +39,7 @@ The `funData` package depends on the `R`-packages [`fields`](https://CRAN.R-proj
 
 The functionalities of the `funData` package and its interplay with the [`MFPCA`](https://CRAN.R-project.org/package=MFPCA) package for multivariate functional principal component analysis are described in:
 
-C. Happ-Kurz (2020): [Object-Oriented Software for Functional Data.](http://doi.org/10.18637/jss.v093.i05) *Journal of
+C. Happ-Kurz (2020): [Object-Oriented Software for Functional Data.](https://www.jstatsoft.org/article/view/v093i05) *Journal of
 Statistical Software*, 93(5): 1-38 .
 
 ## Bug reports ##
