@@ -1,3 +1,9 @@
+# funData 1.3-8
+
+## New features
+* Fixing DOI as required by Journal of Statistical Software.
+
+
 # funData 1.3-7
 
 ## New features
