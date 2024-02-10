@@ -46,6 +46,8 @@
 #'   (one-dimensional functions) or \code{\link[fields]{image.plot}}/ 
 #'   \code{\link[graphics]{image}} (two-dimensional functions).
 #'   
+#' @method plot funData
+#'   
 #' @seealso \code{\linkS4class{funData}}, \code{\link[graphics]{matplot}}, 
 #'   \code{\link[fields]{image.plot}}, \code{\link[graphics]{image}}
 #'   
@@ -188,6 +190,8 @@ plot.funData <- function(x, y, obs = seq_len(nObs(x)), type = "l", lty = 1, lwd 
 #'   a list of the same length as \code{dim} (specifying the limits for each
 #'   element separately).
 #' @param ... Additional arguments to \code{plot}.
+#' 
+#' @method plot multiFunData
 #'   
 #' @seealso \code{\linkS4class{funData}}, \code{\linkS4class{multiFunData}}, 
 #'   \code{\link{plot.funData}}
@@ -304,6 +308,8 @@ plot.multiFunData <- function(x, y, obs = seq_len(nObs(x)), dim = seq_len(length
 #' @param add Logical. If \code{TRUE}, add to current plot (only for one-dimensional functions). 
 #'   Defaults to \code{FALSE}.
 #' @param ... Additional arguments to \code{\link[graphics]{plot}}.
+#' 
+#' @method plot irregFunData
 #'   
 #' @seealso \code{\link{plot.funData}}, \code{\linkS4class{irregFunData}}, 
 #'   \code{\link[graphics]{plot}}
