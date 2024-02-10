@@ -76,21 +76,21 @@ are in the union, but not in the original observation grid.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{irregFunData}: Constructor for irregular functional data
+\item \code{irregFunData(argvals = list, X = list)}: Constructor for irregular functional data
 objects.
 
-\item \code{show}: Print basic information about the \code{irregFunData} object
+\item \code{show(irregFunData)}: Print basic information about the \code{irregFunData} object
 in the console. The default console output for \code{irregFunData} objects.
 
-\item \code{names}: Get the names of the \code{irregFunData} object.
+\item \code{names(irregFunData)}: Get the names of the \code{irregFunData} object.
 
-\item \code{names<-}: Set the names of the \code{irregFunData} object.
+\item \code{names(irregFunData) <- value}: Set the names of the \code{irregFunData} object.
 
-\item \code{str}: A \code{str} method for \code{irregFunData} objects, giving a compact overview of the structure.
+\item \code{str(irregFunData)}: A \code{str} method for \code{irregFunData} objects, giving a compact overview of the structure.
 
-\item \code{summary}: A \code{summary} method for \code{irregFunData} objects.
+\item \code{summary(irregFunData)}: A \code{summary} method for \code{irregFunData} objects.
+
 }}
-
 \section{Slots}{
 
 \describe{

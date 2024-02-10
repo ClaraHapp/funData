@@ -3,6 +3,7 @@
 \docType{methods}
 \name{multiFunData-constructor}
 \alias{multiFunData-constructor}
+\alias{multiFunData}
 \title{Constructor for multivariate functional data objects}
 \usage{
 multiFunData(...)

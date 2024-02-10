@@ -3,6 +3,7 @@
 \docType{methods}
 \name{funData-constructor}
 \alias{funData-constructor}
+\alias{funData}
 \title{Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics}
 \usage{
 funData(argvals, X)

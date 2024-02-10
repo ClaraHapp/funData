@@ -3,6 +3,7 @@
 \docType{methods}
 \name{irregFunData-constructor}
 \alias{irregFunData-constructor}
+\alias{irregFunData}
 \title{Constructor for irregular functional data objects}
 \usage{
 irregFunData(argvals, X)
