@@ -1,8 +1,8 @@
 Package: funData
 Type: Package
 Title: An S4 Class for Functional Data
-Version: 1.3-8
-Date: 2021-10-17
+Version: 1.3-9
+Date: 2024-02-10
 Authors@R: person("Clara", "Happ-Kurz", email = "chk_R@gmx.de",
                   role = c("aut", "cre"))
 Author: Clara Happ-Kurz [aut, cre]

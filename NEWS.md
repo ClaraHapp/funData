@@ -1,3 +1,10 @@
+# funData 1.3-9
+
+## New features
+* Fixing documentation for generator and plot functions, as required by CRAN
+* Remove broken link to Travis
+
+
 # funData 1.3-8
 
 ## New features
