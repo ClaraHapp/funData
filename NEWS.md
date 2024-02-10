@@ -2,7 +2,7 @@
 
 ## New features
 * Fixing documentation for generator and plot functions, as required by CRAN
-* Remove broken link to Travis
+* Remove broken link to Travis and update codecov link
 
 
 # funData 1.3-8
