@@ -120,6 +120,7 @@ setValidity("funData", function(object){
 #' @seealso \code{\linkS4class{funData}}
 #'
 #' @name funData-constructor
+#' @aliases funData
 #' 
 #' @docType methods
 #' 
@@ -267,6 +268,7 @@ setValidity("multiFunData", function(object){
 #' @seealso \code{\linkS4class{multiFunData}}
 #' 
 #' @name multiFunData-constructor
+#' @aliases multiFunData
 #' 
 #' @docType methods
 #' 
@@ -430,6 +432,7 @@ setValidity("irregFunData", function(object){
 #' @seealso \code{\linkS4class{irregFunData}}
 #' 
 #' @name irregFunData-constructor
+#' @aliases irregFunData
 #' 
 #' @docType methods
 #' 
