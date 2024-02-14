@@ -107,7 +107,7 @@ setValidity("funData", function(object){
   return(TRUE)
 })
 
-#' Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
+#' @describeIn funData Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
 #' 
 #' @param argvals A list of numeric vectors or a single numeric vector, giving the 
 #'   sampling points in the domains. See Details.
@@ -116,17 +116,10 @@ setValidity("funData", function(object){
 #'   M_d} for higher-dimensional domains), giving the observed values for
 #'   \eqn{N}{N} individuals. Missing values can be included via \code{NA}. See
 #'   Details.
-#'   
-#' @seealso \code{\linkS4class{funData}}
-#'
-#' @name funData-constructor
-#' @aliases funData
 #' 
 #' @docType methods
 #' 
 #' @export funData
-#' 
-#' @keywords internal
 setGeneric("funData", function(argvals, X){standardGeneric("funData")})
 
 
@@ -263,18 +256,11 @@ setValidity("multiFunData", function(object){
 })
 
 
-#' Constructor for multivariate functional data objects
-#' 
-#' @seealso \code{\linkS4class{multiFunData}}
-#' 
-#' @name multiFunData-constructor
-#' @aliases multiFunData
+#' @describeIn multiFunData Constructor for multivariate functional data objects
 #' 
 #' @docType methods
 #' 
 #' @export multiFunData
-#' 
-#' @keywords internal
 setGeneric("multiFunData", function(...){standardGeneric("multiFunData")})
 
 
@@ -427,18 +413,10 @@ setValidity("irregFunData", function(object){
 })
 
 
-#' Constructor for irregular functional data objects
-#' 
-#' @seealso \code{\linkS4class{irregFunData}}
-#' 
-#' @name irregFunData-constructor
-#' @aliases irregFunData
+#' @describeIn irregFunData Constructor for irregular functional data objects
 #' 
 #' @docType methods
-#' 
 #' @export irregFunData
-#' 
-#' @keywords internal
 setGeneric("irregFunData", function(argvals, X){standardGeneric("irregFunData")})
 
 

@@ -13,6 +13,8 @@
 \alias{summary,irregFunData-method}
 \title{A class for irregularly sampled functional data}
 \usage{
+irregFunData(argvals, X)
+
 \S4method{irregFunData}{list,list}(argvals, X)
 
 \S4method{show}{irregFunData}(object)
@@ -89,6 +91,11 @@ in the console. The default console output for \code{irregFunData} objects.
 \item \code{str(irregFunData)}: A \code{str} method for \code{irregFunData} objects, giving a compact overview of the structure.
 
 \item \code{summary(irregFunData)}: A \code{summary} method for \code{irregFunData} objects.
+
+}}
+\section{Functions}{
+\itemize{
+\item \code{irregFunData()}: Constructor for irregular functional data objects
 
 }}
 \section{Slots}{

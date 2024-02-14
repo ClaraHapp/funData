@@ -14,6 +14,8 @@
 \alias{summary,funData-method}
 \title{A class for (univariate) functional data}
 \usage{
+funData(argvals, X)
+
 \S4method{funData}{list,array}(argvals, X)
 
 \S4method{funData}{numeric,array}(argvals, X)
@@ -108,6 +110,11 @@ in the console. The default console output for \code{funData} objects.
 \item \code{str(funData)}: A \code{str} method for \code{funData} objects, giving a compact overview of the structure.
 
 \item \code{summary(funData)}: A \code{summary} method for \code{funData} objects.
+
+}}
+\section{Functions}{
+\itemize{
+\item \code{funData()}: Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
 
 }}
 \section{Slots}{

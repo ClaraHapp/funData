@@ -11,6 +11,8 @@
 \alias{summary,multiFunData-method}
 \title{A class for multivariate functional data}
 \usage{
+multiFunData(...)
+
 \S4method{multiFunData}{ANY}(...)
 
 \S4method{names}{multiFunData}(x)
@@ -74,6 +76,11 @@ objects.
 \item \code{str(multiFunData)}: A \code{str} method for \code{multiFunData} objects, giving a compact overview of the structure.
 
 \item \code{summary(multiFunData)}: A \code{summary} method for \code{multiFunData} objects.
+
+}}
+\section{Functions}{
+\itemize{
+\item \code{multiFunData()}: Constructor for multivariate functional data objects
 
 }}
 \examples{
