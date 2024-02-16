@@ -11,6 +11,8 @@
 \alias{summary,multiFunData-method}
 \title{A class for multivariate functional data}
 \usage{
+multiFunData(...)
+
 \S4method{multiFunData}{ANY}(...)
 
 \S4method{names}{multiFunData}(x)
@@ -64,18 +66,23 @@ one element using \code{as.multiFunData(funDataObject).}
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{multiFunData}: Constructor for multivariate functional data
+\item \code{multiFunData(ANY)}: Constructor for multivariate functional data
 objects.
 
-\item \code{names}: Get the names of the \code{multiFunData} object.
+\item \code{names(multiFunData)}: Get the names of the \code{multiFunData} object.
 
-\item \code{names<-}: Set the names of the \code{multiFunData} object.
+\item \code{names(multiFunData) <- value}: Set the names of the \code{multiFunData} object.
 
-\item \code{str}: A \code{str} method for \code{multiFunData} objects, giving a compact overview of the structure.
+\item \code{str(multiFunData)}: A \code{str} method for \code{multiFunData} objects, giving a compact overview of the structure.
 
-\item \code{summary}: A \code{summary} method for \code{multiFunData} objects.
+\item \code{summary(multiFunData)}: A \code{summary} method for \code{multiFunData} objects.
+
 }}
+\section{Functions}{
+\itemize{
+\item \code{multiFunData()}: Constructor for multivariate functional data objects
 
+}}
 \examples{
 ### Creating a multifunData object with 2 observations on the same domain
 # Univariate elements

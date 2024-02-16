@@ -5,7 +5,7 @@
 \alias{plot,funData,missing-method}
 \title{Plotting univariate functional data}
 \usage{
-plot.funData(
+\method{plot}{funData}(
   x,
   y,
   obs = seq_len(nObs(x)),

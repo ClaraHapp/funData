@@ -73,9 +73,9 @@ If only observations are to be extracted, the usual notation
 }
 \section{Functions}{
 \itemize{
-\item \code{[,funData,ANY,missing,missing-method}: 
-}}
+\item \code{x[i}: 
 
+}}
 \section{Warning}{
  The function is currently implemented only for
   functional data with up to three-dimensional domains.

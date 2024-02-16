@@ -1,9 +1,8 @@
 # funData
 
-[![Travis-CI Build Status](https://travis-ci.org/ClaraHapp/funData.svg?branch=master)](https://travis-ci.org/ClaraHapp/funData) 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ClaraHapp/funData?branch=master&svg=true)](https://ci.appveyor.com/project/ClaraHapp/funData)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/funData)](https://CRAN.R-project.org/package=funData )
-[![Coverage Status](https://img.shields.io/codecov/c/github/ClaraHapp/funData/master.svg)](https://codecov.io/github/ClaraHapp/funData?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/ClaraHapp/funData/master.svg)](https://app.codecov.io/github/ClaraHapp/funData?branch=master)
 
 
 

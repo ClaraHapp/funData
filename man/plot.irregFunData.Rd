@@ -5,7 +5,7 @@
 \alias{plot,irregFunData,missing-method}
 \title{Plotting irregular functional data}
 \usage{
-plot.irregFunData(
+\method{plot}{irregFunData}(
   x,
   y,
   obs = seq_len(nObs(x)),

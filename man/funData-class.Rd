@@ -14,6 +14,8 @@
 \alias{summary,funData-method}
 \title{A class for (univariate) functional data}
 \usage{
+funData(argvals, X)
+
 \S4method{funData}{list,array}(argvals, X)
 
 \S4method{funData}{numeric,array}(argvals, X)
@@ -93,23 +95,28 @@ A \code{funData} object can be coerced to a \code{multiFunData} object using
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{funData}: Constructor for functional data objects with \code{argvals} given as list.
+\item \code{funData(argvals = list, X = array)}: Constructor for functional data objects with \code{argvals} given as list.
 
-\item \code{funData}: Constructor for functional data objects with \code{argvals}
+\item \code{funData(argvals = numeric, X = array)}: Constructor for functional data objects with \code{argvals}
 given as vector of numerics (only valid for one-dimensional domains).
 
-\item \code{show}: Print basic information about the \code{funData} object
+\item \code{show(funData)}: Print basic information about the \code{funData} object
 in the console. The default console output for \code{funData} objects.
 
-\item \code{names}: Get the names of the \code{funData} object.
+\item \code{names(funData)}: Get the names of the \code{funData} object.
 
-\item \code{names<-}: Set the names of the \code{funData} object.
+\item \code{names(funData) <- value}: Set the names of the \code{funData} object.
 
-\item \code{str}: A \code{str} method for \code{funData} objects, giving a compact overview of the structure.
+\item \code{str(funData)}: A \code{str} method for \code{funData} objects, giving a compact overview of the structure.
 
-\item \code{summary}: A \code{summary} method for \code{funData} objects.
+\item \code{summary(funData)}: A \code{summary} method for \code{funData} objects.
+
 }}
+\section{Functions}{
+\itemize{
+\item \code{funData()}: Constructor for functional data objects, first argument (argvals) passed as list or vector of numerics
 
+}}
 \section{Slots}{
 
 \describe{
