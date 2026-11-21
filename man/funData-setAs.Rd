@@ -3,6 +3,11 @@
 \name{funData-setAs}
 \alias{funData-setAs}
 \title{Coerce a funData object to class multiFunData}
+\usage{
+\S4method{coerce}{funData,multiFunData}(from, to = "multiFunData", strict = TRUE)
+
+\S4method{coerce}{funData,irregFunData}(from, to = "irregFunData", strict = TRUE)
+}
 \description{
 Coerce a funData object to class multiFunData
 

@@ -3,6 +3,9 @@
 \name{irregFunData-setAs}
 \alias{irregFunData-setAs}
 \title{Coerce an irregFunData object to class funData}
+\usage{
+\S4method{coerce}{irregFunData,funData}(from, to = "funData", strict = TRUE)
+}
 \description{
 Coerce an irregFunData object to class funData
 }
