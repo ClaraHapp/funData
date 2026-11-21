@@ -214,7 +214,7 @@ setMethod("subset", c("irregFunData"),
 
 #### Alternative via [ (only observations) ####
 
-#' @describeIn extractObs
+#' @describeIn extractObs Extracting observations via [..]
 #'
 #' @param i A numeric vector, giving the indices of the observations to
 #'   extract when using \code{x[i]}. Defaults to all observations.
