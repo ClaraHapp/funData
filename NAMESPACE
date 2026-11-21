@@ -46,6 +46,7 @@ export(sparsify)
 export(tensorProduct)
 exportMethods("[")
 exportMethods("names<-")
+exportMethods(coerce)
 exportMethods(ggplot)
 exportMethods(names)
 exportMethods(norm)
@@ -64,6 +65,7 @@ importFrom(graphics,
   par,
   points
 )
+importFrom(rlang,.data)
 importFrom(stats,
   rnorm,
   runif

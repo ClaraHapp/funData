@@ -42,6 +42,7 @@ NULL
 NULL
 
 #' @keywords internal
+#' @rdname funData-class
 setAs("funData", "data.frame", 
       def = function(from){
         
@@ -69,6 +70,7 @@ setMethod("as.data.frame", signature = "funData",
           function(x){as(x, "data.frame")})
 
 #' @keywords internal
+#' @rdname multiFunData-class
 setAs("multiFunData", "data.frame", 
       def = function(from){
         return(lapply(from, as.data.frame))
@@ -80,6 +82,7 @@ setMethod("as.data.frame", signature = "multiFunData",
           function(x){as(x, "data.frame")})
 
 #' @keywords internal
+#' @rdname irregFunData-class
 setAs("irregFunData", "data.frame", 
       def = function(from){
         

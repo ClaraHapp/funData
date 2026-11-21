@@ -90,6 +90,8 @@ NULL
 #' g2 
 #' # Summarize information
 #' summary(g2)
+#' @aliases coerce,funData,irregFunData-method
+#' @aliases coerce,funData,multiFunData-method
 setClass("funData", representation = representation(argvals = "list", X = "array"))
 
 
@@ -288,7 +290,9 @@ setMethod("multiFunData", signature = "ANY",
 #' 
 #' @name funData-setAs
 #' 
+#' @export
 #' @keywords internal
+#' @rdname funData-class
 setAs("funData", "multiFunData", 
       def = function(from){ new("multiFunData", list(from))})
 
@@ -392,6 +396,7 @@ setMethod("as.multiFunData", signature = "funData",
 #' summary(i2)
 #' # Use the plot function to get an impression of the data
 #' plot(i2) 
+#' @aliases coerce,irregFunData,funData-method
 setClass("irregFunData", representation = representation(argvals = "list", X = "list"))
 
 
@@ -437,6 +442,7 @@ setMethod("irregFunData", signature = c(argvals = "list", X = "list"),
 #'   
 #' @name irregFunData-setAs
 #'   
+#' @export
 #' @keywords internal
 #' 
 #' @examples
@@ -452,6 +458,7 @@ setMethod("irregFunData", signature = c(argvals = "list", X = "list"),
 #' f1@@argvals
 #' # X is a matrix with 2 rows and missing values
 #' f1@@X
+#' @rdname irregFunData-class
 setAs("irregFunData", "funData", 
       def = function(from){      
         #     if(dimSupp(from) > 1)
@@ -493,6 +500,7 @@ setMethod("as.funData", signature = "irregFunData",
 #'   
 #' @name funData-setAs
 #'   
+#' @export
 #' @keywords internal
 #' 
 #' @examples
@@ -506,6 +514,7 @@ setMethod("as.funData", signature = "irregFunData",
 #' # coerce to irregFunData object
 #' i <- as.irregFunData(fSparse)
 #' i
+#' @rdname funData-class
 setAs("funData", "irregFunData", 
       def = function(from){      
              if(dimSupp(from) > 1)
