@@ -1,3 +1,9 @@
+# funData 1.3-10
+
+## New features
+* Fixing outdated ggplot2::aes_string usage and roxygen documentation
+* Updating test outputs to fix str() formatting changes 
+
 # funData 1.3-9
 
 ## New features
