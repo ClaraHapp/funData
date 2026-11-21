@@ -13,6 +13,7 @@ NULL
 #'
 #' @param x A \code{funData} object.
 #'
+#' @export
 #' @keywords internal
 print.funData <- function(x,...){
   cat("Functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\nargvals:\n", sep = "")
@@ -49,6 +50,7 @@ setMethod("show", signature = "funData",
 #'
 #' @param x An \code{irregFunData} object.
 #'
+#' @export
 #' @keywords internal
 print.irregFunData <- function(x,...){
   cat("Irregular functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\n", sep = "")
