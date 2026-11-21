@@ -492,12 +492,12 @@ autoplot.funData <- function(object, obs = seq_len(nObs(object)), geom = "line",
   meltData <- as.data.frame(object[obs])
   
   if(dimSupp(object) == 1)
-    p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs")) +
+    p <- ggplot2::ggplot(data = meltData, ggplot2::aes(x = argvals1, y = X, group = obs)) +
     ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
   if(dimSupp(object) == 2)
-    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals1", y = "argvals2")) + 
-    ggplot2::geom_raster(ggplot2::aes_string(fill = "X"), ...) + 
+    p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvals1, y = argvals2)) + 
+    ggplot2::geom_raster(ggplot2::aes(fill = X), ...) + 
     ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::labs(fill = "")
   
   return(p)
@@ -526,7 +526,7 @@ autolayer.funData <- function(object, obs = seq_len(nObs(object)), geom = "line"
   
   meltData <- as.data.frame(object[obs])
   
-  p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs"),
+  p <- ggplot2::stat_identity(data = meltData, ggplot2::aes(x = argvals1, y = X, group = obs),
                               geom = geom, ...)
   
   return(p)
@@ -685,7 +685,7 @@ autoplot.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "l
   
   meltData <- as.data.frame(object[obs])
   
-    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs")) +
+    p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvals, y = X, group = obs)) +
     ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
   
@@ -707,7 +707,7 @@ autolayer.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "
   
   meltData <- as.data.frame(object[obs])
 
-    p <- ggplot2::stat_identity(object = meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs"),
+    p <- ggplot2::stat_identity(object = meltData, ggplot2::aes(x = argvals, y = X, group = obs),
                                 geom = geom, ...)
   
   return(p)
