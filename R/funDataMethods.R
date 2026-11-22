@@ -849,9 +849,8 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' @section Warning: The function is currently implemented only for functional 
 #'   data with one- and two-dimensional domains.
 #'   
-#' @param object An object of class \code{funData}, \code{irregFunData} or 
-#'   \code{multiFunData}.
-#' @param ... Further parameters (see Details).
+#' @param x An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.
+#' @param squared,obs,method,weight,fullDom Additional parameters for norm calculation; see Details.
 #'   
 #' @return A numeric vector representing the norm of each observation.
 #'   

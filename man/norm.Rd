@@ -4,10 +4,9 @@
 \alias{norm}
 \title{Calculate the norm of functional data}
 \arguments{
-\item{object}{An object of class \code{funData}, \code{irregFunData} or 
-\code{multiFunData}.}
+\item{x}{An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.}
 
-\item{...}{Further parameters (see Details).}
+\item{squared, obs, method, weight, fullDom}{Additional parameters for norm calculation; see Details.}
 }
 \value{
 A numeric vector representing the norm of each observation.
