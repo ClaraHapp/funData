@@ -2,7 +2,36 @@
 % Please edit documentation in R/funDataMethods.R
 \name{norm}
 \alias{norm}
+\alias{norm,funData,missing-method}
+\alias{norm,multiFunData,missing-method}
+\alias{norm,irregFunData,missing-method}
 \title{Calculate the norm of functional data}
+\usage{
+\S4method{norm}{funData,missing}(
+  x,
+  squared = TRUE,
+  obs = seq_len(nObs(x)),
+  method = "trapezoidal",
+  weight = 1
+)
+
+\S4method{norm}{multiFunData,missing}(
+  x,
+  squared = TRUE,
+  obs = seq_len(nObs(x)),
+  method = "trapezoidal",
+  weight = rep(1, length(x))
+)
+
+\S4method{norm}{irregFunData,missing}(
+  x,
+  squared = TRUE,
+  obs = seq_len(nObs(x)),
+  method = "trapezoidal",
+  weight = 1,
+  fullDom = FALSE
+)
+}
 \arguments{
 \item{x}{An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.}
 
@@ -63,4 +92,10 @@ norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to t
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
+
+\code{\link{norm}}, \code{\linkS4class{funData}}
+
+\code{\link{norm}}, \code{\linkS4class{multiFunData}}
+
+\code{\link{norm}}, \code{\linkS4class{irregFunData}}
 }

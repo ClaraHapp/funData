@@ -895,7 +895,8 @@ norm.funData <- function(object, squared, obs, method, weight)
 #'
 #' @seealso \code{\link{norm}}, \code{\linkS4class{funData}}
 #'
-#' @keywords internal
+#' @rdname norm
+#' @exportMethod norm
 setMethod("norm", signature = signature(x = "funData", type = "missing"),
           function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1){
             
@@ -912,7 +913,8 @@ setMethod("norm", signature = signature(x = "funData", type = "missing"),
 #'
 #' @seealso \code{\link{norm}}, \code{\linkS4class{multiFunData}}
 #'
-#' @keywords internal
+#' @rdname norm
+#' @exportMethod norm
 setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
           function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = rep(1, length(x)))
           {
@@ -959,7 +961,8 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 #'
 #' @seealso \code{\link{norm}}, \code{\linkS4class{irregFunData}}
 #'
-#' @keywords internal
+#' @rdname norm
+#' @exportMethod norm
 setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
           function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1, fullDom = FALSE){
             
