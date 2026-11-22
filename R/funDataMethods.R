@@ -893,8 +893,6 @@ norm.funData <- function(object, squared, obs, method, weight)
 
 #' Calculate the norm for univariate functional data
 #'
-#' @seealso \code{\link{norm}}, \code{\linkS4class{funData}}
-#'
 #' @rdname norm
 #' @exportMethod norm
 setMethod("norm", signature = signature(x = "funData", type = "missing"),
@@ -910,8 +908,6 @@ setMethod("norm", signature = signature(x = "funData", type = "missing"),
           })
 
 #' Calculate the norm for multivariate functional data
-#'
-#' @seealso \code{\link{norm}}, \code{\linkS4class{multiFunData}}
 #'
 #' @rdname norm
 #' @exportMethod norm
@@ -958,8 +954,6 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 }
 
 #' Calculate the norm for irregular functional data
-#'
-#' @seealso \code{\link{norm}}, \code{\linkS4class{irregFunData}}
 #'
 #' @rdname norm
 #' @exportMethod norm

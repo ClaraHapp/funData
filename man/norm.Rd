@@ -92,10 +92,4 @@ norm(multiObject, weight = c(2,1)) # with weight vector, giving more weight to t
 \seealso{
 \code{\linkS4class{funData}}, \code{\linkS4class{irregFunData}}, 
   \code{\linkS4class{multiFunData}}, \code{\link{integrate}}
-
-\code{\link{norm}}, \code{\linkS4class{funData}}
-
-\code{\link{norm}}, \code{\linkS4class{multiFunData}}
-
-\code{\link{norm}}, \code{\linkS4class{irregFunData}}
 }
