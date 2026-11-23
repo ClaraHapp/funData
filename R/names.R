@@ -17,7 +17,6 @@ setMethod("names", signature = "funData",
 
 #' @describeIn funData Set the names of the \code{funData} object.
 #' 
-#' @inheritParams names
 #' @param value The names to be given to the \code{funData} curves.
 #' 
 #' @docType methods
@@ -51,7 +50,6 @@ setMethod("names", signature = "multiFunData",
 
 #' @describeIn multiFunData Set the names of the \code{multiFunData} object.
 #' 
-#' @inheritParams names
 #' @param value The names to be given to the \code{multiFunData} curves.
 #' 
 #' @docType methods
@@ -85,7 +83,6 @@ setMethod("names", signature = "irregFunData",
 
 #' @describeIn irregFunData Set the names of the \code{irregFunData} object.
 #' 
-#' @inheritParams names
 #' @param value The names to be given to the \code{irregFunData} curves.
 #' 
 #' @docType methods

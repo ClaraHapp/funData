@@ -2,12 +2,40 @@
 % Please edit documentation in R/funDataMethods.R
 \name{norm}
 \alias{norm}
+\alias{norm,funData,missing-method}
+\alias{norm,multiFunData,missing-method}
+\alias{norm,irregFunData,missing-method}
 \title{Calculate the norm of functional data}
-\arguments{
-\item{object}{An object of class \code{funData}, \code{irregFunData} or 
-\code{multiFunData}.}
+\usage{
+\S4method{norm}{funData,missing}(
+  x,
+  squared = TRUE,
+  obs = seq_len(nObs(x)),
+  method = "trapezoidal",
+  weight = 1
+)
 
-\item{...}{Further parameters (see Details).}
+\S4method{norm}{multiFunData,missing}(
+  x,
+  squared = TRUE,
+  obs = seq_len(nObs(x)),
+  method = "trapezoidal",
+  weight = rep(1, length(x))
+)
+
+\S4method{norm}{irregFunData,missing}(
+  x,
+  squared = TRUE,
+  obs = seq_len(nObs(x)),
+  method = "trapezoidal",
+  weight = 1,
+  fullDom = FALSE
+)
+}
+\arguments{
+\item{x}{An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.}
+
+\item{squared, obs, method, weight, fullDom}{Additional parameters for norm calculation; see Details.}
 }
 \value{
 A numeric vector representing the norm of each observation.

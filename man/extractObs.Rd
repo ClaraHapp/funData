@@ -73,7 +73,7 @@ If only observations are to be extracted, the usual notation
 }
 \section{Functions}{
 \itemize{
-\item \code{x[i}: 
+\item \code{x = funData[i = ANY, j = missing, drop = missing]}: Extracting observations via [..]
 
 }}
 \section{Warning}{

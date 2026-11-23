@@ -414,6 +414,7 @@ setMethod("plot", signature = signature(x = "irregFunData", y = "missing"),
 #'   \code{\link{plot.funData}}
 #'   
 #' @export autoplot.funData
+#' @importFrom rlang .data
 #'   
 #' @examples
 #' # Install / load package ggplot2 before running the examples
@@ -492,12 +493,12 @@ autoplot.funData <- function(object, obs = seq_len(nObs(object)), geom = "line",
   meltData <- as.data.frame(object[obs])
   
   if(dimSupp(object) == 1)
-    p <- ggplot2::ggplot(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs")) +
+    p <- ggplot2::ggplot(data = meltData, ggplot2::aes(x = .data$argvals1, y = .data$X, group = .data$obs)) +
     ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
   if(dimSupp(object) == 2)
-    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals1", y = "argvals2")) + 
-    ggplot2::geom_raster(ggplot2::aes_string(fill = "X"), ...) + 
+    p <- ggplot2::ggplot(meltData, ggplot2::aes(x = .data$argvals1, y = .data$argvals2)) + 
+    ggplot2::geom_raster(ggplot2::aes(fill = X), ...) + 
     ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::labs(fill = "")
   
   return(p)
@@ -505,6 +506,7 @@ autoplot.funData <- function(object, obs = seq_len(nObs(object)), geom = "line",
 
 #' @rdname autoplot.funData
 #' @export autolayer.funData
+#' @importFrom rlang .data
 autolayer.funData <- function(object, obs = seq_len(nObs(object)), geom = "line", plotNA = FALSE, ...)
 {
   if(!(requireNamespace("ggplot2", quietly = TRUE)))
@@ -526,7 +528,7 @@ autolayer.funData <- function(object, obs = seq_len(nObs(object)), geom = "line"
   
   meltData <- as.data.frame(object[obs])
   
-  p <- ggplot2::stat_identity(data = meltData, ggplot2::aes_string(x = "argvals1", y = "X", group = "obs"),
+  p <- ggplot2::stat_identity(data = meltData, ggplot2::aes(x = .data$argvals1, y = .data$X, group = .data$obs),
                               geom = geom, ...)
   
   return(p)
@@ -685,7 +687,7 @@ autoplot.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "l
   
   meltData <- as.data.frame(object[obs])
   
-    p <- ggplot2::ggplot(meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs")) +
+    p <- ggplot2::ggplot(meltData, ggplot2::aes(x = argvals, y = X, group = obs)) +
     ggplot2::stat_identity(geom = geom, ...) + 
     ggplot2::ylab("") 
   
@@ -707,7 +709,7 @@ autolayer.irregFunData <- function(object, obs = seq_len(nObs(object)), geom = "
   
   meltData <- as.data.frame(object[obs])
 
-    p <- ggplot2::stat_identity(object = meltData, ggplot2::aes_string(x = "argvals", y = "X", group = "obs"),
+    p <- ggplot2::stat_identity(object = meltData, ggplot2::aes(x = argvals, y = X, group = obs),
                                 geom = geom, ...)
   
   return(p)

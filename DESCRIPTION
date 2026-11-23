@@ -1,8 +1,8 @@
 Package: funData
 Type: Package
 Title: An S4 Class for Functional Data
-Version: 1.3-9
-Date: 2024-02-10
+Version: 1.3-10
+Date: 2026-11-21
 Authors@R: person("Clara", "Happ-Kurz", email = "chk_R@gmx.de",
                   role = c("aut", "cre"))
 Author: Clara Happ-Kurz [aut, cre]
@@ -22,6 +22,7 @@ Imports:
     foreach,
     graphics,
     grDevices,
+    rlang,
     stats
 Suggests:
     covr,
@@ -31,7 +32,6 @@ Suggests:
     reshape2,
     zoo,
     testthat (>= 2.0.0)
-RoxygenNote: 7.3.1
 Encoding: UTF-8
 Collate: 
     'funDataClass.R'
@@ -45,3 +45,4 @@ Collate:
     'subset.R'
     'summary.R'
     'zzz.R'
+Config/roxygen2/version: 8.1.1

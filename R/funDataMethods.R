@@ -13,6 +13,7 @@ NULL
 #'
 #' @param x A \code{funData} object.
 #'
+#' @export
 #' @keywords internal
 print.funData <- function(x,...){
   cat("Functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\nargvals:\n", sep = "")
@@ -49,6 +50,7 @@ setMethod("show", signature = "funData",
 #'
 #' @param x An \code{irregFunData} object.
 #'
+#' @export
 #' @keywords internal
 print.irregFunData <- function(x,...){
   cat("Irregular functional data with ", nObs(x) ," observations of ", dimSupp(x) ,"-dimensional support\n", sep = "")
@@ -847,9 +849,8 @@ extrapolateIrreg <- function(object, rangex = range(object@argvals))
 #' @section Warning: The function is currently implemented only for functional 
 #'   data with one- and two-dimensional domains.
 #'   
-#' @param object An object of class \code{funData}, \code{irregFunData} or 
-#'   \code{multiFunData}.
-#' @param ... Further parameters (see Details).
+#' @param x An object of class \code{funData}, \code{irregFunData} or \code{multiFunData}.
+#' @param squared,obs,method,weight,fullDom Additional parameters for norm calculation; see Details.
 #'   
 #' @return A numeric vector representing the norm of each observation.
 #'   
@@ -892,9 +893,8 @@ norm.funData <- function(object, squared, obs, method, weight)
 
 #' Calculate the norm for univariate functional data
 #'
-#' @seealso \code{\link{norm}}, \code{\linkS4class{funData}}
-#'
-#' @keywords internal
+#' @rdname norm
+#' @exportMethod norm
 setMethod("norm", signature = signature(x = "funData", type = "missing"),
           function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1){
             
@@ -909,9 +909,8 @@ setMethod("norm", signature = signature(x = "funData", type = "missing"),
 
 #' Calculate the norm for multivariate functional data
 #'
-#' @seealso \code{\link{norm}}, \code{\linkS4class{multiFunData}}
-#'
-#' @keywords internal
+#' @rdname norm
+#' @exportMethod norm
 setMethod("norm", signature = signature(x = "multiFunData", type = "missing"),
           function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = rep(1, length(x)))
           {
@@ -956,9 +955,8 @@ norm.irregFunData <- function(object, squared, obs, method, weight, fullDom)
 
 #' Calculate the norm for irregular functional data
 #'
-#' @seealso \code{\link{norm}}, \code{\linkS4class{irregFunData}}
-#'
-#' @keywords internal
+#' @rdname norm
+#' @exportMethod norm
 setMethod("norm", signature = signature(x = "irregFunData", type = "missing"),
           function(x, squared = TRUE, obs = seq_len(nObs(x)), method = "trapezoidal", weight = 1, fullDom = FALSE){
             
